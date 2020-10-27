@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import classes from './App.css';
 import SignIn from "./Component/Signin";
 import SignUp from "./Component/Signup";
-// import Route from 'react-router-dom';
-// import {Router} from "@material-ui/icons";
-// import Route from "react-router-dom/es/Route";
+
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 class App extends Component {
     render() {
