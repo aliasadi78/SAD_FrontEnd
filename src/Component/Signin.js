@@ -12,30 +12,56 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Link1 from "@material-ui/core/Link";
 import React, {Component} from "react";
-
+import Material_RTL from "./Material_RTL";
 import Axios from 'axios';
+import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import InputAdornment from "@material-ui/core/InputAdornment";
+import {AccountCircle, Visibility, VisibilityOff,login } from "@material-ui/icons";
+import IconButton from "@material-ui/core/IconButton";
+import FormControl from "@material-ui/core/FormControl";
+import clsx from "clsx";
+import InputLabel from "@material-ui/core/InputLabel";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import Icon from "@material-ui/core/Icon";
+
 class SignIn extends Component {
     constructor() {
         super();
         this.state = {
             password: '',
             email: '',
+            showPassword: false,
         }
     }
+
     handleChange = e => {
         this.setState({[e.target.name]: e.target.value});
     }
     handleSubmit = e => {
         e.preventDefault();
-        Axios.post("http://parham-backend.herokuapp.com/user/signup", this.state)
-        .then(result => {
-            console.log(result);
-            console.log("BYYYYyyy");
-        }).catch(error => {
+        Axios.post("http://parham-backend.herokuapp.com/user/login", this.state)
+            .then(result => {
+                console.log(result);
+                console.log("good");
+                const token = "Bearer" + result.data.token;
+                localStorage.setItem('token', token);
+                localStorage.getItem('token');
+            }).catch(error => {
             console.log(error);
-            console.log("hello");
+            console.log("bad");
         })
     }
+    handleClickShowPassword = () => {
+        this.setState({
+            ...this.state,
+            showPassword: !this.state.showPassword,
+        });
+    };
+
+    handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
     render() {
         const classes = this.props.classes;
         return (
@@ -46,62 +72,96 @@ class SignIn extends Component {
                         <Avatar className={classes.avatar}>
                             <LockOutlinedIcon/>
                         </Avatar>
-                        <Typography component="h1" variant="h5" className={classes.foo}>
-                            ورود به حساب کاربری
+                        <Typography component="h1" variant="h5">
+                            ورود
                         </Typography>
-                        <form className={classes.form + classes.foo} noValidate onSubmit={this.handleSubmit}>
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="email"
-                                label="ایمیل"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
-                                value={this.state.email}
-                                onChange={this.handleChange}
-                            />
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="گذرواژه"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                value={this.state.password}
-                                onChange={this.handleChange}
-                            />
-                            <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" className={classes.foo}/>}
-                                label="به خاطر سپردن"
-                            />
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                            >
-                                ورود
-                            </Button>
-                            <Grid container>
-                                <Grid item xs>
-                                    <Link1 href="#" variant="body2" className={classes.link}>
-                                        فراموشی رمز
-                                    </Link1>
-                                </Grid>
-                                <Grid item>
-                                    <Link to="/signUp" /*variant="body2" className={classes.link}*/>
-                                        {"حساب کاربری نداری؟ ساخت حساب"}
-                                    </Link>
-                                </Grid>
-                            </Grid>
-                        </form>
+                        <Material_RTL>
+                            <ValidatorForm className={classes.form} noValidate onSubmit={this.handleSubmit}>
+                                <Grid container spacing={2} className={classes.foo} component="h6">
+                                    <Grid item xs={12}>
+                                        <TextValidator
+                                            variant="outlined"
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            id="username"
+                                            label="نام کاربری"
+                                            name="username"
+                                            autoComplete="username"
+                                            autoFocus
+                                            value={this.state.username}
+                                            onChange={this.handleChange}
+                                            validators={['required', 'minStringLength:' + 6, 'matchRegexp:^[a-zA-Z0-9_]*$']}
+                                            errorMessages={['لطفا نام کاربری خود را وارد کنید', 'طول نام کاربری باید بیشتر از 6 باشد', 'a-z 0-9_ لطفا از حروف مجاز استفاده کنید']}
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <AccountCircle/>
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextValidator
+                                            variant="outlined"
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            name="password"
+                                            label="گذرواژه"
+                                            type={this.state.showPassword ? 'text' : 'password'}
+                                            id="password"
+                                            autoComplete="current-password"
+                                            value={this.state.password}
+                                            onChange={this.handleChange}
+                                            validators={['required', 'minStringLength:' + 8]}
+                                            errorMessages={['لطفا رمز عبور خود را وارد کنید', 'رمز عبور باید بیشتر از 8 حرف باشد']}
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <IconButton
+                                                            style={{padding:'0px'}}
+                                                            aria-label="toggle password visibility"
+                                                            onClick={this.handleClickShowPassword}
+                                                            onMouseDown={this.handleMouseDownPassword}
+                                                        >
+                                                            {this.state.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                                        </IconButton>
+                                                    </InputAdornment>)
+                                            }}
+                                        /></Grid>
+                                    </Grid>
+                                        <Button
+                                            type="submit"
+                                            fullWidth
+                                            variant="contained"
+                                            color="primary"
+                                            className={classes.submit}
+                                        >
+                                            ورود
+                                        </Button>
+                                        <Grid container>
+                                            {/*<Grid item xs>*/}
+                                            {/*    <Link1 href="#" variant="body2" className={classes.link}>*/}
+                                            {/*        فراموشی رمز*/}
+                                            {/*    </Link1>*/}
+                                            {/*</Grid>*/}
+                                            <Grid item>
+                                                <Button
+                                                    type="submit"
+                                                    fullWidth
+                                                    variant="contained"
+                                                    // backgroundColor="lightseagreen"
+                                                    startIcon={<Icon>person_add</Icon>}
+                                                >
+                                                    <Link to="/signUp" variant="body2">
+                                                        {"ساخت حساب کاربری"}
+                                                    </Link> </Button>
+                                            </Grid>
+                                        </Grid>
+                            </ValidatorForm>
+                        </Material_RTL>
                     </div>
                 </div>
             </Container>
@@ -126,12 +186,12 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         margin: theme.spacing(1),
         backgroundColor: theme.palette.main,
-        color: 'white',
+        color: 'black',
         fontFamily: 'Vazir',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
+        marginTop: theme.spacing(3),
         fontFamily: 'Vazir !important',
         color: 'black',
         // textAlign: 'right',
@@ -158,7 +218,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
     const classes = useStyles();
-    return(
-        <SignIn classes={classes} />
+    return (
+        <SignIn classes={classes}/>
     )
 }

@@ -11,7 +11,7 @@ import {Link} from 'react-router-dom';
 import axios from 'axios';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import Material_RTL from "./Material_RTL";
-import icon, {AccountCircle, Email, Visibility, VisibilityOff, VpnKey,} from "@material-ui/icons"
+import icon, {AccountCircle, Email, PersonAdd, Visibility, VisibilityOff, VpnKey,} from "@material-ui/icons"
 import TextFieldIcon from 'material-ui-textfield-icon';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -47,10 +47,14 @@ class SignUp extends Component {
             .then(result => {
                 console.log(result);
                 console.log("good");
+                const token = "Bearer" + result.data.token;
+                localStorage.setItem('token',token);
+                localStorage.getItem('token');
             }).catch(error => {
             console.log(error);
             console.log("bad");
         })
+
     }
 
     handleClickShowPassword = () => {
@@ -79,22 +83,20 @@ class SignUp extends Component {
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
-                <div className={classes.foo}>
+                <div>
                     <div className={classes.paper}>
                         <Avatar className={classes.avatar}>
-                            <LockOutlinedIcon/>
+                            <PersonAdd/>
                         </Avatar>
-                        <Typography component="h1" variant="h5" className={classes.foo}>
+                        <Typography component="h1" variant="h5">
                             ثبت نام
                         </Typography>
                         <Material_RTL>
-                            <ValidatorForm className={classes.form}
-                                           noValidate onSubmit={this.handleSubmit}
-                                           style={{direction: 'ltr'}}>
+                            <ValidatorForm className={classes.form} noValidate onSubmit={this.handleSubmit}>
                                 <Grid container spacing={2} className={classes.foo} component="h6">
                                     <Grid item xs={12}>
                                         <TextValidator
-                                            classes={this.props.classes.root}
+                                            // classes={this.props.classes.root}
                                             variant="outlined"
                                             required
                                             fullWidth
@@ -108,8 +110,8 @@ class SignUp extends Component {
                                             validators={['required', 'minStringLength:' + 6, 'matchRegexp:^[a-zA-Z0-9_]*$']}
                                             errorMessages={['لطفا یک نام کاربری مناسب وارد کنید', 'طول نام کاربری باید بیشتر از 6 باشد', 'a-z 0-9_ لطفا از حروف مجاز استفاده کنید']}
                                             InputProps={{
-                                                startAdornment: (
-                                                    <InputAdornment position="start">
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
                                                         <AccountCircle />
                                                     </InputAdornment>
                                                 ),
@@ -131,8 +133,8 @@ class SignUp extends Component {
                                             validators={['required', 'isEmail']}
                                             errorMessages={['لطفا ایمیل خود را وارد کنید', 'ایمیل شما معتبر نیست']}
                                             InputProps={{
-                                                startAdornment: (
-                                                    <InputAdornment position="start">
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
                                                         <Email />
                                                     </InputAdornment>
                                                 ),
@@ -154,9 +156,10 @@ class SignUp extends Component {
                                             validators={['required', 'minStringLength:' + 8]}
                                             errorMessages={['لطفا رمز عبور خود را وارد کنید','رمز عبور باید بیشتر از 8 حرف باشد']}
                                             InputProps={{
-                                                startAdornment:(
-                                                <InputAdornment position="start">
+                                                endAdornment:(
+                                                <InputAdornment position="end">
                                                     <IconButton
+                                                        style={{padding: '0px',color:'black'}}
                                                         onClick={this.handleClickShowPassword}
                                                         onMouseDown={this.handleMouseDownPassword}
                                                     >
@@ -181,8 +184,8 @@ class SignUp extends Component {
                                             validators={['isPasswordMatch', 'required']}
                                             errorMessages={['رمز عبور مطابقت ندارد', 'لطفا رمز عبور خود را تکرار کنید']}
                                             InputProps={{
-                                                startAdornment: (
-                                                    <InputAdornment position="start">
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
                                                         <VpnKey />
                                                     </InputAdornment>
                                                 ),
@@ -205,12 +208,12 @@ class SignUp extends Component {
                                             type="submit"
                                             fullWidth
                                             variant="contained"
-                                            backgroundColor="lightseagreen"
+                                            // backgroundColor="lightseagreen"
                                             startIcon={<Icon>login</Icon>}
                                             >
                                             <Link to="/signIn" variant="body2">
-
-                                        </Link> ورود به حساب</Button>
+                                                ورود به حساب
+                                        </Link> </Button>
 
                                     </Grid>
                                 </Grid>
@@ -229,11 +232,12 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        color: 'white',
+        color: 'black',
         backgroundColor: '#f5f5f5',
         fontFamily: 'Vazir !important',
         padding: '20px',
-        borderRadius: '20px',
+        borderRadius: '10px',
+        opacity: '90%',
     },
     avatar: {
         margin: theme.spacing(1),
