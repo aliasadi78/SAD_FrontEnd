@@ -19,10 +19,15 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import IconButton from "@material-ui/core/IconButton";
+// import LoadingButton from "@material-ui/lab/LoadingButton";
+import  LoadingButton from '@material-ui/lab/LoadingButton';
 import Icon from '@material-ui/core/Icon';
 // import Grid from '@material-ui/core/Grid';
 // import AccountCircle from '@material-ui/icons/AccountCircle';
-
+// import Button from 'react-bootstrap-button-loader';
+// import Button from 'antd';
+import RTL from './mrtl'
+import LoadingButtonsTransition from './butin';
 class SignUp extends Component {
     constructor() {
         super();
@@ -34,6 +39,7 @@ class SignUp extends Component {
             email: '',
             repassword: '',
             showPassword: false,
+            isLoading: false,
         }
     }
 
@@ -43,6 +49,7 @@ class SignUp extends Component {
     handleSubmit = e => {
         e.preventDefault();
         // console.log(this.state);
+        this.setState({isLoading: true});
         axios.post("https://parham-backend.herokuapp.com/user/signup", this.state)
             .then(result => {
                 console.log(result);
@@ -54,6 +61,7 @@ class SignUp extends Component {
             console.log(error);
             console.log("bad");
         })
+        
 
     }
 
@@ -80,6 +88,22 @@ class SignUp extends Component {
 
     render() {
         const classes = this.props.classes;
+        const [pending, setPending] = this.props.p;
+        const handleClick = e => {
+            setPending(true);
+            e.preventDefault();
+        // this.state.pending = true;
+        axios.post("http://parham-backend.herokuapp.com/user/signup", this.state)
+            .then(result => {
+                console.log(result);
+                console.log("good");
+                const token = "Bearer" + result.data.token;
+                localStorage.setItem('token', token);
+                localStorage.getItem('token');
+            }).catch(error => {
+            console.log(error);
+            console.log("bad");
+        })}
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
@@ -92,7 +116,8 @@ class SignUp extends Component {
                             ثبت نام
                         </Typography>
                         <Material_RTL>
-                            <ValidatorForm className={classes.form} noValidate onSubmit={this.handleSubmit}>
+                            <RTL>
+                            <ValidatorForm className={classes.form} noValidate>
                                 <Grid container spacing={2} className={classes.foo} component="h6">
                                     <Grid item xs={12}>
                                         <TextValidator
@@ -193,15 +218,22 @@ class SignUp extends Component {
                                         />
                                     </Grid>
                                 </Grid>
-                                <Button
+                                {/* <Button
+                                    disabled={this.state.isLoading}
                                     type="submit"
                                     fullWidth
-                                    variant="contained"
+                                    variant="outlined"
                                     color="primary"
                                     className={classes.submit}
+                                    onClick={this.handleSubmit}
                                 >
-                                    ثبت نام
-                                </Button>
+                                    {/* submit */}
+                                    {/* {this.state.isLoading ? "صبر کنید": "ثبت نام"}
+                                </Button> */}
+                                {/* <LoadingButtonsTransition state/> */}
+                                <LoadingButton onClick={handleClick} pending={pending} variant="outlined">
+        ثبت نام
+      </LoadingButton>
                                 <Grid container>
                                     <Grid item className={classes.foo}>
                                         <Button
@@ -213,11 +245,12 @@ class SignUp extends Component {
                                             >
                                             <Link to="/signIn" variant="body2">
                                                 ورود به حساب
-                                        </Link> </Button>
-
+                                        </Link>
+                                        </Button>
                                     </Grid>
                                 </Grid>
                             </ValidatorForm>
+                            </RTL>
                         </Material_RTL>
                     </div>
                 </div>
@@ -253,8 +286,9 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
-        color: 'white',
+        color: 'black',
         fontFamily: 'Vazir !important',
+        backgroundColor: 'blue',
     },
     foo: {
         fontFamily: "Vazir !important",
@@ -268,7 +302,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
     const classes = useStyles();
+    const p = React.useState(false);
     return (
-        <SignUp classes={classes}/>
+        <SignUp classes={classes} p={p}/>
     )
 }

@@ -13,33 +13,70 @@ import Grid from "@material-ui/core/Grid";
 import Link1 from "@material-ui/core/Link";
 import React, {Component} from "react";
 import Material_RTL from "./Material_RTL";
-import Axios from 'axios';
+import axios from 'axios';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import {AccountCircle, Visibility, VisibilityOff,login } from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 import FormControl from "@material-ui/core/FormControl";
-import clsx from "clsx";
+// import clsx from "clsx";
 import InputLabel from "@material-ui/core/InputLabel";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Icon from "@material-ui/core/Icon";
-
+import LoadingButton from '@material-ui/lab/LoadingButton';
+import Switch from '@material-ui/core/Switch';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+import LoadingButtonsTransition from './butt';
+import RTL from './mrtl';
 class SignIn extends Component {
     constructor() {
         super();
         this.state = {
             password: '',
-            email: '',
-            showPassword: false,
+            username: '',
         }
+        
     }
 
     handleChange = e => {
         this.setState({[e.target.name]: e.target.value});
     }
-    handleSubmit = e => {
-        e.preventDefault();
-        Axios.post("http://parham-backend.herokuapp.com/user/login", this.state)
+    // handleSubmit = e => {
+    //     e.preventDefault();
+    //     // this.state.pending = true;
+    //     Axios.post("http://parham-backend.herokuapp.com/user/login", this.state)
+    //         .then(result => {
+    //             console.log(result);
+    //             console.log("good");
+    //             const token = "Bearer" + result.data.token;
+    //             localStorage.setItem('token', token);
+    //             localStorage.getItem('token');
+    //         }).catch(error => {
+    //         console.log(error);
+    //         console.log("bad");
+    //     })
+        
+    // }
+    handleClickShowPassword = () => {
+        this.setState({
+            ...this.state,
+            showPassword: !this.state.showPassword,
+        });
+    };
+    
+    handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
+    render() {
+        const classes = this.props.classes;
+        // const pending = this.props.padding;
+        const [pending, setPending] = this.props.p;
+        const handleClick = e => {
+            setPending(true);
+            e.preventDefault();
+        // this.state.pending = true;
+        axios.post("http://parham-backend.herokuapp.com/user/login", this.state)
             .then(result => {
                 console.log(result);
                 console.log("good");
@@ -50,20 +87,7 @@ class SignIn extends Component {
             console.log(error);
             console.log("bad");
         })
-    }
-    handleClickShowPassword = () => {
-        this.setState({
-            ...this.state,
-            showPassword: !this.state.showPassword,
-        });
-    };
-
-    handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-
-    render() {
-        const classes = this.props.classes;
+        }
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
@@ -76,7 +100,9 @@ class SignIn extends Component {
                             ورود
                         </Typography>
                         <Material_RTL>
-                            <ValidatorForm className={classes.form} noValidate onSubmit={this.handleSubmit}>
+                        <RTL>
+
+                            <ValidatorForm className={classes.form} noValidate >
                                 <Grid container spacing={2} className={classes.foo} component="h6">
                                     <Grid item xs={12}>
                                         <TextValidator
@@ -132,15 +158,25 @@ class SignIn extends Component {
                                             }}
                                         /></Grid>
                                     </Grid>
-                                        <Button
-                                            type="submit"
-                                            fullWidth
-                                            variant="contained"
-                                            color="primary"
-                                            className={classes.submit}
+                                        {/* <LoadingButton
+                                            // disabled={this.state.isLoading}
+                                            // type="submit"
+                                            // fullWidth
+                                            // variant="contained"
+                                            // color="primary"
+                                            // className={classes.submit}
+                                            variant="outlined"
+                                            pendig={pending}
+                                            onClick={handleClick}
                                         >
                                             ورود
-                                        </Button>
+                                        </LoadingButton> */}
+                                    
+                                        
+                                        <LoadingButton onClick={handleClick} pending={pending} variant="outlined">
+        ورود
+      </LoadingButton>
+                                        
                                         <Grid container>
                                             {/*<Grid item xs>*/}
                                             {/*    <Link1 href="#" variant="body2" className={classes.link}>*/}
@@ -161,7 +197,10 @@ class SignIn extends Component {
                                             </Grid>
                                         </Grid>
                             </ValidatorForm>
+                            </RTL>
                         </Material_RTL>
+
+                        
                     </div>
                 </div>
             </Container>
@@ -170,6 +209,16 @@ class SignIn extends Component {
 }
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        '& button': {
+          margin: theme.spacing(1),
+        },
+      },
+    
+    
+      switch: {
+        display: 'block',
+      },
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
@@ -218,7 +267,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
     const classes = useStyles();
+    const p = React.useState(false);
     return (
-        <SignIn classes={classes}/>
+        <SignIn classes={classes} p={p} />
     )
 }
