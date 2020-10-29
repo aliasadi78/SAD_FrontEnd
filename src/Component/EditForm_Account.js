@@ -11,6 +11,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button'
+import {updateUser} from './../Request methods/requests' ;
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     //   },
 }));
 
-export default function EditProfileValidationForms_Account (){
+function EditProfileValidationForms_Account (props){
   
     const classes = useStyles();
 
@@ -129,4 +130,8 @@ export default function EditProfileValidationForms_Account (){
 
         </div> 
     );
+}
+
+export default class passwordForms extends Component {
+
 }

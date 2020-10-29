@@ -10,6 +10,7 @@ import Input from '@material-ui/core/Input';
 import InputBase from '@material-ui/core/InputBase';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import axios from 'axios' ;
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -27,6 +28,9 @@ import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import {Image} from 'semantic-ui-react';
 import './../App.css' ;
+import { updateUser , updateUserAvatar} from './../Request methods/requests' ;
+import getUser from './../Request methods/getUser' ;
+import { render } from 'react-dom';
 
 const useStyles = makeStyles((theme) => ({
     margin: {
@@ -83,9 +87,7 @@ TextMaskCustom.propTypes = {
   inputRef: PropTypes.func.isRequired,
 };
 
-export default function EditProfileValidationForms_Personal () {
-
-    const classes = useStyles();
+function EditProfileValidationForms_Personal (props) {    
 
     const [values, setValues] = React.useState({
       textmask: '09         ',      
@@ -103,6 +105,8 @@ export default function EditProfileValidationForms_Personal () {
     const handleDateChange = (date) => {
       setSelectedDate(date);
     };
+
+    const classes = useStyles();
 
     return (
       <div class ="classes.container">        
@@ -129,8 +133,8 @@ export default function EditProfileValidationForms_Personal () {
                 <div class="col">
                     <TextField        
                         label="نام کابری"
-                        id="first-name"
-                        defaultValue="parsa_e"
+                        id="user-name"
+                        defaultValue={props.username}
                         className={classes.textField}   
                         variant="outlined"                 
                         margin ="dense"              
@@ -140,8 +144,8 @@ export default function EditProfileValidationForms_Personal () {
                 <div class="col">
                     <TextField        
                         label="E-MAIL"
-                        id="first-name"
-                        defaultValue="pisa@yahoo.com"
+                        id="email"
+                        defaultValue={props.email}
                         variant="outlined"
                         className={classes.textField}                    
                         margin ="dense"              
@@ -157,7 +161,7 @@ export default function EditProfileValidationForms_Personal () {
             <TextField        
               label="نام"            
               id="first-name"
-              defaultValue="پارسا"
+              defaultValue={props.firstname}
               className={classes.textField}     
               variant="outlined"       
               // variant="filled"
@@ -168,7 +172,7 @@ export default function EditProfileValidationForms_Personal () {
             <TextField
               label="نام خانوادگی"            
               id="last-name"
-              defaultValue="عیسی زاده"
+              defaultValue= {props.lastname}
               className={classes.textField}      
               variant="outlined"      
               // variant="filled"
@@ -203,7 +207,7 @@ export default function EditProfileValidationForms_Personal () {
               id="formatted-text-mask-input"
               inputComponent={TextMaskCustom}
               variant="outlined"
-             />          
+            />          
           </div>          
         </div>        
               
@@ -219,5 +223,56 @@ export default function EditProfileValidationForms_Personal () {
           </div>
         </div>
       </div>
-    );
+    );  
+}
+
+export default class PersonalForms extends Component {
+  
+  constructor(props){
+    super(props);
+    this.state = {
+      userFound : false
+    };
+
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjk5NTY4ZDZiMjA0ODAwMTdmYjIwOTgiLCJpYXQiOjE2MDM4ODQ2ODV9.2iONCmNdzoYTnaHgGMcStSX6ceWrcvxzi1_vnkoAUek';
+    //localStorage.getItem('token');    
+
+    axios.get(
+        'https://parham-backend.herokuapp.com/user' , {headers:
+      { 'Authorization': ' Bearer ' + token  }
+    })
+    .then(res => {        
+        this.state = {
+          firstname : res.data.user.firstname ,
+          lastname : res.data.user.lastname ,
+          username : res.data.user.username ,
+          email : res.data.user.email ,          
+          userFound : true
+        };      
+        console.log(this.state.username);          
+    })
+    .catch(err => {
+
+    });     
+  }
+
+  render(){
+
+    if(this.state.userFound == true){
+      return(
+        <EditProfileValidationForms_Personal
+          firstname = {this.state.firstname}
+          lastname = {this.state.lastname}
+          email = {this.state.email}
+          username = {this.state.username}
+          />
+      );
+    } else
+    {
+      return (
+        <p> the water is disconnected</p>
+      );
+    } 
+
+  }
 }

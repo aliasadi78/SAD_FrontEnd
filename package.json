@@ -1,5 +1,6 @@
 {
   "name": "front",
+  "proxy" : "https://parham-backend.herokuapp.com/test" ,
   "version": "0.1.0",
   "private": true,
   "dependencies": {

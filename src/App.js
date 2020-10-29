@@ -1,28 +1,26 @@
 import React , {Component} from 'react';
 import './App.css';
 import VerticalTabs from './Component/TabMenuEditProfile';
-import {axios} from 'axios' ;
+import axios from 'axios' ;
 
-async function getUser(){
-  try{
-    const response  = await axios.get('https://parham-backend.herokuapp.com/');
-    console.log(response);
-  } catch(error) {
-    console.error(error);
-  }
-}
+function TestBack (){
 
-
-
-function App() {  
-
-  // axios.get('https://parham-backend.herokuapp.com/')
+  axios.get('https://parham-backend.herokuapp.com/test')
+    .then(res => {
+      const test = res.data ;
+      console.log(test);
+  })  
 
   return (
+    <p> testing </p>
+  );
+}
+
+function App() {  
+  return (
     <div className="App">      
-      <header className="App-header">      
-        <getUser />                
-        <VerticalTabs />
+      <header className="App-header">         
+        <VerticalTabs />        
       </header>      
     </div>
   );

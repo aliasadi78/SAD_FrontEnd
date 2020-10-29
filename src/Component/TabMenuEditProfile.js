@@ -10,13 +10,11 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import View, { createMuiTheme } from '@material-ui/core/'
 import Button from '@material-ui/core/Button' ;
-import DeleteIcon from '@material-ui/icons/Delete' ;
-import Icon from '@material-ui/core/Icon' ;
 
-
-import EditProfileValidationForms_Personal from './Editform_Personal'
 import EditProfileValidationForms_Account from './EditForm_Account'
-import { deleteUser , updateUser , updateUserAvatar , logOut} from './../Request methods/requests' ;
+import {logOut} from './../Request methods/requests' ;
+import axios from 'axios';
+import PersonalForms from './Editform_Personal';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -41,10 +39,7 @@ function TabPanel(props) {
 const theme = createMuiTheme({
     palette:{
         primary : {
-          main : '#3D5A80' ,
-            // main : '#3D5A80' ,
-            // main : '#008280' ,
-            // main : '#4ea8de' ,
+          main : '#3D5A80' ,            
         } , 
         secondary : {
           main : '#EE6C4D'
@@ -97,13 +92,10 @@ export default function VerticalTabs() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
+  };  
 
   return (
-    <div className={classes.root} >
-      {/* <View 
-        style = { { borderRadius : 25  } }
-        > */}
+    <div className={classes.root} >         
         <ThemeProvider theme={theme}>
             <Tabs
                 orientation="vertical"
@@ -120,14 +112,14 @@ export default function VerticalTabs() {
                 <Button
                   variant="contained"
                   color="secondary"
-                  className={classes.button}
-                  startIcon={<DeleteIcon />}                  
+                  className={classes.button}                               
+                  onClick = {logOut}
                 >
-                  Delete
+                  خروج 
                 </Button>
             </Tabs>
-            <TabPanel value={value} index={0} className = "classes.tabPanel" >
-                <EditProfileValidationForms_Personal />
+            <TabPanel value={value} index={0} className = "classes.tabPanel" >                                
+                <PersonalForms />
             </TabPanel>
             <TabPanel value={value} index={1} className = "classes.tabPanel">
                 <EditProfileValidationForms_Account />
