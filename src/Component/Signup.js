@@ -3,7 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -12,22 +11,12 @@ import axios from 'axios';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import Material_RTL from "./Material_RTL";
 import icon, {AccountCircle, Email, PersonAdd, Visibility, VisibilityOff, VpnKey,} from "@material-ui/icons"
-import TextFieldIcon from 'material-ui-textfield-icon';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
 import IconButton from "@material-ui/core/IconButton";
-// import LoadingButton from "@material-ui/lab/LoadingButton";
 import  LoadingButton from '@material-ui/lab/LoadingButton';
 import Icon from '@material-ui/core/Icon';
-// import Grid from '@material-ui/core/Grid';
-// import AccountCircle from '@material-ui/icons/AccountCircle';
-// import Button from 'react-bootstrap-button-loader';
-// import Button from 'antd';
-import RTL from './mrtl'
-import LoadingButtonsTransition from './butin';
+import RTL from './M_RTL';
+import Vazir from '../fonts/Vazir.ttf';
 class SignUp extends Component {
     constructor() {
         super();
@@ -102,26 +91,28 @@ class SignUp extends Component {
                 localStorage.getItem('token');
             }).catch(error => {
             console.log(error);
+            alert('خطا! نام کاربری یا ایمیل شما قبلا استفاده شده لطفا تمام موارد * دار را پر کنید');
             console.log("bad");
+            setPending(false);
         })}
         return (
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="xs" >
                 <CssBaseline/>
                 <div>
                     <div className={classes.paper}>
                         <Avatar className={classes.avatar}>
                             <PersonAdd/>
                         </Avatar>
-                        <Typography component="h1" variant="h5">
+                        <Typography component="h1" variant="h5" style={{fontFamily: 'Vazir'}}>
                             ثبت نام
                         </Typography>
                         <Material_RTL>
                             <RTL>
                             <ValidatorForm className={classes.form} noValidate>
-                                <Grid container spacing={2} className={classes.foo} component="h6">
+                                <Grid container spacing={2} component="h6">
                                     <Grid item xs={12}>
                                         <TextValidator
-                                            // classes={this.props.classes.root}
+                                            
                                             variant="outlined"
                                             required
                                             fullWidth
@@ -132,9 +123,11 @@ class SignUp extends Component {
                                             type="string"
                                             value={this.state.username}
                                             onChange={this.handleChange}
+                                            InputLabelProps={{style:{fontFamily: 'Vazir'},}}
                                             validators={['required', 'minStringLength:' + 6, 'matchRegexp:^[a-zA-Z0-9_]*$']}
                                             errorMessages={['لطفا یک نام کاربری مناسب وارد کنید', 'طول نام کاربری باید بیشتر از 6 باشد', 'a-z 0-9_ لطفا از حروف مجاز استفاده کنید']}
                                             InputProps={{
+                                                style:{fontFamily: 'Vazir'},
                                                 endAdornment: (
                                                     <InputAdornment position="end">
                                                         <AccountCircle />
@@ -155,9 +148,11 @@ class SignUp extends Component {
                                             type="string"
                                             value={this.state.email}
                                             onChange={this.handleChange}
+                                            InputLabelProps={{style:{fontFamily: 'Vazir'},}}
                                             validators={['required', 'isEmail']}
                                             errorMessages={['لطفا ایمیل خود را وارد کنید', 'ایمیل شما معتبر نیست']}
                                             InputProps={{
+                                                style:{fontFamily: 'Vazir'},
                                                 endAdornment: (
                                                     <InputAdornment position="end">
                                                         <Email />
@@ -178,9 +173,11 @@ class SignUp extends Component {
                                             type={this.state.showPassword ? 'text' : 'password'}
                                             value={this.state.password}
                                             onChange={this.handleChange}
+                                            InputLabelProps={{style:{fontFamily: 'Vazir'},}}
                                             validators={['required', 'minStringLength:' + 8]}
                                             errorMessages={['لطفا رمز عبور خود را وارد کنید','رمز عبور باید بیشتر از 8 حرف باشد']}
                                             InputProps={{
+                                                style:{fontFamily: 'Vazir'},
                                                 endAdornment:(
                                                 <InputAdornment position="end">
                                                     <IconButton
@@ -206,9 +203,11 @@ class SignUp extends Component {
                                             type={this.state.showPassword ? 'text' : 'password'}
                                             value={this.state.repassword}
                                             onChange={this.handleChange}
+                                            InputLabelProps={{style:{fontFamily: 'Vazir'}}}
                                             validators={['isPasswordMatch', 'required']}
                                             errorMessages={['رمز عبور مطابقت ندارد', 'لطفا رمز عبور خود را تکرار کنید']}
                                             InputProps={{
+                                                style:{fontFamily: 'Vazir'},
                                                 endAdornment: (
                                                     <InputAdornment position="end">
                                                         <VpnKey />
@@ -218,35 +217,32 @@ class SignUp extends Component {
                                         />
                                     </Grid>
                                 </Grid>
-                                {/* <Button
-                                    disabled={this.state.isLoading}
-                                    type="submit"
-                                    fullWidth
-                                    variant="outlined"
-                                    color="primary"
-                                    className={classes.submit}
-                                    onClick={this.handleSubmit}
-                                >
-                                    {/* submit */}
-                                    {/* {this.state.isLoading ? "صبر کنید": "ثبت نام"}
-                                </Button> */}
-                                {/* <LoadingButtonsTransition state/> */}
-                                <LoadingButton onClick={handleClick} pending={pending} variant="outlined">
-        ثبت نام
-      </LoadingButton>
+                                <br/>
                                 <Grid container>
-                                    <Grid item className={classes.foo}>
+                                     <Grid item xs={12}>
+                                        <Grid >
+                                            <LoadingButton onClick={handleClick} pendingPosition="center" fullWidth pending={pending} variant="contained" style={{color: 'white',fontFamily: 'Vazir'}}>
+                                                    {'ثبت نام'}
+                                            </LoadingButton>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <br/>
+                                <Grid container>
+                                    <Grid item xs={12}>
+                                        <Grid >
+                                        <Link to="/signIn" style={{color: 'white',textDecoration : 'none',}}>
+                                            
                                         <Button
                                             type="submit"
                                             fullWidth
                                             variant="contained"
-                                            // backgroundColor="lightseagreen"
+                                            style={{backgroundColor : '#0e918c', color: 'white',fontFamily: 'Vazir'}}
                                             startIcon={<Icon>login</Icon>}
                                             >
-                                            <Link to="/signIn" variant="body2">
-                                                ورود به حساب
-                                        </Link>
-                                        </Button>
+                                                { 'ورود' }
+                                        
+                                        </Button></Link></Grid>
                                     </Grid>
                                 </Grid>
                             </ValidatorForm>
@@ -260,8 +256,11 @@ class SignUp extends Component {
 }
 
 const useStyles = makeStyles((theme) => ({
+    root:{
+        color: 'white',
+    },
     paper: {
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(1),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -270,7 +269,7 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'Vazir !important',
         padding: '20px',
         borderRadius: '10px',
-        opacity: '90%',
+        opacity: '95%',
     },
     avatar: {
         margin: theme.spacing(1),
@@ -289,14 +288,6 @@ const useStyles = makeStyles((theme) => ({
         color: 'black',
         fontFamily: 'Vazir !important',
         backgroundColor: 'blue',
-    },
-    foo: {
-        fontFamily: "Vazir !important",
-        color: 'black',
-    },
-    di: {
-        textAlign: 'right',
-        direction: 'rtl',
     },
 }));
 
