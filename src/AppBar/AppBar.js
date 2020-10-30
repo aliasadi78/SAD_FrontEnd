@@ -20,13 +20,13 @@ import NavbarPage from './NavBar';
 
 const useStyles = makeStyles((theme)=>({
     appbar : {
-        width: '100%',
-        height : '10%' ,
-        bottom : '0' ,
-        backgroundColor : '#3D5A80' ,
-        bottom : theme.spacing.unit , 
-        position : 'sticky' ,                     
-        offset: theme.mixins.toolbar,
+        // width: '100%',
+        // height : '10%' ,
+        // bottom : '0' ,
+        backgroundColor : '#98C1D9' ,
+        // bottom : theme.spacing.unit , 
+        // position : 'sticky' ,                     
+        // offset: theme.mixins.toolbar,
     },    
     menuButton : {                 
     },
@@ -57,91 +57,94 @@ export default function MenuAppBar(){
     };
 
     return (                                     
+        <div>
+            {/* <div class = "row">
+                <AppBar position="static" className={classes.appbar}>
+                
+                <Toolbar >                    
+                    <Typography variant="h6" className={classes.title}>        
+                    </Typography>
+                    {auth && (
+                    <div>
+                        <IconButton
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        onClick={handleMenu}
+                        color="inherit"
+                        >            
+                            حساب کاربری
+                            <AccountCircle />            
+                        </IconButton>
+                        <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={open}
+                        onClose={handleClose}
+                        >
+                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+                        <MenuItem onClick={handleClose}>My account</MenuItem>
+                        </Menu>
+                    </div>
+                    )}
+                </Toolbar>
+                </AppBar>
+            </div>  */}
             <div>
-            {/* <AppBar position="static" className={classes.appbar}>
-            
-            <Toolbar className ={classes.appbar}>                    
-                <Typography variant="h6" className={classes.title}>        
-                </Typography>
-                {auth && (
-                <div>
-                    <IconButton
-                    aria-label="account of current user"
-                    aria-controls="menu-appbar"
-                    aria-haspopup="true"
-                    onClick={handleMenu}
-                    color="inherit"
-                    >            
-                        حساب کاربری
-                        <AccountCircle />            
-                    </IconButton>
-                    <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    open={open}
-                    onClose={handleClose}
-                    >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    </Menu>
-                </div>
-                )}
-            </Toolbar>
-            </AppBar>             */}
+                <SideNav
+                className = {classes.toolbar}
+                onSelect={(selected) => {
+                    // Add your code here
+                }}        
+                >
+                    <SideNav.Toggle />
+                    <SideNav.Nav defaultSelected="home">
 
-        <SideNav
-        className = {classes.toolbar}
-        onSelect={(selected) => {
-            // Add your code here
-        }}        
-        >
-            <SideNav.Toggle />
-            <SideNav.Nav defaultSelected="home">
-
-                <NavItem eventKey="home">
-                    <NavIcon>
-                        <i className="fa fa-fw fa-home" style={{ fontSize: '1.5em' }} />
-                        {/* </IconButton> */}
-                        <span class="material-icons">
-                        account_circle
-                        </span>
-                    </NavIcon>
-                    <NavText>
-                        حساب کاربری
-                    </NavText>
-                </NavItem>
-                <NavItem eventKey="charts">
-                    <NavIcon>
-                        <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.5em' }} />
-                        <span class="material-icons">
-                        account_balance
-                        </span>
-                    </NavIcon>
-                    <NavText>
-                        کلاس ها
-                    </NavText>
-                    <NavItem eventKey="charts/linechart">
-                        <NavText>
-                            تمام شده
-                        </NavText>
-                    </NavItem>
-                    <NavItem eventKey="charts/barchart">
-                        <NavText>
-                            مشغول
-                        </NavText>
-                    </NavItem>
-                </NavItem>
-            </SideNav.Nav>
-        </SideNav>
-    </div>
+                        <NavItem eventKey="home">
+                            <NavIcon>
+                                <i className="fa fa-fw fa-home" style={{ fontSize: '1.5em' }} />
+                                {/* </IconButton> */}
+                                <span class="material-icons">
+                                account_circle
+                                </span>
+                            </NavIcon>
+                            <NavText>
+                                حساب کاربری
+                            </NavText>
+                        </NavItem>
+                        <NavItem eventKey="charts">
+                            <NavIcon>
+                                <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.5em' }} />
+                                <span class="material-icons">
+                                account_balance
+                                </span>
+                            </NavIcon>
+                            <NavText>
+                                کلاس ها
+                            </NavText>
+                            <NavItem eventKey="charts/linechart">
+                                <NavText>
+                                    تمام شده
+                                </NavText>
+                            </NavItem>
+                            <NavItem eventKey="charts/barchart">
+                                <NavText>
+                                    مشغول
+                                </NavText>
+                            </NavItem>
+                        </NavItem>
+                    </SideNav.Nav>
+                </SideNav>
+            </div>
+        </div>
     );
 }

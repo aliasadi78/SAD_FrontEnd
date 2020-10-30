@@ -66,8 +66,10 @@ const useStyles = makeStyles((theme) => ({
     margin : theme.spacing(5) ,
     backgroundColor: theme.palette.background.paper,
     display: 'flex',    
-    boxShadow: '0 3px 5px 2px rgba(250, 250, 250, .6)',
+    boxShadow: '0 3px 5px 5px rgba(204, 204, 204, .6)',
     width : '50%' ,   
+    borderRadius : 20 , 
+    flexWrap: 'wrap' , 
   },
   button :{    
     margin : theme.spacing.unit * 1.5 ,
@@ -81,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight : 'bold' ,    
   },
   tabPanel :{
-    backgroundColor : '#BFD7EA' ,
+    backgroundColor : '#BFD7EA' ,        
   },
 }));
 
@@ -117,10 +119,10 @@ export default function VerticalTabs() {
                   خروج 
                 </Button>
             </Tabs>
-            <TabPanel value={value} index={0} className = "classes.tabPanel" >                                
+            <TabPanel value={value} index={0}  >
                 <PersonalForms />
             </TabPanel>
-            <TabPanel value={value} index={1} className = "classes.tabPanel">
+            <TabPanel value={value} index={1} >
                 <EditProfileValidationForms_Account />
             </TabPanel>            
         </ThemeProvider>

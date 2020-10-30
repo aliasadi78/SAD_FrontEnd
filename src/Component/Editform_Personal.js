@@ -33,13 +33,16 @@ import { render } from 'react-dom';
 import AlertDialog from './../Request methods/UpdateUser';
 import { CircularProgress } from '@material-ui/core';
 
-
 const useStyles = makeStyles((theme) => ({
     progressBar : {
       display: 'flex',
       '& > * + *': {
         marginLeft: theme.spacing(2),
       },
+      alignItems : 'center' , 
+      justifyContent : 'center' ,
+      width : '100%' ,
+      height : '100%'
     },
     margin: {
         margin: theme.spacing(1),
@@ -62,6 +65,9 @@ const useStyles = makeStyles((theme) => ({
     },        
     paper: {
       alignItems : 'center' ,
+    },
+    progressbarContainer : {
+      alignItems : 'center' , 
     },
     SaveChangesButton: {
       // background: 'linear-gradient(-90deg, rgba(48,191,227,0.9559174011401436) 0%, rgba(78,168,222,0.9391106784510679) 100%)',
@@ -113,7 +119,9 @@ function EditProfileValidationForms_Personal (props) {
       });
     };
     
-    const [selectedDate , setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));    
+    const [selectedDate , setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));  
+    
+    // const []
 
     const handleDateChange = (date) => {
       setSelectedDate(date);
@@ -122,7 +130,7 @@ function EditProfileValidationForms_Personal (props) {
     const classes = useStyles();
 
     return (
-      <div class ="classes.container">        
+      <div>
         
         <div class="row" >
           <Image  className="avatarimage-Editpage"
@@ -229,15 +237,15 @@ function EditProfileValidationForms_Personal (props) {
         <div class = "row">
           <div class ="col">
             <Button className={classes.SaveChangesButton} onClick={()=>{            
-              const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjk5NTY4ZDZiMjA0ODAwMTdmYjIwOTgiLCJpYXQiOjE2MDM4ODQ2ODV9.2iONCmNdzoYTnaHgGMcStSX6ceWrcvxzi1_vnkoAUek';                            
+              const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjljMGI3ODU2YzBkYTAwMTc3YWQzMGMiLCJpYXQiOjE2MDQwNjIwNzJ9.kiXC8E1w7OicGXlOCGrpH9eptALM8DUjcfY6U7ZmUe0';                            
               axios.put('https://parham-backend.herokuapp.com/user/update' 
               , {headers:
                   { 'Authorization': 'Bearer ' + token  } 
               }
               , {                  
-                firstname : "mohammdpedram" ,
-                lastname : "کرمعلیزاده" ,
-                email : "kpm@yaoo.com"   
+                // firstname : "mohammdpedram" ,
+                lastname : "isazadeh" ,
+                // email : "kpm@yaoo.com"   
               })
               .then(res => {
                   console.log('done');
@@ -264,7 +272,7 @@ export default class PersonalForms extends Component {
       userFound : false
     };
 
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjk5NTY4ZDZiMjA0ODAwMTdmYjIwOTgiLCJpYXQiOjE2MDM4ODQ2ODV9.2iONCmNdzoYTnaHgGMcStSX6ceWrcvxzi1_vnkoAUek';
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjljMGI3ODU2YzBkYTAwMTc3YWQzMGMiLCJpYXQiOjE2MDQwNjIwNzJ9.kiXC8E1w7OicGXlOCGrpH9eptALM8DUjcfY6U7ZmUe0';
     //localStorage.getItem('token');    
 
     axios.get(
@@ -274,22 +282,20 @@ export default class PersonalForms extends Component {
     .then(res => {        
         this.setState(prevState => {
           return{
-          firstname : res.data.user.firstname ,
-          lastname : res.data.user.lastname ,
-          username : res.data.user.username ,
-          email : res.data.user.email ,          
-          userFound : true
+            firstname : res.data.user.firstname ,
+            lastname : res.data.user.lastname ,
+            username : res.data.user.username ,
+            email : res.data.user.email ,          
+            userFound : true
           }
-        }
-        )
+        })
     })  
     .catch(err => {
-
+        console.log(err)
     });     
   }
 
-  render(){
-  
+  render(){  
 
     if(this.state.userFound == true){
       return(
@@ -303,7 +309,17 @@ export default class PersonalForms extends Component {
     } else
     {
       return (
-        <CircularProgress />                    
+        <div className = {useStyles.progressbarContainer}>
+          <div class="row">
+
+            <div class="col" ></div>
+            <div class="col" >
+              <CircularProgress />                                  
+            </div>
+            <div class="col" ></div>
+
+          </div>
+        </div>
       );
     } 
 

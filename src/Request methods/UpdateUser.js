@@ -9,19 +9,21 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 function UpdateUser (props){
     console.log("entered to function"); 
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjk5NTY4ZDZiMjA0ODAwMTdmYjIwOTgiLCJpYXQiOjE2MDM4ODQ2ODV9.2iONCmNdzoYTnaHgGMcStSX6ceWrcvxzi1_vnkoAUek';
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjljMGI3ODU2YzBkYTAwMTc3YWQzMGMiLCJpYXQiOjE2MDQwNjIwNzJ9.kiXC8E1w7OicGXlOCGrpH9eptALM8DUjcfY6U7ZmUe0';
     //localStorage.getItem('token');    
-
-    axios.put('https://parham-backend.herokuapp.com/user/update' 
-    , {
+    
+    const data = JSON.stringify({
       password : props.password ,
       firstname : props.firstname ,
       lastname : props.lastname ,
       email : props.email        
-    }
-    , {headers:
+    });
+
+    axios.post('https://parham-backend.herokuapp.com/user/update'     
+    , { headers:
         { 'Authorization': 'Bearer ' + token  } 
-    })
+    }
+    , data )
     .then(res => {
         console.log('done');
         return(
