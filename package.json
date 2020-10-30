@@ -1,6 +1,7 @@
 {
   "name": "tahlil",
   "version": "0.1.0",
+  "homepage": "https://parham-front.herokuapp.com",
   "private": true,
   "dependencies": {
     "@babel/core": "7.9.0",

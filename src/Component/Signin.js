@@ -146,7 +146,7 @@ class SignIn extends Component {
                                     <Grid container>
                                         <Grid item xs={12}>
                                             <Grid classes={classes.root} >
-                                            <LoadingButton onClick={handleClick} pendingPosition="center" pending={pending} variant="contained" color="primary" style={{color: 'white',fontFamily: 'Vazir'}} fullWidth>
+                                            <LoadingButton onClick={handleClick} pendingPosition="center" pending={pending} variant="contained"  style={{backgrounColor: '#3d5a80',color: 'white',fontFamily: 'Vazir'}} fullWidth>
                                             ورود
                                             </LoadingButton>
                                             </Grid>

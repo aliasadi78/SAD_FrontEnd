@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.13e10165.chunk.css",
+    "main.js": "/static/js/main.fc11f0fd.chunk.js",
+    "main.js.map": "/static/js/main.fc11f0fd.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.bc9be450.js",
+    "runtime-main.js.map": "/static/js/runtime-main.bc9be450.js.map",
+    "static/js/2.d4f3c9f0.chunk.js": "/static/js/2.d4f3c9f0.chunk.js",
+    "static/js/2.d4f3c9f0.chunk.js.map": "/static/js/2.d4f3c9f0.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.510e109d922e08f5c4f74d7ebcfc1d7d.js": "/precache-manifest.510e109d922e08f5c4f74d7ebcfc1d7d.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.13e10165.chunk.css.map": "/static/css/main.13e10165.chunk.css.map",
+    "static/js/2.d4f3c9f0.chunk.js.LICENSE.txt": "/static/js/2.d4f3c9f0.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/static/media/Vazir.398b39dd.ttf",
+    "static/media/App.css": "/static/media/back3.bce648cb.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.bc9be450.js",
+    "static/js/2.d4f3c9f0.chunk.js",
+    "static/css/main.13e10165.chunk.css",
+    "static/js/main.fc11f0fd.chunk.js"
+  ]
+}
