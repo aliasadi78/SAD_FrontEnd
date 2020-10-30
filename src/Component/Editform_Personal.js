@@ -28,11 +28,19 @@ import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import {Image} from 'semantic-ui-react';
 import './../App.css' ;
-import { updateUser , updateUserAvatar} from './../Request methods/requests' ;
 import getUser from './../Request methods/getUser' ;
 import { render } from 'react-dom';
+import AlertDialog from './../Request methods/UpdateUser';
+import { CircularProgress } from '@material-ui/core';
+
 
 const useStyles = makeStyles((theme) => ({
+    progressBar : {
+      display: 'flex',
+      '& > * + *': {
+        marginLeft: theme.spacing(2),
+      },
+    },
     margin: {
         margin: theme.spacing(1),
     },
@@ -40,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
       flexWrap: 'wrap',
       alignItems : 'center' ,
+      justifyItems : 'center' , 
     },
     textField: {      
       marginLeft: theme.spacing(1),
@@ -59,11 +68,15 @@ const useStyles = makeStyles((theme) => ({
       // backgroundColor : '#3D5A80' ,      
       backgroundColor : '#3D5A80' ,      
       border: 0,
-      borderRadius: 3,
-      boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+      borderRadius: 24,
+      boxShadow: '0 3px 5px 2px rgba(140, 140, 140, .5)',
       color: 'white',
       height: 48,
+      width : 48 , 
       padding: '0 30px',
+      "&:hover": {
+        backgroundColor: '#00C853'
+      },
     },    
 }));
 
@@ -215,10 +228,27 @@ function EditProfileValidationForms_Personal (props) {
         
         <div class = "row">
           <div class ="col">
-            <Button className={classes.SaveChangesButton}>
-              <h4>
-                اعمال تغییرات 
-              </h4>
+            <Button className={classes.SaveChangesButton} onClick={()=>{            
+              const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjk5NTY4ZDZiMjA0ODAwMTdmYjIwOTgiLCJpYXQiOjE2MDM4ODQ2ODV9.2iONCmNdzoYTnaHgGMcStSX6ceWrcvxzi1_vnkoAUek';                            
+              axios.put('https://parham-backend.herokuapp.com/user/update' 
+              , {headers:
+                  { 'Authorization': 'Bearer ' + token  } 
+              }
+              , {                  
+                firstname : "mohammdpedram" ,
+                lastname : "کرمعلیزاده" ,
+                email : "kpm@yaoo.com"   
+              })
+              .then(res => {
+                  console.log('done');
+                  return(
+                      <AlertDialog />
+                  )
+              });            
+            } }>
+            <span class="material-icons">
+            done
+            </span>
               </Button>
           </div>
         </div>
@@ -242,21 +272,24 @@ export default class PersonalForms extends Component {
       { 'Authorization': ' Bearer ' + token  }
     })
     .then(res => {        
-        this.state = {
+        this.setState(prevState => {
+          return{
           firstname : res.data.user.firstname ,
           lastname : res.data.user.lastname ,
           username : res.data.user.username ,
           email : res.data.user.email ,          
           userFound : true
-        };      
-        console.log(this.state.username);          
-    })
+          }
+        }
+        )
+    })  
     .catch(err => {
 
     });     
   }
 
   render(){
+  
 
     if(this.state.userFound == true){
       return(
@@ -270,7 +303,7 @@ export default class PersonalForms extends Component {
     } else
     {
       return (
-        <p> the water is disconnected</p>
+        <CircularProgress />                    
       );
     } 
 

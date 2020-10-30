@@ -12,9 +12,9 @@ import View, { createMuiTheme } from '@material-ui/core/'
 import Button from '@material-ui/core/Button' ;
 
 import EditProfileValidationForms_Account from './EditForm_Account'
-import {logOut} from './../Request methods/requests' ;
 import axios from 'axios';
 import PersonalForms from './Editform_Personal';
+import logOut from './../Request methods/LogOut';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -66,20 +66,19 @@ const useStyles = makeStyles((theme) => ({
     margin : theme.spacing(5) ,
     backgroundColor: theme.palette.background.paper,
     display: 'flex',    
-    boxShadow: '0 3px 5px 2px rgba(250, 250, 250, .3)',
+    boxShadow: '0 3px 5px 2px rgba(250, 250, 250, .6)',
+    width : '50%' ,   
   },
-  Button :{
-    // margin : theme.spacing.unit ,
-    position : 'fixed' ,    
+  button :{    
+    margin : theme.spacing.unit * 1.5 ,
+    // position : 'sticky' ,    
     paddingBottom: theme.spacing.unit * 2,
     bottom : 0 ,
+    fixed : 'bottom'
   },
-  tabs: {    
-    // background: 'linear-gradient(180deg, rgba(9,237,206,0.9559174011401436) 0%, rgba(80,151,224,0.9391106784510679) 100%)' ,    
-    borderRight: `1px solid ${theme.palette.divider}`,
-    // backgroundColor : '#BFD7EA' ,
-    fontWeight : 'bold' ,
-    backgroundColor : '#98C1D9' ,
+  tabs: {        
+    borderRight: `1px solid ${theme.palette.divider}`,    
+    fontWeight : 'bold' ,    
   },
   tabPanel :{
     backgroundColor : '#BFD7EA' ,
