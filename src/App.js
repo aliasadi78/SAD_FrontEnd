@@ -4,16 +4,18 @@ import SignIn from "./Component/Signin";
 import SignUp from "./Component/Signup";
 
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+import VerticalTabs from './Component/TabMenuEditProfile';
 class App extends Component {
     render() {
-        return (
+        return (            
             <div className={classes.App}>
-                <Link to="/"> </Link>
+                <VerticalTabs />
+                {/* <Link to="/"> </Link>
                 <Link to="/signIn"> </Link>
                 <Link to="/signUp"> </Link>
                 <Route path="/" exact component={SignIn}/>
                 <Route path="/signIn" exact component={SignIn}/>
-                <Route path="/signUp" component={SignUp}/>
+                <Route path="/signUp" component={SignUp}/> */}
             </div>
 
         );
