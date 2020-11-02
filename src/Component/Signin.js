@@ -18,6 +18,7 @@ import Icon from "@material-ui/core/Icon";
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import RTL from './M_RTL';
 import Vazir from '../fonts/Vazir.ttf';
+import {Route} from "react-router-dom" ;
 class SignIn extends Component {
     constructor() {
         super();
@@ -53,7 +54,8 @@ class SignIn extends Component {
                 .then(result => {
                     console.log(result);
                     console.log("good");                                                            
-                    const token = "Bearer" + result.data.token;
+                    const token = result.data.token;
+                    
                     localStorage.setItem('token', token);                    
                     console.log("first");
                     this.props.history.push('/profile/edit')                    
@@ -219,6 +221,8 @@ export default () => {
     const classes = useStyles();
     const p = React.useState(false);
     return (
-        <SignIn classes={classes} p={p} />
+        <Route>
+            <SignIn classes={classes} p={p} />
+        </Route>
     )
 }

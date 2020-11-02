@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {Link} from 'react-router-dom';
+import {Link, Redirect, Route, useHistory} from 'react-router-dom';
 import axios from 'axios';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import Material_RTL from "./Material_RTL";
@@ -29,6 +29,8 @@ class SignUp extends Component {
             repassword: '',
             showPassword: false,
             isLoading: false,
+            // history : useHistory() ,
+            // redirect : "/profile/edit" ,
         }
     }
 
@@ -43,9 +45,8 @@ class SignUp extends Component {
             .then(result => {
                 console.log(result);
                 console.log("good");
-                const token = "Bearer" + result.data.token;
-                localStorage.setItem('token',token);
-                localStorage.getItem('token');
+                const token = result.data.token;
+                localStorage.setItem('token',token);                                               
             }).catch(error => {
             console.log(error);
             console.log("bad");
@@ -77,18 +78,18 @@ class SignUp extends Component {
 
     render() {
         const classes = this.props.classes;
-        const [pending, setPending] = this.props.p;
+        const [pending, setPending] = this.props.p;        
         const handleClick = e => {
             setPending(true);
-            e.preventDefault();
-        // this.state.pending = true;
+            e.preventDefault();        
         axios.post("http://parham-backend.herokuapp.com/user/signup", this.state)
             .then(result => {
                 console.log(result);
                 console.log("good");
-                const token = "Bearer" + result.data.token;
-                localStorage.setItem('token', token);
-                localStorage.getItem('token');
+                const token = result.data.token;
+                localStorage.setItem('token', token);                
+                this.props.history.push('/profile/edit');                
+                // return <Redirect to = {this.state.redirect} />
             }).catch(error => {
             console.log(error);
             alert('خطا! نام کاربری یا ایمیل شما قبلا استفاده شده لطفا تمام موارد * دار را پر کنید');
@@ -294,7 +295,7 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
     const classes = useStyles();
     const p = React.useState(false);
-    return (
-        <SignUp classes={classes} p={p}/>
+    return (        
+            <SignUp classes={classes} p={p}/>        
     )
 }

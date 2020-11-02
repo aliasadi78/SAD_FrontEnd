@@ -6,6 +6,7 @@ import SignUp from "./Component/Signup";
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import VerticalTabs from './Component/TabMenuEditProfile';
 class App extends Component {
+
     render() {
         return (            
             <div className={classes.App}>                
