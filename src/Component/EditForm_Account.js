@@ -144,9 +144,8 @@ export default class passwordForms extends Component {
         this.state = {
             userFound : false
         };
-    
-        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjk5NTY4ZDZiMjA0ODAwMTdmYjIwOTgiLCJpYXQiOjE2MDM4ODQ2ODV9.2iONCmNdzoYTnaHgGMcStSX6ceWrcvxzi1_vnkoAUek';
-        //localStorage.getItem('token');    
+            
+        const token = localStorage.getItem('token');    
     
         axios.get(
             'https://parham-backend.herokuapp.com/user' , {headers:
