@@ -221,7 +221,7 @@ class SignUp extends Component {
                                 <Grid container>
                                      <Grid item xs={12}>
                                         <Grid >
-                                            <LoadingButton onClick={handleClick} pendingPosition="center" fullWidth pending={pending} variant="contained" style={{color: 'white',fontFamily: 'Vazir'}}>
+                                            <LoadingButton onClick={handleClick} pendingPosition="center" className = {classes.topButton} fullWidth pending={pending} variant="contained" style={{ fontFamily: 'Vazir'}}>
                                                     {'ثبت نام'}
                                             </LoadingButton>
                                         </Grid>
@@ -258,6 +258,9 @@ class SignUp extends Component {
 const useStyles = makeStyles((theme) => ({
     root:{
         color: 'white',
+    },
+    topButton :{
+        backgroundColor : '#EE6C4D' , 
     },
     paper: {
         marginTop: theme.spacing(1),
