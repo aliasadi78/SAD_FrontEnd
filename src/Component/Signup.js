@@ -17,6 +17,7 @@ import  LoadingButton from '@material-ui/lab/LoadingButton';
 import Icon from '@material-ui/core/Icon';
 import RTL from './M_RTL';
 import Vazir from '../fonts/Vazir.ttf';
+
 class SignUp extends Component {
     constructor() {
         super();
@@ -96,7 +97,7 @@ class SignUp extends Component {
             setPending(false);
         })}
         return (
-            <Container component="main" maxWidth="xs" >
+            <Container component="main" maxWidth="xs" >                        
                 <CssBaseline/>
                 <div>
                     <div className={classes.paper}>
@@ -256,8 +257,7 @@ class SignUp extends Component {
 }
 
 const useStyles = makeStyles((theme) => ({
-    root:{
-        color: 'white',
+    root:{        
     },
     topButton :{
         backgroundColor : '#EE6C4D' , 

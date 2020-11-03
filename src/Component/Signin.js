@@ -18,6 +18,7 @@ import Icon from "@material-ui/core/Icon";
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import RTL from './M_RTL';
 import Vazir from '../fonts/Vazir.ttf';
+
 class SignIn extends Component {
     constructor() {
         super();
@@ -65,11 +66,7 @@ class SignIn extends Component {
                 })
         }
         return (
-            <Container component="main" maxWidth="xs" 
-                style={{
-                fontFamily: 'Vazir' ,
-                backgroundImage : 'url(${"../back3.jpg"})' ,
-                }} 
+            <Container component="main" maxWidth="xs"                 
                 className={classes.container}>
                 <CssBaseline />
                 <div className={classes.foo}>
@@ -186,8 +183,7 @@ class SignIn extends Component {
 }
 
 const useStyles = makeStyles((theme) => ({
-    container :{
-        backgroundImage : 'url(${"../back3.jpg"})' , 
+    container :{        
     },
     switch: {
         display: 'block',
