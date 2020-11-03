@@ -149,7 +149,7 @@ export default class passwordForms extends Component {
     
         axios.get(
             'https://parham-backend.herokuapp.com/user' , {headers:
-        { 'Authorization': ' Bearer ' + token  }
+        { 'Authorization': token  }
         })
         .then(res => {        
             this.setState(prevState => {

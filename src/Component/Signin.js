@@ -54,11 +54,13 @@ class SignIn extends Component {
                 .then(result => {
                     console.log(result);
                     console.log("good");                                                            
-                    const token = result.data.token;
+                    const token = "Bearer " + result.data.token;
                     
                     localStorage.setItem('token', token);                    
                     console.log("first");
-                    this.props.history.push('/profile/edit')                    
+
+                    //redirect to edit profile page                                        
+                    window.location.href = "/profile/edit" ;
                 }).catch(error => {
                     console.log(error);
                     alert(" خطا! نام کاربری یا رمز عبور شما اشتباه می باشد.لطفا تمام موارد * دار را پر کنید.");
@@ -220,9 +222,7 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
     const classes = useStyles();
     const p = React.useState(false);
-    return (
-        <Route>
-            <SignIn classes={classes} p={p} />
-        </Route>
+    return (        
+        <SignIn classes={classes} p={p} />    
     )
 }
