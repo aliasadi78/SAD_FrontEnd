@@ -18,6 +18,7 @@ import Icon from "@material-ui/core/Icon";
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import RTL from './M_RTL';
 import Vazir from '../fonts/Vazir.ttf';
+import {Route} from "react-router-dom" ;
 class SignIn extends Component {
     constructor() {
         super();
@@ -41,7 +42,7 @@ class SignIn extends Component {
 
     handleMouseDownPassword = (event) => {
         event.preventDefault();
-    };
+    }; 
 
     render() {
         const classes = this.props.classes;
@@ -52,10 +53,14 @@ class SignIn extends Component {
             axios.post("http://parham-backend.herokuapp.com/user/login", this.state)
                 .then(result => {
                     console.log(result);
-                    console.log("good");
-                    const token = "Bearer" + result.data.token;
-                    localStorage.setItem('token', token);
-                    localStorage.getItem('token');
+                    console.log("good");                                                            
+                    const token = "Bearer " + result.data.token;
+                    
+                    localStorage.setItem('token', token);                    
+                    console.log("first");
+
+                    //redirect to edit profile page                                        
+                    window.location.href = "/profile/edit" ;
                 }).catch(error => {
                     console.log(error);
                     alert(" خطا! نام کاربری یا رمز عبور شما اشتباه می باشد.لطفا تمام موارد * دار را پر کنید.");
@@ -63,6 +68,8 @@ class SignIn extends Component {
                     console.log("bad");
 
                 })
+
+            
         }
         return (
             <Container component="main" maxWidth="xs" style={{fontFamily: 'Vazir'}}>
@@ -145,10 +152,10 @@ class SignIn extends Component {
                                     <br/>
                                     <Grid container>
                                         <Grid item xs={12}>
-                                            <Grid classes={classes.root} >
-                                            <LoadingButton onClick={handleClick} pendingPosition="center" pending={pending} variant="contained"  style={{backgrounColor: '#3d5a80',color: 'white',fontFamily: 'Vazir'}} fullWidth>
-                                            ورود
-                                            </LoadingButton>
+                                            <Grid classes={classes.root} >                                                
+                                                    <LoadingButton onClick={handleClick} pendingPosition="center" pending={pending} variant="contained"  style={{backgrounColor: '#3d5a80',color: 'white',fontFamily: 'Vazir'}} fullWidth>
+                                                    ورود
+                                                    </LoadingButton>                                                
                                             </Grid>
                                         </Grid>
                                     </Grid>
@@ -215,7 +222,7 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
     const classes = useStyles();
     const p = React.useState(false);
-    return (
-        <SignIn classes={classes} p={p} />
+    return (        
+        <SignIn classes={classes} p={p} />    
     )
 }

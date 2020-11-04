@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {Link} from 'react-router-dom';
+import {Link, Redirect, Route, useHistory , Router , withRouter } from 'react-router-dom';
 import axios from 'axios';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import Material_RTL from "./Material_RTL";
@@ -15,6 +15,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from "@material-ui/core/IconButton";
 import  LoadingButton from '@material-ui/lab/LoadingButton';
 import Icon from '@material-ui/core/Icon';
+import history from "./history";
 import RTL from './M_RTL';
 import Vazir from '../fonts/Vazir.ttf';
 class SignUp extends Component {
@@ -28,42 +29,24 @@ class SignUp extends Component {
             email: '',
             repassword: '',
             showPassword: false,
-            isLoading: false,
+            isLoading: false,                        
         }
     }
 
     handleChange = e => {
         this.setState({[e.target.name]: e.target.value});
-    }
-    handleSubmit = e => {
-        e.preventDefault();
-        // console.log(this.state);
-        this.setState({isLoading: true});
-        axios.post("https://parham-backend.herokuapp.com/user/signup", this.state)
-            .then(result => {
-                console.log(result);
-                console.log("good");
-                const token = "Bearer" + result.data.token;
-                localStorage.setItem('token',token);
-                localStorage.getItem('token');
-            }).catch(error => {
-            console.log(error);
-            console.log("bad");
-        })
-        
-
-    }
+    }            
 
     handleClickShowPassword = () => {
-    this.setState({
-        ...this.state,
-        showPassword: !this.state.showPassword,
-    });
-};
+        this.setState({
+            ...this.state,
+            showPassword: !this.state.showPassword,
+        });
+    };
 
     handleMouseDownPassword = (event) => {
     event.preventDefault();
-};
+    };
 
     componentDidMount() {
         // custom rule will have name 'isPasswordMatch'
@@ -74,27 +57,32 @@ class SignUp extends Component {
             return true;
         });
     }
-
+    
     render() {
         const classes = this.props.classes;
-        const [pending, setPending] = this.props.p;
+        const [pending, setPending] = this.props.p;        
+
         const handleClick = e => {
             setPending(true);
-            e.preventDefault();
-        // this.state.pending = true;
+            e.preventDefault();        
         axios.post("http://parham-backend.herokuapp.com/user/signup", this.state)
             .then(result => {
                 console.log(result);
                 console.log("good");
-                const token = "Bearer" + result.data.token;
-                localStorage.setItem('token', token);
-                localStorage.getItem('token');
+                const token = "Bearer " + result.data.token;
+                localStorage.setItem('token', token);  
+                
+                //redirect to editprofile page   
+                // history.push("/profile/edit");
+                window.location.href = "/profile/edit" ;
+                setPending(false);
             }).catch(error => {
-            console.log(error);
-            alert('خطا! نام کاربری یا ایمیل شما قبلا استفاده شده لطفا تمام موارد * دار را پر کنید');
-            console.log("bad");
-            setPending(false);
-        })}
+                console.log(error);
+                alert('خطا! نام کاربری یا ایمیل شما قبلا استفاده شده لطفا تمام موارد * دار را پر کنید');
+                console.log("bad");
+                setPending(false);
+            })}
+
         return (
             <Container component="main" maxWidth="xs" >
                 <CssBaseline/>
@@ -291,10 +279,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default () => {
+function SignUpoutput() {
     const classes = useStyles();
     const p = React.useState(false);
-    return (
-        <SignUp classes={classes} p={p}/>
+    return (          
+        <SignUp classes={classes} p={p}/>             
     )
 }
+
+export default withRouter(SignUpoutput);
