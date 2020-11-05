@@ -1,150 +1,232 @@
 import React from 'react';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Drawer from '@material-ui/core/Drawer';
+import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import { mainListItems, secondaryListItems } from './listItems';
+import VerticalTabs from './../Component/TabMenuEditProfile' ;
+import Button from '@material-ui/core/Button';
 
-import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
-
-// Be sure to include styles at some point, probably during your bootstraping
-import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-import NavbarPage from './NavBar';
-
-const useStyles = makeStyles((theme)=>({
-    appbar : {
-        // width: '100%',
-        // height : '10%' ,
-        // bottom : '0' ,
-        backgroundColor : '#98C1D9' ,
-        // bottom : theme.spacing.unit , 
-        // position : 'sticky' ,                     
-        // offset: theme.mixins.toolbar,
-    },    
-    menuButton : {                 
-    },
-    title :{
-        flexGrow : 1 ,
-    },
-    toolbar : {        
-        backgroundColor : '#3D5A80' ,
-    },
-}));
-
-export default function MenuAppBar(){
-    const classes = useStyles();
-    const [auth , setAuth] = React.useState(true);
-    const [anchorEl , setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-
-    const handleChange = (event) => {
-        setAuth(event.target.checked);
-    };
-
-    const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-    setAnchorEl(null);
-    };
-
-    return (                                     
-        <div>
-            {/* <div class = "row">
-                <AppBar position="static" className={classes.appbar}>
-                
-                <Toolbar >                    
-                    <Typography variant="h6" className={classes.title}>        
-                    </Typography>
-                    {auth && (
-                    <div>
-                        <IconButton
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        onClick={handleMenu}
-                        color="inherit"
-                        >            
-                            حساب کاربری
-                            <AccountCircle />            
-                        </IconButton>
-                        <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorEl}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        open={open}
-                        onClose={handleClose}
-                        >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        </Menu>
-                    </div>
-                    )}
-                </Toolbar>
-                </AppBar>
-            </div>  */}
-            <div>
-                <SideNav
-                className = {classes.toolbar}
-                onSelect={(selected) => {
-                    // Add your code here
-                }}        
-                >
-                    <SideNav.Toggle />
-                    <SideNav.Nav defaultSelected="home">
-
-                        <NavItem eventKey="home">
-                            <NavIcon>
-                                <i className="fa fa-fw fa-home" style={{ fontSize: '1.5em' }} />
-                                {/* </IconButton> */}
-                                <span class="material-icons">
-                                account_circle
-                                </span>
-                            </NavIcon>
-                            <NavText>
-                                حساب کاربری
-                            </NavText>
-                        </NavItem>
-                        <NavItem eventKey="charts">
-                            <NavIcon>
-                                <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.5em' }} />
-                                <span class="material-icons">
-                                account_balance
-                                </span>
-                            </NavIcon>
-                            <NavText>
-                                کلاس ها
-                            </NavText>
-                            <NavItem eventKey="charts/linechart">
-                                <NavText>
-                                    تمام شده
-                                </NavText>
-                            </NavItem>
-                            <NavItem eventKey="charts/barchart">
-                                <NavText>
-                                    مشغول
-                                </NavText>
-                            </NavItem>
-                        </NavItem>
-                    </SideNav.Nav>
-                </SideNav>
-            </div>
-        </div>
-    );
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
 }
+
+const drawerWidth = 240;
+const useStyles = makeStyles((theme) => ({
+    root: {
+      display: 'flex',
+    },
+    toolbar: {
+      paddingRight: 24, // keep right padding when drawer closed
+    },
+    toolbarIcon: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      padding: '0 8px',
+      height: '54px' ,
+      // ...theme.mixins.toolbar,
+    },
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1 ,  //رو این کار کن 
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      height : '54px' ,
+      backgroundColor : '#3D5A80' ,
+      position: "fixed",
+      bottom: theme.spacing(2),      
+      // bottom : 0 ,
+    },
+    appBarShift: {
+      marginLeft: drawerWidth,
+      width: `calc(100% - ${drawerWidth}px)`,
+      height : '54px' ,
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    },
+    menuButton: {
+      marginRight: 0,
+    },
+    menuButtonHidden: {
+      display: 'none',
+    },
+    title: {
+      flexGrow: 1,
+    },
+    drawerPaper: {
+      position: 'relative',
+      whiteSpace: 'nowrap',
+      width: drawerWidth,
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    },
+    drawerPaperClose: {
+      overflowX: 'hidden',
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      width: theme.spacing(7),      
+      [theme.breakpoints.up('sm')]: {
+        width: theme.spacing(7),
+      },
+    },
+    appBarSpacer: theme.mixins.toolbar,
+    content: {
+      flexGrow: 1,
+      height: '100vh',
+      overflow: 'auto',
+    },
+    container: {
+      paddingTop: theme.spacing(4),
+      paddingBottom: theme.spacing(4),
+    },
+    paper: {
+      padding: theme.spacing(2),
+      display: 'flex',
+      overflow: 'auto',
+      flexDirection: 'column',
+    },
+    fixedHeight: {
+      height: 240,
+    },
+    button : {
+      marginRight : theme.spacing(2) ,       
+      backgroundColor : '#98C1D9' ,
+      "&:hover": {
+        backgroundColor: '#EE6C4D' ,
+        color : 'white' , 
+      },            
+    icon :{
+      backgroundColor : "#3D5A80"
+    },
+    },
+  }));
+
+  export default function Dashboard() {
+    const classes = useStyles();
+    const [open, setOpen] = React.useState(true);
+    const handleDrawerOpen = () => {
+      setOpen(true);
+    };
+    const handleDrawerClose = () => {
+      setOpen(false);
+    };
+    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  
+    return (
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)} dir="rtl" >
+          <Toolbar className={classes.toolbar}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>                          
+            </Typography>
+
+            <Button variant="contained" color="#98C1D9"
+              style={{fontFamily: 'Vazir'}}
+              className = {classes.button}>
+              ایجاد کلاس
+            </Button>
+            
+            <Button variant="contained" color="#98C1D9"
+              style={{fontFamily: 'Vazir'}}
+              className = {classes.button}>
+              ورود به کلاس 
+            </Button>
+
+          </Toolbar>
+        </AppBar> 
+        <Drawer
+          variant="permanent"
+          anchor ="right"
+          // dir = "rtl"
+          classes={{
+            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+          }}
+          open={open}
+        >
+          <div className={classes.toolbarIcon} >  
+
+          <Typography dir="rtl" component="h1" variant="h6" color="inherit" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80'}}>                          
+              اسم سایت و لوگوش
+          </Typography>
+            <IconButton onClick={handleDrawerClose} >
+              <ChevronLeftIcon/>
+            </IconButton>
+          </div>
+          {/* <Divider /> */}
+          <List>{mainListItems}</List>
+          {/* <Divider /> */}
+          <List>{secondaryListItems}</List>
+        </Drawer>
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+          <Container maxWidth="lg" className={classes.container}>
+            <Grid container spacing={3}>
+              {/* Chart */}
+              <Grid item xs={12} md={8} lg={9}>
+                <Paper className={fixedHeightPaper}>
+                  {/* <Chart /> */}
+                    <VerticalTabs />                
+                </Paper>
+              </Grid>
+              {/* Recent Deposits */}
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper className={fixedHeightPaper}>
+                  {/* <Deposits /> */}
+                </Paper>
+              </Grid>
+              {/* Recent Orders */}
+              <Grid item xs={12}>
+                <Paper className={classes.paper}>
+                  {/* <Orders /> */}
+                </Paper>
+              </Grid>
+            </Grid>
+            <Box pt={4}>
+              <Copyright />
+            </Box>
+          </Container>
+        </main>
+      </div>
+    );
+  }
