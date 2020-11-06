@@ -5,6 +5,8 @@ import SignUp from "./Component/Signup";
 
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import VerticalTabs from './Component/TabMenuEditProfile';
+import DashboardEditProfile from './AppBar/AppBar';
+
 class App extends Component {
 
     render() {
