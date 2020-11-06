@@ -64,20 +64,20 @@ function a11yProps(index) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  root: {    
     flexGrow: 1,
     margin : theme.spacing(5) ,
     backgroundColor: theme.palette.background.paper,
     display: 'flex',    
     boxShadow: '0 3px 5px 5px rgba(204, 204, 204, .6)',
-    width : '50%' ,   
-    borderRadius : 20 , 
+    width : '60%' ,   
+    borderRadius : 15 , 
     direction : "ltr" ,
+    alignItems : 'center' ,
     flexWrap: 'wrap' ,     
   },
   button :{    
-    margin : theme.spacing.unit * 1.5 ,
-    // position : 'sticky' ,    
+    margin : theme.spacing.unit * 1.5 ,    
     paddingBottom: theme.spacing.unit * 2,
     bottom : 0 ,
     fixed : 'bottom'
@@ -87,8 +87,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight : 'bold' ,       
   },
   tabPanel :{
-    backgroundColor : '#BFD7EA' , 
-               
+    backgroundColor : '#BFD7EA' ,                
   },
 }));
 

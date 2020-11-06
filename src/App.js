@@ -5,13 +5,13 @@ import SignUp from "./Component/Signup";
 
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import VerticalTabs from './Component/TabMenuEditProfile';
-import Dashboard from './AppBar/AppBar';
+import DashboardEditProfile from './AppBar/AppBar';
 
 class App extends Component {
     render() {
         return (            
             <div className={classes.App}>         
-                <Dashboard />
+                <DashboardEditProfile />
                 {/* <Link to="/"> </Link>
                 <Link to="/signIn"> </Link>
                 <Link to="/signUp"> </Link>
