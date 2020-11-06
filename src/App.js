@@ -19,7 +19,7 @@ class App extends Component {
                 <Route path="/" exact component={SignIn}/>
                 <Route path="/signIn" exact component={SignIn}/>
                 <Route path="/signUp" component={SignUp}/>
-                <Route path="/profile/edit" component = {VerticalTabs} />
+                <Route path="/profile/edit" component = {DashboardEditProfile} />
             </div>
 
         );
