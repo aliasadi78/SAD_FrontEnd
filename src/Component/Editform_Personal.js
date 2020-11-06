@@ -112,9 +112,7 @@ function EditProfileValidationForms_Personal (props) {
       });
     };
     
-    const [selectedDate , setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));  
-    
-    // const []
+    const [selectedDate , setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));    
 
     const handleDateChange = (date) => {
       setSelectedDate(date);
@@ -170,7 +168,6 @@ function EditProfileValidationForms_Personal (props) {
                 </div>
 
             <div class="row"><br/></div>
-
             <div dir="rtl" class = "row" >
               <div class = "col">
                 <TextField 
@@ -265,6 +262,7 @@ function EditProfileValidationForms_Personal (props) {
             </div>
           </RTL>
         </Material_RTL>
+
       </div>
     );  
 }
@@ -276,13 +274,12 @@ export default class PersonalForms extends Component {
     this.state = {
       userFound : false
     };
-
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjljMGI3ODU2YzBkYTAwMTc3YWQzMGMiLCJpYXQiOjE2MDQwNjIwNzJ9.kiXC8E1w7OicGXlOCGrpH9eptALM8DUjcfY6U7ZmUe0';
-    //localStorage.getItem('token');    
+    
+    const token = localStorage.getItem('token');    
 
     axios.get(
         'https://parham-backend.herokuapp.com/user' , {headers:
-      { 'Authorization': ' Bearer ' + token  }
+      { 'Authorization': token  }
     })
     .then(res => {        
         this.setState(prevState => {

@@ -8,16 +8,18 @@ import VerticalTabs from './Component/TabMenuEditProfile';
 import DashboardEditProfile from './AppBar/AppBar';
 
 class App extends Component {
+
     render() {
         return (            
-            <div className={classes.App}>         
-                <DashboardEditProfile />
-                {/* <Link to="/"> </Link>
+            <div className={classes.App}>                
+                <Link to="/"> </Link>
                 <Link to="/signIn"> </Link>
                 <Link to="/signUp"> </Link>
+                <Link to="/profile/edit" ></Link>
                 <Route path="/" exact component={SignIn}/>
                 <Route path="/signIn" exact component={SignIn}/>
-                <Route path="/signUp" component={SignUp}/> */}
+                <Route path="/signUp" component={SignUp}/>
+                <Route path="/profile/edit" component = {VerticalTabs} />
             </div>
 
         );
