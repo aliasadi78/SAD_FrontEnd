@@ -6,6 +6,14 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {makeStyles} from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme)=>({
+    listItem : {
+      alignItems : 'end' ,
+    },
+}));
 
 export const mainListItems = (
   <div>
@@ -19,8 +27,15 @@ export const mainListItems = (
       <ListItemIcon>
       <LibraryBooksIcon style={{ color: "#3D5A80" }} />
       </ListItemIcon>
-      <ListItemText style={{fontFamily: 'Vazir'}} primary="بانک سوال" />
-    </ListItem>    
+      <ListItemText dir="rtl" style={{fontFamily: 'Vazir'}} primary="بانک سوال" />
+    </ListItem>   
+
+    <ListItem button>
+      <ListItemIcon>
+        <ExitToAppIcon style={{ color: "#3D5A80" }} />        
+      </ListItemIcon>  
+      <ListItemText style={{fontFamily: 'Vazir'}} primary="خروج" />
+    </ListItem> 
   </div>
 );
 

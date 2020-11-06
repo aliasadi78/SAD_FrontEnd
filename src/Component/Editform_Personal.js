@@ -25,8 +25,8 @@ import './../App.css' ;
 import AlertDialog from './../Request methods/UpdateUser';
 import { CircularProgress } from '@material-ui/core';
 import Material_RTL from './Material_RTL';
-import { RuleList } from 'jss';
 import RTL from './M_RTL';
+import { EditorDragHandle } from 'material-ui/svg-icons';
 
 const useStyles = makeStyles((theme) => ({
     progressBar : {
@@ -105,6 +105,24 @@ function EditProfileValidationForms_Personal (props) {
       textmask: '09         ',      
     });
 
+    const [username , setUsername] = React.useState(props.username) ;
+    const [firstname , setFirstname] = React.useState(props.firstname) ;
+    const [lastname , setLastname] = React.useState(props.lastname) ;
+    const [email , setEmail] = React.useState(props.email) ;
+
+    const handleUsernameChanged = e =>{
+      setUsername(e.target.value)
+    };
+    const handleFirstnameChanged = e =>{
+      setFirstname(e.target.value)
+    };
+    const handleLastnameChanged = e =>{
+      setLastname(e.target.value)
+    };
+    const handleEmailChanged = e =>{
+      setEmail(e.target.value)
+    };
+
     const handleChange = (event) => {
       setValues({
         ...values,
@@ -149,7 +167,8 @@ function EditProfileValidationForms_Personal (props) {
                             defaultValue={props.username}
                             className={classes.textField}   
                             variant="outlined"                 
-                            margin ="dense"              
+                            margin ="dense"           
+                            onChange ={handleUsernameChanged}   
                             />
                     </div>
 
@@ -161,7 +180,8 @@ function EditProfileValidationForms_Personal (props) {
                             defaultValue={props.email}
                             variant="outlined"
                             className={classes.textField}                    
-                            margin ="dense"              
+                            margin ="dense"          
+                            onChange = {handleEmailChanged}    
                             /> 
                     </div>
 
@@ -179,6 +199,7 @@ function EditProfileValidationForms_Personal (props) {
                   variant="outlined"       
                   // variant="filled"
                   margin ="dense"              
+                  onChange = {handleFirstnameChanged}
                 /> 
               </div>           
               <div class = "col">
@@ -191,6 +212,7 @@ function EditProfileValidationForms_Personal (props) {
                   variant="outlined"      
                   // variant="filled"
                   margin ="dense"
+                  onChange ={handleLastnameChanged}
                 /> 
               </div>           
             </div>        
@@ -233,31 +255,34 @@ function EditProfileValidationForms_Personal (props) {
               <div class ="col">
                 <Button 
                   style={{fontFamily: 'Vazir'}}
-                  className={classes.SaveChangesButton} onClick={()=>{            
-                  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjljMGI3ODU2YzBkYTAwMTc3YWQzMGMiLCJpYXQiOjE2MDQwNjIwNzJ9.kiXC8E1w7OicGXlOCGrpH9eptALM8DUjcfY6U7ZmUe0';                            
-                  axios.put('https://parham-backend.herokuapp.com/user/update' 
+                  className={classes.SaveChangesButton} onClick={()=>{     
+                     
+                  const token = localStorage.getItem('token');
+                  console.log(token)
+                  axios.put('https://parham-backend.herokuapp.com/user' 
                   , {headers:
-                      { 'Authorization': 'Bearer ' + token  } 
+                      { 'Authorization': token  } 
                   }
                   , {                  
                     // firstname : "mohammdpedram" ,
-                    lastname : "isazadeh" ,
+                    "lastname" : "isazadeh"
                     // email : "kpm@yaoo.com"   
                   })
-                  .then(res => {
-                      console.log('done');
+                  .then(res => {                      
+                      console.log(res.data.message);
+                      console.log("done");
                       return(
                           <AlertDialog />
                       )
                   });            
                 } }>
                 
-                <span class="material-icons">
-                  done
-                </span>
-                اعمال تغییرات 
-                
-                  </Button>
+                  <span class="material-icons">
+                    done
+                  </span>
+                  اعمال تغییرات 
+                  
+                </Button>
               </div>              
             </div>
           </RTL>

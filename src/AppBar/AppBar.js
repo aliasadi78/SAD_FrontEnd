@@ -9,35 +9,30 @@ import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import VerticalTabs from './../Component/TabMenuEditProfile' ;
 import Button from '@material-ui/core/Button';
+import LogOutDialog from '../Component/LogoutDialog';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+//----------------
+
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',      
+      display: 'flex',            
     },
     toolbar: {
       paddingRight: 7, // keep right padding when drawer closed            
@@ -106,13 +101,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
       paddingTop: theme.spacing(4),
       paddingBottom: theme.spacing(4),            
-    },
-    paper: {
-      padding: theme.spacing(2),
-      display: 'flex',
-      overflow: 'auto',
-      flexDirection: 'column',            
-    },
+    },    
     fixedHeight: {
       height: 240,
     },
@@ -128,7 +117,9 @@ const useStyles = makeStyles((theme) => ({
 
   export default function DashboardEditProfile() {
     const classes = useStyles();
+    const [component , setComponent] = React.useState('editProfile');
     const [open, setOpen] = React.useState(false);
+    
     const handleDrawerOpen = () => {
       setOpen(true);
     };
@@ -185,8 +176,30 @@ const useStyles = makeStyles((theme) => ({
             <IconButton onClick={handleDrawerClose} >
               <ChevronLeftIcon/>
             </IconButton>
-          </div>
-          <List>{mainListItems}</List>          
+          </div>          
+
+          <ListItem button onClick={()=>setComponent('editProfile')} >
+            <ListItemIcon>        
+              <AccountBoxIcon style={{ color: "#3D5A80" }} />
+            </ListItemIcon>
+            <ListItemText  primary="حساب کاربری "  />
+          </ListItem>
+
+          <ListItem button>
+            <ListItemIcon>
+            <LibraryBooksIcon style={{ color: "#3D5A80" }} />
+            </ListItemIcon>
+            <ListItemText dir="rtl" style={{fontFamily: 'Vazir'}} primary="بانک سوال" />
+          </ListItem>   
+
+          <ListItem button onClick ={()=> setComponent('logout')} >
+            <ListItemIcon>
+              <ExitToAppIcon style={{ color: "#3D5A80" }} />        
+            </ListItemIcon>  
+            <ListItemText style={{fontFamily: 'Vazir'}} primary="خروج" />
+          </ListItem> 
+
+          {/* <List>{mainListItems}</List>           */}
           {/* <Divider /> */}
           {/* <List>{secondaryListItems}</List> */}
         </Drawer>
@@ -195,12 +208,16 @@ const useStyles = makeStyles((theme) => ({
           <Container maxWidth="lg" className={classes.container}>
             {/* <Grid container spacing={3}>              
               <Grid item xs={12}>                                */}
-                <VerticalTabs />                                                    
+              {
+                component === 'editProfile' ?
+                <VerticalTabs />
+                :
+                // component == 'logout' ?                
+                <LogOutDialog/> // logout dialog                
+                // question Bank
+              }                                                           
               {/* </Grid>              
-            </Grid> */}
-            <Box pt={4}>
-              <Copyright />
-            </Box>
+            </Grid> */}            
           </Container>
         </main>
       </div>
