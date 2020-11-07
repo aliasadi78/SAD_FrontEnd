@@ -38,7 +38,8 @@ class ClassesPage extends Component{
             return window.location.href = "/NewClassPage" ;
       };
       const btnJoinClass = () => {
-            return window.location.href = "/ClassesPage" ;
+        //jaye Dialog box 
+            // return window.location.href = "/ClassesPage" ;
       };
         return(
           <div>

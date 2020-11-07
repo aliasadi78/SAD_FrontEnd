@@ -12,8 +12,9 @@ class App extends Component {
 
     render() {
         return (            
-            <div className={classes.App}>                
-                <Link to="/"> </Link>
+            <div className={classes.App}>        
+            <ClassesPage />        
+                {/* <Link to="/"> </Link>
                 <Link to="/signIn"> </Link>
                 <Link to="/signUp"> </Link>
                 <Link to="/profile/edit" ></Link>
@@ -22,7 +23,7 @@ class App extends Component {
                 <Route path="/signUp" component={SignUp}/>
                 <Route path="/profile/edit" component = {DashboardEditProfile} />
                 <Route path="/ClassesPage" component = {ClassesPage} />
-                <Route path="/NewClassPage" component = {NewClassPage} />
+                <Route path="/NewClassPage" component = {NewClassPage} /> */}
             </div>
 
         );
