@@ -42,7 +42,7 @@ class ClassesPage extends Component{
             // return window.location.href = "/ClassesPage" ;
       };
         return(
-          <div>
+          <div> {/*
           <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)} dir="rtl" >
           <Toolbar className={classes.toolbar}>
             <IconButton
@@ -90,32 +90,14 @@ class ClassesPage extends Component{
               <ChevronLeftIcon/>
             </IconButton>
           </div>
-          <List>{mainListItems}</List>          
-          {/* <Divider /> */}
-          {/* <List>{secondaryListItems}</List> */}
+          <List>{mainListItems}</List>                    
         </Drawer>
-            <Container  component="main" maxWidth="md" style={{fontFamily: 'Vazir',marginTop: '7%'}}>
+            
+        <Container  component="main" maxWidth="md" style={{fontFamily: 'Vazir',marginTop: '7%'}}> */}
                 <CssBaseline />
                 <Material_RTL>
                     <M_RTL>
-                      <div className={classes.paper}>
-                        {/* <Button 
-                        className={classes.button}
-                        onClick={btnCreateClass}
-                        variant="contained"
-                        size="large"
-                        style={{fontFamily: 'Vazir',margin: '0 0 0 0',width: '25%',height: '50px'}}>
-                            ایجاد کلاس
-                        </Button>
-                        <Button 
-                        className={classes.button}
-                        onClick={btnJoinClass}
-                        variant="contained"
-                        size="large"
-                        style={{fontFamily: 'Vazir',margin: '0 5% 0 0',width: '25%',height: '50px'}}>
-                            ورود به کلاس
-                        </Button>
-                        <br/> */}
+                      <div className={classes.paper}>                        
                         <h3 style={{fontFamily: 'Vazir'}} >لیست کلاس ها</h3>
                           <hr/>
                           <div style={{fontFamily: 'Vazir'}}>
@@ -186,7 +168,7 @@ class ClassesPage extends Component{
                         </div>
                     </M_RTL>
                 </Material_RTL>
-            </Container>
+            {/* </Container> */}
             </div>
         );
     }

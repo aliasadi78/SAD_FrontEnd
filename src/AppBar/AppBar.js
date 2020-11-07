@@ -20,19 +20,18 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import VerticalTabs from './../Component/TabMenuEditProfile' ;
 import Button from '@material-ui/core/Button';
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import NewClassDialog from '../Pages/NewClassPage' ;
+import ClassesPage from '../Pages/ClassesPage' ;
+import JoinClassDialog from '../Pages/JoinClass' ;
+// ------------------------
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import ClassIcon from '@material-ui/icons/Class';
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
@@ -69,6 +68,9 @@ const useStyles = makeStyles((theme) => ({
       marginRight: 0,      
     },
     menuButtonHidden: {
+      display: 'none',
+    },
+    notDialog : {      
       display: 'none',
     },
     title: {
@@ -126,24 +128,23 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-  export default function DashboardEditProfile() {
+export default function DashboardEditProfile() {
+
+    const [component , setComponent] = React.useState('editProfile');
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [currentComponent , setCurrentComponent] = React.useState(false);
+
     const handleDrawerOpen = () => {
       setOpen(true);
     };
+
     const handleDrawerClose = () => {
       setOpen(false);
     };
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-    
-    const btnCreateClass = () => {
-      return window.location.href = "/NewClassPage" ;
-};
-const btnJoinClass = () => {
-  //jaye Dialog box 
-      // return window.location.href = "/ClassesPage" ;
-};
+
+    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);    
+  
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -164,14 +165,21 @@ const btnJoinClass = () => {
             <Button variant="contained" color="#98C1D9"
               style={{fontFamily: 'Vazir'}}
               className = {classes.button}
-              onClick={btnCreateClass}>
+              onClick={() => {                
+                setCurrentComponent(component);
+                setComponent('newClassDialog');
+              }} >
               ایجاد کلاس
             </Button>
             
             <Button variant="contained" color="#98C1D9"
               style={{fontFamily: 'Vazir'}}
               className = {classes.button}
-              onClick={btnJoinClass}>
+              onClick={()=>{                
+                setCurrentComponent(component);
+                setComponent('joinClassDialog');
+              }}
+              >
               ورود به کلاس 
             </Button>
 
@@ -195,23 +203,77 @@ const btnJoinClass = () => {
               <ChevronLeftIcon/>
             </IconButton>
           </div>
-          <List>{mainListItems}</List>          
-          {/* <Divider /> */}
-          {/* <List>{secondaryListItems}</List> */}
+          {/* <List>{mainListItems}</List>           */}
+          <ListItem button onClick={() => setComponent('editProfile')}>
+            <ListItemIcon>        
+              <AccountBoxIcon style={{ color: "#3D5A80" }} />
+            </ListItemIcon>
+            <ListItemText  primary="حساب کاربری "  />
+          </ListItem>
+          <ListItem button  onClick={() => setComponent('questionBank')}>
+            <ListItemIcon>
+            <LibraryBooksIcon style={{ color: "#3D5A80" }} />
+            </ListItemIcon>
+            <ListItemText style={{fontFamily: 'Vazir'}} primary="بانک سوال" />
+          </ListItem>
+          <ListItem button  onClick={() => setComponent('classesPage')}>
+            <ListItemIcon>
+            <ClassIcon style={{ color: "#3D5A80" }} />
+            </ListItemIcon>
+            <ListItemText  style={{fontFamily: 'Vazir'}} primary="کلاس ها" />
+          </ListItem>    
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
-            {/* <Grid container spacing={3}>              
-              <Grid item xs={12}>                                */}
-                <VerticalTabs />                                                    
-              {/* </Grid>              
-            </Grid> */}
-            <Box pt={4}>
-              <Copyright />
-            </Box>
+            {
+              component === 'editProfile' ?
+              <VerticalTabs />
+              :
+              component === 'questionBank' ?
+              <VerticalTabs /> // replace it with question bank
+              :
+              component === 'classesPage'?
+              <ClassesPage />
+              :
+              component === 'newClassDialog' ?              
+              <SetComponent component = {currentComponent} dialog = "newClass" />
+              :
+              component === 'joinClassDialog'?
+              <JoinClassDialog />
+              :
+              <VerticalTabs />              
+            }
+            
           </Container>
         </main>
       </div>
     );
   }
+
+function SetComponent  (props){
+  const component = props.component ;    
+  const dialog = props.dialog ;
+  return (              
+    <div>
+      {
+        dialog === "newClass" ?
+        <NewClassDialog />
+        :
+        <JoinClassDialog />
+      }      
+      {
+        component === 'editProfile' ?
+        <VerticalTabs />
+        :
+        component === 'questionBank' ?
+        <VerticalTabs /> // replace it with question bank
+        :
+        component === 'classesPage'?
+        <ClassesPage />
+        :
+        <VerticalTabs />  
+      }   
+    </div>
+  );
+}

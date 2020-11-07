@@ -13,7 +13,7 @@ class App extends Component {
     render() {
         return (            
             <div className={classes.App}>        
-            <ClassesPage />        
+            <DashboardEditProfile />        
                 {/* <Link to="/"> </Link>
                 <Link to="/signIn"> </Link>
                 <Link to="/signUp"> </Link>
