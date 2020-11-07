@@ -12,10 +12,12 @@ import ClassIcon from '@material-ui/icons/Class';
 const handelClickClasses = () =>{
   return window.location.href = "/ClassesPage" ;
 }
-
+const handelClickUser = () =>{
+  return window.location.href = "/profile/edit" ;
+}
 export const mainListItems = (
   <div>
-    <ListItem button >
+    <ListItem button onClick={handelClickUser}>
       <ListItemIcon>        
         <AccountBoxIcon style={{ color: "#3D5A80" }} />
       </ListItemIcon>

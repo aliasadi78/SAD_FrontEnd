@@ -36,7 +36,8 @@ class ClassesPage extends Component{
             return window.location.href = "/NewClassPage" ;
       };
       const btnJoinClass = () => {
-            return window.location.href = "/ClassesPage" ;
+        //jaye Dialog box 
+            // return window.location.href = "/ClassesPage" ;
       };
         return(
           <div>
@@ -54,17 +55,19 @@ class ClassesPage extends Component{
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>                          
             </Typography>
 
-            {/* <Button variant="contained" color="#98C1D9"
-              style={{fontFamily: 'Vazir'}}
-              className = {classes.button}>
+            <Button variant="contained" color="#98C1D9"
+              style={{fontFamily: 'Vazir',right: '80%'}}
+              className = {classes.button}
+              onClick={btnCreateClass}>
               ایجاد کلاس
             </Button>
             
             <Button variant="contained" color="#98C1D9"
-              style={{fontFamily: 'Vazir'}}
-              className = {classes.button}>
+              style={{fontFamily: 'Vazir',right: '80%'}}
+              className = {classes.button}
+              onClick={btnJoinClass}>
               ورود به کلاس 
-            </Button> */}
+            </Button>
 
           </Toolbar>
         </AppBar>
@@ -95,7 +98,7 @@ class ClassesPage extends Component{
                 <Material_RTL>
                     <M_RTL>
                       <div className={classes.paper}>
-                        <Button 
+                        {/* <Button 
                         className={classes.button}
                         onClick={btnCreateClass}
                         variant="contained"
@@ -110,8 +113,8 @@ class ClassesPage extends Component{
                         size="large"
                         style={{fontFamily: 'Vazir',margin: '0 5% 0 0',width: '25%',height: '50px'}}>
                             ورود به کلاس
-                        </Button>
-                        <br/>
+                        </Button> */}
+                        {/* <br/> */}
                         <h3 style={{fontFamily: 'Vazir'}}>لیست کلاس ها</h3>
                         <hr/>
                         <div style={{fontFamily: 'Vazir'}}>
@@ -272,8 +275,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button : {
     marginRight : theme.spacing(2) ,       
-    // backgroundColor : '#98C1D9' ,
-    backgroundColor : '#0e918c',
+    backgroundColor : '#98C1D9' ,
     "&:hover": {
       backgroundColor: '#EE6C4D' ,
       color : 'white' , 
@@ -313,7 +315,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: '#f5f5f5',
       padding: '20px',
       borderRadius: '10px',
-      opacity: '95%'
+      // opacity: '95%'
   },
 }));
 export default () => {

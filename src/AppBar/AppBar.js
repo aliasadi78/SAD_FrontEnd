@@ -136,7 +136,14 @@ const useStyles = makeStyles((theme) => ({
       setOpen(false);
     };
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  
+    
+    const btnCreateClass = () => {
+      return window.location.href = "/NewClassPage" ;
+};
+const btnJoinClass = () => {
+  //jaye Dialog box 
+      // return window.location.href = "/ClassesPage" ;
+};
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -156,13 +163,15 @@ const useStyles = makeStyles((theme) => ({
 
             <Button variant="contained" color="#98C1D9"
               style={{fontFamily: 'Vazir'}}
-              className = {classes.button}>
+              className = {classes.button}
+              onClick={btnCreateClass}>
               ایجاد کلاس
             </Button>
             
             <Button variant="contained" color="#98C1D9"
               style={{fontFamily: 'Vazir'}}
-              className = {classes.button}>
+              className = {classes.button}
+              onClick={btnJoinClass}>
               ورود به کلاس 
             </Button>
 
