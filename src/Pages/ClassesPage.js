@@ -19,6 +19,8 @@ import List from '@material-ui/core/List';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
+import { shadows } from '@material-ui/system';
+
 
 class ClassesPage extends Component{
     render(){
@@ -40,7 +42,7 @@ class ClassesPage extends Component{
       };
         return(
           <div>
-                    <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)} dir="rtl" >
+          <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)} dir="rtl" >
           <Toolbar className={classes.toolbar}>
             <IconButton
               edge="start"
@@ -51,12 +53,13 @@ class ClassesPage extends Component{
             >
               <MenuIcon />
             </IconButton>
-            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>                          
+            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.ToolbarSpace}>                          
             </Typography>
 
-            {/* <Button variant="contained" color="#98C1D9"
+            <Button variant="contained" color="#98C1D9"
               style={{fontFamily: 'Vazir'}}
-              className = {classes.button}>
+              className = {classes.button}
+              onClick={btnCreateClass}>
               ایجاد کلاس
             </Button>
             
@@ -64,7 +67,7 @@ class ClassesPage extends Component{
               style={{fontFamily: 'Vazir'}}
               className = {classes.button}>
               ورود به کلاس 
-            </Button> */}
+            </Button>
 
           </Toolbar>
         </AppBar>
@@ -95,7 +98,7 @@ class ClassesPage extends Component{
                 <Material_RTL>
                     <M_RTL>
                       <div className={classes.paper}>
-                        <Button 
+                        {/* <Button 
                         className={classes.button}
                         onClick={btnCreateClass}
                         variant="contained"
@@ -111,74 +114,74 @@ class ClassesPage extends Component{
                         style={{fontFamily: 'Vazir',margin: '0 5% 0 0',width: '25%',height: '50px'}}>
                             ورود به کلاس
                         </Button>
-                        <br/>
-                        <h3 style={{fontFamily: 'Vazir'}}>لیست کلاس ها</h3>
-                        <hr/>
-                        <div style={{fontFamily: 'Vazir'}}>
-                        <Card className={classes.card} variant="outlined" >
-                            <CardContent>
-                              <Typography
-                                variant="h5" 
-                                component="h4"
-                                className={classes.title}
-                                color="black"
-                                gutterBottom
-                              > 
-                                ریاضی دهم
-                              </Typography>
-                              <Typography 
-                              className={classes.pos} 
-                              color="black">
-                                نام دبیر: صفاری
-                              </Typography>
-                            </CardContent>
-                            <CardActions>
-                              <Button variant="contained" size="small" className={classes.btn}>ورود به کلاس</Button>
-                            </CardActions>
-                        </Card>
-                        <Card className={classes.card} variant="outlined">
-                            <CardContent>
-                              <Typography
-                                variant="h5" 
-                                component="h4"
-                                className={classes.title}
-                                color="black"
-                                gutterBottom
-                              >
-                                فیزیک دهم
-                              </Typography>
-                              <Typography 
-                              className={classes.pos} 
-                              color="black">
-                                نام دبیر: امانی
-                              </Typography>
-                            </CardContent>
-                            <CardActions>
-                              <Button variant="contained" size="small" className={classes.btn}>ورود به کلاس</Button>
-                            </CardActions>
-                        </Card>
-                        <Card className={classes.card} variant="outlined" >
-                            <CardContent>
-                              <Typography
-                                variant="h5" 
-                                component="h4"
-                                className={classes.title}
-                                color="black"
-                                gutterBottom
-                              >
-                                شیمی دهم
-                              </Typography>
-                              <Typography 
-                              className={classes.pos} 
-                              color="black">
-                                نام دبیر: صنیعی
-                              </Typography>
-                            </CardContent>
-                            <CardActions>
-                              <Button variant="contained"  size="small" className={classes.btn}>ورود به کلاس</Button>
-                            </CardActions>
-                        </Card>
-                        </div>
+                        <br/> */}
+                        <h3 style={{fontFamily: 'Vazir'}} >لیست کلاس ها</h3>
+                          <hr/>
+                          <div style={{fontFamily: 'Vazir'}}>
+                            <Card className={classes.card} variant="outlined" >
+                                <CardContent>
+                                  <Typography
+                                    variant="h5" 
+                                    component="h4"
+                                    className={classes.title}
+                                    color="black"
+                                    gutterBottom
+                                  > 
+                                    ریاضی دهم
+                                  </Typography>
+                                  <Typography 
+                                  className={classes.pos} 
+                                  color="black">
+                                    نام دبیر: صفاری
+                                  </Typography>
+                                </CardContent>
+                                <CardActions>
+                                  <Button variant="contained" size="small" className={classes.btn}>ورود به کلاس</Button>
+                                </CardActions>
+                            </Card>
+                            <Card className={classes.card} variant="outlined">
+                                <CardContent>
+                                  <Typography
+                                    variant="h5" 
+                                    component="h4"
+                                    className={classes.title}
+                                    color="black"
+                                    gutterBottom
+                                  >
+                                    فیزیک دهم
+                                  </Typography>
+                                  <Typography 
+                                  className={classes.pos} 
+                                  color="black">
+                                    نام دبیر: امانی
+                                  </Typography>
+                                </CardContent>
+                                <CardActions>
+                                  <Button variant="contained" size="small" className={classes.btn}>ورود به کلاس</Button>
+                                </CardActions>
+                            </Card>
+                            <Card className={classes.card} variant="outlined" >
+                                <CardContent>
+                                  <Typography
+                                    variant="h5" 
+                                    component="h4"
+                                    className={classes.title}
+                                    color="black"
+                                    gutterBottom
+                                  >
+                                    شیمی دهم
+                                  </Typography>
+                                  <Typography 
+                                  className={classes.pos} 
+                                  color="black">
+                                    نام دبیر: صنیعی
+                                  </Typography>
+                                </CardContent>
+                                <CardActions>
+                                  <Button variant="contained"  size="small" className={classes.btn}>ورود به کلاس</Button>
+                                </CardActions>
+                            </Card>
+                          </div>
                         </div>
                     </M_RTL>
                 </Material_RTL>
@@ -225,13 +228,13 @@ const useStyles = makeStyles((theme) => ({
   menuButtonHidden: {
     display: 'none',
   },
-  title: {
-    flexGrow: 1,
+  ToolbarSpace :{
+     flexGrow: 1,
   },
   drawerPaper: {
     // position: 'relative',
     whiteSpace: 'nowrap',
-    width: drawerWidth,
+    width: drawerWidth,  
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -272,8 +275,8 @@ const useStyles = makeStyles((theme) => ({
   },
   button : {
     marginRight : theme.spacing(2) ,       
-    // backgroundColor : '#98C1D9' ,
-    backgroundColor : '#0e918c',
+    backgroundColor : '#98C1D9' ,
+    // backgroundColor : '#0e918c',
     "&:hover": {
       backgroundColor: '#EE6C4D' ,
       color : 'white' , 
@@ -281,9 +284,14 @@ const useStyles = makeStyles((theme) => ({
   },
     card:{
         fontFamily: 'Vazir',
-        width: '25%',
+        width: '25%',        
         display: 'inline-block',
-        margin: '2%',
+        margin: '2%',                
+        boxShadow: '0 2px 1px 1px rgba(204, 204, 204, .6)',
+        "&:hover": {          
+          boxShadow: '0 5px 3px 3px rgba(204, 204, 204, .6)',
+        },       
+        // backgroundColor : '#E0FBFC',
     },
     bullet: {
       display: 'inline-block',
@@ -296,6 +304,11 @@ const useStyles = makeStyles((theme) => ({
     },
     btn:{
         fontFamily: 'Vazir',
+        backgroundColor : '#0e918c' ,
+        "&:hover": {
+          backgroundColor: '#EE6C4D' ,
+          color : 'white' , 
+        },          
     },
     pos: {
       marginBottom: 12,
@@ -308,12 +321,12 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(1),
       // display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
-      color: 'black',
-      backgroundColor: '#f5f5f5',
-      padding: '20px',
-      borderRadius: '10px',
-      opacity: '95%'
+      alignItems: 'center',      
+      color : '#3D5A80' , 
+      backgroundColor: 'white',
+      padding: '10px',
+      borderRadius: '10px',      
+      opacity: '95%' ,       
   },
 }));
 export default () => {
