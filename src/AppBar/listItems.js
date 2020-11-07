@@ -6,6 +6,12 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import ClassIcon from '@material-ui/icons/Class';
+
+
+const handelClickClasses = () =>{
+  return window.location.href = "/ClassesPage" ;
+}
 
 export const mainListItems = (
   <div>
@@ -20,7 +26,13 @@ export const mainListItems = (
       <LibraryBooksIcon style={{ color: "#3D5A80" }} />
       </ListItemIcon>
       <ListItemText style={{fontFamily: 'Vazir'}} primary="بانک سوال" />
-    </ListItem>    
+    </ListItem>
+    <ListItem button onClick={handelClickClasses}>
+      <ListItemIcon>
+      <ClassIcon style={{ color: "#3D5A80" }} />
+      </ListItemIcon>
+      <ListItemText  style={{fontFamily: 'Vazir'}} primary="کلاس ها" />
+    </ListItem>      
   </div>
 );
 
