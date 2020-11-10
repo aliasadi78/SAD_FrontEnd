@@ -6,6 +6,7 @@ export default function NewQuestion(props) {
     return (
         <Question 
             submitButton="طرح"
+            backColor = '#087E8B'
         />
     );  
 }

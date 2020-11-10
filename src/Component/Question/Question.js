@@ -1,11 +1,14 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { LightenDarkenColor } from 'lighten-darken-color'; 
 import Paper from '@material-ui/core/Paper';
 import Material_RTL from "../Material_RTL";
 import Typography from '@material-ui/core/Typography';
 import RTL from '../M_RTL';
 import Grid from '@material-ui/core/Grid';
+import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import AccordionActions from '@material-ui/core/AccordionActions';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -20,20 +23,41 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
+import { createMuiTheme } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
+import FormGroup from '@material-ui/core/FormGroup';
+
+const theme = createMuiTheme({
+  palette: {
+    primary:{
+        main :  '#3D5A80',
+    }, 
+    secondary :{
+        main: '#EE6C4D' ,
+    }, 
+  },  
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginTop : theme.spacing(0) ,
+    // marginTop : theme.spacing(5) ,
+    width : '100%'
+  },
+  RadioChoice :{
+    
   },
   paper: {
     padding: theme.spacing(1),    
     textAlign: 'center',
     color: theme.palette.text.secondary,
+    borderRadius : '0px' ,
   },
   dropdownpaper :{
     textAlign: 'center',
     color: theme.palette.text.secondary,
+    marginBottom : theme.spacing(3) , 
   },
   grid :{
     alignItems : 'flex-end' ,
@@ -44,9 +68,6 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: 'none',
   },
-  accordion :{
-    backgroundColor : '#98C1D9' ,
-  },
   BigForm :{},
   details :{},
   dropdowns : {
@@ -56,15 +77,15 @@ const useStyles = makeStyles((theme) => ({
   Button :{
       backgroundColor :'#EE6C4D' ,
       "&:hover": {
-        backgroundColor: '#00C853' ,
+        backgroundColor: LightenDarkenColor('#EE6C4D', -40) ,        
         color :'white'
       },
   },
   checkbox : {
-      color : 'white' ,      
-      '&$checked': {
-        color: '#EE6C4D',
-      },
+      color : '#EE6C4D' ,            
+  },
+  multiCheckbox : {
+    color : '#3D5A80' ,            
   },
 }));
 
@@ -106,6 +127,13 @@ export default function Question(props) {
     const [publicCheck , setpublicCheck ] = React.useState(false);
     const [difficulty , setDifficulty] = React.useState(1);
     const [questionType , setQuestionType] = React.useState('tashrihi');
+    
+    const [choice1 , setChoice1] = React.useState(false);
+    const [choice2 , setChoice2] = React.useState(false);
+    const [choice3 , setChoice3] = React.useState(false);
+    const [choice4 , setChoice4] = React.useState(false);
+
+    const[TestAnswer , setTestAnswer] = React.useState(null);    
 
     const handleChange = () => {
         setpublicCheck(!publicCheck);
@@ -114,24 +142,34 @@ export default function Question(props) {
     const handleQuestionTypeFormChange = e => {
         if(e.target.value == 'تستی')
         {
-            setQuestionType('testi');            
+            // setQuestionType('testi');            
+            return 'testi' ;
         }        
-        else{
-            setQuestionType('tashrihi');            
-        }            
+        else if(e.target.value=='تشریحی'){
+            // setQuestionType('tashrihi');            
+            return 'tashrihi' ; 
+        }else {
+            // setQuestionType('multichoice');
+            return 'multichoice' ;
+        }
     };
 
     return (
         <React.Fragment>
         <CssBaseline />
-        <Container maxWidth="sm" className = {classes.root}>
+        <Container maxWidth="lg" className = {classes.root}>            
             <Material_RTL>
                 <RTL>
-                    <Accordion className={classes.accordion}>
+                    <Accordion square
+                    style={{backgroundColor: props.backColor }}
+                    expanded = {props.alwaysExpand}
+                    >
                         <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            // expandIcon={<ExpandMoreIcon style={{ color: "white" }}/>}
                             aria-controls="panel1c-content"
-                            id="panel1c-header">
+                            id="panel1c-header"
+                            className = {classes.accordion}
+                            >                            
                             <Grid container spacing={3}>                                
                                 <Grid item xs={12}>
                                     <Paper className={classes.paper}>
@@ -146,76 +184,86 @@ export default function Question(props) {
                                             variant="outlined"
                                         />
                                     </Paper>
-                                </Grid>
-                            </Grid>
+                                </Grid>                            
+                            </Grid>                            
                         </AccordionSummary>
                         <AccordionDetails className = {classes.details}>
-                                <Grid container spacing={3}>                 
-                                <Grid item xs={4}>
-                                    <Paper className={classes.dropdownpaper}>
-                                        <Autocomplete
-                                            id="پایه"
-                                            options={grades}
-                                            getOptionLabel={(option) => option.title}
-                                            className = {classes.dropdowns}                                    
-                                            debug
-                                            renderInput={(params) => <TextField margin ='dense' {...params} label="پایه"    
-                                            />}
-                                        />
-                                    </Paper>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <Paper className={classes.dropdownpaper}>                                    
-                                        <Autocomplete
-                                            id="درس"
-                                            options={lessons}
-                                            getOptionLabel={(lessons) => lessons.title}
-                                            className = {classes.dropdowns}                                    
-                                            debug
-                                            renderInput={(params) => <TextField margin='dense' {...params} label="درس"    
-                                            />}
-                                        />                                    
-                                    </Paper>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <Paper className={classes.dropdownpaper}>
-                                        <TextField className = {classes.dropdowns} margin ='dense' label="فصل"/>
-                                    </Paper>
-                                </Grid>                                
-                                <Grid item xs={4}>                                    
-                                    <Paper className={classes.dropdownpaper}>                                    
-                                        <Autocomplete
-                                            id="درس"
-                                            options={questionTypes}
-                                            getOptionLabel={(questionTypes) => questionTypes.title}
-                                            className = {classes.dropdowns}                                    
-                                            debug
-                                            renderInput={(params) => <TextField margin='dense' {...params} label="نوع سوال"    
-                                            onChange = {handleQuestionTypeFormChange}
-                                            />}
-                                        />                                    
-                                    </Paper>                                    
-                                </Grid>
+                            <Paper className={classes.dropdownpaper}>
+                                <Grid container spacing={3} >                 
 
-                                <Grid item xs={6}>
-                                    <Paper className={classes.paper}>
-                                        <Typography id="discrete-slider" gutterBottom style = {{fontFamily: 'Vazir'}} >
-                                            درجه سختی سوال  {valuetext(difficulty)}
-                                        </Typography>
-                                        <Slider
-                                            dir = "rtl"
-                                            defaultValue={1}
-                                            getAriaValueText={valuetext}
-                                            aria-labelledby="discrete-slider"
-                                            valueLabelDisplay="auto"                                            
-                                            step={1}
-                                            marks
-                                            min={1}
-                                            max={3}
-                                        />
-                                    </Paper>
-                                </Grid>                                
+                                    <Grid item xs={4}>
+                                            <Autocomplete
+                                                id="پایه"
+                                                options={grades}
+                                                getOptionLabel={(option) => option.title}
+                                                className = {classes.dropdowns}                                    
+                                                debug                                            
+                                                renderInput={(params) => <TextField variant = 'outlined' margin ='dense' {...params} label="پایه"    
+                                                />}
+                                            />                                        
+                                    </Grid>
+                                    <Grid item xs={4}>                                        
+                                            <Autocomplete
+                                                id="درس"
+                                                options={lessons}
+                                                getOptionLabel={(lessons) => lessons.title}
+                                                className = {classes.dropdowns}                                    
+                                                debug                                            
+                                                renderInput={(params) => <TextField variant = 'outlined' margin='dense' {...params} label="درس"    
+                                                />}
+                                            />                                                                            
+                                    </Grid>
+                                    <Grid item xs={4}>                                        
+                                            <TextField className = {classes.dropdowns} variant = 'outlined' margin ='dense' label="فصل"/>                                        
+                                    </Grid>   
+                                </Grid>                             
+                            </Paper>
+                            <Paper className={classes.dropdownpaper}>                                    
+                                <Grid container spacing = {3}>
+                                    <Grid item xs={4}>                                                                            
+                                            <Autocomplete                                                
+                                                options={questionTypes}
+                                                getOptionLabel={(questionTypes) => questionTypes.title}
+                                                className = {classes.dropdowns}                                    
+                                                debug                                                
+                                                renderInput={(params) => <TextField margin='dense' variant="outlined" {...params} label="نوع سوال"    
+                                                onChange = {(e)=> setQuestionType(valuetext(e.target.value))}
+                                                />}
+                                            />                                                                            
+                                    </Grid>
 
+                                    <Grid item xs={6}>                                        
+                                            <Typography id="discrete-slider" gutterBottom style = {{fontFamily: 'Vazir'}} >
+                                                درجه سختی سوال :  {valuetext(difficulty)}
+                                            </Typography>
+                                            <ThemeProvider theme = {theme}>
+                                                <Slider
+                                                    dir = "rtl"
+                                                    defaultValue={1}
+                                                    getAriaValueText={valuetext}
+                                                    aria-labelledby="discrete-slider"
+                                                    // valueLabelDisplay="auto"     
+                                                    onChange ={(e)=>setDifficulty(e.target.value)}                                       
+                                                    step={1}
+                                                    color = "secondary"
+                                                    marks
+                                                    style={{color:'#3D5A80'}}
+                                                    min={1}
+                                                    max={3}
+                                                />                             
+                                            </ThemeProvider>           
+                                    </Grid>                         
+                                    <Grid item xs = {2}>
+                                        <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
+                                        <label htmlFor="icon-button-file">
+                                            <IconButton aria-label="upload picture" component="span">
+                                            <PhotoLibraryIcon style={{color:'#EE6C4D'}} />
+                                            </IconButton>
+                                        </label>    
+                                    </Grid>       
+                                </Grid>
+                            </Paper>
+                            <Grid container spacing = {3}>
                                 <Grid item xs={12}>     
                                     <Paper className={classes.paper}>
                                         {
@@ -229,17 +277,54 @@ export default function Question(props) {
                                                 className = {classes.BigForm}
                                                 // defaultValue="Default Value"
                                                 variant="outlined"
-                                                /> 
-                                            :
-                                            // questionType === 'testi' ?
+                                                />   
+                                            :                                          
+                                            questionType === 'testi' ?
                                                 <FormControl component="fieldset">                                                    
-                                                    <RadioGroup aria-label="gender" name="gender1" onChange={handleChange}>
-                                                        <FormControlLabel value="female" control={<Radio />} label="Female" />
-                                                        <FormControlLabel value="male" control={<Radio />} label="Male" />
-                                                        <FormControlLabel value="other" control={<Radio />} label="Other" />
-                                                        <FormControlLabel value="disabled" disabled control={<Radio />} label="(Disabled option)" />
+                                                    <RadioGroup aria-label="gender"  className = {classes.RadioChoice} name="gender1" onChange={(e) => setTestAnswer(e.target.value)}>
+                                                        <form class ="form-inline">
+                                                            <FormControlLabel value="g1" control={<Radio />} /> <TextField variant="filled" margin='dense' />
+                                                        </form>       
+
+                                                        <form class ="form-inline">
+                                                            <FormControlLabel value="g2" control={<Radio />} /> <TextField variant="filled" margin='dense' />
+                                                        </form>       
+
+                                                        <form class ="form-inline">
+                                                            <FormControlLabel value="g3" control={<Radio />} /> <TextField variant="filled" margin='dense' />
+                                                        </form>       
+
+                                                        <form class ="form-inline">
+                                                            <FormControlLabel value="g4" control={<Radio />} /> <TextField variant="filled" margin='dense' />
+                                                        </form>                                                        
                                                     </RadioGroup>
                                                 </FormControl>
+                                            :
+                                                <FormGroup>
+                                                    <form class="form-inline">
+                                                        <Checkbox checked={choice1} onChange={()=>(setChoice1(!choice1))} name="gilad" 
+                                                            className ={classes.multiCheckbox} color='#3D5A80' /> 
+                                                            <TextField variant="filled" margin='dense' />
+                                                    </form>
+                                                    
+                                                    <form class="form-inline">
+                                                        <Checkbox checked={choice2} onChange={()=>(setChoice2(!choice2))} name="gilad" 
+                                                            className ={classes.multiCheckbox} color='#3D5A80' /> 
+                                                            <TextField variant="filled" margin='dense' />
+                                                    </form>
+
+                                                    <form class="form-inline">
+                                                        <Checkbox checked={choice3} onChange={()=>(setChoice3(!choice3))} name="gilad" 
+                                                            className ={classes.multiCheckbox} color='#3D5A80' /> 
+                                                            <TextField variant="filled" margin='dense' />
+                                                    </form>
+
+                                                    <form class="form-inline">
+                                                        <Checkbox checked={choice4} onChange={()=>(setChoice4(!choice4))} name="gilad" 
+                                                            className ={classes.multiCheckbox} color='#3D5A80' /> 
+                                                            <TextField variant="filled" margin='dense' />
+                                                    </form>                                                    
+                                                </FormGroup>
 
                                         }                                                                           
                                     </Paper>
@@ -255,17 +340,21 @@ export default function Question(props) {
                                 <Grid item xs={8} className = {classes.grid} >                                    
                                     <FormControlLabel                                        
                                         control={<Checkbox checked={publicCheck} onChange={handleChange}
-                                            className ={classes.checkbox} name="checkedG" />}
-                                        label="سوالم برای بقیه کاربران قابل دسترس باشد."
-                                        style = {{fontFamily: 'Vazir'}}
+                                            className ={classes.checkbox} color='#EE6C4D' />}
+                                        label="سوالم برای بقیه کاربران در دسترس باشد."
+                                        style = {{fontFamily: 'Vazir' , color : 'white'}}
                                     />                                    
                                 </Grid>
                             </Grid>
-                        </AccordionDetails>
+                        </AccordionDetails>                        
                     </Accordion> 
                     </RTL>
-                </Material_RTL>
+                </Material_RTL>                
             </Container>
         </React.Fragment>
     );  
+}
+
+function AddQuestion (){
+
 }

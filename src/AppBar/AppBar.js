@@ -31,7 +31,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',            
+      display: 'flex',                
     },
     toolbar: {
       paddingRight: 7, // keep right padding when drawer closed            
@@ -50,7 +50,8 @@ const useStyles = makeStyles((theme) => ({
         duration: theme.transitions.duration.leavingScreen,
       }),      
       backgroundColor : '#3D5A80' ,      
-      height : '52px' ,         
+      height : '52px' ,               
+      justifyContent : 'center'
     },
     appBarShift: {
       marginRight : drawerWidth,
@@ -102,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
 
     },
     container: {
-      paddingTop: theme.spacing(4),
+      paddingTop: theme.spacing(0),
       paddingBottom: theme.spacing(4),            
     },    
     fixedHeight: {
@@ -127,11 +128,11 @@ const useStyles = makeStyles((theme) => ({
       setopenUserDrawerMethod(!openUserDrawerMethod);
     };
     const handleDrawerOpen = () => {
-      setOpen(true);
-      setopenUserDrawerMethod(false);
+      setOpen(true);      
     };
     const handleDrawerClose = () => {
       setOpen(false);
+      setopenUserDrawerMethod(false);
     };
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   
