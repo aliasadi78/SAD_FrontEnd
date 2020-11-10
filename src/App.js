@@ -8,22 +8,23 @@ import VerticalTabs from './Component/TabMenuEditProfile';
 import DashboardEditProfile from './AppBar/AppBar';
 
 import NewQuestion from './Component/Question/NewQuestion' ;
+import Questions from './Component/Question/Questions';
 
 class App extends Component {
 
     render() {
         return (    
-            <NewQuestion />        
-            // <div className={classes.App}>                
-            //     <Link to="/"> </Link>
-            //     <Link to="/signIn"> </Link>
-            //     <Link to="/signUp"> </Link>
-            //     <Link to="/profile/edit" ></Link>
-            //     <Route path="/" exact component={SignIn}/>
-            //     <Route path="/signIn" exact component={SignIn}/>
-            //     <Route path="/signUp" component={SignUp}/>
-            //     <Route path="/profile/edit" component = {DashboardEditProfile} />
-            // </div>
+            // <Questions />
+            <div className={classes.App}>                
+                <Link to="/"> </Link>
+                <Link to="/signIn"> </Link>
+                <Link to="/signUp"> </Link>
+                <Link to="/profile/edit" ></Link>
+                <Route path="/" exact component={SignIn}/>
+                <Route path="/signIn" exact component={SignIn}/>
+                <Route path="/signUp" component={SignUp}/>
+                <Route path="/profile/edit" component = {DashboardEditProfile} />
+            </div>
 
         );
     }

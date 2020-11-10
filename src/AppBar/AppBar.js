@@ -128,6 +128,7 @@ const useStyles = makeStyles((theme) => ({
     };
     const handleDrawerOpen = () => {
       setOpen(true);
+      setopenUserDrawerMethod(false);
     };
     const handleDrawerClose = () => {
       setOpen(false);
