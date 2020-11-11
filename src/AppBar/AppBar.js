@@ -17,7 +17,7 @@ import { mainListItems, secondaryListItems } from './listItems';
 import VerticalTabs from './../Component/TabMenuEditProfile' ;
 import Button from '@material-ui/core/Button';
 import LogOutDialog from '../Component/LogoutDialog';
-
+import QuestionBank from '../Component/QuestionBank';
 //----------------
 
 import ListItem from '@material-ui/core/ListItem';
@@ -185,7 +185,7 @@ const useStyles = makeStyles((theme) => ({
             <ListItemText  primary="حساب کاربری "  />
           </ListItem>
 
-          <ListItem button>
+          <ListItem button onClick ={()=> setComponent('QuestionBank')}>
             <ListItemIcon>
             <LibraryBooksIcon style={{ color: "#3D5A80" }} />
             </ListItemIcon>
@@ -211,6 +211,9 @@ const useStyles = makeStyles((theme) => ({
               {
                 component === 'editProfile' ?
                 <VerticalTabs />
+                :
+                component === 'QuestionBank' ?
+                <QuestionBank />
                 :
                 // component == 'logout' ?                
                 <LogOutDialog/> // logout dialog                
