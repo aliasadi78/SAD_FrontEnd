@@ -10,21 +10,21 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { mainListItems, secondaryListItems } from './listItems';
 import VerticalTabs from './../Component/TabMenuEditProfile' ;
 import Button from '@material-ui/core/Button';
 import LogOutDialog from '../Component/LogoutDialog';
 import QuestionBank from '../Component/QuestionBank';
+import Collapse from '@material-ui/core/Collapse';
+import Questions from '../Component/Question/Questions';
 //----------------
-
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import BallotIcon from '@material-ui/icons/Ballot';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -32,11 +32,11 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',            
+      display: 'flex',                
     },
     toolbar: {
       paddingRight: 7, // keep right padding when drawer closed            
-    },
+    },    
     toolbarIcon: {
       display: 'flex',
       alignItems: 'center',
@@ -51,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
         duration: theme.transitions.duration.leavingScreen,
       }),      
       backgroundColor : '#3D5A80' ,      
+      height : '52px' ,               
+      justifyContent : 'center'
     },
     appBarShift: {
       marginRight : drawerWidth,
@@ -69,6 +71,9 @@ const useStyles = makeStyles((theme) => ({
     title: {
       flexGrow: 1,
     },
+    nested: {
+      paddingRight: theme.spacing(5),
+    },    
     drawerPaper: {
       // position: 'relative',
       whiteSpace: 'nowrap',
@@ -99,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
 
     },
     container: {
-      paddingTop: theme.spacing(4),
+      paddingTop: theme.spacing(0),
       paddingBottom: theme.spacing(4),            
     },    
     fixedHeight: {
@@ -119,12 +124,16 @@ const useStyles = makeStyles((theme) => ({
     const classes = useStyles();
     const [component , setComponent] = React.useState('editProfile');
     const [open, setOpen] = React.useState(false);
-    
+    const [openUserDrawerMethod , setopenUserDrawerMethod ] = React.useState(false);
+    const handleUserDrawerMenuClick = () => {
+      setopenUserDrawerMethod(!openUserDrawerMethod);
+    };
     const handleDrawerOpen = () => {
-      setOpen(true);
+      setOpen(true);      
     };
     const handleDrawerClose = () => {
       setOpen(false);
+      setopenUserDrawerMethod(false);
     };
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   
@@ -168,7 +177,7 @@ const useStyles = makeStyles((theme) => ({
           }}
           open={open}
         >
-          <div className={classes.toolbarIcon} >  
+          <div className={classes.toolbarIcon}>  
 
           <Typography dir="rtl" component="h1" variant="h6" color="inherit" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80'}}>                          
               اسم سایت و لوگوش
@@ -178,30 +187,59 @@ const useStyles = makeStyles((theme) => ({
             </IconButton>
           </div>          
 
-          <ListItem button onClick={()=>setComponent('editProfile')} >
+          <ListItem button onClick={()=>{
+            setComponent('editProfile');
+            if(open == true)
+              handleUserDrawerMenuClick();
+            }}>
             <ListItemIcon>        
               <AccountBoxIcon style={{ color: "#3D5A80" }} />
             </ListItemIcon>
-            <ListItemText  primary="حساب کاربری "  />
+            <ListItemText>
+            <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
+                حساب کاربری
+            </Typography>
+            </ListItemText>
+            {openUserDrawerMethod ? <ExpandLess/> : <ExpandMore />}
           </ListItem>
 
+          <Collapse in={openUserDrawerMethod} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem button 
+                onClick = {() => setComponent('questions')}
+                className={classes.nested}>
+                <ListItemIcon>
+                  <BallotIcon style={{ color: "#3D5A80" }} />
+                </ListItemIcon>
+                <ListItemText >
+                  <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
+                    سوالات 
+                  </Typography>
+                </ListItemText>
+              </ListItem>
+            </List>
+          </Collapse>
           <ListItem button onClick ={()=> setComponent('QuestionBank')}>
             <ListItemIcon>
             <LibraryBooksIcon style={{ color: "#3D5A80" }} />
             </ListItemIcon>
-            <ListItemText dir="rtl" style={{fontFamily: 'Vazir'}} primary="بانک سوال" />
+            <ListItemText >
+              <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
+                بانک سوال
+              </Typography>
+            </ListItemText>
           </ListItem>   
 
           <ListItem button onClick ={()=> setComponent('logout')} >
             <ListItemIcon>
               <ExitToAppIcon style={{ color: "#3D5A80" }} />        
             </ListItemIcon>  
-            <ListItemText style={{fontFamily: 'Vazir'}} primary="خروج" />
-          </ListItem> 
-
-          {/* <List>{mainListItems}</List>           */}
-          {/* <Divider /> */}
-          {/* <List>{secondaryListItems}</List> */}
+            <ListItemText >
+              <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
+                خروج
+              </Typography>
+            </ListItemText>
+          </ListItem>           
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
@@ -216,7 +254,13 @@ const useStyles = makeStyles((theme) => ({
                 <QuestionBank />
                 :
                 // component == 'logout' ?                
+                component === 'questions' ?                
+                <Questions />              
+                :  
+                component == 'logout' ?                
                 <LogOutDialog/> // logout dialog                
+                :
+                <VerticalTabs />
                 // question Bank
               }                                                           
               {/* </Grid>              

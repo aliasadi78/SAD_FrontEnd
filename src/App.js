@@ -7,10 +7,12 @@ import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import VerticalTabs from './Component/TabMenuEditProfile';
 import DashboardEditProfile from './AppBar/AppBar';
 
+import Questions from './Component/Question/Questions';
+
 class App extends Component {
 
     render() {
-        return (            
+        return (                
             <div className={classes.App}>                
                 <Link to="/"> </Link>
                 <Link to="/signIn"> </Link>

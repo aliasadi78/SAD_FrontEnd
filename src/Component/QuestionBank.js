@@ -65,7 +65,8 @@ class QuestionBank extends Component{
                     console.log(res);
                     console.log("good");  
                     console.log(this.state);
-                    listQ = res.map((q) => <li><QuestionCard q/></li>)
+                    listQ = res.map((q) => <QuestionCard q />)
+                    console.log(listQ);
                     // document.getElementById('ress').innerHTML = <QuestionCard/>
                     // res[0].map(q =>{
                     //   return q.question;
