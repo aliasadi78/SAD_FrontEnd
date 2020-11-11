@@ -1,56 +1,75 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import axios from 'axios' ;
+import axios from 'axios';
+import Material_RTL from "../Component/Material_RTL";
+import RTL from '../Component/M_RTL';
 
-export default class JoinClassDialog extends Component {
+export default function FormDialog() {
+  const [open, setOpen] = React.useState(true);
 
-  constructor(props){
-    super(props);
-    this.state = {
-      open : true
-    };    
-  }
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-  handleClose = () => {
-    this.setState(prevstate => {
-      return {open : false}
-    });
-  }
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-  render(){
-    return (
-      <div>        
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title" >
-              <h5 dir="rtl" style={{fontFamily: 'Vazir'}}> اضافه شدن به کلاس جدید </h5>
-          </DialogTitle>   
-          <DialogContentText>
-                <h6 dir="rtl" style={{fontFamily: 'Vazir'}}> با ورود نام کاربری و رمز عبور وارد کلاس شوید </h6>
-          </DialogContentText>
-          <DialogActions>
-            <Button style={{fontFamily: 'Vazir'}} onClick={() => JoinClass()} color="primary">
-              بله 
-            </Button>
-            <Button onClick={this.handleClose} style={{fontFamily: 'Vazir'}} color="primary" autoFocus>
-              خیر
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div> 
-    );
-  }
+  return (
+    <div>
+      <Material_RTL>
+        <RTL>
+          <Dialog open={open} dir='rtl' onClose={handleClose} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title" style={{fontFamily: 'Vazir' , color : 'white' , backgroundColor : '#3D5A80'}}>
+              ورود به کلاس
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText style={{fontFamily: 'Vazir' , color:'#4d4d4d'}} >
+                با وارد کردن کد کلاس وارد شوید : 
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                style={{fontFamily: 'Vazir'}}
+                id="name"
+                label="کد کلاس"
+                type="email"
+                fullWidth
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary" style={{fontFamily: 'Vazir'}}>
+                انصراف
+              </Button>
+              <Button onClick={handleClose}onClick={(e)=> {JoinClass(e.target.value)}} color="primary" style={{fontFamily: 'Vazir'}}>
+                ورود
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </RTL>
+      </Material_RTL>
+    </div>
+  );
 }
 
-function JoinClass (){
 
+function JoinClass (classId){
+  const token = localStorage.getItem('token');
+  axios.post('https://parham-backend.herokuapp.com/class/join',
+      {
+        "classId": {classId}
+      },{
+        headers: {
+          'Authorization': token 
+        }
+      })
+      .then(res => {
+        window.location.href = "/class" ;
+      });
 }

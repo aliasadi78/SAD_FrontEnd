@@ -119,7 +119,9 @@ class ClassesPage extends Component{
                                   </Typography>
                                 </CardContent>
                                 <CardActions>
-                                  <Button variant="contained" size="small" className={classes.btn}>ورود به کلاس</Button>
+                                  <Button variant="contained" onClick={()=>{
+                                    window.location.href = "/class" ;
+                                  }} size="small" className={classes.btn}>ورود به کلاس</Button>
                                 </CardActions>
                             </Card>
                             <Card className={classes.card} variant="outlined">
@@ -140,7 +142,9 @@ class ClassesPage extends Component{
                                   </Typography>
                                 </CardContent>
                                 <CardActions>
-                                  <Button variant="contained" size="small" className={classes.btn}>ورود به کلاس</Button>
+                                  <Button variant="contained" onClick={()=>{
+                                    window.location.href = "/class" ;
+                                  }} size="small" className={classes.btn}>ورود به کلاس</Button>
                                 </CardActions>
                             </Card>
                             <Card className={classes.card} variant="outlined" >
@@ -161,7 +165,9 @@ class ClassesPage extends Component{
                                   </Typography>
                                 </CardContent>
                                 <CardActions>
-                                  <Button variant="contained"  size="small" className={classes.btn}>ورود به کلاس</Button>
+                                  <Button variant="contained" onClick={()=>{
+                                    window.location.href = "/class" ;
+                                  }}  size="small" className={classes.btn}>ورود به کلاس</Button>
                                 </CardActions>
                             </Card>
                           </div>

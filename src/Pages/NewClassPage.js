@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import InputLabel from '@material-ui/core/InputLabel';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -97,14 +98,17 @@ class NewClassPage extends Component{
             open={this.state.open}
             onClose={this.handleClose}
             aria-labelledby="max-width-dialog-title" >
-              <Container component="main" maxWidth="xs" style={{marginTop: '7%'}}>
+              <Container component="main" maxWidth="xs">
                   <CssBaseline />
                   <Material_RTL>
                       <M_RTL>
+                        <DialogTitle style={{fontFamily: 'Vazir' , color : 'white' , backgroundColor : '#3D5A80'}}>
+                          ایجاد کلاس جدید
+                        </DialogTitle>
                         <div className={classes.paper}>
                         <br/>
                         <DialogContentText>
-                          <h3 style={{fontFamily: 'Vazir',}}>ایجاد کلاس جدید</h3>
+                          
                         </DialogContentText>                          
                         <DialogContent>
                           <ValidatorForm className={classes.form} noValidate style={{fontFamily: 'Vazir'}}>
@@ -285,7 +289,7 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: 'column',
       alignItems: 'center',
       color: 'black',
-      backgroundColor: '#f5f5f5',
+      backgroundColor : '#f5f5f5',
       padding: '20px',
       borderRadius: '0px',
       opacity: '95%'

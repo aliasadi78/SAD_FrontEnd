@@ -128,9 +128,9 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export default function DashboardEditProfile() {
+export default function Dashboard() {
 
-    const [component , setComponent] = React.useState('editProfile');
+    const [component , setComponent] = React.useState('classesPage');
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [currentComponent , setCurrentComponent] = React.useState(false);

@@ -6,24 +6,26 @@ import ClassesPage from './Pages/ClassesPage';
 import NewClassPage from './Pages/NewClassPage';
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import VerticalTabs from './Component/TabMenuEditProfile';
-import DashboardEditProfile from './AppBar/AppBar';
+import Dashboard from './AppBar/AppBar';
+import InsideClass from './Pages/insideClass' ;
 
 class App extends Component {
 
     render() {
         return (            
-            <div className={classes.App}>        
-            <DashboardEditProfile />        
-                {/* <Link to="/"> </Link>
+            // <Dashboard />
+            <div className={classes.App}>                    
+                <Link to="/"> </Link>
                 <Link to="/signIn"> </Link>
                 <Link to="/signUp"> </Link>
                 <Link to="/profile/edit" ></Link>
                 <Route path="/" exact component={SignIn}/>
                 <Route path="/signIn" exact component={SignIn}/>
                 <Route path="/signUp" component={SignUp}/>
-                <Route path="/profile/edit" component = {DashboardEditProfile} />
+                <Route path="/profile/edit" component = {Dashboard} />
                 <Route path="/ClassesPage" component = {ClassesPage} />
-                <Route path="/NewClassPage" component = {NewClassPage} /> */}
+                <Route path="/NewClassPage" component = {NewClassPage} />
+                <Route path="/class" component = {InsideClass} />
             </div>
 
         );
