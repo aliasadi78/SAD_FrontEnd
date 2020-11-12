@@ -19,6 +19,14 @@ import { Link } from "react-router-dom";
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import axios from 'axios';
 import QuestionCard from './QuestionCard';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+
+
 
 class QuestionBank extends Component{
     constructor() {
@@ -28,30 +36,40 @@ class QuestionBank extends Component{
             course: [],
             hardness : [], 
             type : [],
-            
+            listquestion: [],
         }
     }
     handleChange = e => {
       this.setState({ [e.target.name]: [e.target.value]});
         // console.log(this.state);
+        // setPending(false);
       };
 
       handleSubmit = e =>{
           console.log(this.state);
       }
       
+    
     render(){
         const classes = this.props.classes;
         const [pending, setPending] = this.props.pending;
+        const [list, setList] = this.props.list;
         var res;
         var listQ;
+        var List1;
+        List1 = [];
+        var l = ["7","8","9"];
         const handleClick = e => {
             setPending(true);
+            setList(["44","66"]);
+            console.log(list);
             e.preventDefault();
             // console.log(this.state);
             const token = localStorage.getItem('token');
             res = [];
             listQ = [];
+            List1 = [];
+          
             // console.log(token);
             const headers={
               'Authorization': token
@@ -59,14 +77,31 @@ class QuestionBank extends Component{
             axios.post("https://parham-backend.herokuapp.com/bank?page=1&limit=10",
              this.state,{headers: headers})
                 .then(result => {
-                  res.push(result.data.questions);
+                  res.push(...result.data.questions);
                   // console.log(result.data.questions.question);
-                    console.log(result);
-                    console.log(res);
-                    console.log("good");  
-                    console.log(this.state);
-                    listQ = res.map((q) => <QuestionCard q />)
-                    console.log(listQ);
+                    // console.log(result);
+                    // console.log(result.data.questions);
+                    // console.log(res);
+                    l = ["1","2","3"];
+                    // console.log("good");  
+                    // console.log(this.state);
+                    var ll = res.map((q) => q);
+                    this.setState({ listquestion : ll});
+                    setList([...ll]);
+                    console.log(list);
+                    // setListquestion([...listQ]);
+                    // setList([...list,listQ[0]]);
+                    // this.state.listquestion.push(...listQ[0]);
+                    // List1.push(listQ[0]);
+                    // console.log(this.state.listquestion[0]);
+                    // console.log(this.state.listquestion);
+                //     List1 = listQ[0].map((q) => {
+                //     console.log(q);
+                //     return(
+                //       <li><QuestionCard listQ={q}/></li>
+                //     )}
+                // )
+                // console.log(list);
                     // document.getElementById('ress').innerHTML = <QuestionCard/>
                     // res[0].map(q =>{
                     //   return q.question;
@@ -86,9 +121,17 @@ class QuestionBank extends Component{
                     console.log("bad");
 
                 })
-                // const listQ = res.map((q) => <li><QuestionCard q/></li>)
-            
+                // console.log(this.state.listquestion);
+                l = ["4","5","6"]
+                // List1 = listQ[0].map((q) => {
+                //     console.log(q);
+                //     return(
+                //       <li>{QuestionCard(q)}</li>
+                //     )
+                // })
+                // const listQ = res.map((q) => <li><QuestionCard q/></li>)   
         }
+        
         return(
             <div>
                 <Material_RTL>
@@ -195,8 +238,21 @@ class QuestionBank extends Component{
                 <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'relative',right: '5%',width:'75%',}}>
                 <CssBaseline/>
                     <div id="ress">
-                      <ul>
-                        {listQ}
+                      <ul >
+                        {/* {pending ? List1 : null} */}
+                        {pending ? list.map((question) => {
+                          console.log("in ul");
+                          console.log(question.question);
+                          return(
+                          <li key={question.question}><QC q={question.question}/></li>
+                          )
+                        }) : null}
+                        {/* {pending ? <li><QC q="HELLLLLLLLOOOO" /></li> : null }
+                        <br/>
+                        {pending ? <li><QC q="BYYYYYYY" /></li> : null } */}
+                        {/* <li><QuestionCard/></li>
+                        <li><QuestionCard/></li>
+                        <li><QuestionCard/></li> */}
                       </ul>
                       {/* <QuestionCard res/> */}
                     </div>
@@ -208,6 +264,33 @@ class QuestionBank extends Component{
         );
     }
 }
+
+function QC (props){
+  
+  console.log(props);
+  console.log(props.q);
+  const classes = useStyles();
+  return (<div className={classes.root}>
+    <Accordion>
+         <AccordionSummary
+           expandIcon={<ExpandMoreIcon />}
+           aria-controls="panel1a-content"
+           id="panel1a-header"
+         >
+           <Typography className={classes.heading}>{props.q}</Typography>
+         </AccordionSummary>
+         <AccordionDetails>
+           <Typography>
+             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+             malesuada lacus ex, sit amet blandit leo lobortis eget.
+             {props.q}
+           </Typography>
+         </AccordionDetails>
+       </Accordion>
+ </div>)
+}
+
+
 const useStyles = makeStyles((theme) => ({
     paper: {
       marginTop: theme.spacing(1),
@@ -233,7 +316,10 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
     const classes = useStyles();
     const pending = React.useState(false);
+    const lq = [];
+    const list = React.useState([]);
     return (        
-        <QuestionBank classes={classes} pending={pending} />    
-    )
+        <QuestionBank classes={classes} pending={pending} list={list} />    
+        
+        )
 }

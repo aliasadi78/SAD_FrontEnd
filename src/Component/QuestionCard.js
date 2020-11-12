@@ -6,32 +6,36 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-class QuestionCard extends Component{
-    render(){
-        const classes = this.props.classes;
-
-  return (
-    <div className={classes.root}>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography className={classes.heading}>{this.props.question}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      
-    </div>
-  );
-    }
-}
+// const classes = this.props.classes;
+//     // alert("function qc");
+//     const text = props.name;
+//     console.log(props.name);
+function QuestionCard(props){
+    const classes = useStyles();
+    console.log(props.q);
+    console.log(props);
+    return (
+      <div className={classes.root}>
+             <Accordion>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <Typography className={classes.heading}>{props.q}</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                      malesuada lacus ex, sit amet blandit leo lobortis eget.
+                      {props.q}
+                    </Typography>
+                  </AccordionDetails>
+                </Accordion>
+          </div>
+      );
+  }
+  
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -60,11 +64,11 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: theme.typography.fontWeightRegular,
       },
 }));
-
 export default () => {
     const classes = useStyles();
-    const pending = React.useState(false);
+    // const pending = React.useState(false);
+    const name = React.useState("");
     return (        
-        <QuestionCard classes={classes} pending={pending} />    
+        <QuestionCard classes={classes}/>    
     )
 }
