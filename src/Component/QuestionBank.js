@@ -24,7 +24,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
+import SearchIcon from '@material-ui/icons/Search';
 
 
 
@@ -103,16 +103,17 @@ class QuestionBank extends Component{
                   // console.log(result.data.questions.question);
                     // console.log(result);
                     // console.log(result.data.questions);
-                    // console.log(res);
+                    console.log(result);
                     
                     // console.log("good");  
                     // console.log(this.state);
                     var ll = res.map((q) => q);
                     this.setState({ listquestion : ll});
                     setList([...ll]);
-                    // console.log(list);
+                    console.log(list);
+                    // setPending(true);
                 }).catch(error => {
-                    console.log(error);
+                    console.log(error.messege);
                     alert("error");
                     setPending(false); 
                     console.log("bad");
@@ -127,7 +128,7 @@ class QuestionBank extends Component{
                     <CssBaseline/>
                 <div style={{position: 'relative',}}>
                 <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
-                <FormControl variant="filled" style={{width:'20%',margin: '1%'}}>
+                <FormControl variant="filled" style={{width:'30%',margin: '1%'}}>
                     <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">پایه</InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -146,7 +147,7 @@ class QuestionBank extends Component{
                       <MenuItem value={12} style={{fontFamily: 'Vazir',direction: 'rtl'}}>دوازدهم</MenuItem>
                     </Select>
                 </FormControl>
-                <FormControl variant="filled" style={{width:'20%',margin: '1%'}}>
+                <FormControl variant="filled" style={{width:'30%',margin: '1%'}}>
                     <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">کتاب</InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -167,7 +168,7 @@ class QuestionBank extends Component{
                     </Select>
                 </FormControl>
                 
-                <FormControl  variant="filled" style={{width:'20%',margin: '1%'}}>
+                <FormControl  variant="filled" style={{width:'30%',margin: '1%'}}>
                     <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">نوع سوال</InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -188,7 +189,7 @@ class QuestionBank extends Component{
                     </Select>
                 </FormControl>
 
-                <FormControl variant="filled" style={{width:'20%',margin: '1%'}}>
+                <FormControl variant="filled" style={{width:'30%',margin: '1%'}}>
                     <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">سطح سوال</InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -207,7 +208,7 @@ class QuestionBank extends Component{
                       <MenuItem value={'HARD'}    style={{fontFamily: 'Vazir',direction: 'rtl'}}>سخت</MenuItem>
                     </Select>
                 </FormControl>
-                <FormControl variant="filled" style={{width:'20%',margin: '1%'}}>
+                <FormControl variant="filled" style={{width:'30%',margin: '1%'}}>
                     <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">فصل</InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -237,7 +238,7 @@ class QuestionBank extends Component{
                                     <Grid container>
                                         <Grid item xs={12}>
                                             <Grid classes={classes.root} >
-                                            <LoadingButton onClick={handleClick} pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#0e918c',width: '86%'}}>
+                                            <LoadingButton onClick={handleClick} endIcon={<Icon>search</Icon>} pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#0e918c',width: '94%',height: "53px"}}>
                                             جست و جو در بانک سوال
                                             </LoadingButton>
                                             </Grid>
@@ -248,7 +249,7 @@ class QuestionBank extends Component{
                 </div>
                 </Container>
                 <br/>
-                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'relative',right: '5%',width:'75%',padding: '2% 4% 0% 7%'}}>
+                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'relative',right: '5%',width:'75%',}}>
                 <CssBaseline/>
                     <div id="ress">
                       <ol >
@@ -258,16 +259,16 @@ class QuestionBank extends Component{
                           )}) : null} */}
                         {pending && test ? list.map((question) => {
                           return(
-                          <li key={question.question}><QC q={question.question} g={question.options} test={test} multi={multi} long={long} short={short}/><br/></li>
+                          <li key={question.question}><QC q={question.question} g={question.options} a={question.answer} test={test} multi={multi} long={long} short={short}/><br/></li>
                           )}) : pending && long ? list.map((question) => {
                           return(
-                          <li key={question.question}><QC q={question.question} test={test} multi={multi} long={long} short={short}/><br/></li>
+                          <li key={question.question}><QC q={question.question} a={question.answer} test={test} multi={multi} long={long} short={short}/><br/></li>
                           )}) : pending && short ? list.map((question) => {
                             return(
-                            <li key={question.question}><QC q={question.question} test={test} multi={multi} long={long} short={short}/><br/></li>
+                            <li key={question.question}><QC q={question.question} a={question.answer} test={test} multi={multi} long={long} short={short}/><br/></li>
                             )}) : pending && multi ? list.map((question) => {
                               return(
-                              <li key={question.question}><QC q={question.question}  g={question.options} test={test} multi={multi} long={long} short={short}/><br/></li>
+                              <li key={question.question}><QC q={question.question} a={question.answer}  g={question.options} test={test} multi={multi} long={long} short={short}/><br/></li>
                               )}) : null}
                       </ol>
                     </div>    
@@ -281,27 +282,27 @@ class QuestionBank extends Component{
 
 function QC (props){
   
-  console.log(props);
-  console.log(props.q);
+  // console.log(props);
+  // console.log(props.q);
   const classes = useStyles();
   return (
-  <div className={classes.root}>
-    <Accordion  style={{backgroundColor: '#e6e6e6',}}>
+  <div className={classes.root} style={{padding: "1% 0% 0% 3%"}}>
+    <Accordion  style={{backgroundColor: '#e6e6e6',marginTop: '1%',}}>
          <AccordionSummary
            expandIcon={<ExpandMoreIcon />}
            aria-controls="panel1a-content"
            id="panel1a-header"
          >
-           <Typography style={{fontFamily: 'Vazir'}} className={classes.heading}>
+           <Typography style={{fontFamily: 'Vazir',marginTop: '2%',direction: 'rtl',textAlign: 'right'}} className={classes.heading}>
              {props.q}
 
              {props.test ? (
-             <ul>
-              <li>الف){props.g[0].option}</li>
-              <li>  ب){props.g[1].option}</li>
-              <li>  ج){props.g[2].option}</li>
-              <li>  د){props.g[3].option}</li>
-             </ul>) : props.multi ? props.g.map((g) =>{
+             <div style={{position : 'relative',}}>
+              <div>الف){props.g[0].option}</div>
+              <div>  ب){props.g[1].option}</div>
+              <div>  ج){props.g[2].option}</div>
+              <div>  د){props.g[3].option}</div>
+             </div>) : props.multi ? props.g.map((g) =>{
                return(<div>{props.g}</div>)
              }
                
@@ -310,8 +311,8 @@ function QC (props){
              </Typography>
          </AccordionSummary>
          <AccordionDetails>
-           <Typography style={{fontFamily: 'Vazir'}}>
-             {"جواب:"}
+           <Typography style={{fontFamily: 'Vazir',textAlign: 'right'}}>
+             جواب:{props.a}
            </Typography>
          </AccordionDetails>
        </Accordion>
@@ -328,7 +329,8 @@ const useStyles = makeStyles((theme) => ({
       color : '#3D5A80' , 
       backgroundColor: 'white',
     //   padding: '10px',
-      borderRadius: '5px',      
+      borderRadius: '5px',   
+      // padding: '2% 4% 0% 7%',   
     //   opacity: '95%' ,       
     },
     formControl: {
