@@ -60,14 +60,18 @@ class GetUserQuestions extends Component{
       };    
 
       const token = localStorage.getItem('token');
+
+      var userQuestions = [];
+
       axios.get(serverURL() + "question" , tokenConfig() )    
       .then( res =>{      
-        console.log(res.data.questions);
-        // const Qs = JSON.parse(res.data.questions);
-
+        userQuestions.push(...res.data.questions);
+        console.log(userQuestions);
+        // const Qs = JSON.parse(res.data.questionfs);
+        var list = userQuestions.map((p) => p);
         this.setState(prevstate => {        
           return { 
-            questions : res.data.question , 
+            questions : list , 
             bool : true
           }
         })
@@ -85,13 +89,13 @@ class GetUserQuestions extends Component{
             <div>
             {        
               // questionsArray.map((m) =>           
-                // this.state.questions.map((m) =>
-                // <UserDesignedQuestion  
-                //   backColor = '#98C1D9'   
-                //   buttonClick={loadQuestionToEditPannel} 
-                //   questionId = {m._id}
-                //   question = {m.question}
-                //   />)
+                this.state.questions.map((m) =>
+                <UserDesignedQuestion  
+                  backColor = '#98C1D9'   
+                  buttonClick={loadQuestionToEditPannel} 
+                  questionId = {m._id}
+                  question = {m.question}
+                  />)
             }
             </div>            
         );

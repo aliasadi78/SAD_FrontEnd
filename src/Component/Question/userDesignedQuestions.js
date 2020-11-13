@@ -69,9 +69,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+// function deleteQuestion(questionID){
+
+//     const a = {
+//         "questionId" : {questionID}
+//     };
+
+//     const ajson = JSON.stringify(a);
+//     console.log(questionID);
+//     axios.delete( serverURL() + "question/" + questionID  , tokenConfig() );
+// }
+
+function editQuestion (){
+    // localStorage.setItem()
+}
+
+
 export default function UserDesignedQuestion(props) {
 
     const classes = useStyles();
+
+    const handleDeleteQuestion = () => {
+        console.log(this.props.questionId);
+        axios.delete( serverURL() + "question/" + this.props.questionId  , tokenConfig() );
+    };
 
     return (
         <React.Fragment>
@@ -121,8 +142,8 @@ export default function UserDesignedQuestion(props) {
                                         </Button>                                       
                                     </Grid>
                                     <Grid item xs={2}>                                        
-                                        <Button variant="contained" className={classes.DeleteButton} href="#contained-buttons">
-                                            <Typography variant='button' onCLick={()=>{ deleteQuestion(props.questionId) }} style = {{fontFamily: 'Vazir'}} >
+                                        <Button variant="contained" onCLick={() => {handleDeleteQuestion()}} className={classes.DeleteButton}>
+                                            <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                                 حذف
                                             </Typography>
                                         </Button>                                                                         
@@ -136,20 +157,4 @@ export default function UserDesignedQuestion(props) {
             </Container>
         </React.Fragment>
     );  
-}
-
-function deleteQuestion(questionID){
-
-    const a = {
-        "questionId" : {questionID}
-    };
-
-    const ajson = JSON.stringify(a);
-
-    const token = localStorage.getItem('token');
-    axios.delete( serverURL() + "question" , ajson , tokenConfig() );
-}
-
-function editQuestion (){
-    // localStorage.setItem()
 }

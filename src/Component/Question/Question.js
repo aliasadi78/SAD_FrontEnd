@@ -158,6 +158,42 @@ export default function Question(props) {
         setpublicCheck(!publicCheck);        
       };    
 
+    const AddQuestion = (type , publicCheck , question , 
+    answer , options , base , hardness , course) => {
+
+        const a = {
+            "type": "LONGANSWER" , //type ,
+            "public": publicCheck,
+            "isImage" : false , 
+            "question": question,
+            "answers": [
+                {
+                    "answer" : "asdfasdf"
+                }
+            ],
+            "options": [
+                {
+                    "option"  : "dfadffd"
+                }
+            ],//options,
+            "base": "10" , //base,
+            "hardness": "HARD" ,//hardness,
+            "course": "MATH" , // course
+            "chapter" : "1"
+        }
+        const ajson = JSON.stringify(a);
+        console.log("add question");
+
+        const token = localStorage.getItem('token');
+        axios.post(serverURL() + "question" , ajson , tokenConfig() )
+        .then(res => {
+            console.log(res);
+        })
+        .catch(e => {
+            console.log(e);
+        });
+    }
+
     const handleQuestionTypeFormChange = a => {
         if(a == 'تستی')
         {
@@ -372,10 +408,10 @@ export default function Question(props) {
 
                                 <Grid item xs={4}>                                    
                                     <Button variant="contained"
-                                     onClick={AddQuestion(                                            
+                                     onClick={() => {AddQuestion(                                            
                                         questionType , publicCheck , question ,
                                         answer , `23` , grade , difficulty , lesson
-                                    )} 
+                                    )}} 
                                     className={classes.Button} href="#contained-buttons">
                                         <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                             {props.submitButton}
@@ -398,36 +434,4 @@ export default function Question(props) {
             </Container>
         </React.Fragment>
     );  
-}
-
-function AddQuestion (type , publicCheck , question , 
-                        answer , options , base , hardness , course){
-
-    const a = {
-        "type": "LONGANSWER" , //type ,
-        "public": publicCheck,
-        "isImage" : false , 
-        "question": question,
-        "answers": [
-            {
-                "answer" : "asdfasdf"
-            }
-        ],
-        "options": [
-            {
-                "option"  : "dfadffd"
-            }
-        ],//options,
-        "base": "10" , //base,
-        "hardness": "HARD" ,//hardness,
-        "course": "MATH" , // course
-        "chapter" : "1"
-    }
-    const ajson = JSON.stringify(a);
-    console.log("add question");
-    // console.log(a);    
-    // console.log(ajson);
-
-    const token = localStorage.getItem('token');
-    axios.post(serverURL() + "question" , ajson , tokenConfig() );
 }
