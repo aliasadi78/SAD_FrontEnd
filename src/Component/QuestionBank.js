@@ -36,41 +36,63 @@ class QuestionBank extends Component{
             course: [],
             hardness : [], 
             type : [],
-            listquestion: [],
+            chapter: [],
         }
     }
-    handleChange = e => {
-      this.setState({ [e.target.name]: [e.target.value]});
-        // console.log(this.state);
-        // setPending(false);
-      };
-
-      handleSubmit = e =>{
-          console.log(this.state);
-      }
-      
-    
     render(){
         const classes = this.props.classes;
         const [pending, setPending] = this.props.pending;
+        const [long , setLong ] = this.props.long ;
+        const [test , setTest ] = this.props.test ;
+        const [short, setShort] = this.props.short;
+        const [multi, setMulti] = this.props.multi;
         const [list, setList] = this.props.list;
         var res;
-        var listQ;
-        var List1;
-        List1 = [];
-        var l = ["7","8","9"];
+        const handleChange = e => {
+          this.setState({ [e.target.name]: [e.target.value]});
+            setPending(false);
+            setList([]);
+            setTest(false);
+            setLong(false);
+            setShort(false);
+            setMulti(false);
+          }
+    
         const handleClick = e => {
             setPending(true);
-            setList(["44","66"]);
-            console.log(list);
+            console.log("pending:" + pending);
+            console.log("this.state.type[0]" + this.state.type[0]);
             e.preventDefault();
-            // console.log(this.state);
             const token = localStorage.getItem('token');
             res = [];
-            listQ = [];
-            List1 = [];
-          
-            // console.log(token);
+            if(this.state.type[0] === "TEST"){
+              setTest(true);
+              setLong(false);
+              setShort(false);
+              setMulti(false);
+              console.log("istest:" + test);
+            }
+            if(this.state.type[0] === "LONGANSWER"){
+              setTest(false);
+              setLong(true);
+              setShort(false);
+              setMulti(false);
+              console.log("islong:" + long);
+            }
+            if(this.state.type[0] === "SHORTANSWER"){
+              setTest(false);
+              setLong(false);
+              setShort(true);
+              setMulti(false);
+              console.log("isshort:" + short);
+            }
+            if(this.state.type[0] === "MULTICHOISE"){
+              setTest(false);
+              setLong(false);
+              setShort(false);
+              setMulti(true);
+              console.log("ismulti:" + multi);
+            }
             const headers={
               'Authorization': token
             }
@@ -82,54 +104,19 @@ class QuestionBank extends Component{
                     // console.log(result);
                     // console.log(result.data.questions);
                     // console.log(res);
-                    l = ["1","2","3"];
+                    
                     // console.log("good");  
                     // console.log(this.state);
                     var ll = res.map((q) => q);
                     this.setState({ listquestion : ll});
                     setList([...ll]);
-                    console.log(list);
-                    // setListquestion([...listQ]);
-                    // setList([...list,listQ[0]]);
-                    // this.state.listquestion.push(...listQ[0]);
-                    // List1.push(listQ[0]);
-                    // console.log(this.state.listquestion[0]);
-                    // console.log(this.state.listquestion);
-                //     List1 = listQ[0].map((q) => {
-                //     console.log(q);
-                //     return(
-                //       <li><QuestionCard listQ={q}/></li>
-                //     )}
-                // )
-                // console.log(list);
-                    // document.getElementById('ress').innerHTML = <QuestionCard/>
-                    // res[0].map(q =>{
-                    //   return q.question;
-                    //   console.log(q);
-                    // });                                                       
-                    // const token = "Bearer" + " " + result.data.token;
-                    
-                    // localStorage.setItem('token', token);                    
-                    // console.log("first");
-
-                    // //redirect to edit profile page                                        
-                    // window.location.href = "/profile/edit" ;
+                    // console.log(list);
                 }).catch(error => {
                     console.log(error);
                     alert("error");
                     setPending(false); 
                     console.log("bad");
-
                 })
-                // console.log(this.state.listquestion);
-                l = ["4","5","6"]
-                // List1 = listQ[0].map((q) => {
-                //     console.log(q);
-                //     return(
-                //       <li>{QuestionCard(q)}</li>
-                //     )
-                // })
-                // const listQ = res.map((q) => <li><QuestionCard q/></li>)   
         }
         
         return(
@@ -141,90 +128,116 @@ class QuestionBank extends Component{
                 <div style={{position: 'relative',}}>
                 <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
                 <FormControl variant="filled" style={{width:'20%',margin: '1%'}}>
-                    <InputLabel id="demo-simple-select-outlined-label">پایه</InputLabel>
+                    <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">پایه</InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
                       value={this.state.base}
-                      onChange={this.handleChange}
+                      onChange={handleChange}
                       label="پایه"
                       name="base"
-                      InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                      style={{fontFamily: 'Vazir'}}
                     >
                       {/* <MenuItem value="">
                         <em>None</em>
                       </MenuItem> */}
-                      <MenuItem value={10} InputProps={{style:{fontFamily: 'Vazir'}}}>دهم</MenuItem>
-                      <MenuItem value={11}>یازدهم</MenuItem>
-                      <MenuItem value={12}>دوازدهم</MenuItem>
+                      <MenuItem value={10} style={{fontFamily: 'Vazir',direction: 'rtl'}}>دهم</MenuItem>
+                      <MenuItem value={11} style={{fontFamily: 'Vazir',direction: 'rtl'}}>یازدهم</MenuItem>
+                      <MenuItem value={12} style={{fontFamily: 'Vazir',direction: 'rtl'}}>دوازدهم</MenuItem>
                     </Select>
                 </FormControl>
                 <FormControl variant="filled" style={{width:'20%',margin: '1%'}}>
-                    <InputLabel id="demo-simple-select-outlined-label">کتاب</InputLabel>
+                    <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">کتاب</InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
                       value={this.state.course}
-                      onChange={this.handleChange}
+                      onChange={handleChange}
                       label="کتاب"
                       name="course"
-                      InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                      style={{fontFamily: 'Vazir'}}
                     >
                       {/* <MenuItem value="">
                         <em>None</em> */}
                       {/* </MenuItem> */}
-                      <MenuItem value={'MATH'} InputProps={{style:{fontFamily: 'Vazir'}}}>ریاضی</MenuItem>
-                      <MenuItem value={'PHYSIC'}>فیزیک</MenuItem>
-                      <MenuItem value={'CHEMISTRY'}>شیمی</MenuItem>
-                      <MenuItem value={'BIOLOGY'}>زیست</MenuItem>
+                      <MenuItem value={'MATH'}       style={{fontFamily: 'Vazir',direction: 'rtl'}}>ریاضی</MenuItem>
+                      <MenuItem value={'PHYSIC'}     style={{fontFamily: 'Vazir',direction: 'rtl'}}>فیزیک</MenuItem>
+                      <MenuItem value={'CHEMISTRY'}  style={{fontFamily: 'Vazir',direction: 'rtl'}}>شیمی</MenuItem>
+                      <MenuItem value={'BIOLOGY'}    style={{fontFamily: 'Vazir',direction: 'rtl'}}>زیست</MenuItem>
                     </Select>
                 </FormControl>
                 
-                <FormControl variant="filled" style={{width:'20%',margin: '1%'}}>
-                    <InputLabel id="demo-simple-select-outlined-label">نوع سوال</InputLabel>
+                <FormControl  variant="filled" style={{width:'20%',margin: '1%'}}>
+                    <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">نوع سوال</InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
                       value={this.state.type}
-                      onChange={this.handleChange}
+                      onChange={handleChange}
                       label="نوع سوال"
                       name="type"
-                      InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                      style={{fontFamily: 'Vazir'}}
                     >
                       {/* <MenuItem value="">
                         <em>None</em>
                       </MenuItem> */}
-                      <MenuItem value={'TEST'} InputProps={{style:{fontFamily: 'Vazir'}}}>تستی</MenuItem>
-                      <MenuItem value={'MULTICHOISE'}>چند گزینه ای</MenuItem>
-                      <MenuItem value={'LONGANSWER'}>تشریحی</MenuItem>
-                      <MenuItem value={'SHORTANSWER'}>جای خالی</MenuItem>
+                      <MenuItem value={'TEST'}         style={{fontFamily: 'Vazir',direction: 'rtl'}}>تستی</MenuItem>
+                      <MenuItem value={'MULTICHOISE'}  style={{fontFamily: 'Vazir',direction: 'rtl'}}>چند گزینه ای</MenuItem>
+                      <MenuItem value={'LONGANSWER'}   style={{fontFamily: 'Vazir',direction: 'rtl'}}>تشریحی</MenuItem>
+                      <MenuItem value={'SHORTANSWER'}  style={{fontFamily: 'Vazir',direction: 'rtl'}}>جای خالی</MenuItem>
                     </Select>
                 </FormControl>
 
                 <FormControl variant="filled" style={{width:'20%',margin: '1%'}}>
-                    <InputLabel id="demo-simple-select-outlined-label">سطح سوال</InputLabel>
+                    <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">سطح سوال</InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
                       value={this.state.hardness}
-                      onChange={this.handleChange}
+                      onChange={handleChange}
                       label="سطح سوال"
                       name="hardness"
-                      InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                      style={{fontFamily: 'Vazir'}}
                     >
                       {/* <MenuItem value="">
                         <em>None</em>
                       </MenuItem> */}
-                      <MenuItem value={'LOW'}>ساده</MenuItem>
-                      <MenuItem value={'MEDIUM'}>متوسط</MenuItem>
-                      <MenuItem value={'HARD'}>سخت</MenuItem>
+                      <MenuItem value={'LOW'}     style={{fontFamily: 'Vazir',direction: 'rtl'}}>ساده</MenuItem>
+                      <MenuItem value={'MEDIUM'}  style={{fontFamily: 'Vazir',direction: 'rtl'}}>متوسط</MenuItem>
+                      <MenuItem value={'HARD'}    style={{fontFamily: 'Vazir',direction: 'rtl'}}>سخت</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl variant="filled" style={{width:'20%',margin: '1%'}}>
+                    <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">فصل</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={this.state.chapter}
+                      onChange={handleChange}
+                      label="فصل"
+                      name="chapter"
+                      style={{fontFamily: 'Vazir'}}
+                    >
+                      {/* <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem> */}
+                      <MenuItem value={1} style={{fontFamily: 'Vazir',direction: 'rtl'}}>1</MenuItem>
+                      <MenuItem value={2} style={{fontFamily: 'Vazir',direction: 'rtl'}}>2</MenuItem>
+                      <MenuItem value={3} style={{fontFamily: 'Vazir',direction: 'rtl'}}>3</MenuItem>
+                      <MenuItem value={4} style={{fontFamily: 'Vazir',direction: 'rtl'}}>4</MenuItem>
+                      <MenuItem value={5} style={{fontFamily: 'Vazir',direction: 'rtl'}}>5</MenuItem>
+                      <MenuItem value={6} style={{fontFamily: 'Vazir',direction: 'rtl'}}>6</MenuItem>
+                      <MenuItem value={7} style={{fontFamily: 'Vazir',direction: 'rtl'}}>7</MenuItem>
+                      <MenuItem value={8} style={{fontFamily: 'Vazir',direction: 'rtl'}}>8</MenuItem>
+                      <MenuItem value={9} style={{fontFamily: 'Vazir',direction: 'rtl'}}>9</MenuItem>
+                      <MenuItem value={10} style={{fontFamily: 'Vazir',direction: 'rtl'}}>10</MenuItem>
                     </Select>
                 </FormControl>
                 <br/>
                                     <Grid container>
                                         <Grid item xs={12}>
                                             <Grid classes={classes.root} >
-                                            <LoadingButton onClick={handleClick} pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#0e918c'}} fullWidth>
+                                            <LoadingButton onClick={handleClick} pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#0e918c',width: '86%'}}>
                                             جست و جو در بانک سوال
                                             </LoadingButton>
                                             </Grid>
@@ -235,28 +248,29 @@ class QuestionBank extends Component{
                 </div>
                 </Container>
                 <br/>
-                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'relative',right: '5%',width:'75%',}}>
+                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'relative',right: '5%',width:'75%',padding: '2% 4% 0% 7%'}}>
                 <CssBaseline/>
                     <div id="ress">
-                      <ul >
-                        {/* {pending ? List1 : null} */}
-                        {pending ? list.map((question) => {
-                          console.log("in ul");
-                          console.log(question.question);
+                      <ol >
+                        {/* {pending ? list.map((question) => {
                           return(
-                          <li key={question.question}><QC q={question.question}/></li>
-                          )
-                        }) : null}
-                        {/* {pending ? <li><QC q="HELLLLLLLLOOOO" /></li> : null }
-                        <br/>
-                        {pending ? <li><QC q="BYYYYYYY" /></li> : null } */}
-                        {/* <li><QuestionCard/></li>
-                        <li><QuestionCard/></li>
-                        <li><QuestionCard/></li> */}
-                      </ul>
-                      {/* <QuestionCard res/> */}
-                    </div>
-                        
+                          <li key={question.question}><QC q={question.question} g={question.options} test={test} multi={multi}/><br/></li>
+                          )}) : null} */}
+                        {pending && test ? list.map((question) => {
+                          return(
+                          <li key={question.question}><QC q={question.question} g={question.options} test={test} multi={multi} long={long} short={short}/><br/></li>
+                          )}) : pending && long ? list.map((question) => {
+                          return(
+                          <li key={question.question}><QC q={question.question} test={test} multi={multi} long={long} short={short}/><br/></li>
+                          )}) : pending && short ? list.map((question) => {
+                            return(
+                            <li key={question.question}><QC q={question.question} test={test} multi={multi} long={long} short={short}/><br/></li>
+                            )}) : pending && multi ? list.map((question) => {
+                              return(
+                              <li key={question.question}><QC q={question.question}  g={question.options} test={test} multi={multi} long={long} short={short}/><br/></li>
+                              )}) : null}
+                      </ol>
+                    </div>    
                 </Container>
                 </M_RTL>
                 </Material_RTL>
@@ -270,20 +284,34 @@ function QC (props){
   console.log(props);
   console.log(props.q);
   const classes = useStyles();
-  return (<div className={classes.root}>
-    <Accordion>
+  return (
+  <div className={classes.root}>
+    <Accordion  style={{backgroundColor: '#e6e6e6',}}>
          <AccordionSummary
            expandIcon={<ExpandMoreIcon />}
            aria-controls="panel1a-content"
            id="panel1a-header"
          >
-           <Typography className={classes.heading}>{props.q}</Typography>
+           <Typography style={{fontFamily: 'Vazir'}} className={classes.heading}>
+             {props.q}
+
+             {props.test ? (
+             <ul>
+              <li>الف){props.g[0].option}</li>
+              <li>  ب){props.g[1].option}</li>
+              <li>  ج){props.g[2].option}</li>
+              <li>  د){props.g[3].option}</li>
+             </ul>) : props.multi ? props.g.map((g) =>{
+               return(<div>{props.g}</div>)
+             }
+               
+             ) : null}
+             
+             </Typography>
          </AccordionSummary>
          <AccordionDetails>
-           <Typography>
-             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-             malesuada lacus ex, sit amet blandit leo lobortis eget.
-             {props.q}
+           <Typography style={{fontFamily: 'Vazir'}}>
+             {"جواب:"}
            </Typography>
          </AccordionDetails>
        </Accordion>
@@ -316,10 +344,14 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
     const classes = useStyles();
     const pending = React.useState(false);
+    const long = React.useState(false);
+    const test = React.useState(false);
+    const short = React.useState(false);
+    const multi = React.useState(false);
     const lq = [];
     const list = React.useState([]);
     return (        
-        <QuestionBank classes={classes} pending={pending} list={list} />    
+        <QuestionBank classes={classes} pending={pending} list={list} long={long} test={test} short={short} multi={multi}/>    
         
         )
 }
