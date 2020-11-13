@@ -15,8 +15,9 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import VerticalTabs from './../Component/TabMenuEditProfile' ;
 import Button from '@material-ui/core/Button';
 import LogOutDialog from '../Component/LogoutDialog';
+import QuestionBank from '../Component/QuestionBank';
 import Collapse from '@material-ui/core/Collapse';
-import Questions from '../Component/Question/Questions'
+import Questions from '../Component/Question/Questions';
 //----------------
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -209,6 +210,7 @@ const useStyles = makeStyles((theme) => ({
             </ListItemText>
             {openUserDrawerMethod ? <ExpandLess/> : <ExpandMore />}
           </ListItem>
+
           <Collapse in={openUserDrawerMethod} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               <ListItem button 
@@ -225,7 +227,7 @@ const useStyles = makeStyles((theme) => ({
               </ListItem>
             </List>
           </Collapse>
-          <ListItem button>
+          <ListItem button onClick ={()=> setComponent('QuestionBank')}>
             <ListItemIcon>
             <LibraryBooksIcon style={{ color: "#3D5A80" }} />
             </ListItemIcon>
@@ -258,6 +260,10 @@ const useStyles = makeStyles((theme) => ({
                 component === 'editProfile' ?
                 <VerticalTabs />
                 :
+                component === 'QuestionBank' ?
+                <QuestionBank />
+                :
+                // component == 'logout' ?                
                 component === 'questions' ?                
                 <Questions />              
                 :  
