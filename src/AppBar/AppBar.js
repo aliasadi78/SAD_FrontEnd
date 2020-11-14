@@ -14,6 +14,20 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import VerticalTabs from './../Component/TabMenuEditProfile' ;
 import Button from '@material-ui/core/Button';
+
+import NewClassDialog from '../Pages/NewClassPage' ;
+import ClassesPage from '../Pages/ClassesPage' ;
+import JoinClassDialog from '../Pages/JoinClass' ;
+// ------------------------
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import ClassIcon from '@material-ui/icons/Class';
+
 import LogOutDialog from '../Component/LogoutDialog';
 import QuestionBank from '../Component/QuestionBank';
 import Collapse from '@material-ui/core/Collapse';
@@ -22,9 +36,6 @@ import Questions from '../Component/Question/Questions';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import BallotIcon from '@material-ui/icons/Ballot';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -66,6 +77,9 @@ const useStyles = makeStyles((theme) => ({
       marginRight: 0,      
     },
     menuButtonHidden: {
+      display: 'none',
+    },
+    notDialog : {      
       display: 'none',
     },
     title: {
@@ -128,10 +142,14 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-  export default function DashboardEditProfile() {
+export default function Dashboard() {
+
+    const [component , setComponent] = React.useState('classesPage');
     const classes = useStyles();
     const [component , setComponent] = React.useState('editProfile');
     const [open, setOpen] = React.useState(false);
+    const [currentComponent , setCurrentComponent] = React.useState(false);
+
     const [openUserDrawerMethod , setopenUserDrawerMethod ] = React.useState(false);
     const handleUserDrawerMenuClick = () => {
       setopenUserDrawerMethod(!openUserDrawerMethod);
@@ -139,11 +157,13 @@ const useStyles = makeStyles((theme) => ({
     const handleDrawerOpen = () => {
       setOpen(true);      
     };
+
     const handleDrawerClose = () => {
       setOpen(!open);
       setopenUserDrawerMethod(false);
     };
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);    
   
     return (
       <div className={classes.root}>
@@ -164,13 +184,22 @@ const useStyles = makeStyles((theme) => ({
 
             <Button variant="contained" color="#98C1D9"
               style={{fontFamily: 'Vazir'}}
-              className = {classes.button}>
+              className = {classes.button}
+              onClick={() => {                
+                setCurrentComponent(component);
+                setComponent('newClassDialog');
+              }} >
               ایجاد کلاس
             </Button>
             
             <Button variant="contained" color="#98C1D9"
               style={{fontFamily: 'Vazir'}}
-              className = {classes.button}>
+              className = {classes.button}
+              onClick={()=>{                
+                setCurrentComponent(component);
+                setComponent('joinClassDialog');
+              }}
+              >
               ورود به کلاس 
             </Button>
 
@@ -225,6 +254,14 @@ const useStyles = makeStyles((theme) => ({
                   </Typography>
                 </ListItemText>
               </ListItem>
+
+              <ListItem button  onClick={() => setComponent('classesPage')}>
+                <ListItemIcon>
+                <ClassIcon style={{ color: "#3D5A80" }} />
+                </ListItemIcon>
+                <ListItemText  style={{fontFamily: 'Vazir'}} primary="کلاس ها" />
+              </ListItem>    
+
             </List>
           </Collapse>
           <ListItem button onClick ={()=> setComponent('QuestionBank')}>
@@ -248,6 +285,7 @@ const useStyles = makeStyles((theme) => ({
               </Typography>
             </ListItemText>
           </ListItem>           
+
         </Drawer>
         <main className={clsx(classes.content, {
           [classes.contentShift]: open,
@@ -265,8 +303,17 @@ const useStyles = makeStyles((theme) => ({
                 :
                 // component == 'logout' ?                
                 component === 'questions' ?                
-                <Questions />              
+                <Questions />   
+                :
+                component === 'classesPage'?
+                <ClassesPage />
                 :  
+                component === 'newClassDialog' ?              
+                <SetComponent component = {currentComponent} dialog = "newClass" />
+                :
+                component === 'joinClassDialog'?
+                <JoinClassDialog />
+                :
                 component == 'logout' ?                
                 <LogOutDialog/> // logout dialog                
                 :
@@ -280,3 +327,30 @@ const useStyles = makeStyles((theme) => ({
       </div>
     );
   }
+
+function SetComponent  (props){
+  const component = props.component ;    
+  const dialog = props.dialog ;
+  return (              
+    <div>
+      {
+        dialog === "newClass" ?
+        <NewClassDialog />
+        :
+        <JoinClassDialog />
+      }      
+      {
+        component === 'editProfile' ?
+        <VerticalTabs />
+        :
+        component === 'questionBank' ?
+        <VerticalTabs /> // replace it with question bank
+        :
+        component === 'classesPage'?
+        <ClassesPage />
+        :
+        <VerticalTabs />  
+      }   
+    </div>
+  );
+}

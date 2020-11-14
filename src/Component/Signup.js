@@ -66,7 +66,7 @@ class SignUp extends Component {
         const handleClick = e => {
             setPending(true);
             e.preventDefault();        
-        axios.post("http://parham-backend.herokuapp.com/user/signup", this.state)
+        axios.post("https://parham-backend.herokuapp.com/user/signup", this.state)
             .then(result => {
                 console.log(result);
                 console.log("good");

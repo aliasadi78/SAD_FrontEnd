@@ -6,6 +6,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import ClassIcon from '@material-ui/icons/Class';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {makeStyles} from '@material-ui/core/styles';
 
@@ -15,9 +16,16 @@ const useStyles = makeStyles((theme)=>({
     },
 }));
 
+
+const handelClickClasses = () =>{
+  return window.location.href = "/ClassesPage" ;
+}
+const handelClickUser = () =>{
+  return window.location.href = "/profile/edit" ;
+}
 export const mainListItems = (
   <div>
-    <ListItem button >
+    <ListItem button onClick={handelClickUser}>
       <ListItemIcon>        
         <AccountBoxIcon style={{ color: "#3D5A80" }} />
       </ListItemIcon>
