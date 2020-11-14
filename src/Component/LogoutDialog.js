@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import tokenConfig from '../utils/tokenConfig';
+import serverURL from '../utils/serverURL' ;
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios' ;
 
@@ -49,13 +49,13 @@ export default class LogOutDialog extends Component {
 }
 
 function Logout (){
-
-    const token = localStorage.getItem('token');
-    axios.post("https://parham-backend.herokuapp.com/user/logout" , 
-          {headers : {'Authorization' : token }} )
+    const token = localStorage.getItem('token');    
+    console.log(token);
+    axios.post( serverURL() + "user/logout" , 
+          JSON.stringify({}) , tokenConfig() )
           .then(res =>{
             console.log(res);
             localStorage.removeItem('token');
-            window.location.href = "signIn" ;            
+            window.location.href = "/signIn" ;
           })
 }
