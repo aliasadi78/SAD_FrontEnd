@@ -89,9 +89,15 @@ export default function UserDesignedQuestion(props) {
 
     const classes = useStyles();
 
-    const handleDeleteQuestion = () => {
-        console.log(this.props.questionId);
-        axios.delete( serverURL() + "question/" + this.props.questionId  , tokenConfig() );
+    const handleDeleteQuestion = (questionId) => {
+        console.log(questionId);
+        axios.delete( serverURL() + "question/" +  questionId , tokenConfig() )
+        .then(res => {
+            console.log(res);
+        })
+        .catch(e => {
+            console.log(e);
+        });
     };
 
     return (
@@ -142,7 +148,7 @@ export default function UserDesignedQuestion(props) {
                                         </Button>                                       
                                     </Grid>
                                     <Grid item xs={2}>                                        
-                                        <Button variant="contained" onCLick={() => {handleDeleteQuestion()}} className={classes.DeleteButton}>
+                                        <Button variant="contained" onClick={() => {handleDeleteQuestion( props.questionId)}} className={classes.DeleteButton}>
                                             <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                                 حذف
                                             </Typography>

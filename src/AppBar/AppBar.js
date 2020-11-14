@@ -140,7 +140,7 @@ const useStyles = makeStyles((theme) => ({
       setOpen(true);      
     };
     const handleDrawerClose = () => {
-      setOpen(false);
+      setOpen(!open);
       setopenUserDrawerMethod(false);
     };
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);

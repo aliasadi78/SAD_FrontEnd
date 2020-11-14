@@ -100,16 +100,10 @@ function TestAnswerToSend( choice1 , choice2 , choice3 , choice4 ){
 
 }
 
-function encode (options , name){
-    const output = options.find((o) => o.title === name);
-    console.log(output);
-    return output ;
-}
-
 function valuetext(value) {
-    if(value==1)
+    if(value=="LOW")
         return 'آسان';
-    else if (value==2)
+    else if (value=="MEDIUM")
         return 'متوسط' ;
     else
         return 'سخت' ;;    
@@ -139,7 +133,7 @@ export default function Question(props) {
 
     const [publicCheck , setpublicCheck ] = React.useState(false);
     const [difficulty , setDifficulty] = React.useState(1);
-    const [questionType , setQuestionType] = React.useState('tashrihi');
+    const [questionType , setQuestionType] = React.useState('LONGANSWER');
     
     const [choice1 , setChoice1] = React.useState(false);
     const [choice2 , setChoice2] = React.useState(false);
@@ -162,7 +156,7 @@ export default function Question(props) {
     answer , options , base , hardness , course) => {
 
         const a = {
-            "type": "LONGANSWER" , //type ,
+            "type": type ,
             "public": publicCheck,
             "isImage" : false , 
             "question": question,
@@ -176,38 +170,23 @@ export default function Question(props) {
                     "option"  : "dfadffd"
                 }
             ],//options,
-            "base": "10" , //base,
-            "hardness": "HARD" ,//hardness,
-            "course": "MATH" , // course
+            "base":  base,
+            "hardness":  hardness,
+            "course": course , 
             "chapter" : "1"
         }
         const ajson = JSON.stringify(a);
+        console.log(ajson);
         console.log("add question");
-
-        const token = localStorage.getItem('token');
+        
         axios.post(serverURL() + "question" , ajson , tokenConfig() )
         .then(res => {
-            console.log(res);
+            console.log(res);            
         })
         .catch(e => {
             console.log(e);
         });
     }
-
-    const handleQuestionTypeFormChange = a => {
-        if(a == 'تستی')
-        {
-            // setQuestionType('testi');            
-            return 'testi' ;
-        }        
-        else if(a=='تشریحی'){
-            // setQuestionType('tashrihi');            
-            return 'tashrihi' ; 
-        }else {
-            // setQuestionType('multichoice');
-            return 'multichoice' ;
-        }
-    };
 
     return (
         <React.Fragment>
@@ -255,14 +234,13 @@ export default function Question(props) {
                                                 id="پایه"
                                                 options={grades}
                                                 getOptionLabel={(option) => option.title}
+                                                getOptionSelected ={(option , value) => option.title === value.title}
                                                 className = {classes.dropdowns}                                    
                                                 debug             
-                                                onChange ={(e , newValue)=>{
-                                                    setGrade(encode(grades , newValue));
-                                                    console.log(newValue);
-                                                    // console.log(newValue.title));
+                                                onChange ={(e , newValue)=>{                                                    
+                                                    setGrade(newValue.code);                                                    
                                                 }}
-                                                renderInput={(params) => <TextField  variant = 'outlined' margin ='dense' {...params} label="پایه"    
+                                                renderInput={(params) => <TextField  variant = 'filled' margin ='dense' {...params} label="پایه"    
                                                 />}
                                             />                                        
                                     </Grid>
@@ -271,18 +249,18 @@ export default function Question(props) {
                                                 id="درس"
                                                 options={lessons}
                                                 getOptionLabel={(lessons) => lessons.title}
+                                                getOptionSelected ={(option , value) => option.title === value.title}
                                                 className = {classes.dropdowns}                                    
                                                 debug                                   
-                                                onChange = {(e , newValue)=>{
-                                                    setLesson(encode(lessons , newValue));
-                                                    console.log(newValue);
+                                                onChange = {(e , newValue)=>{                                                    
+                                                    setLesson(newValue.code);
                                                 }}
-                                                renderInput={(params) => <TextField variant = 'outlined' margin='dense' {...params} label="درس"    
+                                                renderInput={(params) => <TextField variant = 'filled' margin='dense' {...params} label="درس"    
                                                 />}
                                             />                                                                            
                                     </Grid>
                                     <Grid item xs={4}>                                        
-                                            <TextField className = {classes.dropdowns} variant = 'outlined' margin ='dense' label="فصل"/>                                        
+                                            <TextField className = {classes.dropdowns} variant = 'filled' margin ='dense' label="فصل"/>                                        
                                     </Grid>   
                                 </Grid>                             
                             </Paper>
@@ -292,15 +270,14 @@ export default function Question(props) {
                                             <Autocomplete                                                
                                                 options={questionTypes}
                                                 getOptionLabel={(questionTypes) => questionTypes.title}
+                                                getOptionSelected ={(option , value) => option.title === value.title}
                                                 className = {classes.dropdowns}                                    
                                                 debug                                                
-                                                onChange = {(e, newValue)=> {
-                                                    setQuestionType(handleQuestionTypeFormChange(newValue));
-                                                    console.log(newValue.code);
-                                                    console.log(newValue.title);
-                                                    console.log(grade);
+                                                onChange = {(e, newValue)=> {                                                    
+                                                    console.log(newValue);                                                                                                        
+                                                    setQuestionType(newValue.code);
                                                 }}
-                                                renderInput={(params) => <TextField margin='dense' variant="outlined" {...params} label="نوع سوال" />}
+                                                renderInput={(params) => <TextField margin='dense' variant="filled" {...params} label="نوع سوال" />}
                                             />                                                                            
                                     </Grid>
 
@@ -315,7 +292,14 @@ export default function Question(props) {
                                                     getAriaValueText={valuetext}
                                                     aria-labelledby="discrete-slider"
                                                     // valueLabelDisplay="auto"     
-                                                    onChange ={(e)=>setDifficulty(e.target.value)}                                       
+                                                    onChange ={(e)=>{
+                                                        if(e.target.value==1)
+                                                            setDifficulty("LOW");
+                                                        if(e.target.value==2)
+                                                            setDifficulty("MEDIUM");
+                                                        if(e.target.value==3)
+                                                            setDifficulty("HARD");
+                                                    }}                                       
                                                     step={1}
                                                     color = "secondary"
                                                     marks
@@ -339,7 +323,7 @@ export default function Question(props) {
                                 <Grid item xs={12}>     
                                     <Paper className={classes.paper}>
                                         {
-                                            questionType === 'tashrihi' ?
+                                            questionType === 'LONGANSWER' ?
                                                 <TextField                                                                    
                                                 id="outlined-multiline-static"
                                                 label="جواب"
@@ -352,7 +336,7 @@ export default function Question(props) {
                                                 variant="outlined"
                                                 />   
                                             :                                          
-                                            questionType === 'testi' ?
+                                            questionType === 'TEST' ?
                                                 <FormControl component="fieldset">                                                    
                                                     <RadioGroup aria-label="gender"  className = {classes.RadioChoice} name="gender1" onChange={(e) => {
                                                         console.log(e.target.value)

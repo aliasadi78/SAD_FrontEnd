@@ -59,8 +59,6 @@ class GetUserQuestions extends Component{
           bool : false
       };    
 
-      const token = localStorage.getItem('token');
-
       var userQuestions = [];
 
       axios.get(serverURL() + "question" , tokenConfig() )    
