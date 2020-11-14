@@ -96,7 +96,7 @@ class QuestionBank extends Component{
             const headers={
               'Authorization': token
             }
-            axios.post("https://parham-backend.herokuapp.com/bank?page=1&limit=10",
+            axios.post("https://parham-backend.herokuapp.com/bank?page=3&limit=3",
              this.state,{headers: headers})
                 .then(result => {
                   res.push(...result.data.questions);
@@ -124,11 +124,15 @@ class QuestionBank extends Component{
             <div>
                 <Material_RTL>
                 <M_RTL>
-                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'relative',right: '5%',width:'75%',}}>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'fixed',width: '25%',height: '5%',right: '56px',borderRadius: '20px 0px 0px 20px',top: '8%'}}>
+                    <CssBaseline/>
+                    <h6 style={{fontFamily: 'Vazir',margin: '10px'}}>بانک سوال</h6>
+                  </Container>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'fixed',width: '25%',height: '100%',right: '56px',top: '15%', borderRadius: '20px 0px 0px 20px', padding: '2% 2% 2% 2%'}}>
                     <CssBaseline/>
                 <div style={{position: 'relative',}}>
                 <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
-                <FormControl variant="filled" style={{width:'30%',margin: '1%'}}>
+                <FormControl variant="outlined" style={{width:'100%',margin: '1%'}}>
                     <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">پایه</InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -147,7 +151,7 @@ class QuestionBank extends Component{
                       <MenuItem value={12} style={{fontFamily: 'Vazir',direction: 'rtl'}}>دوازدهم</MenuItem>
                     </Select>
                 </FormControl>
-                <FormControl variant="filled" style={{width:'30%',margin: '1%'}}>
+                <FormControl variant="outlined" style={{width:'100%',margin: '1%'}}>
                     <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">کتاب</InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -168,7 +172,7 @@ class QuestionBank extends Component{
                     </Select>
                 </FormControl>
                 
-                <FormControl  variant="filled" style={{width:'30%',margin: '1%'}}>
+                <FormControl  variant="outlined" style={{width:'100%',margin: '1%'}}>
                     <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">نوع سوال</InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -189,7 +193,7 @@ class QuestionBank extends Component{
                     </Select>
                 </FormControl>
 
-                <FormControl variant="filled" style={{width:'30%',margin: '1%'}}>
+                <FormControl variant="outlined" style={{width:'100%',margin: '1%'}}>
                     <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">سطح سوال</InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -208,7 +212,7 @@ class QuestionBank extends Component{
                       <MenuItem value={'HARD'}    style={{fontFamily: 'Vazir',direction: 'rtl'}}>سخت</MenuItem>
                     </Select>
                 </FormControl>
-                <FormControl variant="filled" style={{width:'30%',margin: '1%'}}>
+                <FormControl variant="outlined" style={{width:'100%',margin: '1%'}}>
                     <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">فصل</InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -238,8 +242,8 @@ class QuestionBank extends Component{
                                     <Grid container>
                                         <Grid item xs={12}>
                                             <Grid classes={classes.root} >
-                                            <LoadingButton onClick={handleClick} endIcon={<Icon>search</Icon>} pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#0e918c',width: '94%',height: "53px"}}>
-                                            جست و جو در بانک سوال
+                                            <LoadingButton onClick={handleClick} endIcon={<Icon>search</Icon>} pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#0e918c',}}>
+                                            جست و جو
                                             </LoadingButton>
                                             </Grid>
                                         </Grid>
@@ -251,7 +255,7 @@ class QuestionBank extends Component{
                 <br/>
                 <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'relative',right: '5%',width:'75%',}}>
                 <CssBaseline/>
-                    <div id="ress">
+                    <div id="ress" >
                       <ol >
                         {/* {pending ? list.map((question) => {
                           return(
@@ -259,16 +263,16 @@ class QuestionBank extends Component{
                           )}) : null} */}
                         {pending && test ? list.map((question) => {
                           return(
-                          <li key={question.question}><QC q={question.question} g={question.options} a={question.answer} test={test} multi={multi} long={long} short={short}/><br/></li>
+                          <li key={question.question}><QC q={question.question} g={question.options} a={question.answers} test={test} multi={multi} long={long} short={short}/><br/></li>
                           )}) : pending && long ? list.map((question) => {
                           return(
-                          <li key={question.question}><QC q={question.question} a={question.answer} test={test} multi={multi} long={long} short={short}/><br/></li>
+                          <li key={question.question}><QC q={question.question} a={question.answers} test={test} multi={multi} long={long} short={short}/><br/></li>
                           )}) : pending && short ? list.map((question) => {
                             return(
-                            <li key={question.question}><QC q={question.question} a={question.answer} test={test} multi={multi} long={long} short={short}/><br/></li>
+                            <li key={question.question}><QC q={question.question} a={question.answers} test={test} multi={multi} long={long} short={short}/><br/></li>
                             )}) : pending && multi ? list.map((question) => {
                               return(
-                              <li key={question.question}><QC q={question.question} a={question.answer}  g={question.options} test={test} multi={multi} long={long} short={short}/><br/></li>
+                              <li key={question.question}><QC q={question.question} a={question.answers}  g={question.options} test={test} multi={multi} long={long} short={short}/><br/></li>
                               )}) : null}
                       </ol>
                     </div>    
@@ -286,8 +290,8 @@ function QC (props){
   // console.log(props.q);
   const classes = useStyles();
   return (
-  <div className={classes.root} style={{padding: "1% 0% 0% 3%"}}>
-    <Accordion  style={{backgroundColor: '#e6e6e6',marginTop: '1%',}}>
+  <div className={classes.root} style={{padding: '6% 0% 0% 4%'}}>
+    <Accordion  style={{backgroundColor: '#e6e6e6',}}>
          <AccordionSummary
            expandIcon={<ExpandMoreIcon />}
            aria-controls="panel1a-content"
@@ -295,7 +299,7 @@ function QC (props){
          >
            <Typography style={{fontFamily: 'Vazir',marginTop: '2%',direction: 'rtl',textAlign: 'right'}} className={classes.heading}>
              {props.q}
-
+              <br/><br/>
              {props.test ? (
              <div style={{position : 'relative',}}>
               <div>الف){props.g[0].option}</div>
@@ -312,7 +316,8 @@ function QC (props){
          </AccordionSummary>
          <AccordionDetails>
            <Typography style={{fontFamily: 'Vazir',textAlign: 'right'}}>
-             جواب:{props.a}
+             <hr/>
+             جواب:{props.a[0].answer}
            </Typography>
          </AccordionDetails>
        </Accordion>
