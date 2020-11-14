@@ -9,17 +9,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
 import VerticalTabs from './../Component/TabMenuEditProfile' ;
 import Button from '@material-ui/core/Button';
+
 import NewClassDialog from '../Pages/NewClassPage' ;
 import ClassesPage from '../Pages/ClassesPage' ;
 import JoinClassDialog from '../Pages/JoinClass' ;
@@ -33,14 +28,26 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import ClassIcon from '@material-ui/icons/Class';
 
+import LogOutDialog from '../Component/LogoutDialog';
+import QuestionBank from '../Component/QuestionBank';
+import Collapse from '@material-ui/core/Collapse';
+import Questions from '../Component/Question/Questions';
+//----------------
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import BallotIcon from '@material-ui/icons/Ballot';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',      
+      display: 'flex',                
     },
     toolbar: {
       paddingRight: 7, // keep right padding when drawer closed            
-    },
+    },    
     toolbarIcon: {
       display: 'flex',
       alignItems: 'center',
@@ -55,6 +62,8 @@ const useStyles = makeStyles((theme) => ({
         duration: theme.transitions.duration.leavingScreen,
       }),      
       backgroundColor : '#3D5A80' ,      
+      height : '52px' ,               
+      justifyContent : 'center'
     },
     appBarShift: {
       marginRight : drawerWidth,
@@ -76,6 +85,9 @@ const useStyles = makeStyles((theme) => ({
     title: {
       flexGrow: 1,
     },
+    nested: {
+      paddingRight: theme.spacing(5),
+    },    
     drawerPaper: {
       // position: 'relative',
       whiteSpace: 'nowrap',
@@ -84,6 +96,22 @@ const useStyles = makeStyles((theme) => ({
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
       }),      
+    },
+    content: {
+      flexGrow: 1,
+      padding: theme.spacing(3),
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      marginRight: 0,
+    },
+    contentShift: {
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginRight: drawerWidth,
     },
     drawerPaperClose: {
       overflowX: 'hidden',
@@ -96,25 +124,11 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(7),
       },
     },
-    appBarSpacer: theme.mixins.toolbar,
-    content: {
-      flexGrow: 1,
-      height: '100vh',
-      overflow: 'auto',      
-      backgroundColor : '#e6e6e6' ,
-      justifyContent : 'center' ,
-
-    },
+    appBarSpacer: theme.mixins.toolbar,    
     container: {
-      paddingTop: theme.spacing(4),
+      paddingTop: theme.spacing(0),
       paddingBottom: theme.spacing(4),            
-    },
-    paper: {
-      padding: theme.spacing(2),
-      display: 'flex',
-      overflow: 'auto',
-      flexDirection: 'column',            
-    },
+    },    
     fixedHeight: {
       height: 240,
     },
@@ -132,15 +146,21 @@ export default function Dashboard() {
 
     const [component , setComponent] = React.useState('classesPage');
     const classes = useStyles();
+    const [component , setComponent] = React.useState('editProfile');
     const [open, setOpen] = React.useState(false);
     const [currentComponent , setCurrentComponent] = React.useState(false);
 
+    const [openUserDrawerMethod , setopenUserDrawerMethod ] = React.useState(false);
+    const handleUserDrawerMenuClick = () => {
+      setopenUserDrawerMethod(!openUserDrawerMethod);
+    };
     const handleDrawerOpen = () => {
-      setOpen(true);
+      setOpen(true);      
     };
 
     const handleDrawerClose = () => {
-      setOpen(false);
+      setOpen(!open);
+      setopenUserDrawerMethod(false);
     };
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);    
@@ -194,7 +214,7 @@ export default function Dashboard() {
           }}
           open={open}
         >
-          <div className={classes.toolbarIcon} >  
+          <div className={classes.toolbarIcon}>  
 
           <Typography dir="rtl" component="h1" variant="h6" color="inherit" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80'}}>                          
               اسم سایت و لوگوش
@@ -202,49 +222,106 @@ export default function Dashboard() {
             <IconButton onClick={handleDrawerClose} >
               <ChevronLeftIcon/>
             </IconButton>
-          </div>
-          {/* <List>{mainListItems}</List>           */}
-          <ListItem button onClick={() => setComponent('editProfile')}>
+          </div>          
+
+          <ListItem button onClick={()=>{
+            setComponent('editProfile');
+            if(open == true)
+              handleUserDrawerMenuClick();
+            }}>
             <ListItemIcon>        
               <AccountBoxIcon style={{ color: "#3D5A80" }} />
             </ListItemIcon>
-            <ListItemText  primary="حساب کاربری "  />
+            <ListItemText>
+            <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
+                حساب کاربری
+            </Typography>
+            </ListItemText>
+            {openUserDrawerMethod ? <ExpandLess/> : <ExpandMore />}
           </ListItem>
-          <ListItem button  onClick={() => setComponent('questionBank')}>
+
+          <Collapse in={openUserDrawerMethod} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem button 
+                onClick = {() => setComponent('questions')}
+                className={classes.nested}>
+                <ListItemIcon>
+                  <BallotIcon style={{ color: "#3D5A80" }} />
+                </ListItemIcon>
+                <ListItemText >
+                  <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
+                    سوالات 
+                  </Typography>
+                </ListItemText>
+              </ListItem>
+
+              <ListItem button  onClick={() => setComponent('classesPage')}>
+                <ListItemIcon>
+                <ClassIcon style={{ color: "#3D5A80" }} />
+                </ListItemIcon>
+                <ListItemText  style={{fontFamily: 'Vazir'}} primary="کلاس ها" />
+              </ListItem>    
+
+            </List>
+          </Collapse>
+          <ListItem button onClick ={()=> setComponent('QuestionBank')}>
             <ListItemIcon>
             <LibraryBooksIcon style={{ color: "#3D5A80" }} />
             </ListItemIcon>
-            <ListItemText style={{fontFamily: 'Vazir'}} primary="بانک سوال" />
-          </ListItem>
-          <ListItem button  onClick={() => setComponent('classesPage')}>
+            <ListItemText >
+              <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
+                بانک سوال
+              </Typography>
+            </ListItemText>
+          </ListItem>   
+
+          <ListItem button onClick ={()=> setComponent('logout')} >
             <ListItemIcon>
-            <ClassIcon style={{ color: "#3D5A80" }} />
-            </ListItemIcon>
-            <ListItemText  style={{fontFamily: 'Vazir'}} primary="کلاس ها" />
-          </ListItem>    
+              <ExitToAppIcon style={{ color: "#3D5A80" }} />        
+            </ListItemIcon>  
+            <ListItemText >
+              <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
+                خروج
+              </Typography>
+            </ListItemText>
+          </ListItem>           
+
         </Drawer>
-        <main className={classes.content}>
+        <main className={clsx(classes.content, {
+          [classes.contentShift]: open,
+        })}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
-            {
-              component === 'editProfile' ?
-              <VerticalTabs />
-              :
-              component === 'questionBank' ?
-              <VerticalTabs /> // replace it with question bank
-              :
-              component === 'classesPage'?
-              <ClassesPage />
-              :
-              component === 'newClassDialog' ?              
-              <SetComponent component = {currentComponent} dialog = "newClass" />
-              :
-              component === 'joinClassDialog'?
-              <JoinClassDialog />
-              :
-              <VerticalTabs />              
-            }
-            
+            {/* <Grid container spacing={3}>              
+              <Grid item xs={12}>                                */}
+              {
+                component === 'editProfile' ?
+                <VerticalTabs />
+                :
+                component === 'QuestionBank' ?
+                <QuestionBank />
+                :
+                // component == 'logout' ?                
+                component === 'questions' ?                
+                <Questions />   
+                :
+                component === 'classesPage'?
+                <ClassesPage />
+                :  
+                component === 'newClassDialog' ?              
+                <SetComponent component = {currentComponent} dialog = "newClass" />
+                :
+                component === 'joinClassDialog'?
+                <JoinClassDialog />
+                :
+                component == 'logout' ?                
+                <LogOutDialog/> // logout dialog                
+                :
+                <VerticalTabs />
+                // question Bank
+              }                                                           
+              {/* </Grid>              
+            </Grid> */}            
           </Container>
         </main>
       </div>

@@ -64,17 +64,12 @@ function a11yProps(index) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {    
-    flexGrow: 1,
-    margin : theme.spacing(5) ,
+  root: {        
     backgroundColor: theme.palette.background.paper,
     display: 'flex',    
     boxShadow: '0 3px 5px 5px rgba(204, 204, 204, .6)',
     width : '60%' ,   
-    borderRadius : 15 , 
-    direction : "ltr" ,
-    alignItems : 'center' ,
-    flexWrap: 'wrap' ,     
+    borderRadius : 15 ,   
   },
   button :{    
     margin : theme.spacing.unit * 1.5 ,    

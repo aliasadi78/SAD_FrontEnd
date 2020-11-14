@@ -9,12 +9,13 @@ import VerticalTabs from './Component/TabMenuEditProfile';
 import Dashboard from './AppBar/AppBar';
 import InsideClass from './Pages/insideClass' ;
 
+import Questions from './Component/Question/Questions';
+
 class App extends Component {
 
     render() {
-        return (            
-            // <Dashboard />
-            <div className={classes.App}>                    
+        return (                
+            <div className={classes.App}>                
                 <Link to="/"> </Link>
                 <Link to="/signIn"> </Link>
                 <Link to="/signUp"> </Link>
