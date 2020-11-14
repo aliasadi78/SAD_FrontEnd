@@ -10,11 +10,14 @@ import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button' ;
+import axios from 'axios' ;
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { createMuiTheme } from '@material-ui/core/styles';
+import serverURL from '../../utils/serverURL';
+import tokenConfig from '../../utils/tokenConfig';
 const theme = createMuiTheme({
   palette: {
     primary:{
@@ -28,8 +31,7 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
-    marginTop : theme.spacing(5) ,
+    flexGrow: 1,    
     width : '100%'
   },
   paper: {
@@ -47,7 +49,9 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: 'none',
   },
-  accordion:{},
+  accordion:{
+      paddingBottom : theme.spacing(0) ,
+  },  
   EditButton :{
       backgroundColor :'#EE6C4D' ,
       "&:hover": {
@@ -65,9 +69,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+// function deleteQuestion(questionID){
+
+//     const a = {
+//         "questionId" : {questionID}
+//     };
+
+//     const ajson = JSON.stringify(a);
+//     console.log(questionID);
+//     axios.delete( serverURL() + "question/" + questionID  , tokenConfig() );
+// }
+
+function editQuestion (){
+    // localStorage.setItem()
+}
+
+
 export default function UserDesignedQuestion(props) {
 
     const classes = useStyles();
+
+    const handleDeleteQuestion = (questionId) => {
+        console.log(questionId);
+        axios.delete( serverURL() + "question/" +  questionId , tokenConfig() )
+        .then(res => {
+            console.log(res);
+        })
+        .catch(e => {
+            console.log(e);
+        });
+    };
 
     return (
         <React.Fragment>
@@ -84,19 +115,18 @@ export default function UserDesignedQuestion(props) {
                             // expandIcon={<ExpandMoreIcon style={{ color: "white" }}/>}
                             aria-controls="panel1c-content"
                             id="panel1c-header"
-                            className = {classes.accordion}
+                            className = {classes.accordion}                            
                             >                            
-                            <Grid container spacing={1}  >                                
+                            <Grid container spacing={0}  >                                
                                 <Grid item xs={12}>
                                     <Paper className={classes.paper}>
                                         <TextField                    
                                             id="outlined-multiline-static"
-                                            label="طرح سوال جدید"
+                                            defaultValue = {props.question}                                  
                                             multiline
                                             rows={4}
                                             fullWidth = 'true'
-                                            className = {classes.BigForm}
-                                            // defaultValue="Default Value"
+                                            className = {classes.BigForm}                                            
                                             variant="outlined"
                                         />
                                     </Paper>
@@ -111,14 +141,14 @@ export default function UserDesignedQuestion(props) {
                                 <Grid container justifyContent='center' spacing={3} >                 
 
                                     <Grid item xs={2}>
-                                        <Button variant="contained" className={classes.EditButton} href="#contained-buttons">
+                                        <Button variant="contained" onClick ={props.buttonClick} className={classes.EditButton} href="#contained-buttons">
                                             <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                                 ویرایش
                                             </Typography>
                                         </Button>                                       
                                     </Grid>
                                     <Grid item xs={2}>                                        
-                                        <Button variant="contained" className={classes.DeleteButton} href="#contained-buttons">
+                                        <Button variant="contained" onClick={() => {handleDeleteQuestion( props.questionId)}} className={classes.DeleteButton}>
                                             <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                                 حذف
                                             </Typography>
@@ -133,8 +163,4 @@ export default function UserDesignedQuestion(props) {
             </Container>
         </React.Fragment>
     );  
-}
-
-function AddQuestion (){
-
 }

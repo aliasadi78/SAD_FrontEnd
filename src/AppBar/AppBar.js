@@ -83,6 +83,22 @@ const useStyles = makeStyles((theme) => ({
         duration: theme.transitions.duration.enteringScreen,
       }),      
     },
+    content: {
+      flexGrow: 1,
+      padding: theme.spacing(3),
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      marginRight: 0,
+    },
+    contentShift: {
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginRight: drawerWidth,
+    },
     drawerPaperClose: {
       overflowX: 'hidden',
       transition: theme.transitions.create('width', {
@@ -94,15 +110,7 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(7),
       },
     },
-    appBarSpacer: theme.mixins.toolbar,
-    content: {
-      flexGrow: 1,
-      height: '100vh',
-      overflow: 'auto',      
-      backgroundColor : '#e6e6e6' ,
-      justifyContent : 'center' ,
-
-    },
+    appBarSpacer: theme.mixins.toolbar,    
     container: {
       paddingTop: theme.spacing(0),
       paddingBottom: theme.spacing(4),            
@@ -132,7 +140,7 @@ const useStyles = makeStyles((theme) => ({
       setOpen(true);      
     };
     const handleDrawerClose = () => {
-      setOpen(false);
+      setOpen(!open);
       setopenUserDrawerMethod(false);
     };
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
@@ -241,7 +249,9 @@ const useStyles = makeStyles((theme) => ({
             </ListItemText>
           </ListItem>           
         </Drawer>
-        <main className={classes.content}>
+        <main className={clsx(classes.content, {
+          [classes.contentShift]: open,
+        })}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
             {/* <Grid container spacing={3}>              

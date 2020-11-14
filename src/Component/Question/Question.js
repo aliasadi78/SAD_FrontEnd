@@ -2,6 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import Paper from '@material-ui/core/Paper';
+import tokenConfig from '../../utils/tokenConfig';
+import serverURL from '../../utils/serverURL';
 import Material_RTL from "../Material_RTL";
 import Typography from '@material-ui/core/Typography';
 import RTL from '../M_RTL';
@@ -11,6 +13,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
+import axios from 'axios' ;
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 import Slider from '@material-ui/core/Slider';
@@ -60,10 +63,14 @@ const useStyles = makeStyles((theme) => ({
     marginBottom : theme.spacing(3) , 
   },
   grid :{
-    alignItems : 'flex-end' ,
+    alignItems : 'flex-end' ,    
   },
   dropdowns :{
       height : 'inherit'
+  },
+  expandGrid : {
+      margin : theme.spacing(0) ,
+      padding : theme.spacing(0)
   },
   input: {
     display: 'none',
@@ -89,70 +96,97 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function TestAnswerToSend( choice1 , choice2 , choice3 , choice4 ){
+
+}
+
 function valuetext(value) {
-    if(value==1)
+    if(value=="LOW")
         return 'آسان';
-    else if (value==2)
+    else if (value=="MEDIUM")
         return 'متوسط' ;
     else
         return 'سخت' ;;    
-  }  
+  }   
 
 export default function Question(props) {
     const classes = useStyles();
-//   const 
+
     const grades = [
-        { title: 'دوازدهم'},
-         { title: 'یازدهم'},
-            { title: 'دهم'},
-            { title: 'نهم'},        
+        { title: 'دوازدهم' , code : 12},
+         { title: 'یازدهم' , code : 11},
+            { title: 'دهم' , code : 10},            
     ];
 
     const lessons = [
-        { title: 'ریاضی'},
-         { title: 'هندسه'},
-            { title: 'گسسته'},
-            { title: 'فیزیک'},        
-            {title: 'شیمی'},
-            {title: 'ادبیات'},
+        { title: 'ریاضی' , code : "MATH"},        
+        { title: 'زیست' , code : "BIOLOGY"},        
+        { title: 'فیزیک' , code :"PHYSICS" },        
+        {title:   'شیمی' , code : "CHEMISTRY"},        
     ];
 
     const questionTypes = [
-        {title:'تشریحی'} , 
-        {title:'تستی'} , 
-        {title:'چندگزینه ای'} , 
-        {title:'جای خالی'} , 
-    ];
+        {title:'تشریحی' , code : "LONGANSWER"} , 
+        {title:'تستی'   , code : "TEST"} , 
+        {title:'چندگزینه ای'  , code : "MULTICHOICE"} ,            
+    ];    
 
     const [publicCheck , setpublicCheck ] = React.useState(false);
     const [difficulty , setDifficulty] = React.useState(1);
-    const [questionType , setQuestionType] = React.useState('tashrihi');
+    const [questionType , setQuestionType] = React.useState('LONGANSWER');
     
     const [choice1 , setChoice1] = React.useState(false);
     const [choice2 , setChoice2] = React.useState(false);
     const [choice3 , setChoice3] = React.useState(false);
     const [choice4 , setChoice4] = React.useState(false);
 
-    const[TestAnswer , setTestAnswer] = React.useState(null);    
+    const [TestAnswer , setTestAnswer] = React.useState(null);    
+    
+    const [question , setQuestion] = React.useState(null);
+    const [grade , setGrade] = React.useState(null);
+    const [lesson , setLesson] = React.useState(null);
+    const [ session , setSession] = React.useState(null);    
+    const [ answer , setAnswer] = React.useState(null);    
 
     const handleChange = () => {
-        setpublicCheck(!publicCheck);
+        setpublicCheck(!publicCheck);        
       };    
 
-    const handleQuestionTypeFormChange = e => {
-        if(e.target.value == 'تستی')
-        {
-            // setQuestionType('testi');            
-            return 'testi' ;
-        }        
-        else if(e.target.value=='تشریحی'){
-            // setQuestionType('tashrihi');            
-            return 'tashrihi' ; 
-        }else {
-            // setQuestionType('multichoice');
-            return 'multichoice' ;
+    const AddQuestion = (type , publicCheck , question , 
+    answer , options , base , hardness , course) => {
+
+        const a = {
+            "type": type ,
+            "public": publicCheck,
+            "isImage" : false , 
+            "question": question,
+            "answers": [
+                {
+                    "answer" : "asdfasdf"
+                }
+            ],
+            "options": [
+                {
+                    "option"  : "dfadffd"
+                }
+            ],//options,
+            "base":  base,
+            "hardness":  hardness,
+            "course": course , 
+            "chapter" : "1"
         }
-    };
+        const ajson = JSON.stringify(a);
+        console.log(ajson);
+        console.log("add question");
+        
+        axios.post(serverURL() + "question" , ajson , tokenConfig() )
+        .then(res => {
+            console.log(res);            
+        })
+        .catch(e => {
+            console.log(e);
+        });
+    }
 
     return (
         <React.Fragment>
@@ -170,7 +204,7 @@ export default function Question(props) {
                             id="panel1c-header"
                             className = {classes.accordion}
                             >                            
-                            <Grid container spacing={3}>                                
+                            <Grid container spacing={0}>                                
                                 <Grid item xs={12}>
                                     <Paper className={classes.paper}>
                                         <TextField                    
@@ -178,12 +212,16 @@ export default function Question(props) {
                                             label="طرح سوال جدید"
                                             multiline
                                             rows={4}
+                                            onChange={(e) =>{setQuestion(e.target.value)} }
                                             fullWidth = 'true'
                                             className = {classes.BigForm}
                                             // defaultValue="Default Value"
                                             variant="outlined"
                                         />
                                     </Paper>
+                                </Grid>
+                                <Grid className={classes.expandGrid} item xs={12} >
+                                    <ExpandMoreIcon style={{ color: "white" , align: 'center'}}/>
                                 </Grid>                            
                             </Grid>                            
                         </AccordionSummary>
@@ -196,9 +234,13 @@ export default function Question(props) {
                                                 id="پایه"
                                                 options={grades}
                                                 getOptionLabel={(option) => option.title}
+                                                getOptionSelected ={(option , value) => option.title === value.title}
                                                 className = {classes.dropdowns}                                    
-                                                debug                                            
-                                                renderInput={(params) => <TextField variant = 'outlined' margin ='dense' {...params} label="پایه"    
+                                                debug             
+                                                onChange ={(e , newValue)=>{                                                    
+                                                    setGrade(newValue.code);                                                    
+                                                }}
+                                                renderInput={(params) => <TextField  variant = 'filled' margin ='dense' {...params} label="پایه"    
                                                 />}
                                             />                                        
                                     </Grid>
@@ -207,14 +249,18 @@ export default function Question(props) {
                                                 id="درس"
                                                 options={lessons}
                                                 getOptionLabel={(lessons) => lessons.title}
+                                                getOptionSelected ={(option , value) => option.title === value.title}
                                                 className = {classes.dropdowns}                                    
-                                                debug                                            
-                                                renderInput={(params) => <TextField variant = 'outlined' margin='dense' {...params} label="درس"    
+                                                debug                                   
+                                                onChange = {(e , newValue)=>{                                                    
+                                                    setLesson(newValue.code);
+                                                }}
+                                                renderInput={(params) => <TextField variant = 'filled' margin='dense' {...params} label="درس"    
                                                 />}
                                             />                                                                            
                                     </Grid>
                                     <Grid item xs={4}>                                        
-                                            <TextField className = {classes.dropdowns} variant = 'outlined' margin ='dense' label="فصل"/>                                        
+                                            <TextField className = {classes.dropdowns} variant = 'filled' margin ='dense' label="فصل"/>                                        
                                     </Grid>   
                                 </Grid>                             
                             </Paper>
@@ -224,11 +270,14 @@ export default function Question(props) {
                                             <Autocomplete                                                
                                                 options={questionTypes}
                                                 getOptionLabel={(questionTypes) => questionTypes.title}
+                                                getOptionSelected ={(option , value) => option.title === value.title}
                                                 className = {classes.dropdowns}                                    
                                                 debug                                                
-                                                renderInput={(params) => <TextField margin='dense' variant="outlined" {...params} label="نوع سوال"    
-                                                onChange = {(e)=> setQuestionType(valuetext(e.target.value))}
-                                                />}
+                                                onChange = {(e, newValue)=> {                                                    
+                                                    console.log(newValue);                                                                                                        
+                                                    setQuestionType(newValue.code);
+                                                }}
+                                                renderInput={(params) => <TextField margin='dense' variant="filled" {...params} label="نوع سوال" />}
                                             />                                                                            
                                     </Grid>
 
@@ -243,7 +292,14 @@ export default function Question(props) {
                                                     getAriaValueText={valuetext}
                                                     aria-labelledby="discrete-slider"
                                                     // valueLabelDisplay="auto"     
-                                                    onChange ={(e)=>setDifficulty(e.target.value)}                                       
+                                                    onChange ={(e)=>{
+                                                        if(e.target.value==1)
+                                                            setDifficulty("LOW");
+                                                        if(e.target.value==2)
+                                                            setDifficulty("MEDIUM");
+                                                        if(e.target.value==3)
+                                                            setDifficulty("HARD");
+                                                    }}                                       
                                                     step={1}
                                                     color = "secondary"
                                                     marks
@@ -267,7 +323,7 @@ export default function Question(props) {
                                 <Grid item xs={12}>     
                                     <Paper className={classes.paper}>
                                         {
-                                            questionType === 'tashrihi' ?
+                                            questionType === 'LONGANSWER' ?
                                                 <TextField                                                                    
                                                 id="outlined-multiline-static"
                                                 label="جواب"
@@ -275,13 +331,17 @@ export default function Question(props) {
                                                 rows={4}
                                                 fullWidth = 'true'
                                                 className = {classes.BigForm}
+                                                onChange = {(e)=>{setAnswer(e.target.value)}}
                                                 // defaultValue="Default Value"
                                                 variant="outlined"
                                                 />   
                                             :                                          
-                                            questionType === 'testi' ?
+                                            questionType === 'TEST' ?
                                                 <FormControl component="fieldset">                                                    
-                                                    <RadioGroup aria-label="gender"  className = {classes.RadioChoice} name="gender1" onChange={(e) => setTestAnswer(e.target.value)}>
+                                                    <RadioGroup aria-label="gender"  className = {classes.RadioChoice} name="gender1" onChange={(e) => {
+                                                        console.log(e.target.value)
+                                                        setTestAnswer(e.target.value)}
+                                                        }>
                                                         <form class ="form-inline">
                                                             <FormControlLabel value="g1" control={<Radio />} /> <TextField variant="filled" margin='dense' />
                                                         </form>       
@@ -331,7 +391,12 @@ export default function Question(props) {
                                 </Grid>
 
                                 <Grid item xs={4}>                                    
-                                    <Button variant="contained" className={classes.Button} href="#contained-buttons">
+                                    <Button variant="contained"
+                                     onClick={() => {AddQuestion(                                            
+                                        questionType , publicCheck , question ,
+                                        answer , `23` , grade , difficulty , lesson
+                                    )}} 
+                                    className={classes.Button} href="#contained-buttons">
                                         <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                             {props.submitButton}
                                         </Typography>
@@ -353,8 +418,4 @@ export default function Question(props) {
             </Container>
         </React.Fragment>
     );  
-}
-
-function AddQuestion (){
-
 }
