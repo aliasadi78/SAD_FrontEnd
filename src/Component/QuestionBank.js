@@ -117,7 +117,7 @@ class QuestionBank extends Component{
                     // setPending(true);
                 }).catch(error => {
                     console.log(error.messege);
-                    alert("error");
+                    alert("سوالی با این مشخصات فعلا در بانک سوال موجود نمی باشد");
                     setPending(false); 
                     console.log("bad");
                 })
@@ -127,11 +127,15 @@ class QuestionBank extends Component{
             <div>
                 <Material_RTL>
                 <M_RTL>
-                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'absolute',width: '30%',height: '40px',borderRadius: '20px 0px 0px 20px',margin: '-1% 0 0 0'}}>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'absolute',width: '30%',height: '40px',borderRadius: '10px 0px 0px 10px',margin: '-1% 0 0 0'}}>
                     <CssBaseline/>
                     <h6 style={{fontFamily: 'Vazir',margin: '10px',padding: '1%'}}>بانک سوال</h6>
                   </Container>
-                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'absolute',width: '30%', borderRadius: '20px 0px 0px 20px', padding: '2% 2% 0% 2%',margin: '40px 0 0 0'}}>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'absolute',width: '65%',height: '40px',borderRadius: '0px 10px 10px 00px',margin: '-1% 32% 0 0'}}>
+                    <CssBaseline/>
+                    <h6 style={{fontFamily: 'Vazir',margin: '10px',padding: '1%'}}>سوالات</h6>
+                  </Container>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'absolute',width: '30%', borderRadius: '10px 0px 0px 10px', padding: '2% 2% 0% 2%',margin: '40px 0 0 0'}}>
                     <CssBaseline/>
                 <div style={{position: 'relative',}}>
                 <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
@@ -258,10 +262,10 @@ class QuestionBank extends Component{
                 <br/>
                 {pending ? 
                   
-                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'fixed',width:'65%',display: 'block',height: '82%',overflow: 'scroll',borderRadius: '0px 20px 0px 0px',margin: '25px 32% 19px 0px'}}>
+                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'fixed',width:'65%',display: 'block',height: '82%',overflow: 'scroll',borderRadius: '0px 10px 0px 0px',margin: '25px 32% 19px 0px'}}>
                 <CssBaseline/>
                     <div id="ress" >
-                      <ol >
+                      <ol style={{listStyle: 'none'}}>
                         {/* {pending ? list.map((question) => {
                           return(
                           <li key={question.question}><QC q={question.question} g={question.options} test={test} multi={multi}/><br/></li>
@@ -303,7 +307,7 @@ function QC (props){
            id="panel1a-header"
          >
            <Typography style={{fontFamily: 'Vazir',marginTop: '2%',direction: 'rtl',textAlign: 'right'}} className={classes.heading}>
-             {props.q}
+             <Icon style={{position: 'absolute',right: '-4%',top: '15%',color: '#ee6c4d'}}>help_center</Icon>{props.q}
               <br/><br/>
              {props.test ? (
              <div style={{position : 'relative',right: '2%'}}>
@@ -321,8 +325,8 @@ function QC (props){
          </AccordionSummary>
          <AccordionDetails>
            <Typography style={{fontFamily: 'Vazir',textAlign: 'right'}}>
-             <hr/>
-             جواب:{props.a.map((answers) => {
+             <hr/><Icon style={{color: '#0e918c'}}>vpn_key</Icon>
+             {props.a.map((answers) => {
              return (<div>{answers.answer}</div>)})}
            </Typography>
          </AccordionDetails>
