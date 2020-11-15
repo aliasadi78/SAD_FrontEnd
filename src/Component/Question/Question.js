@@ -209,7 +209,7 @@ export default function Question(props) {
                                     <Paper className={classes.paper}>
                                         <TextField                    
                                             id="outlined-multiline-static"
-                                            label="طرح سوال جدید"
+                                            label="صورت سوال"
                                             multiline
                                             rows={4}
                                             onChange={(e) =>{setQuestion(e.target.value)} }

@@ -31,10 +31,14 @@ export default function Questions(props) {
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12}  lg={6} className = {classes.grid}>
+          <h3 style={{fontFamily: 'Vazir', color : '#3D5A80'}} >سوال هایی که تا کنون طرح کرده اید</h3>
+                          <hr/>
               {/* { questions } */}
               <GetUserQuestions />
           </Grid>      
-          <Grid item xs={12}  lg={6} className = {classes.grid}>                        
+          <Grid item xs={12}  lg={6} className = {classes.grid}>          
+          <h3 style={{fontFamily: 'Vazir' , color : '#3D5A80'}} >طرح سوال جدید</h3>
+                          <hr/>              
             <Question 
                 submitButton="طرح"
                 backColor = '#087E8B'

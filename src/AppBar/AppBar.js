@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import Box from '@material-ui/core/Box' ;
+import Divider from '@material-ui/core/Divider'
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
@@ -36,8 +37,6 @@ import Questions from '../Component/Question/Questions';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import BallotIcon from '@material-ui/icons/Ballot';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const drawerWidth = 220;
@@ -134,7 +133,8 @@ const useStyles = makeStyles((theme) => ({
     },
     button : {
       marginRight : theme.spacing(2) ,       
-      backgroundColor : '#98C1D9' ,
+      backgroundColor : '#98C1D9' ,      
+      // color : 'white' , 
       "&:hover": {
         backgroundColor: '#EE6C4D' ,
         color : 'white' , 
@@ -144,7 +144,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
 
-    const [component , setComponent] = React.useState('classesPage');
+
     const classes = useStyles();
     const [component , setComponent] = React.useState('editProfile');
     const [open, setOpen] = React.useState(false);
@@ -182,7 +182,7 @@ export default function Dashboard() {
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>                          
             </Typography>
 
-            <Button variant="contained" color="#98C1D9"
+            <Button variant="contained" color="white"
               style={{fontFamily: 'Vazir'}}
               className = {classes.button}
               onClick={() => {                
@@ -190,13 +190,12 @@ export default function Dashboard() {
                 setComponent('newClassDialog');
               }} >
               ایجاد کلاس
-            </Button>
-            
-            <Button variant="contained" color="#98C1D9"
+            </Button>            
+            <Button variant="contained" color="#98C1D9" 
               style={{fontFamily: 'Vazir'}}
               className = {classes.button}
               onClick={()=>{                
-                setCurrentComponent(component);
+                // setCurrentComponent(component);
                 setComponent('joinClassDialog');
               }}
               >
@@ -255,11 +254,15 @@ export default function Dashboard() {
                 </ListItemText>
               </ListItem>
 
-              <ListItem button  onClick={() => setComponent('classesPage')}>
+              <ListItem button className={classes.nested}  onClick={() => setComponent('classesPage')}>
                 <ListItemIcon>
                 <ClassIcon style={{ color: "#3D5A80" }} />
                 </ListItemIcon>
-                <ListItemText  style={{fontFamily: 'Vazir'}} primary="کلاس ها" />
+                <ListItemText  style={{fontFamily: 'Vazir'}} >
+                  <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>
+                    کلاس ها
+                  </Typography>            
+                </ListItemText>
               </ListItem>    
 
             </List>
