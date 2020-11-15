@@ -124,11 +124,11 @@ class QuestionBank extends Component{
             <div>
                 <Material_RTL>
                 <M_RTL>
-                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'fixed',width: '25%',height: '5%',right: '56px',borderRadius: '20px 0px 0px 20px',top: '8%'}}>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'absolute',width: '30%',height: '40px',borderRadius: '20px 0px 0px 20px',margin: '-1% 0 0 0'}}>
                     <CssBaseline/>
-                    <h6 style={{fontFamily: 'Vazir',margin: '10px'}}>بانک سوال</h6>
+                    <h6 style={{fontFamily: 'Vazir',margin: '10px',padding: '1%'}}>بانک سوال</h6>
                   </Container>
-                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'fixed',width: '25%',height: '100%',right: '56px',top: '15%', borderRadius: '20px 0px 0px 20px', padding: '2% 2% 2% 2%'}}>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'absolute',width: '30%', borderRadius: '20px 0px 0px 20px', padding: '2% 2% 0% 2%',margin: '40px 0 0 0'}}>
                     <CssBaseline/>
                 <div style={{position: 'relative',}}>
                 <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
@@ -253,7 +253,9 @@ class QuestionBank extends Component{
                 </div>
                 </Container>
                 <br/>
-                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'relative',right: '5%',width:'75%',}}>
+                {pending ? 
+                  
+                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'fixed',width:'65%',display: 'block',height: '82%',overflow: 'scroll',borderRadius: '0px 20px 0px 0px',margin: '25px 32% 19px 0px'}}>
                 <CssBaseline/>
                     <div id="ress" >
                       <ol >
@@ -273,10 +275,10 @@ class QuestionBank extends Component{
                             )}) : pending && multi ? list.map((question) => {
                               return(
                               <li key={question.question}><QC q={question.question} a={question.answers}  g={question.options} test={test} multi={multi} long={long} short={short}/><br/></li>
-                              )}) : null}
+                              )}): null}
                       </ol>
                     </div>    
-                </Container>
+                </Container> : null}
                 </M_RTL>
                 </Material_RTL>
             </div>

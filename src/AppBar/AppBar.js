@@ -36,8 +36,6 @@ import Questions from '../Component/Question/Questions';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import BallotIcon from '@material-ui/icons/Ballot';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const drawerWidth = 220;
@@ -146,7 +144,6 @@ export default function Dashboard() {
 
     const [component , setComponent] = React.useState('classesPage');
     const classes = useStyles();
-    const [component , setComponent] = React.useState('editProfile');
     const [open, setOpen] = React.useState(false);
     const [currentComponent , setCurrentComponent] = React.useState(false);
 
