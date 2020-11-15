@@ -127,15 +127,15 @@ class QuestionBank extends Component{
             <div>
                 <Material_RTL>
                 <M_RTL>
-                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'absolute',width: '30%',height: '40px',borderRadius: '10px 0px 0px 10px',margin: '-1% 0 0 0'}}>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',backgroundColor : '#1CA0A0',position: 'absolute',width: '30%',height: '40px',borderRadius: '10px 0px 0px 10px',margin: '-1% 0 0 0'}}>
                     <CssBaseline/>
                     <h6 style={{fontFamily: 'Vazir',margin: '10px',padding: '1%'}}>بانک سوال</h6>
                   </Container>
-                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'absolute',width: '65%',height: '40px',borderRadius: '0px 10px 10px 00px',margin: '-1% 32% 0 0'}}>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',backgroundColor : '#1CA0A0',position: 'absolute',width: '65%',height: '40px',borderRadius: '0px 10px 10px 00px',margin: '-1% 32% 0 0'}}>
                     <CssBaseline/>
                     <h6 style={{fontFamily: 'Vazir',margin: '10px',padding: '1%'}}>سوالات</h6>
                   </Container>
-                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'absolute',width: '30%', borderRadius: '10px 0px 0px 10px', padding: '2% 2% 0% 2%',margin: '40px 0 0 0'}}>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',backgroundColor : '#f2f2f2',position: 'absolute',width: '30%', borderRadius: '10px 0px 0px 10px', padding: '2% 2% 0% 2%',margin: '40px 0 0 0'}}>
                     <CssBaseline/>
                 <div style={{position: 'relative',}}>
                 <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
@@ -262,7 +262,7 @@ class QuestionBank extends Component{
                 <br/>
                 {pending ? 
                   
-                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'fixed',width:'65%',display: 'block',height: '82%',overflow: 'scroll',borderRadius: '0px 10px 0px 0px',margin: '25px 32% 19px 0px'}}>
+                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir', backgroundColor : "#1CA0A0", position: 'fixed',width:'65%',display: 'block',height: '82%',overflow: 'scroll',borderRadius: '0px 10px 0px 0px',margin: '25px 32% 19px 0px'}}>
                 <CssBaseline/>
                     <div id="ress" >
                       <ol style={{listStyle: 'none'}}>
@@ -401,6 +401,7 @@ const useStyles = makeStyles((theme) => ({
       alignItems: 'center',      
       color : '#3D5A80' , 
       backgroundColor: 'white',
+      color : 'white' ,
     //   padding: '10px',
       borderRadius: '5px',   
       // padding: '2% 4% 0% 7%',   
@@ -409,6 +410,7 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
         minWidth: 120,
+        color : 'white' ,
       },
       selectEmpty: {
         marginTop: theme.spacing(2),

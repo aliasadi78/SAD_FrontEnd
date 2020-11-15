@@ -1,4 +1,6 @@
 import React from 'react';
+import tokenConfig from '../utils/tokenConfig';
+import serverURL from   '../utils/serverURL';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,9 +11,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
 import Material_RTL from "../Component/Material_RTL";
 import RTL from '../Component/M_RTL';
+import AlertDialog from '../Component/Dialog' ;
 
 export default function FormDialog() {
   const [open, setOpen] = React.useState(true);
+  const [code , setCode] = React.useState(null);
+  const [notFound , setNotfound] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -20,6 +25,23 @@ export default function FormDialog() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const JoinClass = (classId) => {
+    
+    const a = {
+      "classId": classId
+    };
+
+    const ajson = JSON.stringify(a);
+  
+    axios.post(serverURL() + "class/join", ajson,  tokenConfig())
+        .then(res => {
+          window.location.href = "/class" ;
+        })
+        .catch(e =>{  
+              setNotfound(true);
+        });
+  }
 
   return (
     <div>
@@ -38,6 +60,9 @@ export default function FormDialog() {
                 margin="dense"
                 style={{fontFamily: 'Vazir'}}
                 id="name"
+                onChange = {(e) => {
+                  setCode(e.target.value);
+                }}
                 label="کد کلاس"
                 type="email"
                 fullWidth
@@ -47,29 +72,20 @@ export default function FormDialog() {
               <Button onClick={handleClose} color="primary" style={{fontFamily: 'Vazir'}}>
                 انصراف
               </Button>
-              <Button onClick={handleClose}onClick={(e)=> {JoinClass(e.target.value)}} color="primary" style={{fontFamily: 'Vazir'}}>
+              <Button onClick={()=> {JoinClass(code)}} color="primary" style={{fontFamily: 'Vazir'}}>
                 ورود
               </Button>
+
+              {
+                notFound == true ?
+                <AlertDialog text = "کلاس یافت نشد." />
+                :
+                <p></p>
+              }
             </DialogActions>
           </Dialog>
         </RTL>
       </Material_RTL>
     </div>
   );
-}
-
-
-function JoinClass (classId){
-  const token = localStorage.getItem('token');
-  axios.post('https://parham-backend.herokuapp.com/class/join',
-      {
-        "classId": {classId}
-      },{
-        headers: {
-          'Authorization': token 
-        }
-      })
-      .then(res => {
-        window.location.href = "/class" ;
-      });
 }
