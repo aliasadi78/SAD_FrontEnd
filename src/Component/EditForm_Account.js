@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
       SaveChangesButton: {         
         backgroundColor : '#EE6C4D' ,      
         border: 0,
-        borderRadius: 18 ,
+        // borderRadius: 18 ,
         boxShadow: '0 3px 5px 2px rgba(140, 140, 140, .5)',
         color: 'white',
         height: 48,      
@@ -126,7 +126,7 @@ function EditProfileValidationForms_Account (props){
             <div class = "row">
                 <div class ="col">
                     <Button className={classes.SaveChangesButton}
-                            style={{fontFamily: 'Vazir'}}>
+                            style={{fontFamily: 'Vazir'}} square>
                     <span class="material-icons">
                     done
                     </span>

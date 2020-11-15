@@ -26,18 +26,24 @@ const useStyles = makeStyles((theme) => ({
 export default function Questions(props) {
   const classes = useStyles();
 
+  localStorage.setItem('editable question' , 10000);
+
   return (
     <div className={classes.root}>
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12}  lg={6} className = {classes.grid}>
+          <h3 style={{fontFamily: 'Vazir', color : '#3D5A80'}} >سوال هایی که تا کنون طرح کرده اید</h3>
+                          <hr/>
               {/* { questions } */}
               <GetUserQuestions />
           </Grid>      
-          <Grid item xs={12}  lg={6} className = {classes.grid}>                        
+          <Grid item xs={12}  lg={6} className = {classes.grid}>          
+          <h3 style={{fontFamily: 'Vazir' , color : '#3D5A80'}} >طرح سوال جدید</h3>
+                          <hr/>              
             <Question 
                 submitButton="طرح"
-                backColor = '#087E8B'
+                backColor = '#1CA0A0'
             />
           </Grid>                      
         </Grid>
@@ -61,8 +67,8 @@ class GetUserQuestions extends Component{
 
       var userQuestions = [];
 
-      axios.get(serverURL() + "question" , tokenConfig() )    
-      .then( res =>{      
+      axios.get(serverURL() + "question?limit=10" , tokenConfig() )    
+      .then( res =>{          
         userQuestions.push(...res.data.questions);
         console.log(userQuestions);
         // const Qs = JSON.parse(res.data.questionfs);
@@ -87,16 +93,17 @@ class GetUserQuestions extends Component{
             <div>
             {        
               // questionsArray.map((m) =>           
-                this.state.questions.map((m) =>
+                this.state.questions.map((m , index) =>
                 <UserDesignedQuestion  
                   backColor = '#98C1D9'   
+                  index = {index}
                   buttonClick={loadQuestionToEditPannel} 
                   questionId = {m._id}
                   question = {m.question}
                   />)
             }
             </div>            
-        );
+        );        
       } else {
         return (
           <div></div>

@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',    
     boxShadow: '0 3px 5px 5px rgba(204, 204, 204, .6)',
     width : '60%' ,   
-    borderRadius : 15 ,   
+    // borderRadius : 15 ,   
   },
   button :{    
     margin : theme.spacing.unit * 1.5 ,    
