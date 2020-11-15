@@ -42,6 +42,7 @@ class QuestionBank extends Component{
     render(){
         const classes = this.props.classes;
         const [pending, setPending] = this.props.pending;
+        const [pendi, setPendi] = this.props.pendi;
         const [long , setLong ] = this.props.long ;
         const [test , setTest ] = this.props.test ;
         const [short, setShort] = this.props.short;
@@ -60,6 +61,7 @@ class QuestionBank extends Component{
     
         const handleClick = e => {
             setPending(true);
+            setPendi(true);
             console.log("pending:" + pending);
             console.log("this.state.type[0]" + this.state.type[0]);
             e.preventDefault();
@@ -96,7 +98,7 @@ class QuestionBank extends Component{
             const headers={
               'Authorization': token
             }
-            axios.post("https://parham-backend.herokuapp.com/bank?page=3&limit=3",
+            axios.post("https://parham-backend.herokuapp.com/bank?page=1&limit=100",
              this.state,{headers: headers})
                 .then(result => {
                   res.push(...result.data.questions);
@@ -111,6 +113,7 @@ class QuestionBank extends Component{
                     this.setState({ listquestion : ll});
                     setList([...ll]);
                     console.log(list);
+                    setPendi(false);
                     // setPending(true);
                 }).catch(error => {
                     console.log(error.messege);
@@ -242,7 +245,7 @@ class QuestionBank extends Component{
                                     <Grid container>
                                         <Grid item xs={12}>
                                             <Grid classes={classes.root} >
-                                            <LoadingButton onClick={handleClick} endIcon={<Icon>search</Icon>} pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#0e918c',}}>
+                                            <LoadingButton onClick={handleClick} endIcon={<Icon>search</Icon>} pendingPosition="center" className={classes.topButton} pendi={pendi} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#0e918c',}}>
                                             جست و جو
                                             </LoadingButton>
                                             </Grid>
@@ -303,13 +306,13 @@ function QC (props){
              {props.q}
               <br/><br/>
              {props.test ? (
-             <div style={{position : 'relative',}}>
+             <div style={{position : 'relative',right: '2%'}}>
               <div>الف){props.g[0].option}</div>
               <div>  ب){props.g[1].option}</div>
               <div>  ج){props.g[2].option}</div>
               <div>  د){props.g[3].option}</div>
-             </div>) : props.multi ? props.g.map((g) =>{
-               return(<div>{props.g}</div>)
+             </div>) : props.multi ? props.g.map((options) =>{
+               return(<div>{options.option}</div>)
              }
                
              ) : null}
@@ -319,7 +322,8 @@ function QC (props){
          <AccordionDetails>
            <Typography style={{fontFamily: 'Vazir',textAlign: 'right'}}>
              <hr/>
-             جواب:{props.a[0].answer}
+             جواب:{props.a.map((answers) => {
+             return (<div>{answers.answer}</div>)})}
            </Typography>
          </AccordionDetails>
        </Accordion>
@@ -353,6 +357,7 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
     const classes = useStyles();
     const pending = React.useState(false);
+    const pendi = React.useState(false);
     const long = React.useState(false);
     const test = React.useState(false);
     const short = React.useState(false);
@@ -360,7 +365,7 @@ export default () => {
     const lq = [];
     const list = React.useState([]);
     return (        
-        <QuestionBank classes={classes} pending={pending} list={list} long={long} test={test} short={short} multi={multi}/>    
+        <QuestionBank classes={classes} pending={pending} pendi={pendi} list={list} long={long} test={test} short={short} multi={multi}/>    
         
         )
 }
