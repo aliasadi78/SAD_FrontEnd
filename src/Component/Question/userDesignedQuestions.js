@@ -18,6 +18,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { createMuiTheme } from '@material-ui/core/styles';
 import serverURL from '../../utils/serverURL';
 import tokenConfig from '../../utils/tokenConfig';
+import AlertDialog from '../Dialog';
 const theme = createMuiTheme({
   palette: {
     primary:{
@@ -32,7 +33,8 @@ const theme = createMuiTheme({
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,    
-    width : '100%'
+    width : '100%',
+    marginBottom : theme.spacing(2) 
   },
   paper: {
     padding: theme.spacing(1),    
@@ -68,18 +70,6 @@ const useStyles = makeStyles((theme) => ({
 },
 }));
 
-
-// function deleteQuestion(questionID){
-
-//     const a = {
-//         "questionId" : {questionID}
-//     };
-
-//     const ajson = JSON.stringify(a);
-//     console.log(questionID);
-//     axios.delete( serverURL() + "question/" + questionID  , tokenConfig() );
-// }
-
 function editQuestion (){
     // localStorage.setItem()
 }
@@ -87,13 +77,16 @@ function editQuestion (){
 
 export default function UserDesignedQuestion(props) {
 
+    const [deleted , setDeleted] = React.useState(false);
+
     const classes = useStyles();
 
     const handleDeleteQuestion = (questionId) => {
         console.log(questionId);
-        axios.delete( serverURL() + "question/" +  questionId , tokenConfig() )
+        axios.delete( serverURL() + "question/" +  questionId , tokenConfig() , JSON.stringify({}) )
         .then(res => {
             console.log(res);
+            setDeleted(true);
         })
         .catch(e => {
             console.log(e);
@@ -141,7 +134,9 @@ export default function UserDesignedQuestion(props) {
                                 <Grid container justifyContent='center' spacing={3} >                 
 
                                     <Grid item xs={2}>
-                                        <Button variant="contained" onClick ={props.buttonClick} className={classes.EditButton} href="#contained-buttons">
+                                        <Button variant="contained" onClick ={() => {
+                                            localStorage.setItem('editable question' , props.index);        
+                                        }} className={classes.EditButton} href="#contained-buttons">
                                             <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                                 ویرایش
                                             </Typography>
@@ -158,6 +153,12 @@ export default function UserDesignedQuestion(props) {
                             {/* </Paper>                             */}
                         </AccordionDetails>                        
                     </Accordion> 
+                    {
+                        deleted == true ?
+                        <AlertDialog text = "سوال شما حذف شد" />
+                        :
+                        <p></p>
+                    }
                     </RTL>
                 </Material_RTL>                
             </Container>
