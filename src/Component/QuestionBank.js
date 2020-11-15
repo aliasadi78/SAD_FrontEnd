@@ -42,6 +42,7 @@ class QuestionBank extends Component{
     render(){
         const classes = this.props.classes;
         const [pending, setPending] = this.props.pending;
+        const [pendi, setPendi] = this.props.pendi;
         const [long , setLong ] = this.props.long ;
         const [test , setTest ] = this.props.test ;
         const [short, setShort] = this.props.short;
@@ -60,6 +61,7 @@ class QuestionBank extends Component{
     
         const handleClick = e => {
             setPending(true);
+            setPendi(true);
             console.log("pending:" + pending);
             console.log("this.state.type[0]" + this.state.type[0]);
             e.preventDefault();
@@ -96,7 +98,7 @@ class QuestionBank extends Component{
             const headers={
               'Authorization': token
             }
-            axios.post("https://parham-backend.herokuapp.com/bank?page=3&limit=3",
+            axios.post("https://parham-backend.herokuapp.com/bank?page=1&limit=100",
              this.state,{headers: headers})
                 .then(result => {
                   res.push(...result.data.questions);
@@ -111,10 +113,11 @@ class QuestionBank extends Component{
                     this.setState({ listquestion : ll});
                     setList([...ll]);
                     console.log(list);
+                    setPendi(false);
                     // setPending(true);
                 }).catch(error => {
                     console.log(error.messege);
-                    alert("error");
+                    alert("سوالی با این مشخصات فعلا در بانک سوال موجود نمی باشد");
                     setPending(false); 
                     console.log("bad");
                 })
@@ -124,11 +127,15 @@ class QuestionBank extends Component{
             <div>
                 <Material_RTL>
                 <M_RTL>
-                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'fixed',width: '25%',height: '5%',right: '56px',borderRadius: '20px 0px 0px 20px',top: '8%'}}>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'absolute',width: '30%',height: '40px',borderRadius: '10px 0px 0px 10px',margin: '-1% 0 0 0'}}>
                     <CssBaseline/>
-                    <h6 style={{fontFamily: 'Vazir',margin: '10px'}}>بانک سوال</h6>
+                    <h6 style={{fontFamily: 'Vazir',margin: '10px',padding: '1%'}}>بانک سوال</h6>
                   </Container>
-                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'fixed',width: '25%',height: '100%',right: '56px',top: '15%', borderRadius: '20px 0px 0px 20px', padding: '2% 2% 2% 2%'}}>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'absolute',width: '65%',height: '40px',borderRadius: '0px 10px 10px 00px',margin: '-1% 32% 0 0'}}>
+                    <CssBaseline/>
+                    <h6 style={{fontFamily: 'Vazir',margin: '10px',padding: '1%'}}>سوالات</h6>
+                  </Container>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'absolute',width: '30%', borderRadius: '10px 0px 0px 10px', padding: '2% 2% 0% 2%',margin: '40px 0 0 0'}}>
                     <CssBaseline/>
                 <div style={{position: 'relative',}}>
                 <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
@@ -253,17 +260,19 @@ class QuestionBank extends Component{
                 </div>
                 </Container>
                 <br/>
-                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'relative',right: '5%',width:'75%',}}>
+                {pending ? 
+                  
+                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',position: 'fixed',width:'65%',display: 'block',height: '82%',overflow: 'scroll',borderRadius: '0px 10px 0px 0px',margin: '25px 32% 19px 0px'}}>
                 <CssBaseline/>
                     <div id="ress" >
-                      <ol >
+                      <ol style={{listStyle: 'none'}}>
                         {/* {pending ? list.map((question) => {
                           return(
                           <li key={question.question}><QC q={question.question} g={question.options} test={test} multi={multi}/><br/></li>
                           )}) : null} */}
                         {pending && test ? list.map((question) => {
                           return(
-                          <li key={question.question}><QC q={question.question} g={question.options} a={question.answers} test={test} multi={multi} long={long} short={short}/><br/></li>
+                          <li key={question.question}><QC q={question.question} g={question.options} a={question.answers} s={this.state} test={test} multi={multi} long={long} short={short}/><br/></li>
                           )}) : pending && long ? list.map((question) => {
                           return(
                           <li key={question.question}><QC q={question.question} a={question.answers} test={test} multi={multi} long={long} short={short}/><br/></li>
@@ -273,10 +282,10 @@ class QuestionBank extends Component{
                             )}) : pending && multi ? list.map((question) => {
                               return(
                               <li key={question.question}><QC q={question.question} a={question.answers}  g={question.options} test={test} multi={multi} long={long} short={short}/><br/></li>
-                              )}) : null}
+                              )}): null}
                       </ol>
                     </div>    
-                </Container>
+                </Container> : null}
                 </M_RTL>
                 </Material_RTL>
             </div>
@@ -288,7 +297,57 @@ function QC (props){
   
   // console.log(props);
   // console.log(props.q);
+  const [course,setCourse] = React.useState();
+  const [type,setType] = React.useState();
+  const [hardness,setHardness] = React.useState();
+  const [chapter,setChapter] = React.useState();
+  const [base,setBase] = React.useState();
   const classes = useStyles();
+  // console.log(props.s.course);
+  // console.log(props.s.course[0]);
+  // if(props.s.course[0] === "MATH") {
+  //   setCourse("ریاضی")
+  // }
+  // else if(props.s.course[0] === "PHYSIC"){
+  //   setCourse("فیزیک")
+  // }
+  // else if(props.s.course[0] === "CHEMISTRY"){
+  //   setCourse("شیمی")
+  // }
+  // else if(props.s.course[0] === "BIOLOGY"){
+  //   setCourse("زیست")
+  // }
+  // if(props.s.type[0] === "TEST"){
+  //   setType("تستی")
+  // }
+  // else if(props.s.type[0] === "LONGANSWER"){
+  //   setType("تشریحی")
+  // }
+  // else if(props.s.type[0] === "SHORTANSWER"){
+  //   setType("جای خالی")
+  // }
+  // else if(props.s.type[0] === "MULTICOISE"){
+  //   setType("چندگزینه ای")
+  // }
+  //  if(props.s.base[0] === "10"){
+  //   setBase("دهم")
+  //  }
+  //  else if(props.s.base[0] === "11"){
+  //   setBase("یازدهم")
+  // }
+  // else if(props.s.base[0] === "12"){
+  //   setBase("دوازدهم") 
+  // }
+  // if(props.s.hardness[0] === "LOW" ){
+  //   setHardness("ساده")
+  // }
+  // else if(props.s.hardness[0] === "MEDIUM"){
+  //   setHardness("متوسط")
+  // }
+  // else if(props.s.hardness[0] === "HARD"){
+  //   setHardness("سخت")
+  // }
+  // setChapter(props.s.chapter[0]);
   return (
   <div className={classes.root} style={{padding: '6% 0% 0% 4%'}}>
     <Accordion  style={{backgroundColor: '#e6e6e6',}}>
@@ -298,16 +357,24 @@ function QC (props){
            id="panel1a-header"
          >
            <Typography style={{fontFamily: 'Vazir',marginTop: '2%',direction: 'rtl',textAlign: 'right'}} className={classes.heading}>
-             {props.q}
+             <Icon style={{position: 'absolute',right: '-4%',top: '15%',color: '#ee6c4d'}}>help_center</Icon>{props.q}
               <br/><br/>
+              
+              <div>
+                {/* <span>{course}</span> */}
+                {/* <span>{hardness}</span>
+                <span>{base}</span>
+                <span>{type}</span> */}
+                {/* <span>{chapter}</span> */}
+              </div>
              {props.test ? (
-             <div style={{position : 'relative',}}>
+             <div style={{position : 'relative',right: '2%'}}>
               <div>الف){props.g[0].option}</div>
               <div>  ب){props.g[1].option}</div>
               <div>  ج){props.g[2].option}</div>
               <div>  د){props.g[3].option}</div>
-             </div>) : props.multi ? props.g.map((g) =>{
-               return(<div>{props.g}</div>)
+             </div>) : props.multi ? props.g.map((options) =>{
+               return(<div>{options.option}</div>)
              }
                
              ) : null}
@@ -316,8 +383,9 @@ function QC (props){
          </AccordionSummary>
          <AccordionDetails>
            <Typography style={{fontFamily: 'Vazir',textAlign: 'right'}}>
-             <hr/>
-             جواب:{props.a[0].answer}
+             <hr/><Icon style={{color: '#0e918c'}}>vpn_key</Icon>
+             {props.a.map((answers) => {
+             return (<div>{answers.answer}</div>)})}
            </Typography>
          </AccordionDetails>
        </Accordion>
@@ -351,6 +419,7 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
     const classes = useStyles();
     const pending = React.useState(false);
+    const pendi = React.useState(false);
     const long = React.useState(false);
     const test = React.useState(false);
     const short = React.useState(false);
@@ -358,7 +427,7 @@ export default () => {
     const lq = [];
     const list = React.useState([]);
     return (        
-        <QuestionBank classes={classes} pending={pending} list={list} long={long} test={test} short={short} multi={multi}/>    
+        <QuestionBank classes={classes} pending={pending} pendi={pendi} list={list} long={long} test={test} short={short} multi={multi}/>    
         
         )
 }
