@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Material_RTL from "../Component/Material_RTL";
-import M_RTL from "../Component/M_RTL";
+import Material_RTL from "../Material_RTL";
+import M_RTL from "../M_RTL";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Card from '@material-ui/core/Card';
@@ -11,16 +9,6 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { mainListItems, secondaryListItems } from '../AppBar/listItems';
-import List from '@material-ui/core/List';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import MenuIcon from '@material-ui/icons/Menu';
-import { shadows } from '@material-ui/system';
-
 
 class ClassesPage extends Component{
     render(){
@@ -42,58 +30,7 @@ class ClassesPage extends Component{
             // return window.location.href = "/ClassesPage" ;
       };
         return(
-          <div> {/*
-          <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)} dir="rtl" >
-          <Toolbar className={classes.toolbar}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.ToolbarSpace}>                          
-            </Typography>
-
-            <Button variant="contained" color="#98C1D9"
-              style={{fontFamily: 'Vazir'}}
-              className = {classes.button}
-              onClick={btnCreateClass}>
-              ایجاد کلاس
-            </Button>
-            
-            <Button variant="contained" color="#98C1D9"
-              style={{fontFamily: 'Vazir'}}
-              className = {classes.button}>
-              ورود به کلاس 
-            </Button>
-
-          </Toolbar>
-        </AppBar>
-            <Drawer
-          variant="permanent"
-          anchor ="right"
-          dir = "rtl"
-          classes={{
-            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-          }}
-          open={open}
-        >
-          <div className={classes.toolbarIcon} >  
-
-          <Typography dir="rtl" component="h1" variant="h6" color="inherit" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80'}}>                          
-              اسم سایت و لوگوش
-          </Typography>
-            <IconButton onClick={handleDrawerClose} >
-              <ChevronLeftIcon/>
-            </IconButton>
-          </div>
-          <List>{mainListItems}</List>                    
-        </Drawer>
-            
-        <Container  component="main" maxWidth="md" style={{fontFamily: 'Vazir',marginTop: '7%'}}> */}
+          <div> 
                 <CssBaseline />
                 <Material_RTL>
                     <M_RTL>
@@ -253,12 +190,6 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),            
   },
-  // paper: {
-  //   padding: theme.spacing(2),
-  //   display: 'flex',
-  //   overflow: 'auto',
-  //   flexDirection: 'column',            
-  // },
   fixedHeight: {
     height: 240,
   },

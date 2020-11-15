@@ -6,12 +6,9 @@ import IconButton from '@material-ui/core/IconButton' ;
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel' ;
 import InputAdornment from '@material-ui/core/InputAdornment' ;
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button'
-import updateUser from './../Request methods/UpdateUser' ;
 import axios from 'axios' ;
 import { CircularProgress } from '@material-ui/core';
 

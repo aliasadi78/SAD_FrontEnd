@@ -1,6 +1,6 @@
 import React from 'react';
-import tokenConfig from '../utils/tokenConfig';
-import serverURL from   '../utils/serverURL';
+import tokenConfig from '../../utils/tokenConfig';
+import serverURL from   '../../utils/serverURL';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,9 +9,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
-import Material_RTL from "../Component/Material_RTL";
-import RTL from '../Component/M_RTL';
-import AlertDialog from '../Component/Dialog' ;
+import Material_RTL from "../Material_RTL";
+import RTL from '../M_RTL';
+import AlertDialog from '../Dialog' ;
 
 export default function FormDialog() {
   const [open, setOpen] = React.useState(true);

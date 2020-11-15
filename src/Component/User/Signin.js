@@ -8,7 +8,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import React, { Component } from "react";
-import Material_RTL from "./Material_RTL";
+import Material_RTL from "../Material_RTL";
 import axios from 'axios';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -16,8 +16,8 @@ import { AccountCircle, Visibility, VisibilityOff, login } from "@material-ui/ic
 import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
 import LoadingButton from '@material-ui/lab/LoadingButton';
-import RTL from './M_RTL';
-import Vazir from '../fonts/Vazir.ttf';
+import RTL from '../M_RTL';
+import Vazir from '../../fonts/Vazir.ttf';
 import {Route} from "react-router-dom" ;
 class SignIn extends Component {
     constructor() {

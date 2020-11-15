@@ -21,11 +21,11 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import {Image} from 'semantic-ui-react';
-import './../App.css' ;
-import AlertDialog from './../Request methods/UpdateUser';
+import '../../App.css' ;
+import AlertDialog from './../Dialog';
 import { CircularProgress } from '@material-ui/core';
-import Material_RTL from './Material_RTL';
-import RTL from './M_RTL';
+import Material_RTL from '../Material_RTL';
+import RTL from '../M_RTL';
 import { EditorDragHandle } from 'material-ui/svg-icons';
 
 const useStyles = makeStyles((theme) => ({

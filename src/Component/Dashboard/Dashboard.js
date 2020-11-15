@@ -1,7 +1,5 @@
 import React from 'react';
 import clsx from 'clsx';
-import Box from '@material-ui/core/Box' ;
-import Divider from '@material-ui/core/Divider'
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
@@ -13,26 +11,24 @@ import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import VerticalTabs from './../Component/TabMenuEditProfile' ;
+import VerticalTabs from '../User/TabMenuEditProfile';
 import Button from '@material-ui/core/Button';
 
-import NewClassDialog from '../Pages/NewClassPage' ;
-import ClassesPage from '../Pages/ClassesPage' ;
-import JoinClassDialog from '../Pages/JoinClass' ;
+import NewClassDialog from '../Class/NewClassPage' ;
+import ClassesPage from '../Class/ClassesPage' ;
+import JoinClassDialog from '../Class/JoinClass' ;
 // ------------------------
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import ClassIcon from '@material-ui/icons/Class';
 
-import LogOutDialog from '../Component/LogoutDialog';
-import QuestionBank from '../Component/QuestionBank';
+import LogOutDialog from '../User/LogoutDialog';
+import QuestionBank from '../Question/QuestionBank';
 import Collapse from '@material-ui/core/Collapse';
-import Questions from '../Component/Question/Questions';
+import Questions from '../Question/Questions';
 //----------------
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';

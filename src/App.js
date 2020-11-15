@@ -1,15 +1,12 @@
 import React, {Component} from 'react';
 import classes from './App.css';
-import SignIn from "./Component/Signin";
-import SignUp from "./Component/Signup";
-import ClassesPage from './Pages/ClassesPage';
-import NewClassPage from './Pages/NewClassPage';
+import SignIn from "./Component/User/Signin";
+import SignUp from "./Component/User/Signup";
+import ClassesPage from  './Component/Class/ClassesPage';
+import NewClassPage from './Component/Class/NewClassPage';
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
-import VerticalTabs from './Component/TabMenuEditProfile';
-import Dashboard from './AppBar/AppBar';
-import InsideClass from './Pages/insideClass' ;
-
-import Questions from './Component/Question/Questions';
+import Dashboard from './Component/Dashboard/Dashboard';
+import InsideClass from './Component/Class/insideClass' ;
 
 class App extends Component {
 

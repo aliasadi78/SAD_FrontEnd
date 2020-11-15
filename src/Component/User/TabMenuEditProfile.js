@@ -9,15 +9,9 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import View, { createMuiTheme } from '@material-ui/core/'
-import Button from '@material-ui/core/Button' ;
-
 import EditProfileValidationForms_Account from './EditForm_Account'
-import axios from 'axios';
 import PersonalForms from './Editform_Personal';
-import logOut from './../Request methods/LogOut';
-import Material_RTL from './Material_RTL';
-import RTL from './M_RTL';
-import Vazir from '../fonts/Vazir.ttf';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
