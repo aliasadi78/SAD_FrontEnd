@@ -8,6 +8,7 @@ import Material_RTL from "../Material_RTL";
 import Typography from '@material-ui/core/Typography';
 import RTL from '../M_RTL';
 import Grid from '@material-ui/core/Grid';
+import AlertDialog from '../Dialog' ;
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AccordionActions from '@material-ui/core/AccordionActions';
@@ -30,6 +31,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
 import FormGroup from '@material-ui/core/FormGroup';
+import { Dialog } from '@material-ui/core';
 
 const theme = createMuiTheme({
   palette: {
@@ -51,8 +53,16 @@ const useStyles = makeStyles((theme) => ({
   RadioChoice :{
     
   },
+  questionFacePaper: {
+    padding: theme.spacing(1),    
+    marginBottom : theme.spacing(4) ,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    borderRadius : '0px' ,
+  },
   paper: {
     padding: theme.spacing(1),    
+    marginBottom : theme.spacing(2) ,
     textAlign: 'center',
     color: theme.palette.text.secondary,
     borderRadius : '0px' ,
@@ -94,6 +104,9 @@ const useStyles = makeStyles((theme) => ({
   multiCheckbox : {
     color : '#3D5A80' ,            
   },
+  FormsPaper :{
+    padding : theme.spacing(2), 
+  },
 }));
 
 function TestAnswerToSend( choice1 , choice2 , choice3 , choice4 ){
@@ -111,6 +124,8 @@ function valuetext(value) {
 
 export default function Question(props) {
     const classes = useStyles();
+
+    var options = [];
 
     const grades = [
         { title: 'دوازدهم' , code : 12},
@@ -132,13 +147,19 @@ export default function Question(props) {
     ];    
 
     const [publicCheck , setpublicCheck ] = React.useState(false);
-    const [difficulty , setDifficulty] = React.useState(1);
+    const [difficulty , setDifficulty] = React.useState("LOW");
     const [questionType , setQuestionType] = React.useState('LONGANSWER');
+    const [questionAdded , setQuestionAdded] = React.useState(false);
     
     const [choice1 , setChoice1] = React.useState(false);
     const [choice2 , setChoice2] = React.useState(false);
     const [choice3 , setChoice3] = React.useState(false);
-    const [choice4 , setChoice4] = React.useState(false);
+    const [choice4 , setChoice4] = React.useState(false);    
+
+    const [gozine1 , setGozine1] = React.useState(false);
+    const [gozine2 , setGozine2] = React.useState(false);
+    const [gozine3 , setGozine3] = React.useState(false);
+    const [gozine4 , setGozine4] = React.useState(false);
 
     const [TestAnswer , setTestAnswer] = React.useState(null);    
     
@@ -153,7 +174,9 @@ export default function Question(props) {
       };    
 
     const AddQuestion = (type , publicCheck , question , 
-    answer , options , base , hardness , course) => {
+    answer , options , base , hardness , course , chapter ) => {
+
+        console.log(options);
 
         const a = {
             "type": type ,
@@ -165,15 +188,11 @@ export default function Question(props) {
                     "answer" : "asdfasdf"
                 }
             ],
-            "options": [
-                {
-                    "option"  : "dfadffd"
-                }
-            ],//options,
+            "options": options,
             "base":  base,
             "hardness":  hardness,
             "course": course , 
-            "chapter" : "1"
+            "chapter" : chapter
         }
         const ajson = JSON.stringify(a);
         console.log(ajson);
@@ -182,6 +201,7 @@ export default function Question(props) {
         axios.post(serverURL() + "question" , ajson , tokenConfig() )
         .then(res => {
             console.log(res);            
+            setQuestionAdded(true);
         })
         .catch(e => {
             console.log(e);
@@ -194,19 +214,10 @@ export default function Question(props) {
         <Container maxWidth="lg" className = {classes.root}>            
             <Material_RTL>
                 <RTL>
-                    <Accordion square
-                    style={{backgroundColor: props.backColor }}
-                    expanded = {props.alwaysExpand}
-                    >
-                        <AccordionSummary
-                            // expandIcon={<ExpandMoreIcon style={{ color: "white" }}/>}
-                            aria-controls="panel1c-content"
-                            id="panel1c-header"
-                            className = {classes.accordion}
-                            >                            
+                            <Paper style={{backgroundColor : props.backColor}} className = {classes.FormsPaper} >
                             <Grid container spacing={0}>                                
                                 <Grid item xs={12}>
-                                    <Paper className={classes.paper}>
+                                    <Paper className={classes.questionFacePaper}>
                                         <TextField                    
                                             id="outlined-multiline-static"
                                             label="صورت سوال"
@@ -220,12 +231,7 @@ export default function Question(props) {
                                         />
                                     </Paper>
                                 </Grid>
-                                <Grid className={classes.expandGrid} item xs={12} >
-                                    <ExpandMoreIcon style={{ color: "white" , align: 'center'}}/>
-                                </Grid>                            
-                            </Grid>                            
-                        </AccordionSummary>
-                        <AccordionDetails className = {classes.details}>
+                            </Grid>                                                    
                             <Paper className={classes.dropdownpaper}>
                                 <Grid container spacing={3} >                 
 
@@ -260,7 +266,9 @@ export default function Question(props) {
                                             />                                                                            
                                     </Grid>
                                     <Grid item xs={4}>                                        
-                                            <TextField className = {classes.dropdowns} variant = 'filled' margin ='dense' label="فصل"/>                                        
+                                            <TextField className = {classes.dropdowns} onChange={(e) => {
+                                                setSession(e.target.value);
+                                            }} variant = 'filled' margin ='dense' label="فصل"/>                                        
                                     </Grid>   
                                 </Grid>                             
                             </Paper>
@@ -343,19 +351,27 @@ export default function Question(props) {
                                                         setTestAnswer(e.target.value)}
                                                         }>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="g1" control={<Radio />} /> <TextField variant="filled" margin='dense' />
+                                                            <FormControlLabel value="g1" control={<Radio />} /> <TextField onChange={(e) => {
+                                                                setGozine1(e.target.value);
+                                                            }} variant="filled" margin='dense' />
                                                         </form>       
 
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="g2" control={<Radio />} /> <TextField variant="filled" margin='dense' />
+                                                            <FormControlLabel value="g2" control={<Radio />} /> <TextField onChange={(e) => {
+                                                                setGozine2(e.target.value);
+                                                            }} variant="filled" margin='dense' />
                                                         </form>       
 
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="g3" control={<Radio />} /> <TextField variant="filled" margin='dense' />
+                                                            <FormControlLabel value="g3" control={<Radio />} /> <TextField onChange={(e) => {
+                                                                setGozine3(e.target.value);
+                                                            }} variant="filled" margin='dense' />
                                                         </form>       
 
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="g4" control={<Radio />} /> <TextField variant="filled" margin='dense' />
+                                                            <FormControlLabel value="g4" control={<Radio />} /> <TextField onChange={(e) => {
+                                                                setGozine4(e.target.value);
+                                                            }} variant="filled" margin='dense' />
                                                         </form>                                                        
                                                     </RadioGroup>
                                                 </FormControl>
@@ -364,25 +380,34 @@ export default function Question(props) {
                                                     <form class="form-inline">
                                                         <Checkbox checked={choice1} onChange={()=>(setChoice1(!choice1))} name="gilad" 
                                                             className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                            <TextField variant="filled" margin='dense' />
+                                                            <TextField variant="filled" onChange={(e) => {
+                                                                setGozine1(e.target.value);
+                                                            }} margin='dense' />
                                                     </form>
                                                     
                                                     <form class="form-inline">
                                                         <Checkbox checked={choice2} onChange={()=>(setChoice2(!choice2))} name="gilad" 
                                                             className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                            <TextField variant="filled" margin='dense' />
+                                                            <TextField onChange={(e) => {
+                                                                setGozine2(e.target.value);
+                                                            }} variant="filled" margin='dense' />
                                                     </form>
 
                                                     <form class="form-inline">
                                                         <Checkbox checked={choice3} onChange={()=>(setChoice3(!choice3))} name="gilad" 
                                                             className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                            <TextField variant="filled" margin='dense' />
+                                                            <TextField onChange={(e) => {
+                                                                setGozine3(e.target.value);
+                                                            }} variant="filled" margin='dense' />
                                                     </form>
 
                                                     <form class="form-inline">
                                                         <Checkbox checked={choice4} onChange={()=>(setChoice4(!choice4))} name="gilad" 
                                                             className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                            <TextField variant="filled" margin='dense' />
+                                                            <TextField onChange={(e) => {
+                                                                setGozine4(e.target.value);                                                                
+                                                            }}
+                                                            variant="filled" margin='dense' />
                                                     </form>                                                    
                                                 </FormGroup>
 
@@ -394,7 +419,11 @@ export default function Question(props) {
                                     <Button variant="contained"
                                      onClick={() => {AddQuestion(                                            
                                         questionType , publicCheck , question ,
-                                        answer , `23` , grade , difficulty , lesson
+                                        answer , [
+                                            { "options" : gozine1 } ,
+                                            { "options" : gozine2 } , 
+                                            { "options" : gozine3 } , 
+                                            { "options" : gozine4 } ] , grade , difficulty , lesson , session
                                     )}} 
                                     className={classes.Button} href="#contained-buttons">
                                         <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
@@ -411,8 +440,12 @@ export default function Question(props) {
                                     />                                    
                                 </Grid>
                             </Grid>
-                        </AccordionDetails>                        
-                    </Accordion> 
+                            { questionAdded == true ?
+                                <AlertDialog text = "سوال شما اضافه شد." />
+                                :   
+                                <p></p>
+                            }                        
+                    </Paper>
                     </RTL>
                 </Material_RTL>                
             </Container>

@@ -146,7 +146,7 @@ export default function Dashboard() {
 
 
     const classes = useStyles();
-    const [component , setComponent] = React.useState('editProfile');
+    const [component , setComponent] = React.useState('classesPage');
     const [open, setOpen] = React.useState(false);
     const [currentComponent , setCurrentComponent] = React.useState(false);
 
@@ -216,7 +216,7 @@ export default function Dashboard() {
           <div className={classes.toolbarIcon}>  
 
           <Typography dir="rtl" component="h1" variant="h6" color="inherit" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80'}}>                          
-              اسم سایت و لوگوش
+              {/* اسم سایت و لوگوش */}
           </Typography>
             <IconButton onClick={handleDrawerClose} >
               <ChevronLeftIcon/>
