@@ -272,7 +272,7 @@ class QuestionBank extends Component{
                           )}) : null} */}
                         {pending && test ? list.map((question) => {
                           return(
-                          <li key={question.question}><QC q={question.question} g={question.options} a={question.answers} test={test} multi={multi} long={long} short={short}/><br/></li>
+                          <li key={question.question}><QC q={question.question} g={question.options} a={question.answers} s={this.state} test={test} multi={multi} long={long} short={short}/><br/></li>
                           )}) : pending && long ? list.map((question) => {
                           return(
                           <li key={question.question}><QC q={question.question} a={question.answers} test={test} multi={multi} long={long} short={short}/><br/></li>
@@ -297,7 +297,57 @@ function QC (props){
   
   // console.log(props);
   // console.log(props.q);
+  const [course,setCourse] = React.useState();
+  const [type,setType] = React.useState();
+  const [hardness,setHardness] = React.useState();
+  const [chapter,setChapter] = React.useState();
+  const [base,setBase] = React.useState();
   const classes = useStyles();
+  // console.log(props.s.course);
+  // console.log(props.s.course[0]);
+  // if(props.s.course[0] === "MATH") {
+  //   setCourse("ریاضی")
+  // }
+  // else if(props.s.course[0] === "PHYSIC"){
+  //   setCourse("فیزیک")
+  // }
+  // else if(props.s.course[0] === "CHEMISTRY"){
+  //   setCourse("شیمی")
+  // }
+  // else if(props.s.course[0] === "BIOLOGY"){
+  //   setCourse("زیست")
+  // }
+  // if(props.s.type[0] === "TEST"){
+  //   setType("تستی")
+  // }
+  // else if(props.s.type[0] === "LONGANSWER"){
+  //   setType("تشریحی")
+  // }
+  // else if(props.s.type[0] === "SHORTANSWER"){
+  //   setType("جای خالی")
+  // }
+  // else if(props.s.type[0] === "MULTICOISE"){
+  //   setType("چندگزینه ای")
+  // }
+  //  if(props.s.base[0] === "10"){
+  //   setBase("دهم")
+  //  }
+  //  else if(props.s.base[0] === "11"){
+  //   setBase("یازدهم")
+  // }
+  // else if(props.s.base[0] === "12"){
+  //   setBase("دوازدهم") 
+  // }
+  // if(props.s.hardness[0] === "LOW" ){
+  //   setHardness("ساده")
+  // }
+  // else if(props.s.hardness[0] === "MEDIUM"){
+  //   setHardness("متوسط")
+  // }
+  // else if(props.s.hardness[0] === "HARD"){
+  //   setHardness("سخت")
+  // }
+  // setChapter(props.s.chapter[0]);
   return (
   <div className={classes.root} style={{padding: '6% 0% 0% 4%'}}>
     <Accordion  style={{backgroundColor: '#e6e6e6',}}>
@@ -309,6 +359,14 @@ function QC (props){
            <Typography style={{fontFamily: 'Vazir',marginTop: '2%',direction: 'rtl',textAlign: 'right'}} className={classes.heading}>
              <Icon style={{position: 'absolute',right: '-4%',top: '15%',color: '#ee6c4d'}}>help_center</Icon>{props.q}
               <br/><br/>
+              
+              <div>
+                {/* <span>{course}</span> */}
+                {/* <span>{hardness}</span>
+                <span>{base}</span>
+                <span>{type}</span> */}
+                {/* <span>{chapter}</span> */}
+              </div>
              {props.test ? (
              <div style={{position : 'relative',right: '2%'}}>
               <div>الف){props.g[0].option}</div>
