@@ -146,13 +146,21 @@ export default function InsideClass() {
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>  
-            <Grid item xs={12}>
-                <Box pt={4} color="text.primary">
-                <Typography variant="h5" align='center' component="h2" dir = 'rtl' style={{fontFamily: 'Vazir', color:'#595959'}}>
-                    در اسپرینت بعدی پیاده سازی میشود .
-                </Typography>
-                </Box>
-            </Grid>          
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={12}  lg={4} className = {classes.grid}>
+                  <Box pt={4} color="text.primary">
+                  {/* <Typography variant="h5" align='center' component="h2" dir = 'rtl' style={{fontFamily: 'Vazir', color:'#595959'}}>
+                      در اسپرینت بعدی پیاده سازی میشود .
+                  </Typography> */}
+                  </Box>
+              </Grid>         
+              <Grid item xs={12} sm={12}  lg={4} className = {classes.grid}>
+              
+              </Grid> 
+              <Grid item xs={12} sm={12}  lg={4} className = {classes.grid}>
+
+              </Grid>
+            </Grid>
           </Container>
         </main>
       </div>
