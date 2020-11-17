@@ -18,8 +18,7 @@ class ClassesPage extends Component{
       };            
 
       axios.get(serverURL()+"user/classes" , tokenConfig())
-      .then(res => {
-        console.log("revale");
+      .then(res => {        
         this.setState({
           userClasses : res.data.classes
         });
