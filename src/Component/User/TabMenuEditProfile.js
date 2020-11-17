@@ -9,12 +9,9 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import View, { createMuiTheme } from '@material-ui/core/'
-import Button from '@material-ui/core/Button' ;
-
 import EditProfileValidationForms_Account from './EditForm_Account'
-import axios from 'axios';
 import PersonalForms from './Editform_Personal';
-import logOut from './../Request methods/LogOut';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -61,29 +58,25 @@ function a11yProps(index) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    margin : theme.spacing(5) ,
+  root: {        
     backgroundColor: theme.palette.background.paper,
     display: 'flex',    
     boxShadow: '0 3px 5px 5px rgba(204, 204, 204, .6)',
-    width : '50%' ,   
-    borderRadius : 20 , 
-    flexWrap: 'wrap' , 
+    width : '60%' ,   
+    // borderRadius : 15 ,   
   },
   button :{    
-    margin : theme.spacing.unit * 1.5 ,
-    // position : 'sticky' ,    
+    margin : theme.spacing.unit * 1.5 ,    
     paddingBottom: theme.spacing.unit * 2,
     bottom : 0 ,
     fixed : 'bottom'
   },
   tabs: {        
     borderRight: `1px solid ${theme.palette.divider}`,    
-    fontWeight : 'bold' ,    
+    fontWeight : 'bold' ,       
   },
   tabPanel :{
-    backgroundColor : '#BFD7EA' ,        
+    backgroundColor : '#BFD7EA' ,                
   },
 }));
 
@@ -96,37 +89,28 @@ export default function VerticalTabs() {
   };  
 
   return (
-    <div className={classes.root} >         
-        <ThemeProvider theme={theme}>
-            <Tabs
-                orientation="vertical"
-                variant="scrollable"
-                value={value}
-                onChange={handleChange}
-                aria-label="Vertical tabs example"
-                className={classes.tabs}
-                textColor ="primary"
-                indicatorColor = "primary"
-                >                    
-                <Tab label="اطلاعات" {...a11yProps(0)} />
-                <Tab label="رمز عبور" {...a11yProps(1)} />                      
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  className={classes.button}                               
-                  onClick = {logOut}
-                >
-                  خروج 
-                </Button>
-            </Tabs>
-            <TabPanel value={value} index={0}  >
-                <PersonalForms />
-            </TabPanel>
-            <TabPanel value={value} index={1} >
-                <EditProfileValidationForms_Account />
-            </TabPanel>            
-        </ThemeProvider>
-        
+    <div className={classes.root}  >               
+          <ThemeProvider theme={theme}>                            
+              <Tabs                   
+                  orientation="vertical"
+                  variant="scrollable"
+                  value={value}
+                  onChange={handleChange}
+                  aria-label="Vertical tabs example"
+                  className={classes.tabs}
+                  textColor ="primary"
+                  indicatorColor = "primary"
+                  >                    
+                  <Tab label="اطلاعات" {...a11yProps(0)}  style={{fontFamily: 'Vazir'}}/>
+                  <Tab label="رمز عبور" {...a11yProps(1)} style={{fontFamily: 'Vazir'}} />                      س                  
+              </Tabs>
+              <TabPanel value={value} index={0}  >
+                  <PersonalForms />
+              </TabPanel>
+              <TabPanel value={value} index={1} >
+                  <EditProfileValidationForms_Account />
+              </TabPanel>            
+          </ThemeProvider>        
     </div>
   );
 }

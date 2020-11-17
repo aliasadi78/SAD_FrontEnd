@@ -6,12 +6,9 @@ import IconButton from '@material-ui/core/IconButton' ;
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel' ;
 import InputAdornment from '@material-ui/core/InputAdornment' ;
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button'
-import updateUser from './../Request methods/UpdateUser' ;
 import axios from 'axios' ;
 import { CircularProgress } from '@material-ui/core';
 
@@ -31,19 +28,19 @@ const useStyles = makeStyles((theme) => ({
     withoutLabel: {
     marginTop: theme.spacing(3),
       },
-      SaveChangesButton: {           
-        backgroundColor : '#3D5A80' ,      
+      SaveChangesButton: {         
+        backgroundColor : '#EE6C4D' ,      
         border: 0,
-        borderRadius: 24,
+        // borderRadius: 18 ,
         boxShadow: '0 3px 5px 2px rgba(140, 140, 140, .5)',
         color: 'white',
-        height: 48,
-        width : 48 , 
+        height: 48,      
         padding: '0 30px',
         "&:hover": {
-            backgroundColor: '#00C853'
-          },
-      },          
+          backgroundColor: '#00C853'
+        },
+        alignItems : "center" ,
+      },           
 }));
 
 function EditProfileValidationForms_Account (props){
@@ -125,10 +122,12 @@ function EditProfileValidationForms_Account (props){
             
             <div class = "row">
                 <div class ="col">
-                    <Button className={classes.SaveChangesButton}>
+                    <Button className={classes.SaveChangesButton}
+                            style={{fontFamily: 'Vazir'}} square>
                     <span class="material-icons">
                     done
                     </span>
+                    اعمال تغییرات 
                     </Button>
                 </div>
             </div>   
