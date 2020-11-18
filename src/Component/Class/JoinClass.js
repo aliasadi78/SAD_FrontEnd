@@ -13,7 +13,7 @@ import Material_RTL from "../Material_RTL";
 import RTL from '../M_RTL';
 import AlertDialog from '../Dialog' ;
 
-export default function FormDialog() {
+export default function JoinClass() {
   const [open, setOpen] = React.useState(true);
   const [code , setCode] = React.useState(null);
   const [notFound , setNotfound] = React.useState(false);

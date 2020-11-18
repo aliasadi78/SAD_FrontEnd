@@ -60,7 +60,7 @@ class SignIn extends Component {
                     console.log("first");
 
                     //redirect to edit profile page                                        
-                    window.location.href = "/profile/edit" ;
+                    window.location.href = "/Dashboard" ;
                 }).catch(error => {
                     console.log(error);
                     alert(" خطا! نام کاربری یا رمز عبور شما اشتباه می باشد.لطفا تمام موارد * دار را پر کنید.");

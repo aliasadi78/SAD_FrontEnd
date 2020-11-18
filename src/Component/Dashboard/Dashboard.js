@@ -13,7 +13,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import VerticalTabs from '../User/TabMenuEditProfile';
 import Button from '@material-ui/core/Button';
-
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import NewClassDialog from '../Class/NewClassPage' ;
 import ClassesPage from '../Class/ClassesPage' ;
 import JoinClassDialog from '../Class/JoinClass' ;
@@ -164,6 +169,7 @@ export default function Dashboard() {
     return (
       <div className={classes.root}>
         <CssBaseline />
+        <Router>
         <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)} dir="rtl" >
           <Toolbar className={classes.toolbar}>
             <IconButton
@@ -208,148 +214,122 @@ export default function Dashboard() {
             paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
           }}
           open={open}
-        >
-          <div className={classes.toolbarIcon}>  
-
-          <Typography dir="rtl" component="h1" variant="h6" color="inherit" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80'}}>                          
-              {/* اسم سایت و لوگوش */}
-          </Typography>
-            <IconButton onClick={handleDrawerClose} >
-              <ChevronLeftIcon/>
-            </IconButton>
-          </div>          
-
-          <ListItem button onClick={()=>{
-            setComponent('editProfile');
-            if(open == true)
-              handleUserDrawerMenuClick();
-            }}>
-            <ListItemIcon>        
-              <AccountBoxIcon style={{ color: "#3D5A80" }} />
-            </ListItemIcon>
-            <ListItemText>
-            <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
-                حساب کاربری
+        >        
+            <div className={classes.toolbarIcon}>            
+            <Typography dir="rtl" component="h1" variant="h6" color="inherit" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80'}}>                          
+                {/* اسم سایت و لوگوش */}
             </Typography>
-            </ListItemText>
-            {openUserDrawerMethod ? <ExpandLess/> : <ExpandMore />}
-          </ListItem>
+              <IconButton onClick={handleDrawerClose} >
+                <ChevronLeftIcon/>
+              </IconButton>
+            </div>          
 
-          <Collapse in={openUserDrawerMethod} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem button 
-                onClick = {() => setComponent('questions')}
-                className={classes.nested}>
+            <Link to = "/profile/edit">
+              <ListItem button onClick={()=>{
+                setComponent('editProfile');
+                if(open == true)
+                  handleUserDrawerMenuClick();
+                }}>
+                <ListItemIcon>        
+                  <AccountBoxIcon style={{ color: "#3D5A80" }} />
+                </ListItemIcon>
+                <ListItemText>
+                <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
+                    حساب کاربری
+                </Typography>
+                </ListItemText>
+                {openUserDrawerMethod ? <ExpandLess/> : <ExpandMore />}
+              </ListItem>
+            </Link>
+
+            <Collapse in={openUserDrawerMethod} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <Link to="/user/questions" >
+                  <ListItem button 
+                    onClick = {() => setComponent('questions')}
+                    className={classes.nested}>
+                    <ListItemIcon>
+                      <BallotIcon style={{ color: "#3D5A80" }} />
+                    </ListItemIcon>
+                    <ListItemText >
+                      <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
+                        سوالات 
+                      </Typography>
+                    </ListItemText>
+                  </ListItem>
+                </Link>
+
+                <Link to="/user/classes" >
+                  <ListItem button className={classes.nested}  onClick={() => setComponent('classesPage')}>
+                    <ListItemIcon>
+                    <ClassIcon style={{ color: "#3D5A80" }} />
+                    </ListItemIcon>
+                    <ListItemText  style={{fontFamily: 'Vazir'}} >
+                      <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>
+                        کلاس ها
+                      </Typography>            
+                    </ListItemText>
+                  </ListItem>    
+                </Link>
+
+              </List>
+            </Collapse>
+          
+            <Link to="/questionBank" >
+              <ListItem button onClick ={()=> setComponent('QuestionBank')}>
                 <ListItemIcon>
-                  <BallotIcon style={{ color: "#3D5A80" }} />
+                <LibraryBooksIcon style={{ color: "#3D5A80" }} />
                 </ListItemIcon>
                 <ListItemText >
                   <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
-                    سوالات 
+                    بانک سوال
                   </Typography>
                 </ListItemText>
-              </ListItem>
+              </ListItem>   
+            </Link>            
 
-              <ListItem button className={classes.nested}  onClick={() => setComponent('classesPage')}>
+            <Link to="logoutDialog" >
+              <ListItem button onClick ={()=> setComponent('logout')} >
                 <ListItemIcon>
-                <ClassIcon style={{ color: "#3D5A80" }} />
-                </ListItemIcon>
-                <ListItemText  style={{fontFamily: 'Vazir'}} >
-                  <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>
-                    کلاس ها
-                  </Typography>            
+                  <ExitToAppIcon style={{ color: "#3D5A80" }} />        
+                </ListItemIcon>  
+                <ListItemText >
+                  <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
+                    خروج
+                  </Typography>
                 </ListItemText>
-              </ListItem>    
-
-            </List>
-          </Collapse>
-          <ListItem button onClick ={()=> setComponent('QuestionBank')}>
-            <ListItemIcon>
-            <LibraryBooksIcon style={{ color: "#3D5A80" }} />
-            </ListItemIcon>
-            <ListItemText >
-              <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
-                بانک سوال
-              </Typography>
-            </ListItemText>
-          </ListItem>   
-
-          <ListItem button onClick ={()=> setComponent('logout')} >
-            <ListItemIcon>
-              <ExitToAppIcon style={{ color: "#3D5A80" }} />        
-            </ListItemIcon>  
-            <ListItemText >
-              <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
-                خروج
-              </Typography>
-            </ListItemText>
-          </ListItem>           
-
+              </ListItem>   
+            </Link>
         </Drawer>
+        
         <main className={clsx(classes.content, {
           [classes.contentShift]: open,
         })}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
-            {/* <Grid container spacing={3}>              
-              <Grid item xs={12}>                                */}
-              {
-                component === 'editProfile' ?
+            
+            <Switch>
+              <Route path="/profile/edit"  >
                 <VerticalTabs />
-                :
-                component === 'QuestionBank' ?
+              </Route>
+              <Route path="/questionBank">
                 <QuestionBank />
-                :
-                // component == 'logout' ?                
-                component === 'questions' ?                
-                <Questions />   
-                :
-                component === 'classesPage'?
+              </Route>
+              <Route path="logoutDialog" >
+                <LogOutDialog />
+              </Route>
+              <Route path="/user/classes" >
                 <ClassesPage />
-                :  
-                component === 'newClassDialog' ?              
-                <SetComponent component = {currentComponent} dialog = "newClass" />
-                :
-                component === 'joinClassDialog'?
-                <JoinClassDialog />
-                :
-                component == 'logout' ?                
-                <LogOutDialog/> // logout dialog                
-                :
-                <VerticalTabs />
-                // question Bank
-              }                                                           
-              {/* </Grid>              
-            </Grid> */}            
+              </Route>
+              <Route path="/user/questions">
+                <Questions />
+              </Route>
+            </Switch>        
+
           </Container>
         </main>
+
+        </Router>
       </div>
     );
   }
-
-function SetComponent  (props){
-  const component = props.component ;    
-  const dialog = props.dialog ;
-  return (              
-    <div>
-      {
-        dialog === "newClass" ?
-        <NewClassDialog />
-        :
-        <JoinClassDialog />
-      }      
-      {
-        component === 'editProfile' ?
-        <VerticalTabs />
-        :
-        component === 'questionBank' ?
-        <VerticalTabs /> // replace it with question bank
-        :
-        component === 'classesPage'?
-        <ClassesPage />
-        :
-        <VerticalTabs />  
-      }   
-    </div>
-  );
-}

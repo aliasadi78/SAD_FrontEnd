@@ -12,7 +12,7 @@ import clsx from 'clsx';
 
 class ClassesPage extends Component{
     render(){
-      const [open, setOpen] = this.props.o;
+      const [open, setOpen] = this.props.o;      
       const handleDrawerOpen = () => {
         setOpen(true);
       };
@@ -28,6 +28,7 @@ class ClassesPage extends Component{
       const btnJoinClass = () => {
         //jaye Dialog box 
             // return window.location.href = "/ClassesPage" ;
+          
       };
         return(
           <div> 
