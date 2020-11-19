@@ -11,6 +11,8 @@ import InputBase from '@material-ui/core/InputBase';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import axios from 'axios' ;
+import serverURL from '../../utils/serverURL';
+import tokenConfig from '../../utils/tokenConfig';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -21,12 +23,12 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import {Image} from 'semantic-ui-react';
-import './../App.css' ;
-import AlertDialog from './../Request methods/UpdateUser';
+import '../../App.css' ;
+import AlertDialog from './../Dialog';
 import { CircularProgress } from '@material-ui/core';
-import Material_RTL from './Material_RTL';
-import { RuleList } from 'jss';
-import RTL from './M_RTL';
+import Material_RTL from '../Material_RTL';
+import RTL from '../M_RTL';
+import { EditorDragHandle } from 'material-ui/svg-icons';
 
 const useStyles = makeStyles((theme) => ({
     progressBar : {
@@ -66,8 +68,7 @@ const useStyles = makeStyles((theme) => ({
     },
     SaveChangesButton: {         
       backgroundColor : '#EE6C4D' ,      
-      border: 0,
-      borderRadius: 18 ,
+      border: 0,      
       boxShadow: '0 3px 5px 2px rgba(140, 140, 140, .5)',
       color: 'white',
       height: 48,      
@@ -105,13 +106,26 @@ function EditProfileValidationForms_Personal (props) {
       textmask: '09         ',      
     });
 
-    const handleChange = (event) => {
-      setValues({
-        ...values,
-        [event.target.name]: event.target.value,
-      });
+    const [username , setUsername] = React.useState(props.username) ;
+    const [firstname , setFirstname] = React.useState(props.firstname) ;
+    const [lastname , setLastname] = React.useState(props.lastname) ;
+    const [email , setEmail] = React.useState(props.email) ;
+
+    const [userUpdated , setUserUpdated] = React.useState(false);
+
+    const handleUsernameChanged = e =>{
+      setUsername(e.target.value)
     };
-    
+    const handleFirstnameChanged = e =>{
+      setFirstname(e.target.value)
+    };
+    const handleLastnameChanged = e =>{
+      setLastname(e.target.value)
+    };
+    const handleEmailChanged = e =>{
+      setEmail(e.target.value)
+    };
+
     const [selectedDate , setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));    
 
     const handleDateChange = (date) => {
@@ -140,7 +154,12 @@ function EditProfileValidationForms_Personal (props) {
             </div>
 
             <div class = "row">
-                    
+                    {
+                      userUpdated == true ?
+                      <AlertDialog text = "اطلاعات شما تغییر یافت" />
+                      :
+                      <p></p>
+                    }
                     <div class="col">
                         <TextField   
                             style={{fontFamily: 'Vazir'}}     
@@ -149,7 +168,8 @@ function EditProfileValidationForms_Personal (props) {
                             defaultValue={props.username}
                             className={classes.textField}   
                             variant="outlined"                 
-                            margin ="dense"              
+                            margin ="dense"           
+                            onChange ={handleUsernameChanged}   
                             />
                     </div>
 
@@ -161,7 +181,8 @@ function EditProfileValidationForms_Personal (props) {
                             defaultValue={props.email}
                             variant="outlined"
                             className={classes.textField}                    
-                            margin ="dense"              
+                            margin ="dense"          
+                            onChange = {handleEmailChanged}    
                             /> 
                     </div>
 
@@ -179,6 +200,7 @@ function EditProfileValidationForms_Personal (props) {
                   variant="outlined"       
                   // variant="filled"
                   margin ="dense"              
+                  onChange = {handleFirstnameChanged}
                 /> 
               </div>           
               <div class = "col">
@@ -191,6 +213,7 @@ function EditProfileValidationForms_Personal (props) {
                   variant="outlined"      
                   // variant="filled"
                   margin ="dense"
+                  onChange ={handleLastnameChanged}
                 /> 
               </div>           
             </div>        
@@ -231,33 +254,33 @@ function EditProfileValidationForms_Personal (props) {
             
             <div class = "row">
               <div class ="col">
-                <Button 
+                <Button  square
                   style={{fontFamily: 'Vazir'}}
-                  className={classes.SaveChangesButton} onClick={()=>{            
-                  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjljMGI3ODU2YzBkYTAwMTc3YWQzMGMiLCJpYXQiOjE2MDQwNjIwNzJ9.kiXC8E1w7OicGXlOCGrpH9eptALM8DUjcfY6U7ZmUe0';                            
-                  axios.put('https://parham-backend.herokuapp.com/user/update' 
-                  , {headers:
-                      { 'Authorization': 'Bearer ' + token  } 
+                  className={classes.SaveChangesButton} onClick={()=>{     
+
+                  axios.put( serverURL() + 'user'                   
+                  , {           
+                    "uesrname" : username ,
+                    "firstname" : firstname ,                           
+                    "lastname" : lastname , 
+                    "email" : email ,                    
                   }
-                  , {                  
-                    // firstname : "mohammdpedram" ,
-                    lastname : "isazadeh" ,
-                    // email : "kpm@yaoo.com"   
+                  ,tokenConfig())
+                  .then(res => {                                              
+                      console.log("done");            
+                      setUserUpdated(true);
                   })
-                  .then(res => {
-                      console.log('done');
-                      return(
-                          <AlertDialog />
-                      )
+                  .catch(e => {
+
                   });            
                 } }>
                 
-                <span class="material-icons">
-                  done
-                </span>
-                اعمال تغییرات 
-                
-                  </Button>
+                  <span class="material-icons">
+                    done
+                  </span>
+                  اعمال تغییرات 
+                  
+                </Button>
               </div>              
             </div>
           </RTL>
@@ -278,9 +301,7 @@ export default class PersonalForms extends Component {
     const token = localStorage.getItem('token');    
 
     axios.get(
-        'https://parham-backend.herokuapp.com/user' , {headers:
-      { 'Authorization': token  }
-    })
+        serverURL() + 'user' , tokenConfig())
     .then(res => {        
         this.setState(prevState => {
           return{
@@ -326,4 +347,4 @@ export default class PersonalForms extends Component {
     } 
 
   }
-}
+} 

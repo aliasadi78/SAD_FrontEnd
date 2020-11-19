@@ -9,15 +9,9 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import View, { createMuiTheme } from '@material-ui/core/'
-import Button from '@material-ui/core/Button' ;
-
 import EditProfileValidationForms_Account from './EditForm_Account'
-import axios from 'axios';
 import PersonalForms from './Editform_Personal';
-import logOut from './../Request methods/LogOut';
-import Material_RTL from './Material_RTL';
-import RTL from './M_RTL';
-import Vazir from '../fonts/Vazir.ttf';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -64,17 +58,12 @@ function a11yProps(index) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {    
-    flexGrow: 1,
-    margin : theme.spacing(5) ,
+  root: {        
     backgroundColor: theme.palette.background.paper,
     display: 'flex',    
     boxShadow: '0 3px 5px 5px rgba(204, 204, 204, .6)',
     width : '60%' ,   
-    borderRadius : 15 , 
-    direction : "ltr" ,
-    alignItems : 'center' ,
-    flexWrap: 'wrap' ,     
+    // borderRadius : 15 ,   
   },
   button :{    
     margin : theme.spacing.unit * 1.5 ,    

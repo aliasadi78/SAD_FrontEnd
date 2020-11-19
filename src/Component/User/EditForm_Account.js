@@ -1,17 +1,14 @@
 import React , {Component} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import clsx from 'clsx';
+import serverURL from '../../utils/serverURL';
+import tokenConfig from '../../utils/tokenConfig';
 import IconButton from '@material-ui/core/IconButton' ;
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel' ;
 import InputAdornment from '@material-ui/core/InputAdornment' ;
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button'
-import updateUser from './../Request methods/UpdateUser' ;
 import axios from 'axios' ;
 import { CircularProgress } from '@material-ui/core';
 
@@ -34,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
       SaveChangesButton: {         
         backgroundColor : '#EE6C4D' ,      
         border: 0,
-        borderRadius: 18 ,
+        // borderRadius: 18 ,
         boxShadow: '0 3px 5px 2px rgba(140, 140, 140, .5)',
         color: 'white',
         height: 48,      
@@ -57,6 +54,8 @@ function EditProfileValidationForms_Account (props){
         showConfirmedPassword : false         
     });
 
+    const[password , setPassword] = React.useState()
+
     const handleChange = (props) => (event) => {
         setValues({...values , [props]: event.target.value})
     };
@@ -68,6 +67,10 @@ function EditProfileValidationForms_Account (props){
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     } ;
+
+    const handlePasswordChange = (e) => {
+
+    };
 
     return (
         <div className={classes.container} class="containers" >                        
@@ -126,7 +129,7 @@ function EditProfileValidationForms_Account (props){
             <div class = "row">
                 <div class ="col">
                     <Button className={classes.SaveChangesButton}
-                            style={{fontFamily: 'Vazir'}}>
+                            style={{fontFamily: 'Vazir'}} square>
                     <span class="material-icons">
                     done
                     </span>
@@ -147,12 +150,7 @@ export default class passwordForms extends Component {
             userFound : false
         };
             
-        const token = localStorage.getItem('token');    
-    
-        axios.get(
-            'https://parham-backend.herokuapp.com/user' , {headers:
-        { 'Authorization': token  }
-        })
+        axios.get( serverURL() + 'user' , tokenConfig() )
         .then(res => {        
             this.setState(prevState => {
                 return{

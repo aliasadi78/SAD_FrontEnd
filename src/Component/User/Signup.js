@@ -9,15 +9,13 @@ import Container from '@material-ui/core/Container';
 import {Link, Redirect, Route, useHistory , Router , withRouter } from 'react-router-dom';
 import axios from 'axios';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
-import Material_RTL from "./Material_RTL";
+import Material_RTL from "../Material_RTL";
 import icon, {AccountCircle, Email, PersonAdd, Visibility, VisibilityOff, VpnKey,} from "@material-ui/icons"
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from "@material-ui/core/IconButton";
 import  LoadingButton from '@material-ui/lab/LoadingButton';
 import Icon from '@material-ui/core/Icon';
-import history from "./history";
-import RTL from './M_RTL';
-import Vazir from '../fonts/Vazir.ttf';
+import RTL from '../M_RTL';
 
 class SignUp extends Component {
     constructor() {
@@ -66,7 +64,7 @@ class SignUp extends Component {
         const handleClick = e => {
             setPending(true);
             e.preventDefault();        
-        axios.post("http://parham-backend.herokuapp.com/user/signup", this.state)
+        axios.post("https://parham-backend.herokuapp.com/user/signup", this.state)
             .then(result => {
                 console.log(result);
                 console.log("good");
