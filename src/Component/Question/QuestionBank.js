@@ -342,11 +342,13 @@ class QuestionBank extends Component{
             //   setMulti(true);
             //   console.log("ismulti:" + multi);
             // }
+            setList([]);
             const headers={
               'Authorization': token
             }
+            
             axios.post("https://parham-backend.herokuapp.com/bank?page=1&limit=100",
-             this.state,{headers: headers})
+            this.state,{headers: headers})
                 .then(result => {
                   res.push(...result.data.questions);
                   // console.log(result.data.questions.question);
@@ -361,7 +363,7 @@ class QuestionBank extends Component{
                     setList([...ll]);
                     console.log(list);
                     console.log(this.state);
-                    // setPendi(false);
+                    setPendi(false);
                     // setBase([]);
                     // setCourse([]);
                     // setHardness([]);
@@ -545,7 +547,7 @@ class QuestionBank extends Component{
                 <Grid container>
                     <Grid item xs={12}>
                         <Grid classes={classes.root} >
-                        <LoadingButton onClick={handleClick} endIcon={<Icon>search</Icon>} pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#EE6C4D',}}>
+                        <LoadingButton onClick={handleClick} endIcon={<Icon>search</Icon>} pendingPosition="center" className={classes.topButton} pendi={pendi} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#EE6C4D',}}>
                         جست و جو
                         </LoadingButton>
                         </Grid>
@@ -558,7 +560,7 @@ class QuestionBank extends Component{
                 <br/>
                 {pending ? 
                   
-                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir', backgroundColor : "#1CA0A0", position: 'fixed',width:'65%',display: 'block',height: '82%',overflow: 'scroll',borderRadius: '0px 10px 0px 0px',margin: '25px 32% 19px 0px'}}>
+                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir', backgroundColor : "rgb(242 242 242)", position: 'fixed',width:'65%',display: 'block',height: '82%',overflow: 'scroll',borderRadius: '0px 10px 0px 0px',margin: '25px 32% 19px 0px'}}>
                 <CssBaseline/>
                     <div id="ress" >
                       <ol style={{listStyle: 'none'}}>
@@ -566,10 +568,18 @@ class QuestionBank extends Component{
                           return(
                           <li key={question.question}><QC q={question.question} g={question.options} test={test} multi={multi}/><br/></li>
                           )}) : null} */}
-                          {/* {pending ? list.map((question)=>{
-                            return()
-                          })} */}
-                        {pending && test ? list.map((question) => {
+                          {pending ? list.map((question)=>{
+                            // console.log(list)
+                            // console.log(question)
+                            if(!question.isImage){
+                              return(
+                              
+                              <li key={question}><QC q={question} /><br/></li>
+                            )
+                            }
+                            
+                          }) : null}
+                        {/* {pending && test ? list.map((question) => {
                           return(
                           <li key={question.question}><QC q={question.question} g={question.options} a={question.answers} s={this.state} test={test} multi={multi} long={long} short={short}/><br/></li>
                           )}) : pending && long ? list.map((question) => {
@@ -581,7 +591,7 @@ class QuestionBank extends Component{
                             )}) : pending && multi ? list.map((question) => {
                               return(
                               <li key={question.question}><QC q={question.question} a={question.answers}  g={question.options} test={test} multi={multi} long={long} short={short}/><br/></li>
-                              )}): null}
+                              )}): null} */}
                       </ol>
                     </div>    
                 </Container> : null}
@@ -591,105 +601,175 @@ class QuestionBank extends Component{
         );
     }
 }
-
 function QC (props){
-  
-  // console.log(props);
-  // console.log(props.q);
-  const [course,setCourse] = React.useState();
-  const [type,setType] = React.useState();
-  const [hardness,setHardness] = React.useState();
-  const [chapter,setChapter] = React.useState();
-  const [base,setBase] = React.useState();
   const classes = useStyles();
-  // console.log(props.s.course);
-  // console.log(props.s.course[0]);
-  // if(props.s.course[0] === "MATH") {
-  //   setCourse("ریاضی")
-  // }
-  // else if(props.s.course[0] === "PHYSIC"){
-  //   setCourse("فیزیک")
-  // }
-  // else if(props.s.course[0] === "CHEMISTRY"){
-  //   setCourse("شیمی")
-  // }
-  // else if(props.s.course[0] === "BIOLOGY"){
-  //   setCourse("زیست")
-  // }
-  // if(props.s.type[0] === "TEST"){
-  //   setType("تستی")
-  // }
-  // else if(props.s.type[0] === "LONGANSWER"){
-  //   setType("تشریحی")
-  // }
-  // else if(props.s.type[0] === "SHORTANSWER"){
-  //   setType("جای خالی")
-  // }
-  // else if(props.s.type[0] === "MULTICOISE"){
-  //   setType("چندگزینه ای")
-  // }
-  //  if(props.s.base[0] === "10"){
-  //   setBase("دهم")
-  //  }
-  //  else if(props.s.base[0] === "11"){
-  //   setBase("یازدهم")
-  // }
-  // else if(props.s.base[0] === "12"){
-  //   setBase("دوازدهم") 
-  // }
-  // if(props.s.hardness[0] === "LOW" ){
-  //   setHardness("ساده")
-  // }
-  // else if(props.s.hardness[0] === "MEDIUM"){
-  //   setHardness("متوسط")
-  // }
-  // else if(props.s.hardness[0] === "HARD"){
-  //   setHardness("سخت")
-  // }
-  // setChapter(props.s.chapter[0]);
+  console.log(props);
+  console.log(props.q);
+  console.log(props.q.question);
+  // console.log(props.q.answers[0].answer);
+  // console.log(props.q.options[0].option);
   return (
   <div className={classes.root} style={{padding: '6% 0% 0% 4%'}}>
-    <Accordion  style={{backgroundColor: '#e6e6e6',}}>
+    <Accordion  style={{backgroundColor: 'white',}}>
          <AccordionSummary
            expandIcon={<ExpandMoreIcon />}
            aria-controls="panel1a-content"
            id="panel1a-header"
          >
            <Typography style={{fontFamily: 'Vazir',marginTop: '2%',direction: 'rtl',textAlign: 'right'}} className={classes.heading}>
-             <Icon style={{position: 'absolute',right: '-4%',top: '15%',color: '#ee6c4d'}}>help_center</Icon>{props.q}
+             <Icon style={{position: 'absolute',right: '-4%',top: '15%',color: '#ee6c4d'}}>help_center</Icon>{props.q.question}
               <br/><br/>
               
-              <div>
-                {/* <span>{course}</span> */}
-                {/* <span>{hardness}</span>
-                <span>{base}</span>
-                <span>{type}</span> */}
-                {/* <span>{chapter}</span> */}
-              </div>
-             {props.test ? (
-             <div style={{position : 'relative',right: '2%'}}>
-              <div>الف){props.g[0].option}</div>
-              <div>  ب){props.g[1].option}</div>
-              <div>  ج){props.g[2].option}</div>
-              <div>  د){props.g[3].option}</div>
-             </div>) : props.multi ? props.g.map((options) =>{
-               return(<div>{options.option}</div>)
-             }
+             {props.q.type === "TEST" ? (
                
-             ) : null}
-             
+             <div style={{position : 'relative',right: '2%'}}>
+              <div>۱){props.q.options[0].option}</div>
+              <div>۲){props.q.options[1].option}</div>
+              <div>۳){props.q.options[2].option}</div>
+              <div>۴){props.q.options[3].option}</div>
+             </div>) : props.q.type === "MULTICHOISE" ? (
+               props.q.options.map((options) =>{
+                  return(<div>{options.option}</div>)
+                }
+             )) : null}
+             <div style={{position: 'absolute',color : 'gray',top: '3%',right: '1%',fontSize: '12px'}}>
+             <span>{props.q.type === "TEST" ? (<span>&nbsp;تست&nbsp;</span>) :
+              props.q.type === "MULTICHOISE" ? (<span>&nbsp;چندگزینه ای&nbsp;</span>) :
+              props.q.type === "LONGANSWER" ? (<span>&nbsp;پاسخ کوتاه&nbsp;</span>) :
+              props.q.type === "SHORTANSWER" ? (<span>&nbsp;تشریحی&nbsp;</span>) : null
+             }</span>
+             <span>{props.q.course === "MATH" ? (<span>&nbsp;ریاضی&nbsp;</span>) : 
+              props.q.course === "PHYSIC" ? (<span>&nbsp;فیزیک&nbsp;</span>) : 
+              props.q.course === "CHEMISTRY" ? (<span>&nbsp;شیمی&nbsp;</span>) : 
+              props.q.course === "BIOLOGY" ? (<span>&nbsp;زیست&nbsp;</span>) : null
+             }</span>
+             <span>{props.q.hardness === "LOW" ? (<span>&nbsp;ساده&nbsp;</span>) : 
+                    props.q.hardness === "MEDIUM" ? (<span>&nbsp;متوسط&nbsp;</span>) : 
+                    props.q.hardness === "HARD" ? (<span>&nbsp;سخت&nbsp;</span>) : null
+             }</span>
+             <span>&nbsp;فصل&nbsp;{props.q.chapter === "1" ? (<span>&nbsp;۱&nbsp;</span>) : 
+                      props.q.chapter === "2" ? (<span>&nbsp;۲&nbsp;</span>) : 
+                      props.q.chapter === "3" ? (<span>&nbsp;۳&nbsp;</span>) : 
+                      props.q.chapter === "4" ? (<span>&nbsp;۴&nbsp;</span>) : 
+                      props.q.chapter === "5" ? (<span>&nbsp;۵&nbsp;</span>) : 
+                      props.q.chapter === "6" ? (<span>&nbsp;۶&nbsp;</span>) : 
+                      props.q.chapter === "7" ? (<span>&nbsp;۷&nbsp;</span>) : 
+                      props.q.chapter === "8" ? (<span>&nbsp;۸&nbsp;</span>) : 
+                      props.q.chapter === "9" ? (<span>&nbsp;۹&nbsp;</span>) : 
+                      props.q.chapter === "10" ? (<span>&nbsp;۱۰&nbsp;</span>) : null
+
+             }</span>
+              </div>
              </Typography>
          </AccordionSummary>
          <AccordionDetails>
            <Typography style={{fontFamily: 'Vazir',textAlign: 'right'}}>
              <hr/><Icon style={{color: '#0e918c'}}>vpn_key</Icon>
-             {props.a.map((answers) => {
+             {props.q.answers.map((answers) => {
              return (<div>{answers.answer}</div>)})}
            </Typography>
          </AccordionDetails>
        </Accordion>
  </div>)
 }
+// function QCC (props){
+  
+//   // console.log(props);
+//   // console.log(props.q);
+//   const [course,setCourse] = React.useState();
+//   const [type,setType] = React.useState();
+//   const [hardness,setHardness] = React.useState();
+//   const [chapter,setChapter] = React.useState();
+//   const [base,setBase] = React.useState();
+//   const classes = useStyles();
+//   // console.log(props.s.course);
+//   // console.log(props.s.course[0]);
+//   // if(props.s.course[0] === "MATH") {
+//   //   setCourse("ریاضی")
+//   // }
+//   // else if(props.s.course[0] === "PHYSIC"){
+//   //   setCourse("فیزیک")
+//   // }
+//   // else if(props.s.course[0] === "CHEMISTRY"){
+//   //   setCourse("شیمی")
+//   // }
+//   // else if(props.s.course[0] === "BIOLOGY"){
+//   //   setCourse("زیست")
+//   // }
+//   // if(props.s.type[0] === "TEST"){
+//   //   setType("تستی")
+//   // }
+//   // else if(props.s.type[0] === "LONGANSWER"){
+//   //   setType("تشریحی")
+//   // }
+//   // else if(props.s.type[0] === "SHORTANSWER"){
+//   //   setType("جای خالی")
+//   // }
+//   // else if(props.s.type[0] === "MULTICOISE"){
+//   //   setType("چندگزینه ای")
+//   // }
+//   //  if(props.s.base[0] === "10"){
+//   //   setBase("دهم")
+//   //  }
+//   //  else if(props.s.base[0] === "11"){
+//   //   setBase("یازدهم")
+//   // }
+//   // else if(props.s.base[0] === "12"){
+//   //   setBase("دوازدهم") 
+//   // }
+//   // if(props.s.hardness[0] === "LOW" ){
+//   //   setHardness("ساده")
+//   // }
+//   // else if(props.s.hardness[0] === "MEDIUM"){
+//   //   setHardness("متوسط")
+//   // }
+//   // else if(props.s.hardness[0] === "HARD"){
+//   //   setHardness("سخت")
+//   // }
+//   // setChapter(props.s.chapter[0]);
+//   return (
+//   <div className={classes.root} style={{padding: '6% 0% 0% 4%'}}>
+//     <Accordion  style={{backgroundColor: '#e6e6e6',}}>
+//          <AccordionSummary
+//            expandIcon={<ExpandMoreIcon />}
+//            aria-controls="panel1a-content"
+//            id="panel1a-header"
+//          >
+//            <Typography style={{fontFamily: 'Vazir',marginTop: '2%',direction: 'rtl',textAlign: 'right'}} className={classes.heading}>
+//              <Icon style={{position: 'absolute',right: '-4%',top: '15%',color: '#ee6c4d'}}>help_center</Icon>{props.q}
+//               <br/><br/>
+              
+//               <div>
+//                 {/* <span>{course}</span> */}
+//                 {/* <span>{hardness}</span>
+//                 <span>{base}</span>
+//                 <span>{type}</span> */}
+//                 {/* <span>{chapter}</span> */}
+//               </div>
+//              {props.test ? (
+//              <div style={{position : 'relative',right: '2%'}}>
+//               <div>الف){props.g[0].option}</div>
+//               <div>  ب){props.g[1].option}</div>
+//               <div>  ج){props.g[2].option}</div>
+//               <div>  د){props.g[3].option}</div>
+//              </div>) : props.multi ? props.g.map((options) =>{
+//                return(<div>{options.option}</div>)
+//              }
+               
+//              ) : null}
+             
+//              </Typography>
+//          </AccordionSummary>
+//          <AccordionDetails>
+//            <Typography style={{fontFamily: 'Vazir',textAlign: 'right'}}>
+//              <hr/><Icon style={{color: '#0e918c'}}>vpn_key</Icon>
+//              {props.a.map((answers) => {
+//              return (<div>{answers.answer}</div>)})}
+//            </Typography>
+//          </AccordionDetails>
+//        </Accordion>
+//  </div>)
+// }
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -774,7 +854,7 @@ const useStyles = makeStyles((theme) => ({
       formControl: {
         margin: theme.spacing(1),
         minWidth: 120,
-        maxWidth: 300,
+        maxWidth: 200,
         
       },
       
