@@ -24,10 +24,9 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import SearchIcon from '@material-ui/icons/Search';
-
-
-
+import ListItemText from '@material-ui/core/ListItemText';
+import Input from '@material-ui/core/Input';
+import Checkbox from '@material-ui/core/Checkbox';
 class QuestionBank extends Component{
     constructor() {
         super();
@@ -48,53 +47,301 @@ class QuestionBank extends Component{
         const [short, setShort] = this.props.short;
         const [multi, setMulti] = this.props.multi;
         const [list, setList] = this.props.list;
+        
+        const theme = this.props.theme;
+        const [base, setBase] = this.props.base;
+        const [course, setCourse] = this.props.course;
+        const [type, setType] = this.props.type;
+        const [hardness, setHardness] = this.props.hardness;
+        const [chapter, setChapter] = this.props.chapter;
         var res;
-        const handleChange = e => {
-          this.setState({ [e.target.name]: [e.target.value]});
-            setPending(false);
-            setList([]);
-            setTest(false);
-            setLong(false);
-            setShort(false);
-            setMulti(false);
+        const handleChangeBase = e => {
+          setPending(false);
+            setPendi(false);
+          this.setState({ base : [],course: [],hardness: [],chapter: [],type :[]});
+          setBase(e.target.value);
+          console.log(base)
+          console.log(e.target.value[e.target.value.length - 1])
+          if(e.target.value[e.target.value.length - 1] === 'all'){
+            if(base.length < bases.length){
+              setBase(bases);
+            }
+            else{
+              setBase([]);
+            }
           }
+        }
+        const handleChangeCourse = e => {
+          setPending(false);
+            setPendi(false);
+            this.setState({ base : [],course: [],hardness: [],chapter: [],type :[]});
+          this.setState({ [e.target.name]: []});
+          setCourse(e.target.value);
+          if(e.target.value[e.target.value.length - 1] === 'all'){
+            if(course.length < courses.length){
+              setCourse(courses);
+            }
+            else{
+              setCourse([]);
+            }
+          }
+        }
+        const handleChangeHardness = e => {
+          setPending(false);
+            setPendi(false);
+            this.setState({ base : [],course: [],hardness: [],chapter: [],type :[]});
+          this.setState({ [e.target.name]: []});
+          setHardness(e.target.value);
+          if(e.target.value[e.target.value.length - 1] === 'all'){
+            if(hardness.length < hardnesses.length){
+              setHardness(hardnesses);
+            }
+            else{
+              setHardness([]);
+            }
+          }
+        }
+        const handleChangeChapter = e => {
+          setPending(false);
+            setPendi(false);
+            this.setState({ base : [],course: [],hardness: [],chapter: [],type :[]});
+          this.setState({ [e.target.name]: []});
+          setChapter(e.target.value);
+          if(e.target.value[e.target.value.length - 1] === 'all'){
+            if(chapter.length < chapters.length){
+              setChapter(chapters);
+            }
+            else{
+                setChapter([]);
+            }
+          }
+        }
+        const handleChangeType = e => {
+          setPending(false);
+            setPendi(false);
+            this.setState({ base : [],course: [],hardness: [],chapter: [],type :[]});
+          this.setState({ [e.target.name]: []});
+          setType(e.target.value);
+          console.log(e.target.value[e.target.value.length - 1])
+          if(e.target.value[e.target.value.length - 1] === 'all'){
+            if(type.length < types.length){
+              setType(types);
+            }
+            else{
+              setType([]);
+            }
+          }
+        }
+          // console.log(e.target.value);
+          // console.log(e.target);
+          // base.map((base)=> {
+          //   console.log(base)
+          //   if(base==="دهم"){
+          //     setBase1([...10]);
+          //     console.log("2")
+          //     console.log(base1)
+          //     // this.setState({ [e.target.name]: [...base1]});
+          //   }
+          //   if(base==="یازدهم"){
+          //     setBase1([11]);
+          //     console.log("3")
+          //     console.log(base1)
+          //     // this.setState1({ [e.target.name]: [...base1]});
+          //   }
+          //   if(base==="دوازدهم"){
+          //     setBase1([12]);
+          //     // this.setState({ [base] : [..."12"]});
+          //     console.log("4")
+          //     console.log(base1)
+          //   }
+          // })
+          // this.setState({ [e.target.name]: [...e.target.value]});
+          // console.log(base);
+          // console.log(this.state);
+          // this.setState({ [e.target.name]: [e.target.value]});
+          //   setPending(false);
+          //   setList([]);
+          //   setTest(false);
+          //   setLong(false);
+          //   setShort(false);
+          //   setMulti(false);
+          // }
     
         const handleClick = e => {
+          this.setState({ base : [],course: [],hardness: [],chapter: [],type :[]});
             setPending(true);
             setPendi(true);
-            console.log("pending:" + pending);
-            console.log("this.state.type[0]" + this.state.type[0]);
+            var listbase,listcourse,listhardness,listtype,listchapter = [];
+            base.map((base)=> {
+              console.log(base);
+              if(base==="دهم"){
+                listbase = this.state.base;
+                listbase.push("10")
+                this.setState({ base : listbase});
+                console.log(this.state);
+              }
+              if(base==="یازدهم"){
+                listbase = this.state.base;
+                listbase.push("11")
+                this.setState({ base : listbase});
+                
+                console.log(this.state);
+              }
+              if(base==="دوازدهم"){
+                listbase = this.state.base;
+                listbase.push("12")
+                this.setState({ base : listbase});
+                
+                console.log(this.state);
+              }
+            })
+            course.map((course)=> {
+              if(course==="ریاضی"){
+                listcourse = this.state.course;
+                listcourse.push("MATH")
+                this.setState({ course : listcourse});
+              }
+              if(course==="شیمی"){
+                listcourse = this.state.course;
+                listcourse.push("CHEMISTRY")
+                this.setState({ course : listcourse});
+              }
+              if(course==="فیزیک"){
+                listcourse = this.state.course;
+                listcourse.push("PHYSIC")
+                this.setState({ course : listcourse});
+              }
+              if(course==="زیست"){
+                listcourse = this.state.course;
+                listcourse.push("BIOLOGY")
+                this.setState({ course : listcourse});
+              }
+            })
+            type.map((type)=> {
+              if(type==="تستی"){
+                listtype = this.state.type;
+                listtype.push("TEST")
+                this.setState({ type : listtype});
+              }
+              if(type==="تشریحی"){
+                listtype = this.state.type;
+                listtype.push("LONGANSWER")
+                this.setState({ type : listtype});
+              }
+              if(type==="چندگزینه ای"){
+                listtype = this.state.type;
+                listtype.push("MULTICHOISE")
+                this.setState({ type : listtype});
+              }
+              if(type==="جای خالی"){
+                listtype = this.state.type;
+                listtype.push("SHORTANSWER")
+                this.setState({ type : listtype});
+              }
+            })
+            hardness.map((hardness)=> {
+              if(hardness==="ساده"){
+                listhardness = this.state.hardness;
+                listhardness.push("LOW")
+                this.setState({ hardness : listhardness});
+              }
+              if(hardness==="متوسط"){
+                listhardness = this.state.hardness;
+                listhardness.push("MEDIUM")
+                this.setState({ hardness : listhardness});
+              }
+              if(hardness==="سخت"){
+                listhardness = this.state.hardness;
+                listhardness.push("HARD")
+                this.setState({ hardness : listhardness});
+              }
+            })
+            chapter.map((chapter)=> {
+              if(chapter==="اول"){
+                listchapter = this.state.chapter;
+                listchapter.push("1")
+                this.setState({ chapter : listchapter});
+              }
+              if(chapter==="دوم"){
+                listchapter = this.state.chapter;
+                listchapter.push("2")
+                this.setState({ chapter : listchapter});
+              }
+              if(chapter==="سوم"){
+                listchapter = this.state.chapter;
+                listchapter.push("3")
+                this.setState({ chapter : listchapter});
+              }
+              if(chapter==="چهارم"){
+                listchapter = this.state.chapter;
+                listchapter.push("4")
+                this.setState({ chapter : listchapter});
+              }
+              if(chapter==="پنجم"){
+                listchapter = this.state.chapter;
+                listchapter.push("5")
+                this.setState({ chapter : listchapter});
+              }
+              if(chapter==="ششم"){
+                listchapter = this.state.chapter;
+                listchapter.push("6")
+                this.setState({ chapter : listchapter});
+              }
+              if(chapter==="هفتم"){
+                listchapter = this.state.chapter;
+                listchapter.push("7")
+                this.setState({ chapter : listchapter});
+              }
+              if(chapter==="هشتم"){
+                listchapter = this.state.chapter;
+                listchapter.push("8")
+                this.setState({ chapter : listchapter});
+              }
+              if(chapter==="نهم"){
+                listchapter = this.state.chapter;
+                listchapter.push("9")
+                this.setState({ chapter : listchapter});
+              }
+              if(chapter==="دهم"){
+                listchapter = this.state.chapter;
+                listchapter.push("10")
+                this.setState({ chapter : listchapter});
+              }
+            })
+            console.log(this.state)
+            // console.log("pending:" + pending);
+            // console.log("this.state.type[0]" + this.state.type[0]);
             e.preventDefault();
             const token = localStorage.getItem('token');
             res = [];
-            if(this.state.type[0] === "TEST"){
-              setTest(true);
-              setLong(false);
-              setShort(false);
-              setMulti(false);
-              console.log("istest:" + test);
-            }
-            if(this.state.type[0] === "LONGANSWER"){
-              setTest(false);
-              setLong(true);
-              setShort(false);
-              setMulti(false);
-              console.log("islong:" + long);
-            }
-            if(this.state.type[0] === "SHORTANSWER"){
-              setTest(false);
-              setLong(false);
-              setShort(true);
-              setMulti(false);
-              console.log("isshort:" + short);
-            }
-            if(this.state.type[0] === "MULTICHOISE"){
-              setTest(false);
-              setLong(false);
-              setShort(false);
-              setMulti(true);
-              console.log("ismulti:" + multi);
-            }
+            // if(this.state.type[0] === "TEST"){
+            //   setTest(true);
+            //   setLong(false);
+            //   setShort(false);
+            //   setMulti(false);
+            //   console.log("istest:" + test);
+            // }
+            // if(this.state.type[0] === "LONGANSWER"){
+            //   setTest(false);
+            //   setLong(true);
+            //   setShort(false);
+            //   setMulti(false);
+            //   console.log("islong:" + long);
+            // }
+            // if(this.state.type[0] === "SHORTANSWER"){
+            //   setTest(false);
+            //   setLong(false);
+            //   setShort(true);
+            //   setMulti(false);
+            //   console.log("isshort:" + short);
+            // }
+            // if(this.state.type[0] === "MULTICHOISE"){
+            //   setTest(false);
+            //   setLong(false);
+            //   setShort(false);
+            //   setMulti(true);
+            //   console.log("ismulti:" + multi);
+            // }
             const headers={
               'Authorization': token
             }
@@ -106,17 +353,24 @@ class QuestionBank extends Component{
                     // console.log(result);
                     // console.log(result.data.questions);
                     console.log(result);
-                    
+                    this.setState({ base : [],course: [],hardness: [],chapter: [],type :[]});
                     // console.log("good");  
                     // console.log(this.state);
                     var ll = res.map((q) => q);
-                    this.setState({ listquestion : ll});
+                    // this.setState({ listquestion : ll});
                     setList([...ll]);
                     console.log(list);
-                    setPendi(false);
-                    // setPending(true);
+                    console.log(this.state);
+                    // setPendi(false);
+                    // setBase([]);
+                    // setCourse([]);
+                    // setHardness([]);
+                    // setType([]);
+                    // setChapter([]);
+                    // setPending(false);
                 }).catch(error => {
                     console.log(error.messege);
+                    this.setState({ base : [],course: [],hardness: [],chapter: [],type :[]});
                     alert("سوالی با این مشخصات فعلا در بانک سوال موجود نمی باشد");
                     setPending(false); 
                     console.log("bad");
@@ -127,6 +381,7 @@ class QuestionBank extends Component{
             <div>
                 <Material_RTL>
                 <M_RTL>
+                
                   <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',backgroundColor : '#1CA0A0',position: 'absolute',width: '30%',height: '40px',borderRadius: '10px 0px 0px 10px',margin: '-1% 0 0 0'}}>
                     <CssBaseline/>
                     <h6 style={{fontFamily: 'Vazir',margin: '10px',padding: '1%'}}>بانک سوال</h6>
@@ -139,123 +394,164 @@ class QuestionBank extends Component{
                     <CssBaseline/>
                 <div style={{position: 'relative',}}>
                 <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
-                <FormControl variant="outlined" style={{width:'100%',margin: '1%'}}>
-                    <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">پایه</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={this.state.base}
-                      onChange={handleChange}
-                      label="پایه"
-                      name="base"
-                      style={{fontFamily: 'Vazir'}}
-                    >
-                      {/* <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem> */}
-                      <MenuItem value={10} style={{fontFamily: 'Vazir',direction: 'rtl'}}>دهم</MenuItem>
-                      <MenuItem value={11} style={{fontFamily: 'Vazir',direction: 'rtl'}}>یازدهم</MenuItem>
-                      <MenuItem value={12} style={{fontFamily: 'Vazir',direction: 'rtl'}}>دوازدهم</MenuItem>
-                    </Select>
-                </FormControl>
-                <FormControl variant="outlined" style={{width:'100%',margin: '1%'}}>
-                    <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">کتاب</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={this.state.course}
-                      onChange={handleChange}
-                      label="کتاب"
-                      name="course"
-                      style={{fontFamily: 'Vazir'}}
-                    >
-                      {/* <MenuItem value="">
-                        <em>None</em> */}
-                      {/* </MenuItem> */}
-                      <MenuItem value={'MATH'}       style={{fontFamily: 'Vazir',direction: 'rtl'}}>ریاضی</MenuItem>
-                      <MenuItem value={'PHYSIC'}     style={{fontFamily: 'Vazir',direction: 'rtl'}}>فیزیک</MenuItem>
-                      <MenuItem value={'CHEMISTRY'}  style={{fontFamily: 'Vazir',direction: 'rtl'}}>شیمی</MenuItem>
-                      <MenuItem value={'BIOLOGY'}    style={{fontFamily: 'Vazir',direction: 'rtl'}}>زیست</MenuItem>
-                    </Select>
-                </FormControl>
-                
-                <FormControl  variant="outlined" style={{width:'100%',margin: '1%'}}>
-                    <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">نوع سوال</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={this.state.type}
-                      onChange={handleChange}
-                      label="نوع سوال"
-                      name="type"
-                      style={{fontFamily: 'Vazir'}}
-                    >
-                      {/* <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem> */}
-                      <MenuItem value={'TEST'}         style={{fontFamily: 'Vazir',direction: 'rtl'}}>تستی</MenuItem>
-                      <MenuItem value={'MULTICHOISE'}  style={{fontFamily: 'Vazir',direction: 'rtl'}}>چند گزینه ای</MenuItem>
-                      <MenuItem value={'LONGANSWER'}   style={{fontFamily: 'Vazir',direction: 'rtl'}}>تشریحی</MenuItem>
-                      <MenuItem value={'SHORTANSWER'}  style={{fontFamily: 'Vazir',direction: 'rtl'}}>جای خالی</MenuItem>
-                    </Select>
-                </FormControl>
-
-                <FormControl variant="outlined" style={{width:'100%',margin: '1%'}}>
-                    <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">سطح سوال</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={this.state.hardness}
-                      onChange={handleChange}
-                      label="سطح سوال"
-                      name="hardness"
-                      style={{fontFamily: 'Vazir'}}
-                    >
-                      {/* <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem> */}
-                      <MenuItem value={'LOW'}     style={{fontFamily: 'Vazir',direction: 'rtl'}}>ساده</MenuItem>
-                      <MenuItem value={'MEDIUM'}  style={{fontFamily: 'Vazir',direction: 'rtl'}}>متوسط</MenuItem>
-                      <MenuItem value={'HARD'}    style={{fontFamily: 'Vazir',direction: 'rtl'}}>سخت</MenuItem>
-                    </Select>
-                </FormControl>
-                <FormControl variant="outlined" style={{width:'100%',margin: '1%'}}>
-                    <InputLabel style={{fontFamily: 'Vazir'}} id="demo-simple-select-outlined-label">فصل</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={this.state.chapter}
-                      onChange={handleChange}
-                      label="فصل"
-                      name="chapter"
-                      style={{fontFamily: 'Vazir'}}
-                    >
-                      {/* <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem> */}
-                      <MenuItem value={1} style={{fontFamily: 'Vazir',direction: 'rtl'}}>1</MenuItem>
-                      <MenuItem value={2} style={{fontFamily: 'Vazir',direction: 'rtl'}}>2</MenuItem>
-                      <MenuItem value={3} style={{fontFamily: 'Vazir',direction: 'rtl'}}>3</MenuItem>
-                      <MenuItem value={4} style={{fontFamily: 'Vazir',direction: 'rtl'}}>4</MenuItem>
-                      <MenuItem value={5} style={{fontFamily: 'Vazir',direction: 'rtl'}}>5</MenuItem>
-                      <MenuItem value={6} style={{fontFamily: 'Vazir',direction: 'rtl'}}>6</MenuItem>
-                      <MenuItem value={7} style={{fontFamily: 'Vazir',direction: 'rtl'}}>7</MenuItem>
-                      <MenuItem value={8} style={{fontFamily: 'Vazir',direction: 'rtl'}}>8</MenuItem>
-                      <MenuItem value={9} style={{fontFamily: 'Vazir',direction: 'rtl'}}>9</MenuItem>
-                      <MenuItem value={10} style={{fontFamily: 'Vazir',direction: 'rtl'}}>10</MenuItem>
-                    </Select>
-                </FormControl>
+                <div>
+                <FormControl className={classes.formControl}>
+                  <InputLabel id="demo-mutiple-checkbox-label1">پایه</InputLabel>
+                  <Select
+                    labelId="demo-mutiple-checkbox-label1"
+                    id="demo-mutiple-checkbox1"
+                    multiple
+                    value={base}
+                    onChange={handleChangeBase}
+                    name="base"
+                    input={<Input style={{fontFamily: 'Vazir'}}/> }
+                    renderValue={(selected) => selected.join(', ')}
+                    MenuProps={MenuProps}
+                    style={{fontFamily: 'Vazir',}}
+                    InputProps={{style:{fontFamily: 'Vazir',}}}
+                    InputLabelProps={{style:{fontFamily: 'Vazir'},}}
+                  >
+                      {bases.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          <Checkbox  checked={base.indexOf(name) > -1} style={{color: '#0e918c',fontFamily: 'Vazir'}}/>
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      ))}
+                      <MenuItem value={"all"}>
+                      <Checkbox  checked={base.length === bases.length ? ("انتخاب همه") : null}  style={{color: '#0e918c',fontFamily: 'Vazir'}}/>
+                      <ListItemText primary={'انتخاب همه'} />
+                      </MenuItem>
+                    
+                      </Select>
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                  <InputLabel id="demo-mutiple-checkbox-label2">درس</InputLabel>
+                  <Select
+                    labelId="demo-mutiple-checkbox-label2"
+                    id="demo-mutiple-checkbox2"
+                    multiple
+                    value={course}
+                    onChange={handleChangeCourse}
+                    name="course"
+                    input={<Input style={{fontFamily: 'Vazir'}}/> }
+                    renderValue={(selected) => selected.join(', ')}
+                    MenuProps={MenuProps}
+                    style={{fontFamily: 'Vazir',}}
+                    InputProps={{style:{fontFamily: 'Vazir',}}}
+                    InputLabelProps={{style:{fontFamily: 'Vazir'},}}
+                  >
+                      {courses.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          <Checkbox  checked={course.indexOf(name) > -1} style={{color: '#0e918c',fontFamily: 'Vazir'}}/>
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      ))}
+                      <MenuItem value={"all"}>
+                      <Checkbox  checked={course.length === courses.length ? ("انتخاب همه") : null}  style={{color: '#0e918c',fontFamily: 'Vazir'}}/>
+                      <ListItemText primary={'انتخاب همه'} />
+                      </MenuItem>
+                    
+                      </Select>
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                  <InputLabel id="demo-mutiple-checkbox-label3">نوع سوال</InputLabel>
+                  <Select
+                    labelId="demo-mutiple-checkbox-label3"
+                    id="demo-mutiple-checkbox3"
+                    multiple
+                    value={type}
+                    onChange={handleChangeType}
+                    name="type"
+                    input={<Input style={{fontFamily: 'Vazir'}}/> }
+                    renderValue={(selected) => selected.join(', ')}
+                    MenuProps={MenuProps}
+                    style={{fontFamily: 'Vazir',}}
+                    InputProps={{style:{fontFamily: 'Vazir',}}}
+                    InputLabelProps={{style:{fontFamily: 'Vazir'},}}
+                  >
+                      {types.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          <Checkbox  checked={type.indexOf(name) > -1} style={{color: '#0e918c',fontFamily: 'Vazir'}}/>
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      ))}
+                      <MenuItem value={"all"}>
+                      <Checkbox  checked={type.length === types.length ? ("انتخاب همه") : null}  style={{color: '#0e918c',fontFamily: 'Vazir'}}/>
+                      <ListItemText primary={'انتخاب همه'} />
+                      </MenuItem>
+                    
+                      </Select>
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                  <InputLabel id="demo-mutiple-checkbox-label4">سطح سوال</InputLabel>
+                  <Select
+                    labelId="demo-mutiple-checkbox-label4"
+                    id="demo-mutiple-checkbox4"
+                    multiple
+                    value={hardness}
+                    onChange={handleChangeHardness}
+                    name="hardness"
+                    input={<Input style={{fontFamily: 'Vazir'}}/> }
+                    renderValue={(selected) => selected.join(', ')}
+                    MenuProps={MenuProps}
+                    style={{fontFamily: 'Vazir',}}
+                    InputProps={{style:{fontFamily: 'Vazir',}}}
+                    InputLabelProps={{style:{fontFamily: 'Vazir'},}}
+                  >
+                      {hardnesses.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          <Checkbox  checked={hardness.indexOf(name) > -1} style={{color: '#0e918c',fontFamily: 'Vazir'}}/>
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      ))}
+                      <MenuItem value={"all"}>
+                      <Checkbox  checked={hardness.length === hardnesses.length ? ("انتخاب همه") : null}  style={{color: '#0e918c',fontFamily: 'Vazir'}}/>
+                      <ListItemText primary={'انتخاب همه'} />
+                      </MenuItem>
+                    
+                      </Select>
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                  <InputLabel id="demo-mutiple-checkbox-label5">فصل</InputLabel>
+                  <Select
+                    labelId="demo-mutiple-checkbox-label5"
+                    id="demo-mutiple-checkbox5"
+                    multiple
+                    value={chapter}
+                    onChange={handleChangeChapter}
+                    name="chapter"
+                    input={<Input style={{fontFamily: 'Vazir'}}/> }
+                    renderValue={(selected) => selected.join(', ')}
+                    MenuProps={MenuProps}
+                    style={{fontFamily: 'Vazir',}}
+                    InputProps={{style:{fontFamily: 'Vazir',}}}
+                    InputLabelProps={{style:{fontFamily: 'Vazir'},}}
+                  >
+                      {chapters.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          <Checkbox  checked={chapter.indexOf(name) > -1} style={{color: '#0e918c',fontFamily: 'Vazir'}}/>
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      ))}
+                      <MenuItem value={"all"}>
+                      <Checkbox  checked={chapter.length === chapters.length ? ("انتخاب همه") : null}  style={{color: '#0e918c',fontFamily: 'Vazir'}}/>
+                      <ListItemText primary={'انتخاب همه'} />
+                      </MenuItem>
+                    
+                      </Select>
+                    </FormControl>
+                  </div>
                 <br/>
-                                    <Grid container>
-                                        <Grid item xs={12}>
-                                            <Grid classes={classes.root} >
-                                            <LoadingButton onClick={handleClick} endIcon={<Icon>search</Icon>} pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#EE6C4D',}}>
-                                            جست و جو
-                                            </LoadingButton>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                  <br/>  
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Grid classes={classes.root} >
+                        <LoadingButton onClick={handleClick} endIcon={<Icon>search</Icon>} pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#EE6C4D',}}>
+                        جست و جو
+                        </LoadingButton>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <br/>  
                 </ValidatorForm >
                 </div>
                 </Container>
@@ -270,6 +566,9 @@ class QuestionBank extends Component{
                           return(
                           <li key={question.question}><QC q={question.question} g={question.options} test={test} multi={multi}/><br/></li>
                           )}) : null} */}
+                          {/* {pending ? list.map((question)=>{
+                            return()
+                          })} */}
                         {pending && test ? list.map((question) => {
                           return(
                           <li key={question.question}><QC q={question.question} g={question.options} a={question.answers} s={this.state} test={test} multi={multi} long={long} short={short}/><br/></li>
@@ -392,6 +691,63 @@ function QC (props){
  </div>)
 }
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+      fontFamily: 'Vazir',
+    },
+  },
+};
+
+
+const bases = [
+  'دهم',
+  'یازدهم',
+  'دوازدهم'
+];
+const courses = [
+  'ریاضی',
+  'شیمی',
+  'فیزیک',
+  'زیست',
+];
+const hardnesses=[
+  'ساده',
+  'متوسط',
+  'سخت'
+];
+const types = [
+  'تستی',
+  'تشریحی',
+  'چندگزینه ای',
+  'جای خالی',
+];
+const chapters=[
+  'اول',
+  'دوم',
+  'سوم',
+  'چهارم',
+  'پنجم',
+  'ششم',
+  'هفتم',
+  'هشتم',
+  'نهم',
+  'دهم'
+];
+
+function getStyles(base, baseName, theme) {
+  return {
+    fontWeight:
+      baseName.indexOf(base) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -407,19 +763,27 @@ const useStyles = makeStyles((theme) => ({
       // padding: '2% 4% 0% 7%',   
     //   opacity: '95%' ,       
     },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-        color : 'white' ,
-      },
+    // formControl: {
+    //     margin: theme.spacing(1),
+    //     minWidth: 120,
+    //     color : 'white' ,
+    //   },
       selectEmpty: {
         marginTop: theme.spacing(2),
       },
+      formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+        maxWidth: 300,
+        
+      },
+      
 }));
 
   
 export default () => {
     const classes = useStyles();
+    const theme = useTheme();
     const pending = React.useState(false);
     const pendi = React.useState(false);
     const long = React.useState(false);
@@ -428,8 +792,13 @@ export default () => {
     const multi = React.useState(false);
     const lq = [];
     const list = React.useState([]);
+    const base = React.useState([]);
+    const course = React.useState([]);
+    const hardness = React.useState([]);
+    const type = React.useState([]);
+    const chapter = React.useState([]);
     return (        
-        <QuestionBank classes={classes} pending={pending} pendi={pendi} list={list} long={long} test={test} short={short} multi={multi}/>    
+        <QuestionBank classes={classes} theme={theme} base={base} course={course} type={type} hardness={hardness} chapter={chapter} pending={pending} pendi={pendi} list={list} long={long} test={test} short={short} multi={multi}/>    
         
         )
 }
