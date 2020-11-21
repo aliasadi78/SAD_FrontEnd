@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Container from "@material-ui/core/Container";
 import Button from '@material-ui/core/Button';
 import CssBaseline from "@material-ui/core/CssBaseline";
+import axios from 'axios' ;
 import Material_RTL from "../Material_RTL";
 import M_RTL from "../M_RTL";
 import Grid from "@material-ui/core/Grid";
@@ -11,6 +12,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import serverURL from '../../utils/serverURL' ;
+import tokenConfig from '../../utils/tokenConfig' ;
 import Select from '@material-ui/core/Select';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import LoadingButton from '@material-ui/lab/LoadingButton';
@@ -18,6 +21,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Dialog, DialogContent } from '@material-ui/core';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
+import AlertDialog from '../Dialog';
 
 // import NewClassDialog from '../Pages/ClassesPage' ;
 class NewClassPage extends Component{
@@ -31,12 +35,12 @@ class NewClassPage extends Component{
             fullWidth : true , 
             maxWidth : 'sm' ,
             open : true , 
+            classCreated : 0 ,
         }
     }
 
     handleChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
-        console.log(this.state);
+        this.setState({ [e.target.name]: e.target.value });        
     }
     
     handleClose = () => {
@@ -52,7 +56,7 @@ class NewClassPage extends Component{
       const classes = this.props.classes;
       const [paye, setPaye] = this.props.a;
       const [lesson, setLesson] = this.props.l;
-      const [open, setOpen] = this.props.o;
+      const [open, setOpen] = this.props.o;      
       
       const handleDrawerOpen = () => {
         setOpen(true);
@@ -87,7 +91,32 @@ class NewClassPage extends Component{
       const handleClick = e => {
           setPending(true);
           e.preventDefault();
-          alert("OK");
+
+          const a = {
+            "name" : this.state.title ,
+            "description" : this.state.description
+          }
+
+          const ajson = JSON.stringify(a);
+
+          axios.post(serverURL() + "class" , 
+          ajson , 
+          tokenConfig())
+          .then(res => {
+            setPending(false);
+            this.setState(prevstate => {
+              return {
+                classCreated : 1 ,
+              }
+            })
+          })
+          .catch(e =>{
+            this.setState(prevstate => {
+              return {
+                classCreated : 2 ,
+              }
+            })
+          });
       }
           
       return(
@@ -213,8 +242,18 @@ class NewClassPage extends Component{
                             </Grid>
                             <br/>
                       </ValidatorForm>
-                      </DialogContent>
+                      </DialogContent>                      
                       <DialogActions>
+
+                      {
+                        this.state.classCreated == 1 ?
+                        <AlertDialog text ="کلاس اضافه شد ." />
+                        :
+                        this.state.classCreated == 2 ?
+                        <AlertDialog text = "خطا" />
+                        :
+                        <p></p> 
+                      }                      
                         <Button onClick={this.handleClose} color="primary">
                           انصراف
                         </Button>
