@@ -8,6 +8,7 @@ import {
   createMuiTheme } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import InputBase from '@material-ui/core/InputBase';
+import { LightenDarkenColor } from 'lighten-darken-color'; 
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import axios from 'axios' ;
@@ -74,7 +75,8 @@ const useStyles = makeStyles((theme) => ({
       height: 48,      
       padding: '0 30px',
       "&:hover": {
-        backgroundColor: '#00C853'
+        backgroundColor: LightenDarkenColor('#EE6C4D', -40) ,        
+        color :'white'
       },
       alignItems : "center" ,
     },    

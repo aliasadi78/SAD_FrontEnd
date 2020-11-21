@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { LightenDarkenColor } from 'lighten-darken-color'; 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
@@ -247,6 +248,10 @@ const useStyles = makeStyles((theme) => ({
     },
     topButton :{
         backgroundColor : '#EE6C4D' , 
+        "&:hover": {
+            backgroundColor: LightenDarkenColor('#EE6C4D', -40) ,        
+            color :'white'
+          },
     },
     paper: {
         marginTop: theme.spacing(1),

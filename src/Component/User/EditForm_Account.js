@@ -3,6 +3,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import serverURL from '../../utils/serverURL';
 import tokenConfig from '../../utils/tokenConfig';
 import IconButton from '@material-ui/core/IconButton' ;
+import { LightenDarkenColor } from 'lighten-darken-color'; 
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel' ;
 import InputAdornment from '@material-ui/core/InputAdornment' ;
@@ -37,8 +38,9 @@ const useStyles = makeStyles((theme) => ({
         height: 48,      
         padding: '0 30px',
         "&:hover": {
-          backgroundColor: '#00C853'
-        },
+            backgroundColor: LightenDarkenColor('#EE6C4D', -40) ,        
+            color :'white'
+          },
         alignItems : "center" ,
       },           
 }));
