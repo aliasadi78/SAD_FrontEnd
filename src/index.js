@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import './index.css';
 import App from './App';
+import { Provider } from 'react-redux' ;
+import store from "./app/store" ;
 import * as serviceWorker from './serviceWorker';
 import '../src/fonts/Vazir.ttf'
 ReactDOM.render(
   <Router>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </Router>,
   document.getElementById('root')
 );

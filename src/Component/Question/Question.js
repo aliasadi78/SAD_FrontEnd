@@ -11,17 +11,12 @@ import Grid from '@material-ui/core/Grid';
 import AlertDialog from '../Dialog' ;
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AccordionActions from '@material-ui/core/AccordionActions';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios' ;
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 import Slider from '@material-ui/core/Slider';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Radio from '@material-ui/core/Radio';
@@ -31,7 +26,8 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
 import FormGroup from '@material-ui/core/FormGroup';
-import { Dialog } from '@material-ui/core';
+
+import { useSelector } from 'react-redux' ;
 
 const theme = createMuiTheme({
   palette: {
@@ -109,10 +105,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TestAnswerToSend( choice1 , choice2 , choice3 , choice4 ){
-
-}
-
 function valuetext(value) {
     if(value=="LOW")
         return 'آسان';
@@ -123,6 +115,9 @@ function valuetext(value) {
   }   
 
 export default function Question(props) {
+
+    const index = useSelector(state =>state.edittingQuestion.edittingQuestionIndex);    
+
     const classes = useStyles();
 
     var options = [];
@@ -208,6 +203,11 @@ export default function Question(props) {
         });
     }
 
+    if(index != -1){
+        const edittingQuestion = props.questions[index] ;
+        console.log(edittingQuestion);
+    }
+
     return (
         <React.Fragment>
         <CssBaseline />
@@ -222,11 +222,11 @@ export default function Question(props) {
                                             id="outlined-multiline-static"
                                             label="صورت سوال"
                                             multiline
+                                            defaultValue = {question}
                                             rows={4}
                                             onChange={(e) =>{setQuestion(e.target.value)} }
                                             fullWidth = 'true'
-                                            className = {classes.BigForm}
-                                            // defaultValue="Default Value"
+                                            className = {classes.BigForm}                                            
                                             variant="outlined"
                                         />
                                     </Paper>
@@ -239,6 +239,7 @@ export default function Question(props) {
                                             <Autocomplete
                                                 id="پایه"
                                                 options={grades}
+                                                defaultValue = {grade}
                                                 getOptionLabel={(option) => option.title}
                                                 getOptionSelected ={(option , value) => option.title === value.title}
                                                 className = {classes.dropdowns}                                    
@@ -249,6 +250,7 @@ export default function Question(props) {
                                                 renderInput={(params) => <TextField  variant = 'filled' margin ='dense' {...params} label="پایه"    
                                                 />}
                                             />                                        
+                                            
                                     </Grid>
                                     <Grid item xs={4}>                                        
                                             <Autocomplete

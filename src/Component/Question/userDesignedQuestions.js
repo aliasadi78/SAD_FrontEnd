@@ -5,6 +5,10 @@ import Paper from '@material-ui/core/Paper';
 import Material_RTL from "../Material_RTL";
 import RTL from '../M_RTL';
 import Grid from '@material-ui/core/Grid';
+import { useDispatch } from 'react-redux' ; 
+import {
+    loadEdittingQuestion
+} from './QuestionsSlice' ;
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
@@ -78,7 +82,7 @@ function editQuestion (){
 export default function UserDesignedQuestion(props) {
 
     const [deleted , setDeleted] = React.useState(false);
-
+    const dispatch = useDispatch();
     const classes = useStyles();
 
     const handleDeleteQuestion = (questionId) => {
@@ -134,9 +138,12 @@ export default function UserDesignedQuestion(props) {
                                 <Grid container justifyContent='center' spacing={3} >                 
 
                                     <Grid item xs={2}>
-                                        <Button variant="contained" onClick ={() => {
-                                            localStorage.setItem('editable question' , props.index);        
-                                        }} className={classes.EditButton} href="#contained-buttons">
+                                        <Button variant="contained"                                        
+                                            onClick={() => {                                                
+                                                dispatch(loadEdittingQuestion(props.index));                                                
+                                            }} 
+                                            className={classes.EditButton} href="#contained-buttons">
+
                                             <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                                 ویرایش
                                             </Typography>
