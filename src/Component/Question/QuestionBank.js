@@ -384,15 +384,15 @@ class QuestionBank extends Component{
                 <Material_RTL>
                 <M_RTL>
                 
-                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',backgroundColor : '#1CA0A0',position: 'absolute',width: '30%',height: '40px',borderRadius: '10px 0px 0px 10px',margin: '-1% 0 0 0'}}>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',backgroundColor : '#1CA0A0',position: 'absolute',width: '19%',height: '40px',borderRadius: '10px 10px 10px 10px',margin: '-1% 21px 0 0'}}>
                     <CssBaseline/>
                     <h6 style={{fontFamily: 'Vazir',margin: '10px',padding: '1%'}}>بانک سوال</h6>
                   </Container>
-                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',backgroundColor : '#1CA0A0',position: 'absolute',width: '65%',height: '40px',borderRadius: '0px 10px 10px 00px',margin: '-1% 32% 0 0'}}>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',backgroundColor : '#1CA0A0',position: 'absolute',width: '65.25%',height: '40px',borderRadius: '10px 10px 10px 10px',margin: '-1% 25% 0 0'}}>
                     <CssBaseline/>
-                    <h6 style={{fontFamily: 'Vazir',margin: '10px',padding: '1%'}}>سوالات</h6>
+                    <h6 style={{fontFamily: 'Vazir',margin: '5px',padding: '1%'}}>سوالات</h6>
                   </Container>
-                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',backgroundColor : '#f2f2f2',position: 'absolute',width: '30%', borderRadius: '10px 0px 0px 10px', padding: '2% 2% 0% 2%',margin: '40px 0 0 0'}}>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',backgroundColor : '#f2f2f2',position: 'absolute',width: '19%', borderRadius: '10px 10px 10px 10px', padding: '2% 2% 0% 2%',margin: '40px 21px 0 0'}}>
                     <CssBaseline/>
                 <div style={{position: 'relative',}}>
                 <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
@@ -558,11 +558,12 @@ class QuestionBank extends Component{
                 </div>
                 </Container>
                 <br/>
+                
                 {pending ? 
-                  
-                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir', backgroundColor : "rgb(242 242 242)", position: 'fixed',width:'65%',display: 'block',height: '82%',overflow: 'scroll',borderRadius: '0px 10px 0px 0px',margin: '25px 32% 19px 0px'}}>
+                 <div> 
+                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir', backgroundColor : "rgb(242 242 242)", position: 'fixed',width:'65%',display: 'block',height: '82%',overflow: 'hidden',borderRadius: '10px 10px 10px 10px',margin: '25px 25% 19px 0px'}}>
                 <CssBaseline/>
-                    <div id="ress" >
+                    <div id="ress" style={{width:'100%',height:'100%',overflow: 'scroll',position: 'absolute'}}>
                       <ol style={{listStyle: 'none'}}>
                         {/* {pending ? list.map((question) => {
                           return(
@@ -594,7 +595,8 @@ class QuestionBank extends Component{
                               )}): null} */}
                       </ol>
                     </div>    
-                </Container> : null}
+                </Container></div> : null}
+                
                 </M_RTL>
                 </Material_RTL>
             </div>
@@ -609,7 +611,7 @@ function QC (props){
   // console.log(props.q.answers[0].answer);
   // console.log(props.q.options[0].option);
   return (
-  <div className={classes.root} style={{padding: '6% 0% 0% 4%'}}>
+  <div className={classes.root} style={{padding: '4% 0% 0% 8%'}}>
     <Accordion  style={{backgroundColor: 'white',}}>
          <AccordionSummary
            expandIcon={<ExpandMoreIcon />}
@@ -647,6 +649,10 @@ function QC (props){
                     props.q.hardness === "MEDIUM" ? (<span>&nbsp;متوسط&nbsp;</span>) : 
                     props.q.hardness === "HARD" ? (<span>&nbsp;سخت&nbsp;</span>) : null
              }</span>
+             <span>{props.q.base === "10" ? (<span>&nbsp;دهم&nbsp;</span>) : 
+                      props.q.base === "11" ? (<span>&nbsp;یازدهم&nbsp;</span>) : 
+                      props.q.base === "12" ? (<span>&nbsp;دوازدهم&nbsp;</span>) : null
+             }</span>
              <span>&nbsp;فصل&nbsp;{props.q.chapter === "1" ? (<span>&nbsp;۱&nbsp;</span>) : 
                       props.q.chapter === "2" ? (<span>&nbsp;۲&nbsp;</span>) : 
                       props.q.chapter === "3" ? (<span>&nbsp;۳&nbsp;</span>) : 
@@ -659,6 +665,7 @@ function QC (props){
                       props.q.chapter === "10" ? (<span>&nbsp;۱۰&nbsp;</span>) : null
 
              }</span>
+             
               </div>
              </Typography>
          </AccordionSummary>
@@ -853,8 +860,8 @@ const useStyles = makeStyles((theme) => ({
       },
       formControl: {
         margin: theme.spacing(1),
-        minWidth: 120,
-        maxWidth: 200,
+        minWidth: '70%',
+        maxWidth: '70%',
         
       },
       
