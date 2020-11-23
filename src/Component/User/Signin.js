@@ -17,8 +17,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import RTL from '../M_RTL';
-import Vazir from '../../fonts/Vazir.ttf';
-import {Route} from "react-router-dom" ;
 class SignIn extends Component {
     constructor() {
         super();

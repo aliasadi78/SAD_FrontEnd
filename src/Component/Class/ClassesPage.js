@@ -8,6 +8,8 @@ import M_RTL from "../M_RTL";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from 'clsx';
 import ClassListItem from './ClassesListItem';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 
 class ClassesPage extends Component{
 
@@ -35,7 +37,7 @@ class ClassesPage extends Component{
   
       const classes = this.props.classes;      
       const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);      
-        
+      console.log(this.state.userClasses);
       const btnCreateClass = () => {
             return window.location.href = "/NewClassPage" ;
       };
@@ -49,19 +51,28 @@ class ClassesPage extends Component{
                 <Material_RTL>
                     <M_RTL>
                       <div className={classes.paper}>                        
-                        <h3 style={{fontFamily: 'Vazir'}} >لیست کلاس ها</h3>
+                        <h3 style={{fontFamily: 'Vazir' , textAlign : 'right'}} >لیست کلاس ها</h3>
                           <hr/>
-                          <div style={{fontFamily: 'Vazir'}}>                            
-                            {
-                              this.state.userClasses.map((item) => 
-                              <ClassListItem title = {item.name}  TeacherName = {item.ownerFullname} />
-                              )
-                            }
-                          </div>
+                          {/* <Grid
+                            container
+                            direction="row"
+                            justify="flex-end"
+                            alignItems="center"
+                          > */}
+                            <div style={{fontFamily: 'Vazir'}}>                            
+                              {
+                                this.state.userClasses.map((item) => 
+                                <ClassListItem 
+                                  title = {item.name}  
+                                  TeacherName = {item.ownerFullname}
+                                  classId = {item.classId} />
+                                )
+                              }
+                            </div>
+                          {/* </Grid> */}
                         </div>
                     </M_RTL>
                 </Material_RTL>
-            {/* </Container> */}
             </div>
         );
     }
@@ -107,8 +118,8 @@ const useStyles = makeStyles((theme) => ({
     paper: {
       marginTop: theme.spacing(1),
       // display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',      
+      flexDirection: 'row',
+      justifyContent: 'flex-start',      
       color : '#3D5A80' , 
       backgroundColor: 'white',
       padding: '10px',

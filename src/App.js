@@ -6,13 +6,16 @@ import ClassesPage from  './Component/Class/ClassesPage';
 import NewClassPage from './Component/Class/NewClassPage';
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import Dashboard from './Component/Dashboard/Dashboard';
-import InsideClass from './Component/Class/insideClass' ;
+import InsideClass from './Component/Class/InsideClass/insideClass' ;
+import studentListItem from './Component/Class/InsideClass/postListItem' ;
+import MembersList from './Component/Class/InsideClass/membersList';
 
 class App extends Component {
 
     render() {
         return (                
             <div className={classes.App}>                
+                {/* <studentListItem /> */}
                 <Link to="/"> </Link>
                 <Link to="/signIn"> </Link>
                 <Link to="/signUp"> </Link>
@@ -20,10 +23,11 @@ class App extends Component {
                 <Route path="/" exact component={SignIn}/>
                 <Route path="/signIn" exact component={SignIn}/>
                 <Route path="/signUp" component={SignUp}/>
-                <Route path="/profile/edit" component = {Dashboard} />
+                <Route path={"/class/:classId"} component = {InsideClass} />
+                <Route path={"/class/:classId/members"} component = {MembersList} />
+                <Route path="/profile/edit" component = {Dashboard} />                
                 <Route path="/ClassesPage" component = {ClassesPage} />
-                <Route path="/NewClassPage" component = {NewClassPage} />
-                <Route path="/class" component = {InsideClass} />
+                <Route path="/NewClassPage" component = {NewClassPage} />                                           
             </div>
 
         );
