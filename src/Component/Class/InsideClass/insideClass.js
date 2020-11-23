@@ -26,6 +26,8 @@ import Material_RTL from "../../Material_RTL";
 import M_RTL from "../../M_RTL";
 import PostListItem from './postListItem';
 
+import DialogEditClass from './DialogEditClass';
+
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -317,11 +319,12 @@ export default function InsideClass(props) {
                     {/* <ButtonGroup color="white" aria-label="outlined primary button group" square> */}
                     <ButtonGroup disableElevation  variant="contained" color='#EE6C4D' aria-label="contained primary button group">
 
-                      <Button className = {classes.groupbutton}>
+                      
                         <h5 style={{fontFamily: 'Vazir'}}>
-                          ویرایش
+                          
+                          <DialogEditClass classId={classId}/>
                         </h5>
-                      </Button> 
+                      
 
                       <Button className = {classes.groupbutton}>
                         <h5 style={{fontFamily: 'Vazir'}}>
