@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
-import MailIcon from '@material-ui/icons/Mail'; 
+import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
@@ -25,6 +25,7 @@ import tokenConfig from '../../../utils/tokenConfig' ;
 import Material_RTL from "../../Material_RTL";
 import M_RTL from "../../M_RTL";
 import PostListItem from './postListItem';
+import ExamListItem from './examsListItem';
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: 7, // keep right padding when drawer closed            
     },
     grid:{
-      padding : theme.spacing(3)
+      padding : theme.spacing(3),
+      marginBottom: theme.spacing(2) , 
     },
     appBarSpacer: theme.mixins.toolbar,
     toolbarIcon: {
@@ -103,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
       width : '100%' ,               
     },
     paperList :{
-      width : '100%'      
+      // width : '100%'      
     },
     paper: {  
       padding: theme.spacing(2),
@@ -122,24 +124,11 @@ const useStyles = makeStyles((theme) => ({
         color : 'white' , 
       },                
     },
-    Tab:{
-      backgroundColor : '#98C1D9' ,
-      color : 'white' ,
-      marginBottom : theme.spacing(2) ,
-      "&:hover": {
-        backgroundColor: '#3D5A80' ,
-        color : 'white' , 
-      },             
-    },
-    choosedTab :{
-      marginBottom : theme.spacing(2) ,
-      backgroundColor : '#3D5A80',
-      color : 'white' ,       
-    }
   }));
 
 export default function InsideClass(props) {
 
+    const elevation = 2 ; 
     const [component , setComponent] = React.useState('editProfile');
     const [ list , setList] = React.useState(0);
     const classes = useStyles();
@@ -173,17 +162,20 @@ export default function InsideClass(props) {
             paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
           }}
           open={open}
-        >
+        >          
           <div className={classes.toolbarIcon} >  
 
           <Typography dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : 'white', textAlign : 'right'}}>                          
-              اسم سایت و لوگوش
+              ریاضی
           </Typography>
             <IconButton onClick={handleDrawer} style={{color : 'white'}} >
               <ChevronLeftIcon/>
             </IconButton>
           </div>
-          <List>{mainListItems}</List>                    
+          <List>{mainListItems}</List>   
+          
+          <Divider />
+                           
           <List>{secondaryListItems}</List>                    
 
 
@@ -195,7 +187,7 @@ export default function InsideClass(props) {
             <Grid item xs = {12}>
             <Material_RTL>
                     <M_RTL>
-              <Paper elevation={2} >
+              {/* <Paper elevation={2} > */}
               <Breadcrumbs separator="|" aria-label="breadcrumb">
                 <Link color="inherit" href="/" >
                 <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
@@ -212,109 +204,38 @@ export default function InsideClass(props) {
                   ریاضی
                 </Typography>
               </Breadcrumbs>
-              </Paper>
+              <hr />
+              {/* </Paper> */}
               </M_RTL>
             </Material_RTL>
             </Grid>            
             <Grid container spacing={3} className={classes.classContent}>
-              <Grid item xs={12} sm={12}  lg={6} className = {classes.grid}>
+              <Grid item xs={12} sm={12}  lg={12} className = {classes.grid}>
+                <Paper elevation = {elevation} className={classes.paper} >
                 <Grid
-                    container
-                    direction="column"
-                    justify="center"
-                    alignItems="center"
-                    spacing = {2}
-                  >                  
-                    <Grid item xs={12} >
-                    <ButtonGroup disableElevation square size="large" variant="contained" color='#EE6C4D' >
-
-                      <Button 
-                        className = {clsx(classes.Tab , {
-                          [classes.choosedTab] : !list
-                        })} 
-                        onClick = {() => setList(0)}
-                      >
-                        <h5 style={{fontFamily: 'Vazir'}}>                          
-                          اعلان ها 
-                        </h5>
-                      </Button> 
-
-                      <Button 
-                        className = {clsx(classes.Tab , {
-                          [classes.choosedTab] : list
-                        })}
-                        onClick = {() => setList(1)}
-                        >                          
-                        <h5 style={{fontFamily: 'Vazir'}}>
-                          امتحان
-                        </h5>
-                      </Button> 
-
-                    </ButtonGroup>
-                    </Grid>
-                    {}
-                    <Grid item>
-                      <Paper elevation = {2}  className = {classes.paperList}>
-                        <Grid
-                          container
-                          direction="column"
-                          justify="center"
-                          alignItems="center"
-                          spacing = {2}
-                        >
-
-                          <Grid item>
-                            { list == 0 &&
-                              <Button variant="contained" color="primary" style={{ backgroundColor : '#EE6C4D'}}>
-                                <h5 style={{fontFamily: 'Vazir'}}>
-                                  <CreateIcon />
-                                  نوشتن
-                                </h5>
-                              </Button>
-                            }  
-                          </Grid>     
-
-                          <Grid item>
-                            {list == 0 &&
-                              <div>
-                                <PostListItem />
-                                <PostListItem />
-                                <PostListItem />
-                                </div>
-                              // elan ha                             
-                              //post ha
-                            }  
-                          </Grid>     
-
-                        </Grid>
-                      </Paper>
-                    </Grid>
-
-                  </Grid>
-              </Grid>         
-              <Grid item xs={12} sm={12}  lg={6} className = {classes.grid}>
-                <Paper elevation = {2} >
-                <Grid
-                  container
-                  direction="column"
-                  justify="center"
-                  alignItems="center"
-                  spacing = {2}
-                >                  
-                  <Grid  disableElevation  item style={{marginBottom : "2px"}}>                                          
-                      <Typography dir="rtl" component="h1" variant="h2" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80', textAlign : 'right'}}>                          
-                          ریاضی 
-                      </Typography>                
-                  </Grid>
-
-                  <Grid item >
-                    <Typography dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80', textAlign : 'right'}}>                          
-                        مهراد غضنفر باشی
+                  container                  
+                  spacing = {2}>         
+                  {/* <Grid item xs={4} ></Grid>                     */}
+                  <Grid item xs={6}>
+                    <Typography dir="rtl" align="center"  variant="body1" paragraph gutterBottom  className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80', textAlign : 'right'}}>                      
+                      درس غیر کاربردی و مزخرف دیفرانسیل و انتگرال ، بجه هایی که میخوان برن رشته کامپیوتر بدون امتحان  پاسن
                     </Typography>
                   </Grid>
-
-                  <Grid item >                  
-                    {/* <ButtonGroup color="white" aria-label="outlined primary button group" square> */}
+                  <Grid xs={6}  disableElevation  container spacing={1} style={{marginBottom : "2px"}}
+                    direction="column"
+                    justify="center"
+                    alignItems="center">   
+                    <Grid item>
+                      <Typography dir="rtl" component="h1" variant="h2" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80', textAlign : 'right'}}>                          
+                          ریاضی 
+                      </Typography>                                  
+                    </Grid>
+                    <Grid item>
+                    <Typography dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80', textAlign : 'right'}}>                          
+                        مهراد غضنفر باشی
+                    </Typography>                                      
+                    </Grid>
+                    <Grid item>
                     <ButtonGroup disableElevation  variant="contained" color='#EE6C4D' aria-label="contained primary button group">
 
                       <Button className = {classes.groupbutton}>
@@ -330,15 +251,65 @@ export default function InsideClass(props) {
                       </Button> 
 
                     </ButtonGroup>
-                  </Grid>
-
-                  <Grid item >
-                    <Typography dir="rtl" align="center"  variant="body1" paragraph gutterBottom  className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80', textAlign : 'right'}}>                      
-                      ریاضیات غیر کاربردی 
-                    </Typography>
-                  </Grid>
+                    </Grid>
+                  </Grid>                         
                 </Grid>
                 </Paper>
+              </Grid> 
+
+              <Grid item xs={12} sm={12}  lg={6} className = {classes.grid}>                
+                      <Paper elevation = {elevation}  className = {classes.paperList}>                      
+
+                          <Grid item xs={12}>
+                            <ExamListItem elevation = {elevation}/>
+                            <ExamListItem elevation = {elevation}/>
+                            <ExamListItem elevation = {elevation}/>
+                            <ExamListItem elevation = {elevation}/>
+                          </Grid>     
+                        
+                      </Paper>                    
+              </Grid>                       
+
+              <Grid item xs={12} sm={12}  lg={6} className = {classes.grid}>
+                <Grid
+                    container
+                    direction="column"
+                    justify="center"
+                    alignItems="center"
+                    spacing = {2}
+                  >                          
+                    <Grid item>
+                      <Paper elevation = {elevation}  className = {classes.paperList}>
+                        <Grid
+                          container
+                          direction="column"
+                          justify="center"
+                          alignItems="center"
+                          spacing = {2}
+                        >
+
+                          <Grid item>                            
+                              <Button variant="contained" color="primary" style={{ backgroundColor : '#EE6C4D'}}>
+                                <h5 style={{fontFamily: 'Vazir'}}>
+                                  <CreateIcon />
+                                  نوشتن
+                                </h5>
+                              </Button>                            
+                          </Grid>     
+
+                          <Grid item>                            
+                              <div>
+                                <PostListItem />
+                                <PostListItem />
+                                <PostListItem />
+                              </div>                               
+                          </Grid>     
+
+                        </Grid>
+                      </Paper>
+                    </Grid>
+
+                  </Grid>
               </Grid> 
             </Grid>
           </Container>
