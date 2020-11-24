@@ -203,23 +203,7 @@ export default function Dashboard() {
             </IconButton>
           </div>          
 
-          <ListItem button onClick={()=>{
-            setComponent('editProfile');
-            if(open == true)
-              handleUserDrawerMenuClick();
-            }}>
-            <ListItemIcon>        
-              <AccountBoxIcon style={{ color: "#3D5A80" }} />
-            </ListItemIcon>
-            <ListItemText>
-            <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
-                حساب کاربری
-            </Typography>
-              <IconButton onClick={handleDrawerClose} >
-                <ChevronLeftIcon/>
-              </IconButton>
-            </div>          
-            <DrawerList isDrawerOpen = {open} />
+            <DrawerList isDrawerOpen = {open} />            
         </Drawer>
         
         <main className={clsx(classes.content, {
