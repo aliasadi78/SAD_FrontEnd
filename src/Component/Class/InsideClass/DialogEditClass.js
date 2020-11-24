@@ -21,10 +21,10 @@ class DialogEditClass extends Component {
   constructor() {
     super();
     this.state = {
-      name: '',
-      description: '',
-      generateNewClassId: true,
-    }
+          name: '',
+          description: '',
+          generateNewClassId: true,
+        }
   }
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });

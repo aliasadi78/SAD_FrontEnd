@@ -146,7 +146,7 @@ export default function InsideClass(props) {
     const [ list , setList] = React.useState(0);
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
-    const classId = props.match.params.classId ;    
+    const classId = props.match.params.classId ;
     const handleDrawer = () => {
       setOpen(!open);
     };
