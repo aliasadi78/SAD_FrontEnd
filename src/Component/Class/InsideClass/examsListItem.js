@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   grid:{          
-      color : 'white' ,
+      color : 'white' , 
   },
   paper:{
       padding : theme.spacing(1) ,     
@@ -40,21 +40,25 @@ export default function ExamListItem(props) {
   return (
     <div className={classes.root}>
       <Paper elevation={props.elevation} className={classes.paper}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2}
+          direction="row"
+          justify="center"
+          alignItems="center"
+        >
             <Grid item xs = {4} className={classes.grid}>
-                <Button variant="contained" className = {classes.button}>
+                <Button variant="contained" className = {classes.button}>          
                     <h5 style={{fontFamily: 'Vazir'}}>                        
                     مشاهده 
-                    </h5>
+                    </h5>                    
                 </Button>
             </Grid>
             <Grid item xs = {4} className={classes.grid}>
                 9/9/99
             </Grid>
             <Grid item xs = {4} className={classes.grid}>
-                <h6 dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir', textAlign : 'right'}}>                          
-                کوییز 57 ام
-                </h6>
+                <h6 dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir', textAlign : 'right' , marginBottom : 0 }}>                                          
+                کوییز 57 ام                
+                </h6>                
             </Grid>            
         </Grid>
       </Paper>      
