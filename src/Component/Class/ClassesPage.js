@@ -42,6 +42,7 @@ class ClassesPage extends Component{
       const btnJoinClass = () => {
         //jaye Dialog box 
             // return window.location.href = "/ClassesPage" ;
+          
       };
         return(
           <div> 
