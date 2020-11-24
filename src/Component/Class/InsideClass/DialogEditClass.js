@@ -87,6 +87,7 @@ class DialogEditClass extends Component {
             autoFocus
             margin="dense"
             id="name"
+            variant="outlined"
             label="اسم کلاس"
             type="text"
             name="name"
