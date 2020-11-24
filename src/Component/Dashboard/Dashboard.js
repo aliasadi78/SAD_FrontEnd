@@ -192,10 +192,28 @@ export default function Dashboard() {
             paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
           }}
           open={open}
-        >        
-            <div className={classes.toolbarIcon}>            
-            <Typography dir="rtl" component="h1" variant="h6" color="inherit" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80'}}>                          
-                {/* اسم سایت و لوگوش */}
+        >
+          <div className={classes.toolbarIcon}>  
+
+          <Typography dir="rtl" component="h1" variant="h6" color="inherit" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80'}}>                          
+              اسم سایت و لوگوش
+          </Typography>
+            <IconButton onClick={handleDrawerClose} >
+              <ChevronLeftIcon/>
+            </IconButton>
+          </div>          
+
+          <ListItem button onClick={()=>{
+            setComponent('editProfile');
+            if(open == true)
+              handleUserDrawerMenuClick();
+            }}>
+            <ListItemIcon>        
+              <AccountBoxIcon style={{ color: "#3D5A80" }} />
+            </ListItemIcon>
+            <ListItemText>
+            <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
+                حساب کاربری
             </Typography>
               <IconButton onClick={handleDrawerClose} >
                 <ChevronLeftIcon/>

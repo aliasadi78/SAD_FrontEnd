@@ -1,7 +1,7 @@
 import React , {Component} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import clsx from 'clsx';
+import serverURL from '../../utils/serverURL';
+import tokenConfig from '../../utils/tokenConfig';
 import IconButton from '@material-ui/core/IconButton' ;
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel' ;
@@ -54,6 +54,8 @@ function EditProfileValidationForms_Account (props){
         showConfirmedPassword : false         
     });
 
+    const[password , setPassword] = React.useState()
+
     const handleChange = (props) => (event) => {
         setValues({...values , [props]: event.target.value})
     };
@@ -65,6 +67,10 @@ function EditProfileValidationForms_Account (props){
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     } ;
+
+    const handlePasswordChange = (e) => {
+
+    };
 
     return (
         <div className={classes.container} class="containers" >                        
@@ -144,12 +150,7 @@ export default class passwordForms extends Component {
             userFound : false
         };
             
-        const token = localStorage.getItem('token');    
-    
-        axios.get(
-            'https://parham-backend.herokuapp.com/user' , {headers:
-        { 'Authorization': token  }
-        })
+        axios.get( serverURL() + 'user' , tokenConfig() )
         .then(res => {        
             this.setState(prevState => {
                 return{
