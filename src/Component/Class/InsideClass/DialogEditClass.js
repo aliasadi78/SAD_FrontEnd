@@ -14,7 +14,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 import axios from 'axios';
 import serverURL from '../../../utils/serverURL' ;
 import tokenConfig from '../../../utils/tokenConfig' ;
-
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import Grid from "@material-ui/core/Grid";
 class DialogEditClass extends Component {
   constructor() {
     super();
@@ -69,7 +71,7 @@ class DialogEditClass extends Component {
   }
   return (
     <div>
-        <Material_RTL><M_RTL>
+        
       <Button type="submit"
               variant="contained"
               className = {classes.groupbutton}
@@ -77,12 +79,15 @@ class DialogEditClass extends Component {
               onClick={handleClickOpen}>
         ویرایش
       </Button>
-      <Dialog style={{fontFamily: 'Vazir'}} open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle  id="form-dialog-title"><span style={{direction: 'rtl',fontFamily: 'Vazir',position: 'absolute',right: '36%',top: '10%'}}>ویرایش کلاس</span></DialogTitle>
+      <Dialog fullWidth style={{fontFamily: 'Vazir'}} open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Material_RTL><M_RTL>
+      <DialogTitle style={{fontFamily: 'Vazir' , color : 'white' , backgroundColor : '#3D5A80',textAlign: 'center'}}>
+      <span style={{fontFamily: 'Vazir' ,}}>ویرایش کلاس</span>
+      </DialogTitle>
+        {/* <DialogTitle  id="form-dialog-title"><span style={{direction: 'rtl',fontFamily: 'Vazir',position: 'absolute',right: '36%',top: '10%'}}>ویرایش کلاس</span></DialogTitle> */}
+        <div className={classes.paper}> 
         <DialogContent>
-          <DialogContentText>
-            
-          </DialogContentText>
+        <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
           <TextField
             autoFocus
             margin="dense"
@@ -92,7 +97,7 @@ class DialogEditClass extends Component {
             type="text"
             name="name"
             fullWidth
-            variant="standard"
+            autoFocus
             value={this.state.name}
             onChange={this.handleChange}
             InputLabelProps={{style:{fontFamily: 'Vazir'}}}
@@ -101,39 +106,45 @@ class DialogEditClass extends Component {
           }}
             
           />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="description"
-            label="توضیحات کلاس"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={this.state.description}
-            name="description"
+          <TextareaAutosize
+            style={{width: '100%',fontFamily: 'Vazir',fontSize: '14px'}}
+            aria-label="minimum height"
+            minRows={5}
             onChange={this.handleChange}
+            name="description"
+            value={this.state.description}
+            placeholder="توضیحات کلاس"
             InputLabelProps={{style:{fontFamily: 'Vazir'}}}
-            InputProps={{
-              style:{fontFamily: 'Vazir'}
-          }}
           />
-          <div style={{margin: '4% -3% 0% 0%',textAlign: 'right',direction: 'rtl'}}><Checkbox
+          
+          </ValidatorForm >
+          <div style={{margin: '1% -2% 1% 0%',textAlign: 'right',direction: 'rtl',}}><Checkbox
               defaultChecked
-              color="primary"
+              style={{color: '#0e918c'}}
               onChange={handleChange}
-              inputProps={{ 'aria-label': 'secondary checkbox' }}
+              // inputProps={{ 'aria-label': 'secondary checkbox' }}
           />تغییر رمز کلاس
           </div>
           
         </DialogContent>
 
         <DialogActions>
-          <Button style={{fontFamily: 'Vazir'}} onClick={handleClose}>انصراف</Button>
-          <Button style={{fontFamily: 'Vazir'}} onClick={handleSubmit}>ویرایش</Button>
+        <Grid style={{textAlign: 'right',width: '100%'}} >  
+        <Button onClick={handleSubmit}  variant="contained" color="#EE6C4D" style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir',margin: '0% 21% 0% 5%',width: '25%'}}>
+                          ویرایش کلاس
+                          </Button>         
+                        <Button onClick={handleClose} color="primary" style={{backgroundColor: '#98C1D9',color: 'white',fontFamily: 'Vazir',width: '25%'}}>
+                          انصراف
+                        </Button></Grid>
+          {/* <Button style={{fontFamily: 'Vazir'}} onClick={handleClose}>انصراف</Button>
+          <Button style={{fontFamily: 'Vazir'}} onClick={handleSubmit}>ویرایش</Button> */}
         </DialogActions>
-      </Dialog>
-      </M_RTL>
+        </div>
+        </M_RTL>
       </Material_RTL>
+      </Dialog>
+
+      
     </div>
   );
 }
@@ -154,13 +165,25 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: '#EE6C4D' ,
       color : 'white' , 
     },                
-  }
+  },
+  paper: {
+    // marginTop: theme.spacing(1),
+    // display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    color: 'black',
+    backgroundColor : '#f5f5f5',
+    padding: '20px',
+    borderRadius: '0px',
+    opacity: '95%'
+},
 }));
 export default (props) => {
   const classes = useStyles();
   const open = React.useState(false);
   const check = React.useState(false);
   const classId= props.classId;
+  const name= props.name;
   return (        
       <DialogEditClass classes={classes} open={open} check={check} classId={classId}/>    
   )
