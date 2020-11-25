@@ -32,6 +32,8 @@ import ExamListItem from './examsListItem';
 import { set } from 'date-fns';
 import AlertDialog from '../../Dialog';
 
+import DialogNote from './DialogNote';
+
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -340,12 +342,12 @@ export default function InsideClass(props) {
                                                                         
                     <Paper elevation = {elevation}  className = {classes.ElanPaper}>                      
                         <Grid item>                            
-                            <Button variant="contained" color="primary" style={{ backgroundColor : '#EE6C4D'}}>
+                            {/* <Button variant="contained" color="primary" style={{ backgroundColor : '#EE6C4D'}}> */}
                               <h5 style={{fontFamily: 'Vazir'}}>
-                                <CreateIcon />
-                                نوشتن
+                                
+                                <DialogNote classId={classId}/>
                               </h5>
-                            </Button>                            
+                            {/* </Button>                             */}
                         </Grid>     
 
                         <Grid item>                            
