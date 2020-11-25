@@ -126,7 +126,7 @@ class DialogEditClass extends Component {
       </Dialog>
           {this.state.success ? 
           (<AlertDialog text = "اعلان جدید با موفقیت اضافه شد" />) : null}
-          {this.state.success ? (setOpen(false)) : setOpen(true)}
+          {this.state.success ? (setOpen(false)) : null}
     </div>
   );
 }
