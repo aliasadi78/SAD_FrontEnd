@@ -17,6 +17,9 @@ import tokenConfig from '../../../utils/tokenConfig' ;
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Grid from "@material-ui/core/Grid";
+import AlertDialog from '../../Dialog';
+import { CircularProgress } from '@material-ui/core';
+import LoadingButton from '@material-ui/lab/LoadingButton';
 class DialogEditClass extends Component {
   constructor() {
     super();
@@ -24,8 +27,11 @@ class DialogEditClass extends Component {
           name: '',
           description: '',
           generateNewClassId: true,
+          success: false,
         }
+        
   }
+  
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   }
@@ -33,19 +39,35 @@ class DialogEditClass extends Component {
   const [open, setOpen] = this.props.open;
   const classes = this.props.classes;
   const [checked, setChecked] = this.props.check;
-
+  const [pending, setPending] = this.props.pending;
+  const [pendi, setPendi] = this.props.pendi;
   const handleChange = (event) => {
     setChecked(event.target.checked);
     this.setState({ generateNewClassId : checked });
   };
   const handleClickOpen = () => {
-    setOpen(true);
+    setPendi(true)
+    this.setState({success: false})
+    console.log(this.props.classId);
+    axios.get(serverURL() + "class/" + this.props.classId , 
+        tokenConfig())
+        .then(res => {
+          this.setState({ name :  res.data.Class.name});
+          this.setState({ description :  res.data.Class.description});
+          setPendi(false)
+        })
+        .catch(e =>{
+          console.log("error");
+        });
+        setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    
   };
   const handleSubmit = () =>{
+    setPending(true)
     console.log(this.props);
     console.log(this.props.classId);
     console.log(this.state);
@@ -59,6 +81,8 @@ class DialogEditClass extends Component {
       tokenConfig())
       .then(res => {
       console.log(res);
+      this.setState({success: true})
+      setPending(false)
       })
     .catch(e =>{
       console.log("ridi");
@@ -85,7 +109,10 @@ class DialogEditClass extends Component {
       <span style={{fontFamily: 'Vazir' ,}}>ویرایش کلاس</span>
       </DialogTitle>
         {/* <DialogTitle  id="form-dialog-title"><span style={{direction: 'rtl',fontFamily: 'Vazir',position: 'absolute',right: '36%',top: '10%'}}>ویرایش کلاس</span></DialogTitle> */}
-        <div className={classes.paper}> 
+        {pendi ? (<div style={{margin: '3% 0% 3% 46%'}}><CircularProgress style={{color: '#0e918c'}}/></div> ) :
+                  <div>
+                    <div className={classes.paper}> 
+        
         <DialogContent>
         <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
           <TextField
@@ -118,6 +145,7 @@ class DialogEditClass extends Component {
           />
           
           </ValidatorForm >
+        <div style={{background: 'linear-gradient(180deg, rgba(100,201,129,1) 0%, rgba(75,124,156,1) 100%)',color: 'white',textAlign: 'center',width: '25%',position: 'relative',top: '70%',right: '37%',padding: '2%',}}>کد کلاس{this.props.classId}</div>
           <div style={{margin: '1% -2% 1% 0%',textAlign: 'right',direction: 'rtl',}}><Checkbox
               defaultChecked
               style={{color: '#0e918c'}}
@@ -127,12 +155,12 @@ class DialogEditClass extends Component {
           </div>
           
         </DialogContent>
-
+          
         <DialogActions>
         <Grid style={{textAlign: 'right',width: '100%'}} >  
-        <Button onClick={handleSubmit}  variant="contained" color="#EE6C4D" style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir',margin: '0% 21% 0% 5%',width: '25%'}}>
+        <LoadingButton onClick={handleSubmit}  variant="contained" color="#EE6C4D" pending={pending} style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir',margin: '0% 21% 0% 5%',width: '25%'}}>
                           ویرایش کلاس
-                          </Button>         
+                          </LoadingButton>         
                         <Button onClick={handleClose} color="primary" style={{backgroundColor: '#98C1D9',color: 'white',fontFamily: 'Vazir',width: '25%'}}>
                           انصراف
                         </Button></Grid>
@@ -140,10 +168,16 @@ class DialogEditClass extends Component {
           <Button style={{fontFamily: 'Vazir'}} onClick={handleSubmit}>ویرایش</Button> */}
         </DialogActions>
         </div>
+        </div>}
         </M_RTL>
       </Material_RTL>
       </Dialog>
-
+          {this.state.success ? (
+            <AlertDialog text="اطلاعات با موفقیت تغییر کرد"/>
+          ) : null}
+          {this.state.success ? (
+            setOpen(false)
+          ) : null}
       
     </div>
   );
@@ -184,7 +218,9 @@ export default (props) => {
   const check = React.useState(false);
   const classId= props.classId;
   const name= props.name;
+  const pending = React.useState(false);
+  const pendi = React.useState(false);
   return (        
-      <DialogEditClass classes={classes} open={open} check={check} classId={classId}/>    
+      <DialogEditClass classes={classes} open={open} check={check} classId={classId} pending={pending} pendi={pendi}/>    
   )
 }
