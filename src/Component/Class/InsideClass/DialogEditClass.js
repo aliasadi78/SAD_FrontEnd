@@ -116,7 +116,7 @@ class DialogEditClass extends Component {
         <DialogContent>
         <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
           <TextField
-            autoFocus
+            // autoFocus
             margin="dense"
             id="name"
             variant="outlined"
@@ -124,7 +124,7 @@ class DialogEditClass extends Component {
             type="text"
             name="name"
             fullWidth
-            autoFocus
+            // autoFocus
             value={this.state.name}
             onChange={this.handleChange}
             InputLabelProps={{style:{fontFamily: 'Vazir'}}}
@@ -145,7 +145,28 @@ class DialogEditClass extends Component {
           />
           
           </ValidatorForm >
-        <div style={{background: 'linear-gradient(180deg, rgba(100,201,129,1) 0%, rgba(75,124,156,1) 100%)',color: 'white',textAlign: 'center',width: '25%',position: 'relative',top: '70%',right: '37%',padding: '2%',}}>کد کلاس{this.props.classId}</div>
+        <div style={{color: 'black',textAlign: 'center',width: '25%',position: 'relative',top: '70%',right: '37%',padding: '2%',}}>
+          {/* <span style={{position: 'absolute'}}>کد کلاس</span> */}
+          {/* {this.props.classId} */}
+          <TextField
+            // autoFocus
+            margin="dense"
+            id="classId"
+            variant="outlined"
+            label="کد کلاس"
+            type="text"
+            name="classId"
+            // autoFocus
+            // disabled
+            value={this.props.classId}
+            InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+            InputProps={{
+              style:{fontFamily: 'Vazir',textAlign: 'center',direction: 'ltr'},
+              readOnly: true,
+          }}
+            
+          />
+          </div>
           <div style={{margin: '1% -2% 1% 0%',textAlign: 'right',direction: 'rtl',}}><Checkbox
               defaultChecked
               style={{color: '#0e918c'}}
@@ -158,7 +179,7 @@ class DialogEditClass extends Component {
           
         <DialogActions>
         <Grid style={{textAlign: 'right',width: '100%'}} >  
-        <LoadingButton onClick={handleSubmit}  variant="contained" color="#EE6C4D" pending={pending} style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir',margin: '0% 21% 0% 5%',width: '25%'}}>
+        <LoadingButton onClick={handleSubmit}  variant="contained" color="#EE6C4D" pending={pending} style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir',margin: '0% 22% 0% 5%',width: '25%'}}>
                           ویرایش کلاس
                           </LoadingButton>         
                         <Button onClick={handleClose} color="primary" style={{backgroundColor: '#98C1D9',color: 'white',fontFamily: 'Vazir',width: '25%'}}>
@@ -217,7 +238,6 @@ export default (props) => {
   const open = React.useState(false);
   const check = React.useState(false);
   const classId= props.classId;
-  const name= props.name;
   const pending = React.useState(false);
   const pendi = React.useState(false);
   return (        
