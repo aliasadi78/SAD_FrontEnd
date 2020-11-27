@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // width: '70%',
     display: 'flex',
     flexWrap: 'wrap',
     '& > *': {
@@ -24,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor : '#1CA0A0' 
   },
   button : {
-    //   backgroundColor : '#1CA0A0'
     backgroundColor : 'white' ,
     color : '#1CA0A0' ,
     "&:hover": {

@@ -8,8 +8,9 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import { mainListItems , secondaryListItems} from './insideClassDrawerList';
@@ -31,11 +32,13 @@ import PostListItem from './postListItem';
 import ExamListItem from './examsListItem';
 import { set } from 'date-fns';
 import AlertDialog from '../../Dialog';
+import Image from './back.jpg' ;
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',       
+      
     },
     toolbar: {
       paddingRight: 7, // keep right padding when drawer closed            
@@ -44,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
       padding : theme.spacing(3),
       marginBottom: theme.spacing(2) , 
     },
-    appBarSpacer: theme.mixins.toolbar,
     toolbarIcon: {
       display: 'flex',
       alignItems: 'center',
@@ -73,9 +75,6 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(7),
       },
     },
-    classListPaper :{
-
-    },
     groupbutton :{
       backgroundColor : '#EE6C4D' , 
       color : "white" ,
@@ -84,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
         color :'white'
       },
     },
-    content :{
+    content :{      
       transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -107,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
       paddingTop: '18px',
       paddingBottom: theme.spacing(4),      
-      width : '100%' ,               
+      width : '100%' ,                     
     },
     paperList :{        
       padding : theme.spacing(1) , 
@@ -137,30 +136,45 @@ const useStyles = makeStyles((theme) => ({
       color : 'white'
     },
     ElanPaper :{
-      marginTop : theme.spacing(2) ,
+      marginTop : theme.spacing(2) , 
+      
       paddingTop : theme.spacing(1)
     },    
+    addButton :{
+      backgroundColor : '#EE6C4D' , 
+      marginBottom : theme.spacing(1) ,
+      "&:hover": {
+        backgroundColor: LightenDarkenColor('#EE6C4D', -40) ,        
+        color :'white'
+      },
+    },
+    progressCircle :{
+      margin : theme.spacing(2) ,
+      color : '#3D5A80'      
+    },
   }));
 
 export default function InsideClass(props) {
 
-    const elevation = 2 ; 
-    const [component , setComponent] = React.useState('editProfile');
-    const [ list , setList] = React.useState(0);
+    const elevation = 2 ;     
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const [className , setClassName] = React.useState("نام کلاس");
     const [description , setDescription] = React.useState("توضیحات");
     const [adminName , setAdminName] = React.useState("نام معلم");
-    const [noConnection , setNoConnection] = React.useState(false );
+    const [noConnection , setNoConnection] = React.useState(false );    
+    var noteList = [] ;
+    var examList = [] ;
+    const [noteListLoad , setNoteListLoad] = React.useState(true);
+    const [examsListLoad , setExamsListLoad ] = React.useState(true);
     const classId = props.match.params.classId ;    
     const handleDrawer = () => {
       setOpen(!open);
     };
 
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);    
+    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);        
   
-    // axios.get(serverURL() + "class/" + classId + "/members", 
+    // get class information---------------------------------------------------------
     axios.get(serverURL() + "class/" + classId , 
     tokenConfig())
     .then(res => {
@@ -172,6 +186,27 @@ export default function InsideClass(props) {
     .catch(e =>{
       setNoConnection(true);
     });
+
+    //get class note list-----------------------------------------------------------
+    axios.get(serverURL() + "class/" + classId + "/notes" , tokenConfig() )
+    .then(res => {
+      setNoteListLoad(false);      
+    })
+    .catch(err => {
+      console.log("Not Found");   
+      console.log(err)     
+    });
+
+    //get class exams list ----------------------------------------------------------         
+    axios.get(serverURL() + "class/" + classId + "/exams")
+    .then(res =>{
+      setExamsListLoad(false);
+      console.ChevronLeftIcong(res);
+    })
+    .catch(err=> {
+      console.log(err);
+    });
+
 
     return (
       <div className={classes.root}>        
@@ -210,7 +245,14 @@ export default function InsideClass(props) {
         </Drawer>
         <main className={clsx(classes.content, {
           [classes.contentShift]: open,
-        })}>          
+        })} 
+        // style={{
+        //   background-image : url('back.jpg') , 
+        //   backgroundPosition: 'center', 
+        //   backgroundSize: 'cover', 
+        //   backgroundRepeat: 'no-repeat'  ,   
+        // }}
+        >          
           <Container maxWidth="lg" className={classes.container}>  
             <Grid item xs = {12}>
             <Material_RTL>
@@ -263,22 +305,12 @@ export default function InsideClass(props) {
                         {adminName}
                     </Typography>                                      
                     </Grid>
-                    <Grid item>
-                    <ButtonGroup disableElevation  variant="contained" color='#EE6C4D' aria-label="contained primary button group">
-
+                    <Grid item>                    
                       <Button className = {classes.groupbutton}>
                         <h5 style={{fontFamily: 'Vazir'}}>
                           ویرایش
                         </h5>
-                      </Button> 
-
-                      <Button className = {classes.groupbutton}>
-                        <h5 style={{fontFamily: 'Vazir'}}>
-                          آزمون
-                        </h5>
-                      </Button> 
-
-                    </ButtonGroup>
+                      </Button>                       
                     </Grid>
                   </Grid>                         
                 </Grid>
@@ -287,7 +319,7 @@ export default function InsideClass(props) {
 
               <Grid item  xs={4} sm={12}  lg={6} className = {classes.grid}>                                                                
                                                                                   
-                        <Grid container xs={12} style={{marginBottom : '15px'}} >                      
+                  <Grid container xs={12} style={{marginBottom : '15px'}} >                      
                           <Grid item xs={4} ></Grid>
                           <Grid item xs={4} >
 
@@ -301,16 +333,37 @@ export default function InsideClass(props) {
 
                           <Grid item xs={4} ></Grid>
                         </Grid>
-                      <Paper elevation = {elevation} >
-
+                  <Grid
+                    // item xs={12}                    
+                    direction="column"
+                    justify="center"
+                    alignItems="center"
+                    spacing = {1}
+                  >     
+                                                                        
+                    <Paper elevation = {elevation}  className = {classes.ElanPaper}>                      
+                        <Grid item style={{marginBottom : '15px'}}>                            
+                            <Button className={classes.groupbutton} variant="contained" color="primary"  >
+                              <h5 style={{fontFamily: 'Vazir'}}>
+                                <AddIcon />
+                                آزمون جدید 
+                              </h5>
+                            </Button>                            
+                        </Grid>                           
                           <Grid item xs={12}>
-                            <ExamListItem elevation = {elevation}/>
-                            <ExamListItem elevation = {elevation}/>
-                            <ExamListItem elevation = {elevation}/>
-                            <ExamListItem elevation = {elevation}/>
+                            {
+                              examsListLoad == true ?
+                              <CircularProgress className = {classes.progressCircle} variant="static" value={100} />
+                              :
+                              <ExamListItem elevation = {elevation}
+
+                              />
+                            }                                                        
                           </Grid>     
-                        
+                                                
                       </Paper>                    
+                  </Grid>
+
               </Grid>                       
 
               <Grid item xs={12} sm={12}  lg={6} className = {classes.grid}>
@@ -338,9 +391,9 @@ export default function InsideClass(props) {
                     spacing = {1}
                   >     
                                                                         
-                    <Paper elevation = {elevation}  className = {classes.ElanPaper}>                      
+                    <Paper elevation = {elevation}  className = {classes.ElanPaper} style={{width : 'inherit'}}>                      
                         <Grid item>                            
-                            <Button variant="contained" color="primary" style={{ backgroundColor : '#EE6C4D'}}>
+                            <Button variant="contained" color="primary" className = {classes.addButton} >
                               <h5 style={{fontFamily: 'Vazir'}}>
                                 <CreateIcon />
                                 نوشتن
@@ -350,9 +403,18 @@ export default function InsideClass(props) {
 
                         <Grid item>                            
                             <div>
-                              <PostListItem />
-                              <PostListItem />
-                              <PostListItem />
+                              {
+                                noteListLoad == true ?
+                                  <CircularProgress className = {classes.progressCircle} variant="static" value={100} />
+                                :                                
+                                noteList.map(m => 
+                                  <PostListItem 
+                                    title = {m.title}                                     
+                                    content = {m.body}
+                                    CreatorName = {m.creator.firstname + " " + m.creator.lastname}    
+                                    />
+                                ) 
+                              }                              
                             </div>                               
                         </Grid>                           
                     </Paper>

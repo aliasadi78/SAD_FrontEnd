@@ -14,8 +14,7 @@ class App extends Component {
 
     render() {
         return (                
-            <div className={classes.App}>                
-                {/* <studentListItem /> */}
+            <div className={classes.App}>                                
                 <Link to="/"> </Link>
                 <Link to="/signIn"> </Link>
                 <Link to="/signUp"> </Link>
@@ -23,8 +22,8 @@ class App extends Component {
                 <Route path="/" exact component={SignIn}/>
                 <Route path="/signIn" exact component={SignIn}/>
                 <Route path="/signUp" component={SignUp}/>
-                <Route path={"/class/:classId"} component = {InsideClass} />
-                <Route path={"/class/:classId/members"} component = {MembersList} />
+                <Route path="/class/members/:classId" component = {MembersList} />    
+                {/* <Route path="/class/:classId" component = {InsideClass} />                 */}
                 <Route path="/profile/edit" component = {Dashboard} />                
                 <Route path="/ClassesPage" component = {ClassesPage} />
                 <Route path="/NewClassPage" component = {NewClassPage} />                                           

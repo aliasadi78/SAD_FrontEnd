@@ -5,16 +5,18 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems } from './insideClassDrawerList';
 import List from '@material-ui/core/List';
+import Button from '@material-ui/core/Button';
+import Studentlist from './studentlist' ;
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import axios from 'axios' ;
+import { DataGrid , RowsProp, ColDef } from '@material-ui/data-grid';
 import serverURL from '../../../utils/serverURL' ;
 import tokenConfig from '../../../utils/tokenConfig' ;
 
@@ -67,9 +69,6 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(7),
       },
     },
-    classListPaper :{
-
-    },
     groupbutton :{
       backgroundColor : '#EE6C4D' , 
       color : "white" ,
@@ -87,10 +86,7 @@ const useStyles = makeStyles((theme) => ({
         width : '100%' ,
         overflow : 'atuo' , 
         flexGrow : 1,
-    },  
-    classContent :{
-      marginTop : theme.spacing(4)
-    },  
+    },      
     contentShift: {
       transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.easeOut,
@@ -129,14 +125,16 @@ export default function MembersList(props) {
         
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
-    const classId = props.match.params.classId ;    
+    const classId = props.match.params.classId ;  
+    const [className , setClassName] = React.useState(" نام کلاس ") ;
     const handleDrawer = () => {
       setOpen(!open);
     };
 
+    console.log(classId);
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);    
-  
-    // axios.get(serverURL() + "class/" + classId + "/members", 
+     
+    // get class members ----------------------------------------------------
     axios.get(serverURL() + "class/" + classId + "/members" , 
     tokenConfig())
     .then(res => {
@@ -145,6 +143,15 @@ export default function MembersList(props) {
     .catch(e =>{
       console.log("ridi");
     });
+    // get class name --------------------------------------------------------
+    axios.get(serverURL() + "class/" + classId , tokenConfig() )
+    .then(res => {
+      setClassName(res.data.Class.name);
+    })
+    .catch(err =>{
+      console.log(err);
+    }); 
+    // ------------------------------------------------------------------------
 
     return (
       <div className={classes.root}>
@@ -172,13 +179,47 @@ export default function MembersList(props) {
         </Drawer>
         <main className={clsx(classes.content, {
           [classes.contentShift]: open,
-        })}>          
-          
+        })}>                      
+            {/* {classId} */}
+            <Container maxWidth="lg" className={classes.container}>
+               
+              <Grid item xs = {12}>
+              <Material_RTL>
+                      <M_RTL>
+                {/* <Paper elevation={2} > */}
+                <Breadcrumbs separator="|" aria-label="breadcrumb">
+                  <Link color="inherit" href="/" >
+                  <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
+                      خانه
+                  </Typography>
+                  </Link>
+                  <Link color="inherit" href="/getting-started/installation/" >
+                    <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
+                        کلاس ها
+                    </Typography>
+                  </Link>
+                  {/* {props.title} */}
+                  <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
+                    {className}
+                  </Typography>
+                  <Link color="inherit" href="/getting-started/installation/" >
+                    <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
+                        اعضا
+                    </Typography>
+                  </Link>                  
+                </Breadcrumbs>
+                <hr />
+                {/* </Paper> */}
+                </M_RTL>
+              </Material_RTL>
+              </Grid>            
+              
+              <Grid item xs={12}>
+                  <Studentlist />
+              </Grid>
+
+            </Container>
         </main>
       </div>
     );
-  }
-
-  function redirectTo(){
-
   }

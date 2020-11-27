@@ -7,16 +7,19 @@ import RTL from '../../M_RTL';
 const useStyles = makeStyles((theme) => ({    
     Toast:{
         margin : theme.spacing(3) ,
-        width : '1000px'
+        width : 'inherit'
     },
 }));
 
 export default function PostListItem (props){
 
+    const [show, setShow] = React.useState(true);
     const classes = useStyles();    
 
     return(
-        <Toast className = {classes.Toast}>
+        <Toast className = {classes.Toast} closeButton = {false} show={show} autohide delay = {3000} onClick ={() => {
+            setShow(false)
+        }}>
             <Toast.Header>
                 {/* <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" /> */}
                 <small>2 روز پیش</small>
