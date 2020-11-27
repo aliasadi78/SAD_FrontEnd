@@ -34,6 +34,8 @@ import { set } from 'date-fns';
 import AlertDialog from '../../Dialog';
 import Image from './back.jpg' ;
 
+import DialogNote from './DialogNote';
+
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -395,8 +397,8 @@ export default function InsideClass(props) {
                         <Grid item>                            
                             <Button variant="contained" color="primary" className = {classes.addButton} >
                               <h5 style={{fontFamily: 'Vazir'}}>
-                                <CreateIcon />
-                                نوشتن
+                                
+                                <DialogNote classId={classId}/>
                               </h5>
                             </Button>                            
                         </Grid>     
