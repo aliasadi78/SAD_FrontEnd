@@ -11,7 +11,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import VerticalTabs from '../User/TabMenuEditProfile';
 import Button from '@material-ui/core/Button';
 
 import NewClassDialog from '../Class/NewClassPage' ;
@@ -34,6 +33,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import BallotIcon from '@material-ui/icons/Ballot';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PersonalForms from '../User/Editform_Personal';
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
@@ -295,7 +295,8 @@ export default function Dashboard() {
               <Grid item xs={12}>                                */}
               {
                 component === 'editProfile' ?
-                <VerticalTabs />
+                // <VerticalTabs />                
+                      <PersonalForms />                    
                 :
                 component === 'QuestionBank' ?
                 <QuestionBank />
@@ -313,10 +314,9 @@ export default function Dashboard() {
                 component === 'joinClassDialog'?
                 <JoinClassDialog />
                 :
-                component == 'logout' ?                
-                <LogOutDialog/> // logout dialog                
-                :
-                <VerticalTabs />
+                component == 'logout' &&
+                <LogOutDialog/> // logout dialog                                
+                // <VerticalTabs />
                 // question Bank
               }                                                           
               {/* </Grid>              
@@ -340,15 +340,13 @@ function SetComponent  (props){
       }      
       {
         component === 'editProfile' ?
-        <VerticalTabs />
+        <PersonalForms />                    
         :
         component === 'questionBank' ?
-        <VerticalTabs /> // replace it with question bank
+        <PersonalForms /> // replace it with question bank
         :
-        component === 'classesPage'?
+        component === 'classesPage' &&
         <ClassesPage />
-        :
-        <VerticalTabs />  
       }   
     </div>
   );

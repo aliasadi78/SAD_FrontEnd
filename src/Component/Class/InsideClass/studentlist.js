@@ -6,6 +6,7 @@ import tokenConfig from '../../../utils/tokenConfig' ;
 import PropTypes from 'prop-types';
 import M_RTL from "../../M_RTL";
 import clsx from 'clsx';
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import { lighten, makeStyles , withStyles } from '@material-ui/core/styles';
@@ -53,7 +54,8 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'نام' },
+  { id: 'name', numeric: false, disablePadding: false, label: 'عکس' },
+  { id: 'name', numeric: false, disablePadding: false, label: 'نام' },
   { id: 'calories', numeric: false, disablePadding: false, label: 'ایمیل' },
   { id: 'fat', numeric: true, disablePadding: false, label: 'نمره' },
   // { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
@@ -165,7 +167,7 @@ const EnhancedTableToolbar = (props) => {
         <Tooltip title="Delete">
           <Button onClick={() => {
             props.selected.forEach(element => {
-              removeMember(element.name);
+              removeMember(element.name , props.classId);
             });
           }} aria-label="delete">
             <DeleteIcon style={{color : 'white '}} />
@@ -200,6 +202,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// remove a member ------------------------------------------------------------------------
+function removeMember(username , classId ) {
+  console.log("sdlkjfaldf");
+  axios.delete(serverURL() + "class/" + classId + "/members/" + username , tokenConfig())
+  .then(res =>{
+
+  })
+  .catch(err =>{
+    console.log(err);
+  })
+};
+
 export default function Studentlist(props) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -223,17 +237,7 @@ export default function Studentlist(props) {
   .catch(err=>{
     console.log(err);
   });
-  // remove a member ------------------------------------------------------------------------
-  const removeMember = (username) => {
-    console.log("sdlkjfaldf");
-    axios.delete(serverURL() + "class/" + props.classId + "/members/" + username , tokenConfig())
-    .then(res =>{
-
-    })
-    .catch(err =>{
-      console.log(err);
-    })
-  };
+  
   //------------------------------------------------------------------------------------------
 
   const handleSelectAllClick = (event) => {
@@ -310,13 +314,16 @@ export default function Studentlist(props) {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />                        
                       </TableCell>
+                      <TableCell align = "center">
+                        <Avatar alt="Remy Sharp" src={row.avatar} />
+                      </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
                         {row.firstname + " " + row.lastname}
                       </TableCell>
                       <TableCell align="left">{row.email}</TableCell>
                       <TableCell align="right">10</TableCell>
                       <TableCell align="right">
-                        <Button onClick={() => {removeMember(row.username)}}>
+                        <Button onClick={() => {removeMember(row.username , props.classId)}}>
                           <RemoveCircleRoundedIcon style={{color : '#E63946'}} />
                         </Button>  
                       </TableCell>                      

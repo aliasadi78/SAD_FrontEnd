@@ -1,34 +1,27 @@
 import React , {Component} from 'react';
 import 'semantic-ui-css/semantic.min.css'
 import TextField from '@material-ui/core/TextField';
-import {   
-  fade , 
-  ThemeProvider ,
-  makeStyles ,
-  createMuiTheme } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputBase from '@material-ui/core/InputBase';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import {makeStyles} from '@material-ui/core/styles';
 import axios from 'axios' ;
 import serverURL from '../../utils/serverURL';
 import tokenConfig from '../../utils/tokenConfig';
-import FormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-
-import PropTypes from 'prop-types';
-import MaskedInput from 'react-text-mask';
+import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import {Image} from 'semantic-ui-react';
 import '../../App.css' ;
+import Grid from '@material-ui/core/Grid';
 import AlertDialog from './../Dialog';
 import { CircularProgress } from '@material-ui/core';
 import Material_RTL from '../Material_RTL';
 import RTL from '../M_RTL';
-import { EditorDragHandle } from 'material-ui/svg-icons';
+
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel' ;
+import InputAdornment from '@material-ui/core/InputAdornment' ;
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const useStyles = makeStyles((theme) => ({
     progressBar : {
@@ -59,7 +52,11 @@ const useStyles = makeStyles((theme) => ({
     input: {
       display: 'none',      
       margin: theme.spacing(1),
-    },        
+    },    
+    
+    editprofilePaper:{
+      padding : theme.spacing(3) , 
+    },    
     paper: {
       alignItems : 'center' ,
     },
@@ -80,31 +77,28 @@ const useStyles = makeStyles((theme) => ({
     },    
 }));
 
-function TextMaskCustom(props) {
-  const { inputRef, ...other } = props;
-
-  return (
-    <MaskedInput
-      {...other}
-      ref={(ref) => {
-        inputRef(ref ? ref.inputElement : null);
-      }}
-      mask={['0','9',/\d/,/\d/,/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
-      placeholderChar={'\u2000'}
-      showMask
-    />
-  );
+async function uploadImage(e){
+  const file = e.target.files[0];  
+  const base64 = await convertBase64(file); 
+  console.log(base64);
 }
 
-TextMaskCustom.propTypes = {
-  inputRef: PropTypes.func.isRequired,
-};
+function convertBase64(file){
+  return new Promise((resolve , reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (err) => {
+          reject(err);
+      };
+  })
+}
 
 function EditProfileValidationForms_Personal (props) {    
-
-    const [values, setValues] = React.useState({
-      textmask: '09         ',      
-    });
 
     const [username , setUsername] = React.useState(props.username) ;
     const [firstname , setFirstname] = React.useState(props.firstname) ;
@@ -112,6 +106,13 @@ function EditProfileValidationForms_Personal (props) {
     const [email , setEmail] = React.useState(props.email) ;
 
     const [userUpdated , setUserUpdated] = React.useState(false);
+
+    const [paswordValues , setPasswordValues] =  React.useState({
+      password : '' ,
+      showPassword : false ,
+      confirmPassword : '' ,
+      showConfirmedPassword : false         
+    });
 
     const handleUsernameChanged = e =>{
       setUsername(e.target.value)
@@ -126,15 +127,22 @@ function EditProfileValidationForms_Personal (props) {
       setEmail(e.target.value)
     };
 
-    const [selectedDate , setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));    
+    const handleChange = (props) => (event) => {
+      setPasswordValues({...paswordValues , [props]: event.target.value})
+    };
 
-    const handleDateChange = (date) => {
-      setSelectedDate(date);
+    
+    const handleClickShowPassword = () => {
+      setPasswordValues({ ...paswordValues, showPassword: !paswordValues.showPassword });
     };
 
     const classes = useStyles();
 
     return (
+      <Grid container>
+          <Grid item xs={3}></Grid>
+          <Grid item xs={6}>
+            <Paper elevation={3} className={classes.editprofilePaper}>
       <div>        
         <Material_RTL>
           <RTL>                
@@ -145,7 +153,15 @@ function EditProfileValidationForms_Personal (props) {
                 circular />
             </div>
             <div class="row" className={classes.paper}>
-              <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
+              <input 
+                accept="image/*" 
+                className={classes.input} 
+                id="icon-button-file" 
+                type="file"
+                onChange={(e) => {
+                  uploadImage(e);
+                }}
+                />
               <label htmlFor="icon-button-file">
                 <IconButton color="default" aria-label="upload picture" component="span">
                   <PhotoCamera />
@@ -217,37 +233,52 @@ function EditProfileValidationForms_Personal (props) {
                 /> 
               </div>           
             </div>        
-            
-            <div class="row"><br/></div>
-            
-            <div class ="row">                                     
-              <div class="col">                                
-                <TextField
-                style={{fontFamily: 'Vazir'}}
-                  id="date"
-                  label="تاریخ تولد "
-                  type="date"
-                  // variant="filled"
-                  defaultValue="2017-05-24"
-                  className={classes.textField}
-                  variant="outlined"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />  
-              </div>
-              {/* <div class="col">
-                <InputLabel htmlFor="formatted-text-mask-input">تلفن همراه</InputLabel>
-                <Input
-                  value={values.textmask}
-                  style={{fontFamily: 'Vazir'}}
-                  onChange={handleChange}
-                  name="textmask"              
-                  id="formatted-text-mask-input"
-                  inputComponent={TextMaskCustom}
-                  variant="outlined"
-                />          
-              </div>           */}
+             <div class ="row" > <br/><br/> </div>
+
+            <div class = "row">
+
+                <div class="col">
+                    <InputLabel htmlFor="standard-adornment-password">تکرار رمز عبور جدید </InputLabel>
+                    <Input
+                        id="standard-adornment-password"
+                        type={paswordValues.showPassword ? 'text' : 'password'}
+                        value={paswordValues.password}
+                        onChange={handleChange('password')}
+                        variant = 'outlined'
+                        endAdornment={
+                        <InputAdornment position="end">
+                            <IconButton
+                            aria-label="toggle password visibility"                                             
+                            onClick={handleClickShowPassword}                      
+                            >
+                            {paswordValues.showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                        </InputAdornment>
+                        }
+                    />
+                </div>
+
+                <div class="col">
+                    <InputLabel htmlFor="standard-adornment-password">رمز عبور جدید</InputLabel>
+                    <Input
+                        id="standard-adornment-password"
+                        type={paswordValues.showConfirmedPassword ? 'text' : 'password'}                        
+                        value={paswordValues.confirmPassword}
+                        onChange={handleChange('password')}
+                        defaultValue = {props.password}
+                        endAdornment={
+                        <InputAdornment position="end" >
+                            <IconButton
+                            aria-label="toggle password visibility"                                                
+                            onClick={handleClickShowPassword}                      
+                            >
+                            {paswordValues.showConfirmedPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                        </InputAdornment>
+                        }
+                    />
+                </div>
+
             </div>        
                   
             <div class="row"><br/><br/></div>
@@ -287,6 +318,10 @@ function EditProfileValidationForms_Personal (props) {
         </Material_RTL>
 
       </div>
+      </Paper>
+          </Grid>
+          <Grid item xs={3}></Grid>
+        </Grid>   
     );  
 }
 
@@ -321,13 +356,13 @@ export default class PersonalForms extends Component {
   render(){  
 
     if(this.state.userFound == true){
-      return(
-        <EditProfileValidationForms_Personal
-          firstname = {this.state.firstname}
-          lastname = {this.state.lastname}
-          email = {this.state.email}
-          username = {this.state.username}
-          />
+      return(        
+            <EditProfileValidationForms_Personal
+            firstname = {this.state.firstname}
+            lastname = {this.state.lastname}
+            email = {this.state.email}
+            username = {this.state.username}
+            />                 
       );
     } else
     {
