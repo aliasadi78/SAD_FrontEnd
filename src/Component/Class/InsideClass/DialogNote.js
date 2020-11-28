@@ -62,8 +62,8 @@ class DialogEditClass extends Component {
         
       <Button type="submit"
               variant="contained"
-              className = {classes.groupbutton}
-              style={{backgroundColor : '#EE6C4D',fontFamily: 'Vazir'}}
+              className = {classes.addButton}
+              style={{fontFamily: 'Vazir'}}
               onClick={handleClickOpen}>
         <CreateIcon />
                                 نوشتن
@@ -147,6 +147,14 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: '#EE6C4D' ,
       color : 'white' , 
     },                
+  },
+  addButton :{
+    backgroundColor : '#EE6C4D' , 
+    marginBottom : theme.spacing(1) ,
+    "&:hover": {
+      backgroundColor: LightenDarkenColor('#EE6C4D', -40) ,        
+      color :'white'
+    },
   },
   paper: {
     // marginTop: theme.spacing(1),

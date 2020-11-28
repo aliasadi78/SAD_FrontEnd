@@ -132,17 +132,7 @@ export default function MembersList(props) {
     };
 
     console.log(classId);
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);    
-     
-    // get class members ----------------------------------------------------
-    axios.get(serverURL() + "class/" + classId + "/members" , 
-    tokenConfig())
-    .then(res => {
-      console.log(res);
-    })
-    .catch(e =>{
-      console.log("ridi");
-    });
+    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);         
     // get class name --------------------------------------------------------
     axios.get(serverURL() + "class/" + classId , tokenConfig() )
     .then(res => {
@@ -215,7 +205,7 @@ export default function MembersList(props) {
               </Grid>            
               
               <Grid item xs={12}>
-                  <Studentlist />
+                  <Studentlist  classId = {classId}/>
               </Grid>
 
             </Container>

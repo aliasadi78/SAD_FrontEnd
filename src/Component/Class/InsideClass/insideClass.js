@@ -24,7 +24,6 @@ import Link from '@material-ui/core/Link';
 import axios from 'axios' ;
 import serverURL from '../../../utils/serverURL' ;
 import tokenConfig from '../../../utils/tokenConfig' ;
-import Box from '@material-ui/core/Box';
 
 import Material_RTL from "../../Material_RTL";
 import M_RTL from "../../M_RTL";
@@ -192,7 +191,10 @@ export default function InsideClass(props) {
     //get class note list-----------------------------------------------------------
     axios.get(serverURL() + "class/" + classId + "/notes" , tokenConfig() )
     .then(res => {
-      setNoteListLoad(false);      
+      // noteList.push()
+      noteList.push(...res.data.classNotes);
+      setNoteListLoad(false);    
+      console.log(noteList);  
     })
     .catch(err => {
       console.log("Not Found");   
@@ -395,12 +397,12 @@ export default function InsideClass(props) {
                                                                         
                     <Paper elevation = {elevation}  className = {classes.ElanPaper} style={{width : 'inherit'}}>                      
                         <Grid item>                            
-                            <Button variant="contained" color="primary" className = {classes.addButton} >
+                            {/* <Button variant="contained" color="primary" className = {classes.addButton} > */}
                               <h5 style={{fontFamily: 'Vazir'}}>
                                 
                                 <DialogNote classId={classId}/>
                               </h5>
-                            </Button>                            
+                            {/* </Button>                             */}
                         </Grid>     
 
                         <Grid item>                            

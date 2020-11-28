@@ -1,13 +1,21 @@
 import React from 'react';
+import axios from 'axios' ;
+import serverURL from '../../../utils/serverURL' ;
+import tokenConfig from '../../../utils/tokenConfig' ;
+
 import PropTypes from 'prop-types';
+import M_RTL from "../../M_RTL";
 import clsx from 'clsx';
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import { LightenDarkenColor } from 'lighten-darken-color'; 
+import { lighten, makeStyles , withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -16,26 +24,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Donut', 452, 25.0, 51, 4.9),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Honeycomb', 408, 3.2, 87, 6.5),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Jelly Bean', 375, 0.0, 94, 0.0),
-  createData('KitKat', 518, 26.0, 65, 7.0),
-  createData('Lollipop', 392, 0.2, 98, 0.0),
-  createData('Marshmallow', 318, 0, 81, 2.0),
-  createData('Nougat', 360, 19.0, 9, 37.0),
-  createData('Oreo', 437, 18.0, 63, 4.0),
-];
+import Material_RTL from '../../Material_RTL';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -67,7 +56,7 @@ const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'نام' },
   { id: 'calories', numeric: false, disablePadding: false, label: 'ایمیل' },
   { id: 'fat', numeric: true, disablePadding: false, label: 'نمره' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
+  // { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
   { id: 'protein', numeric: true, disablePadding: false, label: 'حذف' },
 ];
 
@@ -114,6 +103,14 @@ function EnhancedTableHead(props) {
   );
 }
 
+const StyledTableRow = withStyles((theme) => ({
+  root: {  
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
+
 EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
@@ -127,7 +124,7 @@ EnhancedTableHead.propTypes = {
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
+    paddingRight: theme.spacing(1),    
   },
   highlight:
     theme.palette.type === 'light'
@@ -140,7 +137,7 @@ const useToolbarStyles = makeStyles((theme) => ({
           backgroundColor: theme.palette.secondary.dark,
         },
   title: {
-    flex: '1 1 100%',
+    flex: '1 1 100%',  
   },
 }));
 
@@ -155,34 +152,28 @@ const EnhancedTableToolbar = (props) => {
       })}
     >
       {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-          {numSelected} selected
+        <Typography className={classes.title} style={{fontFamily: 'Vazir' , color : 'white' }} color="inherit" variant="subtitle1" component="div">
+          {numSelected} نفر انتخاب شده 
         </Typography>
       ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+        <Typography className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80' }} variant="h6" id="tableTitle" component="div">
           دانش آموزان 
         </Typography>
       )}
 
-      {numSelected > 0 ? (
+      {numSelected > 0 && (
         <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+          <Button onClick={() => {
+            props.selected.forEach(element => {
+              removeMember(element.name);
+            });
+          }} aria-label="delete">
+            <DeleteIcon style={{color : 'white '}} />
+          </Button>
+        </Tooltip>  
       )}
     </Toolbar>
   );
-};
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -209,13 +200,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Studentlist() {
+export default function Studentlist(props) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [page, setPage] = React.useState(0);
+  const [selected, setSelected] = React.useState([]);  
+  const [members , setMembers] = React.useState([]);  
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -223,9 +213,32 @@ export default function Studentlist() {
     setOrderBy(property);
   };
 
+  // get members -----------------------------------------------------------------------------
+  axios.get(serverURL() + "class/" + props.classId + "/members" , tokenConfig())
+  .then(res=>{    
+    setMembers([...res.data.members])
+    console.log(res);
+    console.log(members.length);
+  })
+  .catch(err=>{
+    console.log(err);
+  });
+  // remove a member ------------------------------------------------------------------------
+  const removeMember = (username) => {
+    console.log("sdlkjfaldf");
+    axios.delete(serverURL() + "class/" + props.classId + "/members/" + username , tokenConfig())
+    .then(res =>{
+
+    })
+    .catch(err =>{
+      console.log(err);
+    })
+  };
+  //------------------------------------------------------------------------------------------
+
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = members.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -252,13 +265,13 @@ export default function Studentlist() {
     setSelected(newSelected);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const isSelected = (name) => selected.indexOf(name) !== -1;  
 
   return (
-    <div className={classes.root}>      
-        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
+    <div className={classes.root}>       
+    <Material_RTL>
+      <M_RTL>
+        <EnhancedTableToolbar selected = {selected} numSelected={selected.length} />
         <TableContainer>
           <Table
             className={classes.table}
@@ -273,23 +286,22 @@ export default function Studentlist() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={members.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              {stableSort(members, getComparator(order, orderBy))                
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.username);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.name)}
+                    <StyledTableRow                      
+                      // hover
+                      onClick={(event) => handleClick(event, row.username)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.username}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -299,23 +311,23 @@ export default function Studentlist() {
                         />                        
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.name}
+                        {row.firstname + " " + row.lastname}
                       </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
-                    </TableRow>
+                      <TableCell align="left">{row.email}</TableCell>
+                      <TableCell align="right">10</TableCell>
+                      <TableCell align="right">
+                        <Button onClick={() => {removeMember(row.username)}}>
+                          <RemoveCircleRoundedIcon style={{color : '#E63946'}} />
+                        </Button>  
+                      </TableCell>                      
+                    </StyledTableRow>
                   );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
+                })}              
             </TableBody>
           </Table>
-        </TableContainer>              
+        </TableContainer>     
+        </M_RTL>         
+        </Material_RTL>
     </div>
   );
 }
