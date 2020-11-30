@@ -55,7 +55,7 @@ export default function ExamListItem(props) {
             </Grid>
             <Grid item xs = {4} className={classes.grid}>
                 <h6 dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir', textAlign : 'right' , marginBottom : 0 }}>                                          
-                کوییز 57 ام                
+                {props.name}
                 </h6>                
             </Grid>            
         </Grid>

@@ -8,38 +8,27 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import InfoIcon from '@material-ui/icons/Info';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import { mainListItems , secondaryListItems} from './insideClassDrawerList';
 import List from '@material-ui/core/List';
-import IsoIcon from '@material-ui/icons/Iso';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import Examslist from './examlist' ;
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import axios from 'axios' ;
 import serverURL from '../../../utils/serverURL' ;
 import tokenConfig from '../../../utils/tokenConfig' ;
-
-import Material_RTL from "../../Material_RTL";
-import M_RTL from "../../M_RTL";
-import PostListItem from './postListItem';
-import ExamListItem from './examsListItem';
-import { set } from 'date-fns';
-import AlertDialog from '../../Dialog';
 import Image from './back.jpg' ;
-
-import DialogNote from './DialogNote';
+import Notelist from './notelist';
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',       
-      
+      display: 'flex',           
     },
     toolbar: {
       paddingRight: 7, // keep right padding when drawer closed            
@@ -56,6 +45,15 @@ const useStyles = makeStyles((theme) => ({
       height: '54px' ,      
       backgroundColor : '#3D5A80' ,      
     },
+    classCode: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      paddingBottom  : theme.spacing(1) ,
+      paddingTop : theme.spacing(1) ,
+      height: '40px' ,      
+      backgroundColor : '#98C1D9' ,      
+    },    
     drawerPaper: {
       // position: 'relative',
       whiteSpace: 'nowrap',
@@ -63,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
-      }),      
+      }),       
     },
     drawerPaperClose: {
       overflowX: 'hidden',
@@ -85,17 +83,16 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     content :{      
+      flexGrow: 1,
+      // padding: theme.spacing(3),
       transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
       marginRight: 0,
-        width : '100%' ,
-        overflow : 'atuo' , 
-        flexGrow : 1,
     },  
     classContent :{
-      marginTop : theme.spacing(4)
+      marginTop : theme.spacing(2)
     },  
     contentShift: {
       transition: theme.transitions.create('margin', {
@@ -105,9 +102,9 @@ const useStyles = makeStyles((theme) => ({
       marginRight: drawerWidth,
     },
     container: {
-      paddingTop: '18px',
+      paddingTop: '18px',      
       paddingBottom: theme.spacing(4),      
-      width : '100%' ,                     
+      // width : '100%' ,                     
     },
     paperList :{        
       padding : theme.spacing(1) , 
@@ -129,30 +126,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#EE6C4D' ,
         color : 'white' , 
       },                
-    },
-    ListTitle :{
-      padding : theme.spacing(1) , 
-      marginBottom : theme.spacing(1) ,  
-      backgroundColor : '#3D5A80' ,
-      color : 'white'
-    },
-    ElanPaper :{
-      marginTop : theme.spacing(2) , 
-      
-      paddingTop : theme.spacing(1)
-    },    
-    addButton :{
-      backgroundColor : '#EE6C4D' , 
-      marginBottom : theme.spacing(1) ,
-      "&:hover": {
-        backgroundColor: LightenDarkenColor('#EE6C4D', -40) ,        
-        color :'white'
-      },
-    },
-    progressCircle :{
-      margin : theme.spacing(2) ,
-      color : '#3D5A80'      
-    },
+    },      
   }));
 
 export default function InsideClass(props) {
@@ -162,12 +136,9 @@ export default function InsideClass(props) {
     const [open, setOpen] = React.useState(true);
     const [className , setClassName] = React.useState("نام کلاس");
     const [description , setDescription] = React.useState("توضیحات");
-    const [adminName , setAdminName] = React.useState("نام معلم");
-    const [noConnection , setNoConnection] = React.useState(false );    
-    var noteList = [] ;
-    var examList = [] ;
-    const [noteListLoad , setNoteListLoad] = React.useState(true);
-    const [examsListLoad , setExamsListLoad ] = React.useState(true);
+    const [adminName , setAdminName] = React.useState("نام معلم");   
+    const [isAdmin , setIsAdmin] = React.useState(false);         
+    
     const classId = props.match.params.classId ;    
     const handleDrawer = () => {
       setOpen(!open);
@@ -178,48 +149,24 @@ export default function InsideClass(props) {
     // get class information---------------------------------------------------------
     axios.get(serverURL() + "class/" + classId , 
     tokenConfig())
-    .then(res => {
-      console.log(res.data);
+    .then(res => {            
       setClassName(res.data.Class.name);
       setDescription(res.data.Class.description);
       setAdminName(res.data.Class.admin.firstname + " " + res.data.Class.admin.lastname);
     })
-    .catch(e =>{
-      setNoConnection(true);
+    .catch(e =>{      
     });
 
-    //get class note list-----------------------------------------------------------
-    axios.get(serverURL() + "class/" + classId + "/notes" , tokenConfig() )
-    .then(res => {
-      // noteList.push()
-      noteList.push(...res.data.classNotes);
-      setNoteListLoad(false);    
-      console.log(noteList);  
-    })
-    .catch(err => {
-      console.log("Not Found");   
-      console.log(err)     
-    });
-
-    //get class exams list ----------------------------------------------------------         
-    axios.get(serverURL() + "class/" + classId + "/exams")
+    //get user information 
+    axios.get(serverURL() + "user" , tokenConfig())
     .then(res =>{
-      setExamsListLoad(false);
-      console.ChevronLeftIcong(res);
+        if(res.data.user.firstname + " " + res.data.user.lastname == adminName)
+          setIsAdmin(true);
     })
-    .catch(err=> {
-      console.log(err);
-    });
-
 
     return (
       <div className={classes.root}>        
         <CssBaseline />
-
-        {
-          noConnection == true &&
-          <AlertDialog text = 'اتصال ندارید .' />
-        }
 
         <Drawer
           variant="permanent"
@@ -232,56 +179,55 @@ export default function InsideClass(props) {
         >          
           <div className={classes.toolbarIcon} >  
 
-          <Typography dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : 'white', textAlign : 'right'}}>                          
+          <Typography dir="rtl" component="h1" variant="h6" noWrap style={{fontFamily: 'Vazir' , color : 'white', textAlign : 'right'}}>                          
               {className}
           </Typography>
             <IconButton onClick={handleDrawer} style={{color : 'white'}} >
-              <ChevronLeftIcon/>
+              <ChevronLeftIcon style={{marginRight : "2px"}}/>
             </IconButton>
-          </div>
+          </div>          
+
+          <div className={classes.classCode} >              
+            <IconButton onClick={handleDrawer} style={{color : 'white'}} >
+              <InfoIcon style={{marginLeft : '2px' , marginRight : '8px'}} />
+            </IconButton>      
+            <h4 dir="rtl" noWrap style={{ fontFamily: 'Vazir' , textAlign : 'right', color : 'white' , marginTop : '0px'}}>                          
+                کد کلاس : {classId}
+            </h4>                              
+          </div>             
+
           <List>{mainListItems}</List>   
           
           <Divider />
                            
           <List>{secondaryListItems}</List>                    
-
-
+          
         </Drawer>
         <main className={clsx(classes.content, {
           [classes.contentShift]: open,
         })} 
-        // style={{
-        //   background-image : url('back.jpg') , 
-        //   backgroundPosition: 'center', 
-        //   backgroundSize: 'cover', 
-        //   backgroundRepeat: 'no-repeat'  ,   
-        // }}
-        >          
+        >                            
           <Container maxWidth="lg" className={classes.container}>  
-            <Grid item xs = {12}>
-            <Material_RTL>
-                    <M_RTL>
-              {/* <Paper elevation={2} > */}
-              <Breadcrumbs separator="|" aria-label="breadcrumb">
-                <Link color="inherit" href="/" >
-                <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
-                    خانه
-                </Typography>
-                </Link>
-                <Link color="inherit" href="/getting-started/installation/" >
+            <Grid container xs = {12} dir = "rtl">            
+              {/* <Paper elevation={2} > */}              
+                <Breadcrumbs separator="|" aria-label="breadcrumb">
+                  <Link color="inherit" href="/" >
                   <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
-                      کلاس ها
+                      خانه
                   </Typography>
-                </Link>
-                {/* {props.title} */}
-                <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
-                  {className}
-                </Typography>
-              </Breadcrumbs>
+                  </Link>
+                  <Link color="inherit" href="/getting-started/installation/" >
+                    <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
+                        کلاس ها
+                    </Typography>
+                  </Link>
+                  {/* {props.title} */}
+                  <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
+                    {className}
+                  </Typography>
+                </Breadcrumbs>              
               <hr />
-              {/* </Paper> */}
-              </M_RTL>
-            </Material_RTL>
+              {/* </Paper> */}              
             </Grid>            
             <Grid container spacing={3} className={classes.classContent}>
               <Grid item xs={12} sm={12}  lg={12} className = {classes.grid}>
@@ -309,121 +255,30 @@ export default function InsideClass(props) {
                         {adminName}
                     </Typography>                                      
                     </Grid>
-                    <Grid item>                    
-                      <Button className = {classes.groupbutton}>
-                        <h5 style={{fontFamily: 'Vazir'}}>
-                          ویرایش
-                        </h5>
-                      </Button>                       
-                    </Grid>
+                    {isAdmin==true &&
+                      <Grid item>                    
+                        <Button className = {classes.groupbutton}>
+                          <h5 style={{fontFamily: 'Vazir'}}>
+                            ویرایش
+                          </h5>
+                        </Button>                       
+                      </Grid>
+                    }
                   </Grid>                         
                 </Grid>
                 </Paper>
               </Grid> 
 
-              <Grid item  xs={4} sm={12}  lg={6} className = {classes.grid}>                                                                
-                                                                                  
-                  <Grid container xs={12} style={{marginBottom : '15px'}} >                      
-                          <Grid item xs={4} ></Grid>
-                          <Grid item xs={4} >
+              <Examslist 
+                classId = {classId}
+                isAdmin = {isAdmin}
+              />
 
-                            <Paper elevation = {elevation} className = {classes.ListTitle}>
-                              <h5 style={{fontFamily: 'Vazir'}}>
-                                امتحان ها 
-                                <IsoIcon />
-                              </h5>
-                            </Paper>                          
-                          </Grid>                              
-
-                          <Grid item xs={4} ></Grid>
-                        </Grid>
-                  <Grid
-                    // item xs={12}                    
-                    direction="column"
-                    justify="center"
-                    alignItems="center"
-                    spacing = {1}
-                  >     
-                                                                        
-                    <Paper elevation = {elevation}  className = {classes.ElanPaper}>                      
-                        <Grid item style={{marginBottom : '15px'}}>                            
-                            <Button className={classes.groupbutton} variant="contained" color="primary"  >
-                              <h5 style={{fontFamily: 'Vazir'}}>
-                                <AddIcon />
-                                آزمون جدید 
-                              </h5>
-                            </Button>                            
-                        </Grid>                           
-                          <Grid item xs={12}>
-                            {
-                              examsListLoad == true ?
-                              <CircularProgress className = {classes.progressCircle} variant="static" value={100} />
-                              :
-                              <ExamListItem elevation = {elevation}
-
-                              />
-                            }                                                        
-                          </Grid>     
-                                                
-                      </Paper>                    
-                  </Grid>
-
-              </Grid>                       
-
-              <Grid item xs={12} sm={12}  lg={6} className = {classes.grid}>
-
-                <Grid container xs={12} >
-                    <Grid item xs={4} ></Grid>
-                        <Grid item xs={4} >
-
-                          <Paper elevation = {elevation} className = {classes.ListTitle}>                          
-                            <h5 style={{fontFamily: 'Vazir' }}>                                                      
-                              اعلان ها 
-                              <NotificationsIcon />
-                            </h5>
-                          </Paper>                          
-                        </Grid>                              
-
-                        <Grid item xs={4} ></Grid>
-                    </Grid>    
-                <Grid
-                    // item xs={12}
-                    container
-                    direction="column"
-                    justify="center"
-                    alignItems="center"
-                    spacing = {1}
-                  >     
-                                                                        
-                    <Paper elevation = {elevation}  className = {classes.ElanPaper} style={{width : 'inherit'}}>                      
-                        <Grid item>                            
-                            {/* <Button variant="contained" color="primary" className = {classes.addButton} > */}
-                              <h5 style={{fontFamily: 'Vazir'}}>
-                                
-                                <DialogNote classId={classId}/>
-                              </h5>
-                            {/* </Button>                             */}
-                        </Grid>     
-
-                        <Grid item>                            
-                            <div>
-                              {
-                                noteListLoad == true ?
-                                  <CircularProgress className = {classes.progressCircle} variant="static" value={100} />
-                                :                                
-                                noteList.map(m => 
-                                  <PostListItem 
-                                    title = {m.title}                                     
-                                    content = {m.body}
-                                    CreatorName = {m.creator.firstname + " " + m.creator.lastname}    
-                                    />
-                                ) 
-                              }                              
-                            </div>                               
-                        </Grid>                           
-                    </Paper>
-                  </Grid>
-                </Grid>              
+              <Notelist 
+                classId = {classId}
+                isAdmin = {isAdmin}                
+                />
+            
             </Grid>
           </Container>
         </main>

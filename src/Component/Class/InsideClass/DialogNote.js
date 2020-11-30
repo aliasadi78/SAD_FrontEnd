@@ -44,17 +44,20 @@ class DialogEditClass extends Component {
     setOpen(false);
   };
   const handleSubmit = () =>{
-    console.log(this.props);
-    console.log(this.props.classId);
-    console.log(this.state);
-    axios.post(serverURL() + "class/" + this.props.classId  + "/notes", 
-    this.state,tokenConfig())
+    
+    const a = {
+      "title" : this.state.title ,
+      "body" : this.state.body
+    };
+
+    const ajson = JSON.stringify(a);
+    axios.post(serverURL() + "class/" + this.props.classId  + "/notes", ajson ,tokenConfig())
     .then(res => {
       console.log(res);
       this.setState({success: true})
     })
     .catch(e =>{
-      console.log("error");
+      console.log(e);
     });
   }
   return (
@@ -123,9 +126,7 @@ class DialogEditClass extends Component {
         </div>
         </M_RTL>
       </Material_RTL>
-      </Dialog>
-          {this.state.success ? 
-          (<AlertDialog text = "اعلان جدید با موفقیت اضافه شد" />) : null}
+      </Dialog>          
           {this.state.success ? (setOpen(false)) : null}
     </div>
   );

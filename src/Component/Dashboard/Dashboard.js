@@ -33,7 +33,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import BallotIcon from '@material-ui/icons/Ballot';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import PersonalForms from '../User/Editform_Personal';
+import PersonalForms from '../User/EditProfile';
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
