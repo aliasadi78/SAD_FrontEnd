@@ -59,7 +59,7 @@ class ClassesPage extends Component{
                             justify="flex-end"
                             alignItems="center"
                           > */}
-                            <div style={{fontFamily: 'Vazir'}}>                            
+                            <div style={{fontFamily: 'Vazir'}} className = {classes.classCards}>                            
                               {
                                 this.state.userClasses.map((item) => 
                                 <ClassListItem 
@@ -107,6 +107,9 @@ const useStyles = makeStyles((theme) => ({
       color : 'white' , 
     },                
   },    
+  classCards :{
+    justifyContent : 'flex-end' ,
+  },
     bullet: {
       display: 'inline-block',
       margin: '0 2px',
@@ -118,8 +121,9 @@ const useStyles = makeStyles((theme) => ({
     paper: {
       marginTop: theme.spacing(1),
       // display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'flex-start',      
+      direction: 'row',
+      justify: 'flex-start',      
+      alignItems : 'left' ,
       color : '#3D5A80' , 
       backgroundColor: 'white',
       padding: '10px',

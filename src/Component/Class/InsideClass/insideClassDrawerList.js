@@ -2,14 +2,11 @@ import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-
+import EditIcon from '@material-ui/icons/Edit';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import ClassIcon from '@material-ui/icons/Class';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 
 export const mainListItems = (
@@ -48,9 +45,7 @@ export const mainListItems = (
 );
 
 export const secondaryListItems = (
-  <div>
-
-    <Divider />
+  <div>    
 
     <ListItem button  onClick={() => redirectTo('classesPage')}>
       <ListItemIcon>
@@ -59,6 +54,18 @@ export const secondaryListItems = (
         <ListItemText  style={{ textAlign : 'right'}} >
           <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}> 
             اعضا
+          </Typography>
+        </ListItemText>              
+        
+    </ListItem> 
+
+    <ListItem button  onClick={() => redirectTo('classesPage')}>
+      <ListItemIcon>
+      <EditIcon style={{ color: "#3D5A80" }} />            
+        </ListItemIcon>
+        <ListItemText  style={{ textAlign : 'right'}} >
+          <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}> 
+            ویرایش کلاس
           </Typography>
         </ListItemText>              
         
