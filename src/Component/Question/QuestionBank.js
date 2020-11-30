@@ -630,7 +630,7 @@ function QC (props){
 
                 console.log("EEE"),
                 data = props.q.imageQuestion.toString(),
-                Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} onClick={handleClickOpen} width="100%" height="100%"/>,
+                Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} onClick={handleClickOpen} width="100%" height="100%" style={{cursor: 'pointer'}}/>,
                 <Example data={data} />
               ): null}
               <Dialog
@@ -657,7 +657,7 @@ function QC (props){
               </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} style={{fontFamily: 'Vazir'}}><FontAwesomeIcon icon={faWindowClose} size="2x" style={{color: 'red',position: 'relative',marginTop: '-2300%',marginRight: '-70%'}} /></Button>
+          <div onClick={handleClose} style={{fontFamily: 'Vazir',color: 'red',position: 'absolute',right:'1%',top: '2%',cursor:'pointer'}}><FontAwesomeIcon icon={faWindowClose} size="2x"/></div>
         </DialogActions>
       </Dialog>
               </CardMedia>
@@ -675,10 +675,10 @@ function QC (props){
                   }
                )) : null}</div>
              
-      {openUserDrawerMethod ? <Icon style={{color: '#0e918c',position: 'relative',right: '48.5%',marginTop: '4%'}} button onClick={()=>{
+      {openUserDrawerMethod ? <Icon style={{color: '#0e918c',position: 'relative',right: '48.5%',marginTop: '4%',cursor: 'pointer',}} button onClick={()=>{
               if(openCollapse == false)
                 handleUserDrawerMenuClick();
-        }}>vpn_key</Icon> : <Icon style={{color: '#0e918c',position: 'relative',right: '48.5%',marginTop: '4%'}} button onClick={()=>{
+        }}>vpn_key</Icon> : <Icon style={{color: '#0e918c',position: 'relative',right: '48.5%',marginTop: '4%',cursor: 'pointer'}} button onClick={()=>{
           if(openCollapse == false)
             handleUserDrawerMenuClick();
     }}>vpn_key</Icon>}</Typography>
@@ -694,7 +694,7 @@ function QC (props){
              {props.q.imageAnswer !== null ? ( 
                 console.log("EEE"),
                 data = props.q.imageAnswer.toString(),
-                Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} onClick={handleClickOpen} width="100%" height="100%"/>,
+                Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} onClick={handleClickOpen} width="100%" height="100%" style={{cursor: 'pointer'}}/>,
                 <Example data={data}/>
                 ): null}
                 <Dialog
@@ -715,13 +715,13 @@ function QC (props){
 
               console.log("EEE"),
               data = props.q.imageAnswer.toString(),
-              Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} onClick={handleClickOpen} width="100%" height="100%"/>,
+              Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} onClick={handleClickOpen} width="100%" height="100%" />,
               <Example data={data}/>
               ): null}
               </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} style={{fontFamily: 'Vazir'}}><FontAwesomeIcon icon={faWindowClose} size="2x" style={{color: 'red',position: 'relative',marginTop: '-2300%',marginRight: '-70%'}}/></Button>
+          <div onClick={handleClose} style={{fontFamily: 'Vazir',color: 'red',position: 'absolute',right:'1%',top: '2%',cursor:'pointer'}}><FontAwesomeIcon icon={faWindowClose} size="2x"/></div>
         </DialogActions>
       </Dialog>
                 </CardMedia>
