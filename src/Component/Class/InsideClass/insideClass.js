@@ -25,6 +25,8 @@ import tokenConfig from '../../../utils/tokenConfig' ;
 import Image from './back.jpg' ;
 import Notelist from './notelist';
 
+import DialogEditClass from './DialogEditClass';
+
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -134,12 +136,14 @@ export default function InsideClass(props) {
     const elevation = 2 ;     
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
+
     const [className , setClassName] = React.useState("نام کلاس");
     const [description , setDescription] = React.useState("توضیحات");
     const [adminName , setAdminName] = React.useState("نام معلم");   
     const [isAdmin , setIsAdmin] = React.useState(false);         
     
     const classId = props.match.params.classId ;    
+
     const handleDrawer = () => {
       setOpen(!open);
     };
