@@ -29,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
     },
     ElanPaper :{
         marginTop : theme.spacing(2) ,         
-        paddingTop : theme.spacing(1)
+        paddingTop : theme.spacing(1) ,
+        paddingBottom : theme.spacing(1)
     },    
 }))
 
@@ -52,7 +53,7 @@ export default function Notelist (props){
     });
 
     return (
-        <Grid item xs={12} sm={12}  lg={6} className = {classes.grid}>
+        <Grid item xs={4} sm={12}  lg={6} className = {classes.grid}>
 
         <Grid container xs={12} >
             <Grid item xs={4} ></Grid>
@@ -86,7 +87,7 @@ export default function Notelist (props){
                         </h5>                       
                     </Grid>     
                 }
-                <Grid item>                            
+                <Grid item xs={12}>                            
                     <div>
                     {
                         noteListLoad == true ?

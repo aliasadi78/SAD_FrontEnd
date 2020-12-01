@@ -64,7 +64,7 @@ export default function Examslist (props){
     return (
         <Grid item  xs={4} sm={12}  lg={6} className = {classes.grid}>                                                                
                                                                                   
-                  <Grid container xs={12} style={{marginBottom : '15px'}} >                      
+                  <Grid container xs={12} >                      
                           <Grid item xs={4} ></Grid>
                           <Grid item xs={4} >
 
@@ -88,7 +88,7 @@ export default function Examslist (props){
                                                                         
                     <Paper elevation = {elevation}  className = {classes.ElanPaper}>                      
                         { props.isAdmin == true &&
-                          <Grid>                            
+                          <Grid item>                            
                               <Button className={classes.groupbutton} variant="contained" color="primary"  >
                                 <h5 style={{fontFamily: 'Vazir'}}>
                                   <AddIcon />
