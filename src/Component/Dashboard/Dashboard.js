@@ -3,9 +3,9 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
@@ -13,27 +13,19 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import VerticalTabs from '../User/TabMenuEditProfile';
 import Button from '@material-ui/core/Button';
-
-import NewClassDialog from '../Class/NewClassPage' ;
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import ClassesPage from '../Class/ClassesPage' ;
-import JoinClassDialog from '../Class/JoinClass' ;
-// ------------------------
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
-import ClassIcon from '@material-ui/icons/Class';
-
 import LogOutDialog from '../User/LogoutDialog';
 import QuestionBank from '../Question/QuestionBank';
-import Collapse from '@material-ui/core/Collapse';
 import Questions from '../Question/Questions';
-//----------------
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import BallotIcon from '@material-ui/icons/Ballot';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import DrawerList from './DrawerList';
+import JoinClass from '../Class/JoinClass';
+import NewClassDialog from '../Class/NewClassPage';
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
@@ -74,14 +66,8 @@ const useStyles = makeStyles((theme) => ({
     menuButtonHidden: {
       display: 'none',
     },
-    notDialog : {      
-      display: 'none',
-    },
     title: {
       flexGrow: 1,
-    },
-    nested: {
-      paddingRight: theme.spacing(5),
     },    
     drawerPaper: {
       // position: 'relative',
@@ -140,11 +126,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
 
-
     const classes = useStyles();
-    const [component , setComponent] = React.useState('classesPage');
-    const [open, setOpen] = React.useState(false);
-    const [currentComponent , setCurrentComponent] = React.useState(false);
+    const [open, setOpen] = React.useState(false);    
+    const [openJoinClassDialog, setOpenJionClassDialog] = React.useState(false);
+    const [openCreateClassDialog, setOpenCreateClassDialog] = React.useState(false);
 
     const [openUserDrawerMethod , setopenUserDrawerMethod ] = React.useState(false);
     const handleUserDrawerMenuClick = () => {
@@ -164,6 +149,7 @@ export default function Dashboard() {
     return (
       <div className={classes.root}>
         <CssBaseline />
+        <Router>
         <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)} dir="rtl" >
           <Toolbar className={classes.toolbar}>
             <IconButton
@@ -181,18 +167,16 @@ export default function Dashboard() {
             <Button variant="contained" color="white"
               style={{fontFamily: 'Vazir'}}
               className = {classes.button}
-              onClick={() => {                
-                setCurrentComponent(component);
-                setComponent('newClassDialog');
+              onClick={() => {  
+                setOpenCreateClassDialog(true);                            
               }} >
               ایجاد کلاس
             </Button>            
             <Button variant="contained" color="#98C1D9" 
               style={{fontFamily: 'Vazir'}}
               className = {classes.button}
-              onClick={()=>{                
-                // setCurrentComponent(component);
-                setComponent('joinClassDialog');
+              onClick={()=>{  
+                setOpenJionClassDialog(true);                              
               }}
               >
               ورود به کلاس 
@@ -219,137 +203,47 @@ export default function Dashboard() {
             </IconButton>
           </div>          
 
-          <ListItem button onClick={()=>{
-            setComponent('editProfile');
-            if(open == true)
-              handleUserDrawerMenuClick();
-            }}>
-            <ListItemIcon>        
-              <AccountBoxIcon style={{ color: "#3D5A80" }} />
-            </ListItemIcon>
-            <ListItemText>
-            <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
-                حساب کاربری
-            </Typography>
-            </ListItemText>
-            {openUserDrawerMethod ? <ExpandLess/> : <ExpandMore />}
-          </ListItem>
-
-          <Collapse in={openUserDrawerMethod} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem button 
-                onClick = {() => setComponent('questions')}
-                className={classes.nested}>
-                <ListItemIcon>
-                  <BallotIcon style={{ color: "#3D5A80" }} />
-                </ListItemIcon>
-                <ListItemText >
-                  <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
-                    سوالات 
-                  </Typography>
-                </ListItemText>
-              </ListItem>
-
-              <ListItem button className={classes.nested}  onClick={() => setComponent('classesPage')}>
-                <ListItemIcon>
-                <ClassIcon style={{ color: "#3D5A80" }} />
-                </ListItemIcon>
-                <ListItemText  style={{fontFamily: 'Vazir'}} >
-                  <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>
-                    کلاس ها
-                  </Typography>            
-                </ListItemText>
-              </ListItem>    
-
-            </List>
-          </Collapse>
-          <ListItem button onClick ={()=> setComponent('QuestionBank')}>
-            <ListItemIcon>
-            <LibraryBooksIcon style={{ color: "#3D5A80" }} />
-            </ListItemIcon>
-            <ListItemText >
-              <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
-                بانک سوال
-              </Typography>
-            </ListItemText>
-          </ListItem>   
-
-          <ListItem button onClick ={()=> setComponent('logout')} >
-            <ListItemIcon>
-              <ExitToAppIcon style={{ color: "#3D5A80" }} />        
-            </ListItemIcon>  
-            <ListItemText >
-              <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
-                خروج
-              </Typography>
-            </ListItemText>
-          </ListItem>           
-
+            <DrawerList isDrawerOpen = {open} />            
         </Drawer>
+        
         <main className={clsx(classes.content, {
           [classes.contentShift]: open,
         })}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
-            {/* <Grid container spacing={3}>              
-              <Grid item xs={12}>                                */}
-              {
-                component === 'editProfile' ?
+            
+            {
+              openJoinClassDialog == true &&
+              <JoinClass />              
+            }
+
+            {
+              openCreateClassDialog == true &&
+              <NewClassDialog />
+            }
+
+            <Switch>
+              <Route path="/profile/edit"  >
                 <VerticalTabs />
-                :
-                component === 'QuestionBank' ?
+              </Route>
+              <Route path="/questionBank">
                 <QuestionBank />
-                :
-                // component == 'logout' ?                
-                component === 'questions' ?                
-                <Questions />   
-                :
-                component === 'classesPage'?
+              </Route>
+              <Route path="logoutDialog" >
+                <LogOutDialog />
+              </Route>
+              <Route path="/user/classes" >
                 <ClassesPage />
-                :  
-                component === 'newClassDialog' ?              
-                <SetComponent component = {currentComponent} dialog = "newClass" />
-                :
-                component === 'joinClassDialog'?
-                <JoinClassDialog />
-                :
-                component == 'logout' ?                
-                <LogOutDialog/> // logout dialog                
-                :
-                <VerticalTabs />
-                // question Bank
-              }                                                           
-              {/* </Grid>              
-            </Grid> */}            
+              </Route>
+              <Route path="/user/questions">
+                <Questions />
+              </Route>
+            </Switch>        
+
           </Container>
         </main>
+
+        </Router>
       </div>
     );
   }
-
-function SetComponent  (props){
-  const component = props.component ;    
-  const dialog = props.dialog ;
-  return (              
-    <div>
-      {
-        dialog === "newClass" ?
-        <NewClassDialog />
-        :
-        <JoinClassDialog />
-      }      
-      {
-        component === 'editProfile' ?
-        <VerticalTabs />
-        :
-        component === 'questionBank' ?
-        <VerticalTabs /> // replace it with question bank
-        :
-        component === 'classesPage'?
-        <ClassesPage />
-        :
-        <VerticalTabs />  
-      }   
-    </div>
-  );
-}
