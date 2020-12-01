@@ -193,26 +193,34 @@ function EditProfileValidationForms_Personal (props) {
                     <div class="col">
                         <TextField   
                             style={{fontFamily: 'Vazir'}}     
-                            label="نام کابری"
+                            label="نام کاربری"
                             id="user-name"
                             defaultValue={props.username}
                             className={classes.textField}   
                             variant="outlined"                 
                             margin ="dense"           
                             onChange ={handleUsernameChanged}   
+                            InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                            InputProps={{
+                                style:{fontFamily: 'Vazir'},
+                            }}
                             />
                     </div>
 
                     <div class="col">
                         <TextField 
                             style={{fontFamily: 'Vazir'}}      
-                            label="E-MAIL"
+                            label="ایمیل"
                             id="email"
                             defaultValue={props.email}
                             variant="outlined"
                             className={classes.textField}                    
                             margin ="dense"          
                             onChange = {handleEmailChanged}    
+                            InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                  InputProps={{
+                      style:{fontFamily: 'Vazir'},
+                  }}
                             /> 
                     </div>
 
@@ -231,6 +239,10 @@ function EditProfileValidationForms_Personal (props) {
                   // variant="filled"
                   margin ="dense"              
                   onChange = {handleFirstnameChanged}
+                  InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                  InputProps={{
+                      style:{fontFamily: 'Vazir'},
+                  }}
                 /> 
               </div>           
               <div class = "col">
@@ -244,6 +256,10 @@ function EditProfileValidationForms_Personal (props) {
                   // variant="filled"
                   margin ="dense"
                   onChange ={handleLastnameChanged}
+                  InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                  InputProps={{
+                      style:{fontFamily: 'Vazir'},
+                  }}
                 /> 
               </div>           
             </div>        
@@ -259,6 +275,10 @@ function EditProfileValidationForms_Personal (props) {
                         value={paswordValues.password}
                         onChange={handleChange('password')}
                         variant = 'outlined'
+                        InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                  InputProps={{
+                      style:{fontFamily: 'Vazir'},
+                  }}
                         endAdornment={
                         <InputAdornment position="end">
                             <IconButton
@@ -280,6 +300,10 @@ function EditProfileValidationForms_Personal (props) {
                         value={paswordValues.confirmPassword}
                         onChange={handleChange('password')}
                         defaultValue = {props.password}
+                        InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                  InputProps={{
+                      style:{fontFamily: 'Vazir'},
+                  }}
                         endAdornment={
                         <InputAdornment position="end" >
                             <IconButton

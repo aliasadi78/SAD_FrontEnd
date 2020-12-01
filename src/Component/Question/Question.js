@@ -45,11 +45,35 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles((theme) => ({
+    
+    
   root: {
     flexGrow: 1,
     // marginTop : theme.spacing(5) ,
     width : '100%'
   },
+  '@global':{
+        '.MuiInputLabel-filled.MuiInputLabel-shrink.MuiInputLabel-marginDense' : {
+        display: 'block',
+        fontFamily: 'Vazir',
+      },
+      '.MuiInputLabel-filled.MuiInputLabel-marginDense': {
+        display: 'block',
+        fontFamily: 'Vazir',
+      },
+      '.MuiAutocomplete-option': {
+        display: 'block',
+        fontFamily: 'Vazir',
+      },
+      '.MuiAutocomplete-inputRoot[class*="MuiFilledInput-root"][class*="MuiFilledInput-marginDense"] .MuiAutocomplete-input': {
+        display: 'block',
+        fontFamily: 'Vazir',
+      },
+      '.MuiFormControlLabel-label': {
+        display: 'block',
+        fontFamily: 'Vazir',
+      },
+    },
   RadioChoice :{
     
   },
@@ -228,6 +252,10 @@ export default function Question(props) {
                                             className = {classes.BigForm}
                                             // defaultValue="Default Value"
                                             variant="outlined"
+                                            InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                            InputProps={{
+                                                style:{fontFamily: 'Vazir'},
+                                            }}
                                         />
                                     </Paper>
                                 </Grid>
@@ -242,11 +270,19 @@ export default function Question(props) {
                                                 getOptionLabel={(option) => option.title}
                                                 getOptionSelected ={(option , value) => option.title === value.title}
                                                 className = {classes.dropdowns}                                    
-                                                debug             
+                                                debug
+                                                InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                                InputProps={{
+                                                    style:{fontFamily: 'Vazir'},
+                                                }}   
+                                                style={{fontFamily: 'Vazir'}}          
                                                 onChange ={(e , newValue)=>{                                                    
                                                     setGrade(newValue.code);                                                    
                                                 }}
-                                                renderInput={(params) => <TextField  variant = 'filled' margin ='dense' {...params} label="پایه"    
+                                                renderInput={(params) => <TextField  variant = 'filled' margin ='dense' style={{fontFamily: 'Vazir'}} InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                                InputProps={{
+                                                    style:{fontFamily: 'Vazir'},
+                                                }}  {...params} label="پایه"    
                                                 />}
                                             />                                        
                                     </Grid>
@@ -261,6 +297,10 @@ export default function Question(props) {
                                                 onChange = {(e , newValue)=>{                                                    
                                                     setLesson(newValue.code);
                                                 }}
+                                                InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                                InputProps={{
+                                                    style:{fontFamily: 'Vazir'},
+                                                }}
                                                 renderInput={(params) => <TextField variant = 'filled' margin='dense' {...params} label="درس"    
                                                 />}
                                             />                                                                            
@@ -268,7 +308,13 @@ export default function Question(props) {
                                     <Grid item xs={4}>                                        
                                             <TextField className = {classes.dropdowns} onChange={(e) => {
                                                 setSession(e.target.value);
-                                            }} variant = 'filled' margin ='dense' label="فصل"/>                                        
+                                            }} variant = 'filled' margin ='dense' label="فصل" 
+                                            InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                            InputProps={{
+                                                style:{fontFamily: 'Vazir'},
+                                            }}
+                                            style={{fontFamily: 'Vazir'}} />    
+                                                                                
                                     </Grid>   
                                 </Grid>                             
                             </Paper>
@@ -285,6 +331,10 @@ export default function Question(props) {
                                                     console.log(newValue);                                                                                                        
                                                     setQuestionType(newValue.code);
                                                 }}
+                                                InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                                InputProps={{
+                                                    style:{fontFamily: 'Vazir'},
+                                                }}
                                                 renderInput={(params) => <TextField margin='dense' variant="filled" {...params} label="نوع سوال" />}
                                             />                                                                            
                                     </Grid>
@@ -299,6 +349,10 @@ export default function Question(props) {
                                                     defaultValue={1}
                                                     getAriaValueText={valuetext}
                                                     aria-labelledby="discrete-slider"
+                                                    InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                                    InputProps={{
+                                                        style:{fontFamily: 'Vazir'},
+                                                    }}
                                                     // valueLabelDisplay="auto"     
                                                     onChange ={(e)=>{
                                                         if(e.target.value==1)
@@ -340,6 +394,10 @@ export default function Question(props) {
                                                 fullWidth = 'true'
                                                 className = {classes.BigForm}
                                                 onChange = {(e)=>{setAnswer(e.target.value)}}
+                                                InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                                InputProps={{
+                                                    style:{fontFamily: 'Vazir'},
+                                                }}
                                                 // defaultValue="Default Value"
                                                 variant="outlined"
                                                 />   
@@ -437,6 +495,10 @@ export default function Question(props) {
                                             className ={classes.checkbox} color='#EE6C4D' />}
                                         label="سوالم برای بقیه کاربران در دسترس باشد."
                                         style = {{fontFamily: 'Vazir' , color : 'black'}}
+                                        LabelProps={{style:{fontFamily: 'Vazir'}}}
+                                        InputProps={{
+                                            style:{fontFamily: 'Vazir'},
+                                        }}
                                     />                                    
                                 </Grid>
                             </Grid>
