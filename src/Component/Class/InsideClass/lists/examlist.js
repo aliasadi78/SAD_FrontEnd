@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
     ElanPaper :{
     marginTop : theme.spacing(2) , 
-    
+    backgroundColor : '#e6e6e6' , 
     paddingTop : theme.spacing(1) ,
     paddingBottom : theme.spacing(1)
     },        
@@ -103,7 +103,11 @@ export default function Examslist (props){
                               <CircularProgress className = {classes.progressCircle} variant="static" value={100} />
                               :
                               examList.map( m => 
-                                <ExamListItem name = {m.name} elevation = {elevation}                              
+                                <ExamListItem 
+                                  name = {m.name} 
+                                  elevation = {elevation}                              
+                                  start = {m.startDate}
+                                  end = {m.endDate}
                                 />
                               )
                             }                                                        

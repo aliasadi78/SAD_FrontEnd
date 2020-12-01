@@ -274,7 +274,7 @@ export default function Studentlist(props) {
     <div className={classes.root}>       
     <Material_RTL>
       <M_RTL>
-        <EnhancedTableToolbar selected = {selected} numSelected={selected.length} />
+        {/* <EnhancedTableToolbar selected = {selected} numSelected={selected.length} /> */}
         <TableContainer>
           <Table
             className={classes.table}

@@ -21,7 +21,7 @@ class App extends Component {
                 <Route path="/" exact component={SignIn}/>
                 <Route path="/signIn" exact component={SignIn}/>
                 <Route path="/signUp" component={SignUp}/>
-                <Route path="/members/class/:classId" component = {MembersList} />    
+                <Route path="/members/:classId" component = {MembersList} />    
                 <Route path="/class/:classId" component = {InsideClass} />                
                 <Route path="/profile/edit" component = {Dashboard} />                
                 <Route path="/ClassesPage" component = {ClassesPage} />

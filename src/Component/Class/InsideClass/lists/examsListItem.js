@@ -51,7 +51,7 @@ export default function ExamListItem(props) {
                 </Button>
             </Grid>
             <Grid item xs = {4} className={classes.grid}>
-                9/9/99
+                از {props.start} تا {props.end}
             </Grid>
             <Grid item xs = {4} className={classes.grid}>
                 <h6 dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir', textAlign : 'right' , marginBottom : 0 }}>                                          

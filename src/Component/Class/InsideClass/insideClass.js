@@ -28,8 +28,7 @@ import DialogEditClass from './DialogEditClass';
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',        
-      backgroundColor : '#f6f6f6'
+      display: 'flex',              
     },
     toolbar: {
       paddingRight: 7, // keep right padding when drawer closed            
@@ -57,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     },    
     drawerPaper: {
       // position: 'relative',
-      whiteSpace: 'nowrap',
+      whiteSpace: 'nowrap',      
       width: drawerWidth,
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
@@ -107,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
       paddingBottom: theme.spacing(4),    
       width : 'inherit' ,
       height : 'inherit'  , 
-      backgroundColor : '#f6f6f6'
+      // backgroundColor : '#f6f6f6'
       // width : '100%' ,                     
     },
     paperList :{        
@@ -118,7 +117,9 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2),
       display: 'flex',
       overflow: 'auto',
-      flexDirection: 'column',            
+      flexDirection: 'column',   
+      backgroundColor : '#1CA0A0' , 
+      color : 'white'         
     },
     fixedHeight: {
       height: 240,
@@ -239,12 +240,12 @@ export default function InsideClass(props) {
               <hr />              
             <Grid container spacing={3} className={classes.classContent}>
               <Grid item xs={12} sm={12}  lg={12} className = {classes.grid}>
-                <Paper elevation = {elevation} className={classes.paper} >
+                <Paper elevation = {elevation} className={classes.paper}>
                 <Grid
                   container                  
                   spacing = {2}>                           
                   <Grid item xs={6}>
-                    <Typography dir="rtl" align="center"  variant="body1" paragraph gutterBottom  className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80', textAlign : 'right'}}>                      
+                    <Typography dir="rtl" align="center"  variant="body1" paragraph gutterBottom  className={classes.title} style={{fontFamily: 'Vazir' , color : 'white', textAlign : 'right'}}>                      
                       {description}
                     </Typography>
                   </Grid>
@@ -253,12 +254,12 @@ export default function InsideClass(props) {
                     justify="center"
                     alignItems="center">   
                     <Grid item>
-                      <Typography dir="rtl" component="h1" variant="h2" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80', textAlign : 'right'}}>                          
+                      <Typography dir="rtl" component="h1" variant="h2" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#white', textAlign : 'right'}}>                          
                           {className} 
                       </Typography>                                  
                     </Grid>
                     <Grid item>
-                    <Typography dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80', textAlign : 'right'}}>                          
+                    <Typography dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#white', textAlign : 'right'}}>                          
                         {adminName}
                     </Typography>                                      
                     </Grid>
