@@ -33,17 +33,17 @@ export default function Questions(props) {
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12}  lg={6} className = {classes.grid}>
-          <h3 style={{fontFamily: 'Vazir', color : '#3D5A80'}} >سوال هایی که تا کنون طرح کرده اید</h3>
+          <h3 style={{fontFamily: 'Vazir',backgroundColor: '#1CA0A0',color: 'white',height: '40px',borderRadius: '5px',padding: '2%'}} >سوال هایی که تا کنون طرح کرده اید</h3>
                           <hr/>
               {/* { questions } */}
               <GetUserQuestions />
           </Grid>      
           <Grid item xs={12}  lg={6} className = {classes.grid}>          
-          <h3 style={{fontFamily: 'Vazir' , color : '#3D5A80'}} >طرح سوال جدید</h3>
+          <h3 style={{fontFamily: 'Vazir',backgroundColor: '#1CA0A0',color: 'white',height: '40px',borderRadius: '5px',padding: '2%'}} >طرح سوال جدید</h3>
                           <hr/>              
             <Question 
                 submitButton="طرح"
-                backColor = '#1CA0A0'
+                backColor = '#f2f2f2'
             />
           </Grid>                      
         </Grid>
@@ -95,7 +95,7 @@ class GetUserQuestions extends Component{
               // questionsArray.map((m) =>           
                 this.state.questions.map((m , index) =>
                 <UserDesignedQuestion  
-                  backColor = '#98C1D9'   
+                  backColor = '#f2f2f2'   
                   index = {index}
                   buttonClick={loadQuestionToEditPannel} 
                   questionId = {m._id}

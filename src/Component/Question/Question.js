@@ -436,7 +436,7 @@ export default function Question(props) {
                                         control={<Checkbox checked={publicCheck} onChange={handleChange}
                                             className ={classes.checkbox} color='#EE6C4D' />}
                                         label="سوالم برای بقیه کاربران در دسترس باشد."
-                                        style = {{fontFamily: 'Vazir' , color : 'white'}}
+                                        style = {{fontFamily: 'Vazir' , color : 'black'}}
                                     />                                    
                                 </Grid>
                             </Grid>
