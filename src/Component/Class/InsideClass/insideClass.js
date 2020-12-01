@@ -8,7 +8,6 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
 import InfoIcon from '@material-ui/icons/Info';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import { mainListItems , secondaryListItems} from './insideClassDrawerList';
@@ -16,21 +15,20 @@ import List from '@material-ui/core/List';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import Examslist from './examlist' ;
+import Examslist from './lists/examlist' ;
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import axios from 'axios' ;
 import serverURL from '../../../utils/serverURL' ;
 import tokenConfig from '../../../utils/tokenConfig' ;
-import Image from './back.jpg' ;
-import Notelist from './notelist';
+import Notelist from './lists/notelist';
 
 import DialogEditClass from './DialogEditClass';
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',           
+      display: 'flex',        
     },
     toolbar: {
       paddingRight: 7, // keep right padding when drawer closed            
@@ -105,7 +103,10 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
       paddingTop: '18px',      
-      paddingBottom: theme.spacing(4),      
+      paddingBottom: theme.spacing(4),    
+      width : 'inherit' ,
+      height : 'inherit'  , 
+      backgroundColor : '#f6f6f6'
       // width : '100%' ,                     
     },
     paperList :{        
@@ -120,6 +121,9 @@ const useStyles = makeStyles((theme) => ({
     },
     fixedHeight: {
       height: 240,
+    },
+    breadcrumbs :{
+      padding : theme.spacing(1)
     },
     button : {
       marginRight : theme.spacing(2) ,       
@@ -136,7 +140,6 @@ export default function InsideClass(props) {
     const elevation = 2 ;     
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
-
     const [className , setClassName] = React.useState("نام کلاس");
     const [description , setDescription] = React.useState("توضیحات");
     const [adminName , setAdminName] = React.useState("نام معلم");   
@@ -169,7 +172,7 @@ export default function InsideClass(props) {
     })
 
     return (
-      <div className={classes.root}>        
+      <div className={classes.root}>         
         <CssBaseline />
 
         <Drawer
@@ -209,12 +212,14 @@ export default function InsideClass(props) {
         </Drawer>
         <main className={clsx(classes.content, {
           [classes.contentShift]: open,
-        })} 
+        })}  
         >                            
-          <Container maxWidth="lg" className={classes.container}>  
-            <Grid container xs = {12} dir = "rtl">            
-              {/* <Paper elevation={2} > */}              
-                <Breadcrumbs separator="|" aria-label="breadcrumb">
+          <Container maxWidth="lg" className={classes.container}        
+        // style={{backgroundImage : 'url(' + require ('./back.jpg') + ')' , backgroundSize : 'cover'}}      
+          >  
+            {/* <Grid container xs = {12} dir = "rtl">             */}
+              {/* <Paper elevation={2} className={classes.breadcrumbs}>               */}
+                <Breadcrumbs separator="|" aria-label="breadcrumb" dir="rtl" >
                   <Link color="inherit" href="/" >
                   <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
                       خانه
@@ -230,16 +235,13 @@ export default function InsideClass(props) {
                     {className}
                   </Typography>
                 </Breadcrumbs>              
-              <hr />
-              {/* </Paper> */}              
-            </Grid>            
+              <hr />              
             <Grid container spacing={3} className={classes.classContent}>
               <Grid item xs={12} sm={12}  lg={12} className = {classes.grid}>
                 <Paper elevation = {elevation} className={classes.paper} >
                 <Grid
                   container                  
-                  spacing = {2}>         
-                  {/* <Grid item xs={4} ></Grid>                     */}
+                  spacing = {2}>                           
                   <Grid item xs={6}>
                     <Typography dir="rtl" align="center"  variant="body1" paragraph gutterBottom  className={classes.title} style={{fontFamily: 'Vazir' , color : '#3D5A80', textAlign : 'right'}}>                      
                       {description}
@@ -261,11 +263,13 @@ export default function InsideClass(props) {
                     </Grid>
                     {isAdmin==true &&
                       <Grid item>                    
-                        <Button className = {classes.groupbutton}>
+                        {/* <Button className = {classes.groupbutton}> */}
                           <h5 style={{fontFamily: 'Vazir'}}>
-                            ویرایش
+                            <DialogEditClass 
+                              classId = {classId}  
+                            />
                           </h5>
-                        </Button>                       
+                        {/* </Button>                        */}
                       </Grid>
                     }
                   </Grid>                         

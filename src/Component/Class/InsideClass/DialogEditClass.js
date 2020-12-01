@@ -67,26 +67,15 @@ class DialogEditClass extends Component {
     
   };
   const handleSubmit = () =>{
-    setPending(true)
-    console.log(this.props);
-    console.log(this.props.classId);
-    console.log(this.state);
+    setPending(true)    
     axios.put(serverURL() + "class/" + this.props.classId , 
     this.state,tokenConfig())
-    .then(res => {
-      console.log(res);
-      console.log(res.data.editedClass.classId);
-      console.log(tokenConfig);
-      axios.get(serverURL() + "class/" + res.data.editedClass.classId , 
-      tokenConfig())
-      .then(res => {
-      console.log(res);
-      this.setState({success: true})
-      setPending(false)
-      })
-    .catch(e =>{
-      console.log("ridi");
-    });
+    .then(res => {   
+        setPending(false);
+        setOpen(false);   
+        this.setState({success: true})  
+        const url = "/class/" + res.data.editedClass.classId ;
+        window.location.href = url ;    
     })
     .catch(e =>{
       console.log("error");
@@ -145,9 +134,7 @@ class DialogEditClass extends Component {
           />
           
           </ValidatorForm >
-        <div style={{color: 'black',textAlign: 'center',width: '25%',position: 'relative',top: '70%',right: '37%',padding: '2%',}}>
-          {/* <span style={{position: 'absolute'}}>کد کلاس</span> */}
-          {/* {this.props.classId} */}
+        <div style={{color: 'black',textAlign: 'center',width: '25%',position: 'relative',top: '70%',right: '37%',padding: '2%',}}>          
           <TextField
             // autoFocus
             margin="dense"
@@ -227,7 +214,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     color: 'black',
-    backgroundColor : '#f5f5f5',
+    // backgroundColor : '#f5f5f5',
     padding: '20px',
     borderRadius: '0px',
     opacity: '95%'

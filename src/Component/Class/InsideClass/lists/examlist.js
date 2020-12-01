@@ -4,8 +4,8 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios' ;
-import serverURL from '../../../utils/serverURL' ;
-import tokenConfig from '../../../utils/tokenConfig' ;
+import serverURL from '../../../../utils/serverURL' ;
+import tokenConfig from  '../../../../utils/tokenConfig' ;
 import AddIcon from '@material-ui/icons/Add';
 import IsoIcon from '@material-ui/icons/Iso';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
     ElanPaper :{
     marginTop : theme.spacing(2) , 
     
-    paddingTop : theme.spacing(1)
+    paddingTop : theme.spacing(1) ,
+    paddingBottom : theme.spacing(1)
     },        
     progressCircle :{
         margin : theme.spacing(2) ,
@@ -86,14 +87,16 @@ export default function Examslist (props){
                   >     
                                                                         
                     <Paper elevation = {elevation}  className = {classes.ElanPaper}>                      
-                        <Grid item style={{marginBottom : '15px'}}>                            
-                            <Button className={classes.groupbutton} variant="contained" color="primary"  >
-                              <h5 style={{fontFamily: 'Vazir'}}>
-                                <AddIcon />
-                                آزمون جدید 
-                              </h5>
-                            </Button>                            
-                        </Grid>                           
+                        { props.isAdmin == true &&
+                          <Grid>                            
+                              <Button className={classes.groupbutton} variant="contained" color="primary"  >
+                                <h5 style={{fontFamily: 'Vazir'}}>
+                                  <AddIcon />
+                                  آزمون جدید 
+                                </h5>
+                              </Button>                            
+                          </Grid>                           
+                        }
                           <Grid item xs={12}>
                             {
                               examsListLoad == true ?

@@ -7,8 +7,7 @@ import NewClassPage from './Component/Class/NewClassPage';
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import Dashboard from './Component/Dashboard/Dashboard';
 import InsideClass from './Component/Class/InsideClass/insideClass' ;
-import studentListItem from './Component/Class/InsideClass/postListItem' ;
-import MembersList from './Component/Class/InsideClass/membersList';
+import MembersList from './Component/Class/InsideClass/lists/membersList';
 
 class App extends Component {
 
@@ -22,8 +21,8 @@ class App extends Component {
                 <Route path="/" exact component={SignIn}/>
                 <Route path="/signIn" exact component={SignIn}/>
                 <Route path="/signUp" component={SignUp}/>
-                <Route path="/class/members/:classId" component = {MembersList} />    
-                {/* <Route path="/class/:classId" component = {InsideClass} />                 */}
+                <Route path="/members/class/:classId" component = {MembersList} />    
+                <Route path="/class/:classId" component = {InsideClass} />                
                 <Route path="/profile/edit" component = {Dashboard} />                
                 <Route path="/ClassesPage" component = {ClassesPage} />
                 <Route path="/NewClassPage" component = {NewClassPage} />                                           

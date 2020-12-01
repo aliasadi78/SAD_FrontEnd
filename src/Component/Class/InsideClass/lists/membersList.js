@@ -9,7 +9,7 @@ import { LightenDarkenColor } from 'lighten-darken-color';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { mainListItems } from './insideClassDrawerList';
+import { mainListItems } from '../insideClassDrawerList';
 import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
 import Studentlist from './studentlist' ;
@@ -17,11 +17,11 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import axios from 'axios' ;
 import { DataGrid , RowsProp, ColDef } from '@material-ui/data-grid';
-import serverURL from '../../../utils/serverURL' ;
-import tokenConfig from '../../../utils/tokenConfig' ;
+import serverURL from '../../../../utils/serverURL' ;
+import tokenConfig from  '../../../../utils/tokenConfig' ;
 
-import Material_RTL from "../../Material_RTL";
-import M_RTL from "../../M_RTL";
+import Material_RTL from "../../../Material_RTL";
+import M_RTL from "../../../M_RTL";
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({

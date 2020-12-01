@@ -38,6 +38,7 @@ class DialogEditClass extends Component {
   
   const handleClickOpen = () => {
     setOpen(true);
+    this.setState({success: false})
   };
 
   const handleClose = () => {
@@ -119,9 +120,7 @@ class DialogEditClass extends Component {
                           </Button>         
                         <Button onClick={handleClose} color="primary" style={{backgroundColor: '#98C1D9',color: 'white',fontFamily: 'Vazir',width: '25%'}}>
                           انصراف
-                        </Button></Grid>
-          {/* <Button style={{fontFamily: 'Vazir'}} onClick={handleClose}>انصراف</Button>
-          <Button style={{fontFamily: 'Vazir'}} onClick={handleSubmit}>ویرایش</Button> */}
+                        </Button></Grid>          
         </DialogActions>
         </div>
         </M_RTL>
@@ -156,18 +155,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: LightenDarkenColor('#EE6C4D', -40) ,        
       color :'white'
     },
-  },
-  paper: {
-    // marginTop: theme.spacing(1),
-    // display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    color: 'black',
-    backgroundColor : '#f5f5f5',
-    padding: '20px',
-    borderRadius: '0px',
-    opacity: '95%'
-},
+  },  
 }));
 export default (props) => {
   const classes = useStyles();

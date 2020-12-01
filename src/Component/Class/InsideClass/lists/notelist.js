@@ -4,13 +4,13 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios' ;
-import serverURL from '../../../utils/serverURL' ;
-import tokenConfig from '../../../utils/tokenConfig' ;
+import serverURL from '../../../../utils/serverURL' ;
+import tokenConfig from  '../../../../utils/tokenConfig' ;
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import PostListItem from './postListItem';
-import DialogNote from './DialogNote';
+import PostListItem from './noteListItem';
+import DialogNote from './../DialogNote';
 
 const useStyles = makeStyles((theme) => ({
     grid:{
@@ -78,15 +78,14 @@ export default function Notelist (props){
         >     
                                                                 
             <Paper elevation = {elevation}  className = {classes.ElanPaper} style={{width : 'inherit'}}>                      
-                <Grid item>                            
-                    {/* <Button variant="contained" color="primary" className = {classes.addButton} > */}
-                    <h5 style={{fontFamily: 'Vazir'}}>
-                        
-                        <DialogNote classId={props.classId}/>
-                    </h5>   
-                    {/* </Button>                             */}
-                </Grid>     
-
+                {props.isAdmin == true &&    
+                    <Grid item>                                                
+                        <h5 style={{fontFamily: 'Vazir'}}>
+                            
+                            <DialogNote classId={props.classId}/>
+                        </h5>                       
+                    </Grid>     
+                }
                 <Grid item>                            
                     <div>
                     {

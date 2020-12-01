@@ -1,10 +1,10 @@
 import { makeStyles } from "@material-ui/core";
 import React from 'react';
 import Toast from 'react-bootstrap/Toast';
-import Material_RTL from "../../Material_RTL";
+import Material_RTL from "../../../Material_RTL";
 import axios from 'axios' ;
-import serverURL from '../../../utils/serverURL' ;
-import tokenConfig from '../../../utils/tokenConfig' ;
+import serverURL from '../../../../utils/serverURL' ;
+import tokenConfig from  '../../../../utils/tokenConfig' ;
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -13,8 +13,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import M_RTL from '../../M_RTL';
-import AlertDialog from "../../Dialog";
+import M_RTL from '../../../M_RTL';
+import AlertDialog from "../../../Dialog";
 import { ValidatorForm } from 'react-material-ui-form-validator';
 
 const useStyles = makeStyles((theme) => ({    
@@ -90,7 +90,7 @@ export default function PostListItem (props){
             <Dialog fullWidth style={{fontFamily: 'Vazir'}} open={showEditNote} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <Material_RTL><M_RTL>
                 <DialogTitle style={{fontFamily: 'Vazir' , color : 'white' , backgroundColor : '#3D5A80',textAlign: 'center'}}>
-                <span style={{fontFamily: 'Vazir' ,}}>ویرایش اعا</span>
+                <span style={{fontFamily: 'Vazir' ,}}>ویرایش اعلان </span>
                 </DialogTitle>
                     {/* <DialogTitle  id="form-dialog-title"><span style={{direction: 'rtl',fontFamily: 'Vazir',position: 'absolute',right: '36%',top: '10%'}}>ویرایش کلاس</span></DialogTitle> */}
                     <div className={classes.paper}> 
