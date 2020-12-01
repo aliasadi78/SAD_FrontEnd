@@ -144,12 +144,15 @@ function EditProfileValidationForms_Personal (props) {
 
     return (
       <Grid container>
+        <div style={{backgroundColor: '#1CA0A0',position: 'absolute',width: '46.55%',right: '26.75%',color: 'white',margin: '-1.5% 0% 0% 0%',padding: '1%',borderRadius: '5px',height: '40px'}}>ویرایش اطلاعات کاربری</div>
           <Grid item xs={3}></Grid>
           <Grid item xs={6}>
-            <Paper elevation={3} className={classes.editprofilePaper}>
+            <Paper elevation={3} className={classes.editprofilePaper} style={{marginTop: '7%',backgroundColor: '#f2f2f2'}}>
+            
       <div>        
         <Material_RTL>                                      
-          <RTL>                
+          <RTL>     
+                     
             <div class="row" className={classes.paper}  >          
               <Grid container>
                 <Grid item xs={4}></Grid>
