@@ -37,7 +37,7 @@ export default function JoinClass(props) {
   
     axios.post(serverURL() + "class/join", ajson,  tokenConfig())
         .then(res => {
-          window.location.href = "/class" ;
+          window.location.href = "/user/classes" ;
         })
         .catch(e =>{  
               setNotfound(true);

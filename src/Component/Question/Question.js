@@ -354,7 +354,7 @@ export default function Question(props) {
                                         }}/>
                                     <label htmlFor="icon-button">
                                         <IconButton aria-label="upload picture" component="span">
-                                        <PhotoLibraryIcon style={{color:'white'}} />
+                                        <PhotoLibraryIcon style={{color:'#EE6C4D'}} />
                                         </IconButton>
                                     </label>    
                                 </Grid>
@@ -367,7 +367,7 @@ export default function Question(props) {
                                     setSoalImageBase64(null);
                                     setIsSoalImage(false);
                                 }}>
-                                    <CloseIcon style={{color : 'white'}} />
+                                    <CloseIcon style={{color : '#EE6C4D'}} />
                                 </IconButton>
                                 </Grid>
                                 }                             
@@ -586,7 +586,7 @@ export default function Question(props) {
                                         }}/>
                                     <label htmlFor="javab">
                                         <IconButton aria-label="upload picture" component="span">
-                                        <PhotoLibraryIcon style={{color:'white'}} />
+                                        <PhotoLibraryIcon style={{color:'#EE6C4D'}} />
                                         </IconButton>
                                     </label>    
                                 </Grid>
@@ -599,7 +599,7 @@ export default function Question(props) {
                                         setJavabImageBase64(null);
                                         setIsJavabImage(false);
                                     }}>
-                                        <CloseIcon style={{color:'white'}} />
+                                        <CloseIcon style={{color:'#EE6C4D'}} />
                                     </IconButton>
                                     </Grid>
                                 }      

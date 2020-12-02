@@ -150,7 +150,7 @@ export default function InsideClass(props) {
     const [description , setDescription] = React.useState("توضیحات");
     const [adminName , setAdminName] = React.useState("نام معلم");   
     const [isAdmin , setIsAdmin] = React.useState(false);         
-    
+        
     const classId = props.match.params.classId ;    
 
     const handleDrawer = () => {

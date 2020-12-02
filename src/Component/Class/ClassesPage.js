@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import serverURL from '../../utils/serverURL';
 import tokenConfig from '../../utils/tokenConfig' ;
+import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Material_RTL from "../Material_RTL";
 import axios from 'axios' ;
@@ -8,6 +10,7 @@ import M_RTL from "../M_RTL";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from 'clsx';
 import ClassListItem from './ClassesListItem';
+import SpeakerNotesOffIcon from '@material-ui/icons/SpeakerNotesOff';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
@@ -17,12 +20,14 @@ class ClassesPage extends Component{
       super(props);    
       this.state = {
         userClasses : [] ,
+        dataFound : false
       };            
 
       axios.get(serverURL()+"user/classes" , tokenConfig())
       .then(res => {        
         this.setState({
-          userClasses : res.data.classes
+          userClasses : res.data.classes , 
+          dataFound : true
         });
       })
       .catch(e =>{
@@ -69,6 +74,18 @@ class ClassesPage extends Component{
                                   classId = {item.classId} />
                                 )
                               }
+                              {
+                                this.state.userClasses.length == 0 && this.state.dataFound == true &&
+                                <div>                                  
+                                  <Typography variant="h4" gutterBottom style={{fontFamily: 'Vazir' , color : '#8c8c8c' , marginTop : '120px'}}>
+                                    هنوز در کلاسی عضو نشده اید . 
+                                  </Typography>
+                                </div>
+                              }
+                              {
+                                  this.state.dataFound == false &&
+                                  <CircularProgress className = {classes.progressCircle} variant="static" value={100} />
+                              }
                             </div>
                           {/* </Grid> */}
                         </div>
@@ -110,6 +127,10 @@ const useStyles = makeStyles((theme) => ({
   },    
   classCards :{
     justifyContent : 'flex-end' ,
+  },
+  progressCircle :{
+    margin : theme.spacing(2) ,
+    color : '#1CA0A0'      
   },
     bullet: {
       display: 'inline-block',

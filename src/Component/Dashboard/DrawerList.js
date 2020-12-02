@@ -47,10 +47,10 @@ export default function DrawerList(props){
                     handleUserDrawerMenuClick();
                 }}>
                 <ListItemIcon>        
-                    <AccountBoxIcon style={{ color: "#3D5A80" }} />
+                    <AccountBoxIcon style={{ color: "#3D5A80" , marginLeft : '2px'}} />
                 </ListItemIcon>
                 <ListItemText>
-                <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
+                <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir', textalign : 'right' }}>            
                     حساب کاربری
                 </Typography>
                 </ListItemText>

@@ -82,6 +82,17 @@ class DialogEditClass extends Component {
       console.log(tokenConfig);
     });
   }
+
+  const handleDelete = () => {
+    axios.delete(serverURL() + "class/" + this.props.classId ,tokenConfig())
+    .then(res=>{
+      window.location.href = "/user/classes" ;
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  };
+
   return (
     <div>
         
@@ -167,13 +178,16 @@ class DialogEditClass extends Component {
         <DialogActions>
         <Grid style={{textAlign: 'right',width: '100%'}} >  
         <LoadingButton onClick={handleSubmit}  variant="contained" color="#EE6C4D" pending={pending} style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir',margin: '0% 22% 0% 5%',width: '25%'}}>
-                          ویرایش کلاس
-                          </LoadingButton>         
-                        <Button onClick={handleClose} color="primary" style={{backgroundColor: '#98C1D9',color: 'white',fontFamily: 'Vazir',width: '25%'}}>
-                          انصراف
-                        </Button></Grid>
-          {/* <Button style={{fontFamily: 'Vazir'}} onClick={handleClose}>انصراف</Button>
-          <Button style={{fontFamily: 'Vazir'}} onClick={handleSubmit}>ویرایش</Button> */}
+          ویرایش کلاس
+          </LoadingButton>         
+          <LoadingButton onClick={handleDelete}  variant="contained" pending={pending} style={{backgroundColor: '#E63946' ,color: 'white',fontFamily: 'Vazir',width: '25%'}}>
+          پاک کردن کلاس
+          </LoadingButton>         
+        {/* <Button onClick={handleClose} color="primary" style={{backgroundColor: '#98C1D9',color: 'white',fontFamily: 'Vazir',width: '25%'}}>
+          انصراف
+        </Button> */}
+
+                </Grid>        
         </DialogActions>
         </div>
         </div>}

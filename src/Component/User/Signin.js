@@ -10,6 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import React, { Component } from "react";
 import Material_RTL from "../Material_RTL";
 import axios from 'axios';
+import { LightenDarkenColor } from 'lighten-darken-color'; 
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { AccountCircle, Visibility, VisibilityOff, login } from "@material-ui/icons";
@@ -58,7 +59,7 @@ class SignIn extends Component {
                     console.log("first");
 
                     //redirect to edit profile page                                        
-                    window.location.href = "/Dashboard" ;
+                    window.location.href = "/user/classes" ;
                 }).catch(error => {
                     console.log(error);
                     alert(" خطا! نام کاربری یا رمز عبور شما اشتباه می باشد.لطفا تمام موارد * دار را پر کنید.");
@@ -215,6 +216,10 @@ const useStyles = makeStyles((theme) => ({
     },
     topButton :{
         backgroundColor : '#EE6C4D' , 
+        "&:hover": {
+            backgroundColor: LightenDarkenColor('#EE6C4D', -40) ,        
+            color :'white'
+          },
     },
     submit: {
         margin: theme.spacing(3, 0, 2),

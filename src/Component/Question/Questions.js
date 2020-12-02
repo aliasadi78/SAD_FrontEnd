@@ -8,6 +8,8 @@ import axios from 'axios' ;
 import tokenConfig from '../../utils/tokenConfig';
 import serverURL from '../../utils/serverURL';
 import Question from './Question' ;
+import Paper from '@material-ui/core/Paper';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -21,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
   grid :{
     width : '70%' ,
   },
+  editprofilePaper :{
+    marginBottom : theme.spacing(2) , 
+  },
 }));
 
 class Questions extends Component {
@@ -28,38 +33,6 @@ class Questions extends Component {
   constructor (props){
     super(props);
 
-  return (
-    <div className={classes.root}>
-      <Container maxWidth="lg" className={classes.container}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={12}  lg={6} className = {classes.grid}>
-          <h3 style={{fontFamily: 'Vazir',backgroundColor: '#1CA0A0',color: 'white',height: '40px',borderRadius: '5px',padding: '2%'}} >سوال هایی که تا کنون طرح کرده اید</h3>
-                          <hr/>
-              {/* { questions } */}
-              <GetUserQuestions />
-          </Grid>      
-          <Grid item xs={12}  lg={6} className = {classes.grid}>          
-          <h3 style={{fontFamily: 'Vazir',backgroundColor: '#1CA0A0',color: 'white',height: '40px',borderRadius: '5px',padding: '2%'}} >طرح سوال جدید</h3>
-                          <hr/>              
-            <Question 
-                submitButton="طرح"
-                backColor = '#f2f2f2'
-            />
-          </Grid>                      
-        </Grid>
-      </Container>
-    </div>
-  );
-}
-
-function loadQuestionToEditPannel (){
-    
-}
-
-class GetUserQuestions extends Component{
-
-    constructor(props){
-      super(props);
     this.state = {
       bool : false , 
       editQuestionIndex : -1
@@ -84,33 +57,10 @@ class GetUserQuestions extends Component{
         console.log("you have no question");
       }); 
 
-      
-    }     
-    
-    render (){      
-// <<<<<<< feature/InsideClass
-//       if(this.state.bool == true){
-//         return (        
-//             <div>
-//             {        
-//               // questionsArray.map((m) =>           
-//                 this.state.questions.map((m , index) =>
-//                 <UserDesignedQuestion  
-//                   backColor = '#f2f2f2'   
-//                   index = {index}
-//                   buttonClick={loadQuestionToEditPannel} 
-//                   questionId = {m._id}
-//                   question = {m.question}
-//                   />)
-//             }
-//             </div>            
-//         );        
-//       } else {
-//         return (
-//           <div></div>
-//         )
-//       }
-// =======
+  }
+  
+
+  render(){
     const classes = this.props.classes;        
 
     let editQuestionIndex = -1 ;
@@ -122,23 +72,28 @@ class GetUserQuestions extends Component{
         return{
           editQuestionIndex : i 
         }})      
-// >>>>>>> develop
     }
 
     return (
       <div className={classes.root}>
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={12}  lg={6} className = {classes.grid}>
-            <h3 style={{fontFamily: 'Vazir', color : '#3D5A80'}} >سوال هایی که تا کنون طرح کرده اید</h3>
-                            <hr/>
+            <Grid item xs={12} sm={12}  lg={6} className = {classes.grid} spacing= {2}>
+            {/* <h3 style={{fontFamily: 'Vazir', color : '#3D5A80'}} > */}
+            
+            <Grid item xs={12}>
+              <Paper elevation={3} className={classes.editprofilePaper}style={{backgroundColor: '#1CA0A0',color: 'white',padding: '2%',borderRadius: '5px',height: '40px'}}>
+              سوال هایی که تا کنون طرح کرده اید
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
                 {
                   this.state.bool == true ?
                     <div>
                     {                              
                         this.state.questions.map((m , index) =>
                         <UserDesignedQuestion  
-                          backColor = '#98C1D9'   
+                          backColor = '#f2f2f2'   
                           index = {index}
                           questionId = {m._id}
                           type={m.type}
@@ -153,26 +108,34 @@ class GetUserQuestions extends Component{
                   <div> 
                   </div>              
                 }
+              </Grid>
             </Grid>      
             <Grid item xs={12}  lg={6} className = {classes.grid}>          
-            <h3 style={{fontFamily: 'Vazir' , color : '#3D5A80'}} >طرح سوال جدید</h3>
-                            <hr/>     
-                            {this.state.editQuestionIndex == -1 ?                                     
-                              <Question                                          
-                                  submitButton="طرح"
-                                  backColor = '#1CA0A0'
-                                  questionIndex={editQuestionIndex}
-                              />                                 
-                              :
-                              <p>
-                                edit
-                              </p>
-                            }
-                            {/* <Question                                 
-                                submitButton="ویرایش"
-                                backColor = '#1CA0A0'    
-                                questionIndex={4}                            
-                            />                                                          */}
+            <Grid item xs={12}>
+              <Paper elevation={3} className={classes.editprofilePaper}style={{backgroundColor: '#1CA0A0',color: 'white',padding: '2%',borderRadius: '5px',height: '40px'}}>
+                طرح سوال جدید
+              </Paper>
+            </Grid>
+
+            <Grid item xs={12}>
+              {this.state.editQuestionIndex == -1 ?                                     
+                <Question                                          
+                    submitButton="طرح"
+                    backColor = '#f2f2f2'
+                    questionIndex={editQuestionIndex}
+                />                                 
+                :
+                <p>
+                  edit
+                </p>
+              }
+              {/* <Question                                 
+                  submitButton="ویرایش"
+                  backColor = '#1CA0A0'    
+                  questionIndex={4}                            
+              /> 
+                                                                       */}
+            </Grid>                             
             </Grid>                     
           </Grid>
         </Container>

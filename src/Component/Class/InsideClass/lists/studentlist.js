@@ -220,12 +220,27 @@ export default function Studentlist(props) {
   const [selected, setSelected] = React.useState([]);  
   const [members , setMembers] = React.useState([]);  
 
+  const [adminName , setAdminName] = React.useState(null);
+  const [userName , setUserName] = React.useState(null);
+  const [isAdmin , setIsAdmin] = React.useState(false);
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
+  //check if admin or not--------------------------------------------------------------------
+  axios.get(serverURL() + "class/" + props.classId , tokenConfig())
+  .then(res=>{ setAdminName(res.data.firstname + " " + res.data.lasstname)    })
+  .catch(err=>{console.log(err);});
 
+  axios.get(serverURL() + "user", tokenConfig())
+  .then(res=>{
+     setUserName(res.data.user.firstname + " " + res.data.user.lasstname);
+      if(userName == adminName)
+        setIsAdmin(true);
+    })
+  .catch(err=>{console.log(err);});
   // get members -----------------------------------------------------------------------------
   axios.get(serverURL() + "class/" + props.classId + "/members" , tokenConfig())
   .then(res=>{    
@@ -314,7 +329,7 @@ export default function Studentlist(props) {
                         />                        
                       </TableCell>
                       <TableCell align = "center">
-                        <Avatar alt="Remy Sharp" src={'data:image/jpeg;base64,${'+ row.avatar + '}' } />
+                        <Avatar alt="Remy Sharp" src={row.avatar} />
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
                         {row.firstname + " " + row.lastname}
@@ -322,9 +337,11 @@ export default function Studentlist(props) {
                       <TableCell align="left">{row.email}</TableCell>
                       <TableCell align="right">10</TableCell>
                       <TableCell align="right">
-                        <Button onClick={() => {removeMember(row.username , props.classId)}}>
-                          <RemoveCircleRoundedIcon style={{color : '#E63946'}} />
-                        </Button>  
+                        { isAdmin == true &&
+                          <Button onClick={() => {removeMember(row.username , props.classId)}}>
+                            <RemoveCircleRoundedIcon style={{color : '#E63946'}} />
+                          </Button>  
+                        }
                       </TableCell>                      
                     </StyledTableRow>
                   );

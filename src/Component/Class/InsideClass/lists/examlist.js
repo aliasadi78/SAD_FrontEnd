@@ -55,6 +55,7 @@ export default function Examslist (props){
     .then(res =>{      
       setExamList([...res.data.exams]); 
       setExamsListLoad(false);
+      console.log(examList);
       // console.ChevronLeftIcong(res);
     })
     .catch(err=> {
