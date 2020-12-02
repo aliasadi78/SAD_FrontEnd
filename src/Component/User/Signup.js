@@ -73,7 +73,7 @@ class SignUp extends Component {
                 
                 //redirect to editprofile page   
                 // history.push("/profile/edit");
-                window.location.href = "/profile/edit" ;
+                window.location.href = "/Dashboard" ;
                 setPending(false);
             }).catch(error => {
                 console.log(error);

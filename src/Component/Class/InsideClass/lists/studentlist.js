@@ -274,7 +274,7 @@ export default function Studentlist(props) {
     <div className={classes.root}>       
     <Material_RTL>
       <M_RTL>
-        <EnhancedTableToolbar selected = {selected} numSelected={selected.length} />
+        {/* <EnhancedTableToolbar selected = {selected} numSelected={selected.length} /> */}
         <TableContainer>
           <Table
             className={classes.table}
@@ -314,7 +314,7 @@ export default function Studentlist(props) {
                         />                        
                       </TableCell>
                       <TableCell align = "center">
-                        <Avatar alt="Remy Sharp" src={row.avatar} />
+                        <Avatar alt="Remy Sharp" src={'data:image/jpeg;base64,${'+ row.avatar + '}' } />
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
                         {row.firstname + " " + row.lastname}

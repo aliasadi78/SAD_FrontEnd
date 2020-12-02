@@ -180,9 +180,9 @@ class DialogEditClass extends Component {
         </M_RTL>
       </Material_RTL>
       </Dialog>
-          {this.state.success ? (
+          {/* {this.state.success ? (
             <AlertDialog text="اطلاعات با موفقیت تغییر کرد"/>
-          ) : null}
+          ) : null} */}
           {this.state.success ? (
             setOpen(false)
           ) : null}

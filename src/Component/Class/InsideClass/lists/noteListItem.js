@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
+import Paper from '@material-ui/core/Paper';
 import React from 'react';
-import Toast from 'react-bootstrap/Toast';
 import Material_RTL from "../../../Material_RTL";
 import axios from 'axios' ;
 import serverURL from '../../../../utils/serverURL' ;
@@ -14,13 +14,19 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import M_RTL from '../../../M_RTL';
+import IconButton from '@material-ui/core/IconButton';
 import AlertDialog from "../../../Dialog";
 import { ValidatorForm } from 'react-material-ui-form-validator';
+import CreateIcon from '@material-ui/icons/Create';
 
 const useStyles = makeStyles((theme) => ({    
     Toast:{
         margin : theme.spacing(3) ,
         width : 'inherit'
+    },
+    paper : {
+        paddingTop : theme.spacing(1) ,         
+        margin : theme.spacing(2) , 
     },
 }));
 
@@ -48,8 +54,8 @@ export default function PostListItem (props){
     const hazf = () => {
         axios.delete(serverURL() + "class/" + props.classId + "/notes/" + props.noteId , tokenConfig())
         .then(res =>{
-            console.log('done');
-            setSuccessState(2)
+            console.log('done');            
+            setShowEditNote(false);
         })
         .catch(err =>{
             console.log(err);
@@ -63,7 +69,7 @@ export default function PostListItem (props){
         } , tokenConfig())
         .then(res=>{
             console.log("done");
-            setSuccessState(1);
+            setShowEditNote(false);
         })
         .catch(err =>{
             console.log(err);
@@ -73,19 +79,39 @@ export default function PostListItem (props){
 
     return(
         <div>
-            <Toast className = {classes.Toast} closeButton = {false} show={show} autohide delay = {3000} onClick ={() => {
-                if(props.isAdmin==true)
-                    setShowEditNote(true);
-            }}>
-                <Toast.Header>                
-                    <small>2 روز پیش</small>
-                    <strong className="ml-auto">{props.title} </strong>                
-                </Toast.Header>
-                <Toast.Body>
-                    {props.content}
-                </Toast.Body>
 
-            </Toast>
+            <Paper elevation={props.elevation} className={classes.paper}>
+                    <Grid container spacing={1}
+                    direction="column"
+                    justify="center"
+                    alignItems="center"
+                    style={{paddingTop : '5px'}}
+                    >
+                        <Grid container xs = {12} className={classes.grid}>                            
+                            <Grid item xs={2} alignItems="left">
+                                {props.isAdmin == true &&
+                                <IconButton variant="outlined" size='small' className = {classes.button}
+                                    onClick={()=>{
+                                        setShowEditNote(true);
+                                    }}>          
+                                    <CreateIcon />                    
+                                </IconButton>
+                                }
+                            </Grid>
+                            <Grid item xs={8} ></Grid>
+                            <Grid item xs={2} >
+                                {props.title}
+                            </Grid>
+
+                        </Grid>
+                        <Grid item xs = {12} className={classes.grid}>
+                            {/* <hr /> */}
+                            <h6 dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir', textAlign : 'right' , marginBottom : 0 }}>                                                                      
+                            {props.content}
+                            </h6>                
+                        </Grid>            
+                    </Grid>
+                </Paper>  
 
             <Dialog fullWidth style={{fontFamily: 'Vazir'}} open={showEditNote} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <Material_RTL><M_RTL>
@@ -147,12 +173,6 @@ export default function PostListItem (props){
                     </M_RTL>
                 </Material_RTL>
             </Dialog>
-                    {successState == 1 ? 
-                    (<AlertDialog text = "اعلان ویرایش شد . " />)
-                    :
-                    successState == 2 &&
-                    <AlertDialog text="اعلان با موفقیت پاک شد ." />
-                    }
                     {successState != 0 && (setShowEditNote(false))}
         </div>        
     );

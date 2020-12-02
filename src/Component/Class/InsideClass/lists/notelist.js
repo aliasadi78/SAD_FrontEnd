@@ -30,7 +30,8 @@ const useStyles = makeStyles((theme) => ({
     ElanPaper :{
         marginTop : theme.spacing(2) ,         
         paddingTop : theme.spacing(1) ,
-        paddingBottom : theme.spacing(1)
+        paddingBottom : theme.spacing(1) , 
+        backgroundColor : '#e6e6e6'
     },    
 }))
 

@@ -8,10 +8,11 @@ import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import ClassIcon from '@material-ui/icons/Class';
 import Typography from '@material-ui/core/Typography';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import Link from '@material-ui/core/Link';
 
 export const mainListItems = (
-  <div>
-    <ListItem button onClick={() => redirectTo('editProfile')}>
+  <div>        
+          <ListItem button >
             <ListItemIcon>        
               <AccountBoxIcon style={{ color: "#3D5A80" ,  textAlign : 'right' }} />
             </ListItemIcon>
@@ -21,60 +22,34 @@ export const mainListItems = (
               </Typography>
             </ListItemText>
           </ListItem>
-          <ListItem button  onClick={() => redirectTo('questionBank')}>
-            <ListItemIcon>
-            <LibraryBooksIcon style={{ color: "#3D5A80" }} />
-            </ListItemIcon>
-            <ListItemText style={{ textAlign : 'right'}}>
-              <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' , textAlign : 'right' }}> 
-                بانک سوال
-              </Typography>
-            </ListItemText>
-          </ListItem>
-          <ListItem button  onClick={() => redirectTo('classesPage')}>
-            <ListItemIcon>
-            <ClassIcon style={{ color: "#3D5A80" }} />
-            </ListItemIcon>
-            <ListItemText  style={{ textAlign : 'right'}} >
-              <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}> 
-                کلاس ها 
-              </Typography>
-            </ListItemText>
-          </ListItem>         
+          <Link color="inherit" href="/questionBank" >
+            <ListItem button >
+              <ListItemIcon>
+              <LibraryBooksIcon style={{ color: "#3D5A80" }} />
+              </ListItemIcon>
+              <ListItemText style={{ textAlign : 'right'}}>
+                <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' , textAlign : 'right' }}> 
+                  بانک سوال
+                </Typography>
+              </ListItemText>
+            </ListItem>
+          </Link>
+          <Link color="inherit" href="/user/classes" >
+            <ListItem button  >
+              <ListItemIcon>
+              <ClassIcon style={{ color: "#3D5A80" }} />
+              </ListItemIcon>
+              <ListItemText  style={{ textAlign : 'right'}} >
+                <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}> 
+                  کلاس ها 
+                </Typography>
+              </ListItemText>
+            </ListItem>         
+          </Link>
   </div>
 );
 
 export const secondaryListItems = (
-  <div>    
-
-    <ListItem button  onClick={() => redirectTo('classesPage')}>
-      <ListItemIcon>
-      <PeopleAltIcon style={{ color: "#3D5A80" }} />            
-        </ListItemIcon>
-        <ListItemText  style={{ textAlign : 'right'}} >
-          <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}> 
-            اعضا
-          </Typography>
-        </ListItemText>              
-        
-    </ListItem> 
-
-    <ListItem button  onClick={() => redirectTo('classesPage')}>
-      <ListItemIcon>
-      <EditIcon style={{ color: "#3D5A80" }} />            
-        </ListItemIcon>
-        <ListItemText  style={{ textAlign : 'right'}} >
-          <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}> 
-            ویرایش کلاس
-          </Typography>
-        </ListItemText>              
-        
-    </ListItem> 
+  <div>        
   </div>  
 );
-
-
-
-function redirectTo(){
-
-}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import Paper from '@material-ui/core/Paper';
 import tokenConfig from '../../utils/tokenConfig';
@@ -11,17 +12,12 @@ import Grid from '@material-ui/core/Grid';
 import AlertDialog from '../Dialog' ;
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AccordionActions from '@material-ui/core/AccordionActions';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios' ;
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 import Slider from '@material-ui/core/Slider';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Radio from '@material-ui/core/Radio';
@@ -49,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     
   root: {
     flexGrow: 1,
+    backgroundColor : 'white' ,
     // marginTop : theme.spacing(5) ,
     width : '100%'
   },
@@ -81,14 +78,14 @@ const useStyles = makeStyles((theme) => ({
   },
   questionFacePaper: {
     padding: theme.spacing(1),    
-    marginBottom : theme.spacing(4) ,
+    marginBottom : theme.spacing(0) ,
     textAlign: 'center',
     color: theme.palette.text.secondary,
     borderRadius : '0px' ,
   },
   paper: {
     padding: theme.spacing(1),    
-    marginBottom : theme.spacing(2) ,
+    marginBottom : theme.spacing(0) ,
     textAlign: 'center',
     color: theme.palette.text.secondary,
     borderRadius : '0px' ,
@@ -151,7 +148,12 @@ function valuetext(value) {
 export default function Question(props) {
     const classes = useStyles();
 
-    var options = [];
+    const [isEditting, setIsEditting] = React.useState(false);
+
+    const [soalImageBase64 , setSoalImageBase64] = React.useState("");
+    const [isSoalImage , setIsSoalImage] = React.useState(false);
+    const [javabImageBase64 , setJavabImageBase64] = React.useState("");
+    const [isJavabImage , setIsJavabImage] = React.useState(false);    
 
     const grades = [
         { title: 'دوازدهم' , code : 12},
@@ -169,7 +171,7 @@ export default function Question(props) {
     const questionTypes = [
         {title:'تشریحی' , code : "LONGANSWER"} , 
         {title:'تستی'   , code : "TEST"} , 
-        {title:'چندگزینه ای'  , code : "MULTICHOICE"} ,            
+        {title:'چندگزینه ای'  , code : "MULTICHOISE"} ,            
     ];    
 
     const [publicCheck , setpublicCheck ] = React.useState(false);
@@ -182,10 +184,10 @@ export default function Question(props) {
     const [choice3 , setChoice3] = React.useState(false);
     const [choice4 , setChoice4] = React.useState(false);    
 
-    const [gozine1 , setGozine1] = React.useState(false);
-    const [gozine2 , setGozine2] = React.useState(false);
-    const [gozine3 , setGozine3] = React.useState(false);
-    const [gozine4 , setGozine4] = React.useState(false);
+    const [gozine1 , setGozine1] = React.useState("");
+    const [gozine2 , setGozine2] = React.useState("");
+    const [gozine3 , setGozine3] = React.useState("");
+    const [gozine4 , setGozine4] = React.useState("");
 
     const [TestAnswer , setTestAnswer] = React.useState(null);    
     
@@ -195,35 +197,43 @@ export default function Question(props) {
     const [ session , setSession] = React.useState(null);    
     const [ answer , setAnswer] = React.useState(null);    
 
+    const [answers , setAnswers] = React.useState([]);
+
     const handleChange = () => {
         setpublicCheck(!publicCheck);        
       };    
 
+    // if(props.isEditting == true){
+    //     setpublicCheck(props.question.) ;
+    //     setQuestion (props.question.) ;
+    //     setGrade (props.question.) ;
+    //     setLesson (props.question.) ;
+    //     setDifficulty (props.question.) ;
+    //     setQuestionType (props.question.) ;
+    // }
+
     const AddQuestion = (type , publicCheck , question , 
-    answer , options , base , hardness , course , chapter ) => {
+    answer , options , base , hardness , course , chapter , soalImage , javabImage ) => {
 
         console.log(options);
 
         const a = {
             "type": type ,
-            "public": publicCheck,
-            "isImage" : false , 
+            "public": publicCheck,            
             "question": question,
-            "answers": [
-                {
-                    "answer" : "asdfasdf"
-                }
-            ],
+            "answers": answers ,
             "options": options,
-            "base":  base,
+            "base": "" +  base + "",
             "hardness":  hardness,
             "course": course , 
-            "chapter" : chapter
+            "chapter" : chapter,
+            "imageQuestion": soalImage,
+            "imageAnswer": javabImage,
         }
         const ajson = JSON.stringify(a);
-        console.log(ajson);
+        // console.log(ajson);
         console.log("add question");
-        
+        console.log(ajson);
         axios.post(serverURL() + "question" , ajson , tokenConfig() )
         .then(res => {
             console.log(res);            
@@ -232,6 +242,82 @@ export default function Question(props) {
         .catch(e => {
             console.log(e);
         });
+    }
+
+    const EditQuestion = (type , publicCheck , question , 
+        answer , options , base , hardness , course , chapter , soalImage , javabImage ) => {
+    
+            console.log(options);
+    
+            const a = {
+                "type": type ,
+                "public": publicCheck,            
+                "question": question,
+                "answers": answers ,
+                "options": options,
+                "base": "" +  base + "",
+                "hardness":  hardness,
+                "course": course , 
+                "chapter" : chapter,
+                "imageQuestion": soalImage,
+                "imageAnswer": javabImage,
+            }
+            const ajson = JSON.stringify(a);
+            // console.log(ajson);
+            console.log("add question");
+            console.log(ajson);
+            axios.put(serverURL() + "question" , ajson , tokenConfig() )
+            .then(res => {
+                console.log(res);            
+                // setQuestionAdded(true);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
+
+    const uploadSoalImage = async (e) => {
+        const file = e.target.files[0];  
+        const base64 = await convertBase64(file); 
+
+        setSoalImageBase64(base64);
+        setIsSoalImage(true);
+        console.log(btoa(base64));
+    // console.log(base64);
+    }
+
+    const uploadJavabImage = async (e) => {
+        console.log(344354);
+        const file = e.target.files[0];  
+        console.log("234234");
+        const base64 = await convertBase64(file); 
+        console.log("234234");
+        setJavabImageBase64(base64);
+        console.log(isJavabImage);
+        setIsJavabImage(true);
+        console.log(isJavabImage);
+    // console.log(base64);
+    }
+  
+    const convertBase64 = (file) => {
+        return new Promise((resolve , reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+  
+            fileReader.onload = () => {
+              resolve(fileReader.result);
+            };
+  
+            fileReader.onerror = (err) => {
+                reject(err);
+            };
+        })
+      }
+
+    // console.log(props.questionIndex);
+    if(props.questionIndex != -1)
+    {
+        setIsEditting(true);
     }
 
     return (
@@ -261,6 +347,30 @@ export default function Question(props) {
                                         />
                                     </Paper>
                                 </Grid>
+                                <Grid item xs={12}>
+                                    <input accept="image/*" className={classes.input} id="icon-button" name="soal" type="file" 
+                                        onChange={(e) => {
+                                            uploadSoalImage(e);
+                                        }}/>
+                                    <label htmlFor="icon-button">
+                                        <IconButton aria-label="upload picture" component="span">
+                                        <PhotoLibraryIcon style={{color:'white'}} />
+                                        </IconButton>
+                                    </label>    
+                                </Grid>
+                                {isSoalImage == true &&
+                                <Grid item xs={12}>
+                                  <img src={soalImageBase64} 
+                                //   onClick={handleClickOpenImage} 
+                                width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>  
+                                <IconButton onClick={()=>{
+                                    setSoalImageBase64(null);
+                                    setIsSoalImage(false);
+                                }}>
+                                    <CloseIcon style={{color : 'white'}} />
+                                </IconButton>
+                                </Grid>
+                                }                             
                             </Grid>                                                    
                             <Paper className={classes.dropdownpaper}>
                                 <Grid container spacing={3} >                 
@@ -341,7 +451,7 @@ export default function Question(props) {
                                             />                                                                            
                                     </Grid>
 
-                                    <Grid item xs={6}>                                        
+                                    <Grid item xs={7}>                                        
                                             <Typography id="discrete-slider" gutterBottom style = {{fontFamily: 'Vazir'}} >
                                                 درجه سختی سوال :  {valuetext(difficulty)}
                                             </Typography>
@@ -372,15 +482,8 @@ export default function Question(props) {
                                                     max={3}
                                                 />                             
                                             </ThemeProvider>           
-                                    </Grid>                         
-                                    <Grid item xs = {2}>
-                                        <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
-                                        <label htmlFor="icon-button-file">
-                                            <IconButton aria-label="upload picture" component="span">
-                                            <PhotoLibraryIcon style={{color:'#EE6C4D'}} />
-                                            </IconButton>
-                                        </label>    
-                                    </Grid>       
+                                    </Grid>   
+                                    <Grid item xs={1} ></Grid>
                                 </Grid>
                             </Paper>
                             <Grid container spacing = {3}>
@@ -400,6 +503,7 @@ export default function Question(props) {
                                                 InputProps={{
                                                     style:{fontFamily: 'Vazir'},
                                                 }}
+
                                                 // defaultValue="Default Value"
                                                 variant="outlined"
                                                 />   
@@ -407,7 +511,7 @@ export default function Question(props) {
                                             questionType === 'TEST' ?
                                                 <FormControl component="fieldset">                                                    
                                                     <RadioGroup aria-label="gender"  className = {classes.RadioChoice} name="gender1" onChange={(e) => {
-                                                        console.log(e.target.value)
+                                                        console.log(e.target.value)                                                        
                                                         setTestAnswer(e.target.value)}
                                                         }>
                                                         <form class ="form-inline">
@@ -475,19 +579,49 @@ export default function Question(props) {
                                     </Paper>
                                 </Grid>
 
+                                <Grid item xs={12}>
+                                    <input accept="image/*" name="javab" className={classes.input} id="javab" type="file" 
+                                        onChange={(e) => {
+                                            uploadJavabImage(e);
+                                        }}/>
+                                    <label htmlFor="javab">
+                                        <IconButton aria-label="upload picture" component="span">
+                                        <PhotoLibraryIcon style={{color:'white'}} />
+                                        </IconButton>
+                                    </label>    
+                                </Grid>
+                                {isJavabImage == true &&
+                                    <Grid item xs={12}>
+                                    <img src={javabImageBase64} 
+                                    //   onClick={handleClickOpenImage} 
+                                    width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>  
+                                    <IconButton onClick={()=>{
+                                        setJavabImageBase64(null);
+                                        setIsJavabImage(false);
+                                    }}>
+                                        <CloseIcon style={{color:'white'}} />
+                                    </IconButton>
+                                    </Grid>
+                                }      
+
                                 <Grid item xs={4}>                                    
                                     <Button variant="contained"
                                      onClick={() => {AddQuestion(                                            
                                         questionType , publicCheck , question ,
                                         answer , [
-                                            { "options" : gozine1 } ,
-                                            { "options" : gozine2 } , 
-                                            { "options" : gozine3 } , 
-                                            { "options" : gozine4 } ] , grade , difficulty , lesson , session
+                                            { "option" : gozine1 } ,
+                                            { "option" : gozine2 } , 
+                                            { "option" : gozine3 } , 
+                                            { "option" : gozine4 } ] , grade , difficulty , lesson , session
+                                        , soalImageBase64 , javabImageBase64
                                     )}} 
                                     className={classes.Button} href="#contained-buttons">
                                         <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
-                                            {props.submitButton}
+                                            {isEditting == true ?
+                                                "ویرایش "
+                                            :
+                                                "طرح"
+                                            }
                                         </Typography>
                                     </Button>                                    
                                 </Grid>

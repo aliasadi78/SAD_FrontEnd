@@ -16,7 +16,7 @@ import Studentlist from './studentlist' ;
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import axios from 'axios' ;
-import { DataGrid , RowsProp, ColDef } from '@material-ui/data-grid';
+// import { DataGrid , RowsProp, ColDef } from '@material-ui/data-grid';
 import serverURL from '../../../../utils/serverURL' ;
 import tokenConfig from  '../../../../utils/tokenConfig' ;
 
@@ -177,26 +177,22 @@ export default function MembersList(props) {
               <Material_RTL>
                       <M_RTL>
                 {/* <Paper elevation={2} > */}
-                <Breadcrumbs separator="|" aria-label="breadcrumb">
-                  <Link color="inherit" href="/" >
-                  <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
-                      خانه
-                  </Typography>
-                  </Link>
-                  <Link color="inherit" href="/getting-started/installation/" >
+                <Breadcrumbs separator="|" aria-label="breadcrumb">                  
+                  <Link color="inherit" href="/user/classes" >
                     <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
                         کلاس ها
                     </Typography>
                   </Link>
                   {/* {props.title} */}
-                  <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
-                    {className}
-                  </Typography>
-                  <Link color="inherit" href="/getting-started/installation/" >
+                  <Link color="inherit" href={"/class/" + classId}  >
                     <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
-                        اعضا
+                      {className}
                     </Typography>
                   </Link>                  
+
+                  <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
+                      اعضا
+                  </Typography>                
                 </Breadcrumbs>
                 <hr />
                 {/* </Paper> */}
