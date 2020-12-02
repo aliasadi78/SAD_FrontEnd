@@ -5,6 +5,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import BallotIcon from '@material-ui/icons/Ballot';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Collapse from '@material-ui/core/Collapse';
+import EditIcon from '@material-ui/icons/Edit';
 // ------------------------
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -33,11 +34,14 @@ export default function DrawerList(props){
     const handleUserDrawerMenuClick = () => {
         setopenUserDrawerMethod(!openUserDrawerMethod);
     };
+    
+    // if(props.isDrawerOpen == true)
+    //     setopenUserDrawerMethod(false);       
 
-    return(
+    return(    
         
         <List>
-            <Link to = "/profile/edit">
+            
                 <ListItem button onClick={()=>{                
                 if( props.isDrawerOpen == true)
                     handleUserDrawerMenuClick();
@@ -51,11 +55,25 @@ export default function DrawerList(props){
                 </Typography>
                 </ListItemText>
                 {openUserDrawerMethod ? <ExpandLess/> : <ExpandMore />}
-                </ListItem>
-            </Link>
+                </ListItem>            
 
             <Collapse in={openUserDrawerMethod} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
+
+                <Link to = "/profile/edit">
+                    <ListItem button                     
+                    className={classes.nested}>
+                        <ListItemIcon>        
+                            <EditIcon style={{ color: "#3D5A80" }} />
+                        </ListItemIcon>
+                        <ListItemText>
+                        <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}>            
+                            ویرایش اطلاعات 
+                        </Typography>
+                        </ListItemText>
+                </ListItem>
+                </Link>
+
                 <Link to="/user/questions" >
                     <ListItem button                     
                     className={classes.nested}>

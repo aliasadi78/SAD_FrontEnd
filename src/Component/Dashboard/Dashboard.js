@@ -228,7 +228,7 @@ export default function Dashboard() {
 
             <Switch>
               <Route path="/profile/edit"  >
-                <VerticalTabs />
+                <PersonalForms />
               </Route>
               <Route path="/questionBank">
                 <QuestionBank />

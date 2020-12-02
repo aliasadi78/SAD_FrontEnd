@@ -177,19 +177,14 @@ export default function MembersList(props) {
               <Material_RTL>
                       <M_RTL>
                 {/* <Paper elevation={2} > */}
-                <Breadcrumbs separator="|" aria-label="breadcrumb">
-                  <Link color="inherit" href="/" >
-                  <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
-                      خانه
-                  </Typography>
-                  </Link>
-                  <Link color="inherit" href="/getting-started/installation/" >
+                <Breadcrumbs separator="|" aria-label="breadcrumb">                  
+                  <Link color="inherit" href="/user/classes" >
                     <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
                         کلاس ها
                     </Typography>
                   </Link>
                   {/* {props.title} */}
-                  <Link color="inherit" href="/getting-started/installation/" >
+                  <Link color="inherit" href={"/class/" + classId}  >
                     <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
                       {className}
                     </Typography>

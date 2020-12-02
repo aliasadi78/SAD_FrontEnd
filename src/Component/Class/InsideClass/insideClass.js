@@ -8,6 +8,9 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import InfoIcon from '@material-ui/icons/Info';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import { mainListItems , secondaryListItems} from './insideClassDrawerList';
@@ -18,6 +21,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Examslist from './lists/examlist' ;
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import axios from 'axios' ;
 import serverURL from '../../../utils/serverURL' ;
 import tokenConfig from '../../../utils/tokenConfig' ;
@@ -208,8 +212,21 @@ export default function InsideClass(props) {
           <List>{mainListItems}</List>   
           
           <Divider />
-                           
-          <List>{secondaryListItems}</List>                    
+            <div>
+            <Link color="inherit" href={"/members/" + classId} >
+                <ListItem button  >
+                  <ListItemIcon>
+                  <PeopleAltIcon style={{ color: "#3D5A80" }} />            
+                    </ListItemIcon>
+                    <ListItemText  style={{ textAlign : 'right'}} >
+                      <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}> 
+                        اعضا
+                      </Typography>
+                    </ListItemText>              
+                    
+                </ListItem> 
+              </Link>  
+            </div>
           
         </Drawer>
         <main className={clsx(classes.content, {
@@ -217,17 +234,17 @@ export default function InsideClass(props) {
         })}  
         >                            
           <Container maxWidth="lg" className={classes.container}        
-        // style={{backgroundImage : 'url(' + require ('./back.jpg') + ')' , backgroundSize : 'cover'}}      
+        // style={{backgroundImage : 'url(' + require ('./back.jpg') + ')' , backgroundSize : 'cover'}}     
           >  
             {/* <Grid container xs = {12} dir = "rtl">             */}
               {/* <Paper elevation={2} className={classes.breadcrumbs}>               */}
                 <Breadcrumbs separator="|" aria-label="breadcrumb" dir="rtl" >
-                  <Link color="inherit" href="/" >
+                  {/* <Link color="inherit" href="/user/classes" >
                   <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
                       خانه
                   </Typography>
-                  </Link>
-                  <Link color="inherit" href="/getting-started/installation/" >
+                  </Link> */}
+                  <Link color="inherit" href="/user/classes" >
                     <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
                         کلاس ها
                     </Typography>
