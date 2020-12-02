@@ -23,6 +23,7 @@ import InputLabel from '@material-ui/core/InputLabel' ;
 import InputAdornment from '@material-ui/core/InputAdornment' ;
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 const useStyles = makeStyles((theme) => ({
     progressBar : {
@@ -112,12 +113,20 @@ function EditProfileValidationForms_Personal (props) {
     const handleChange = (props) => (event) => {
       setPasswordValues({...paswordValues , [props]: event.target.value})
     };
-
+    
     
     const handleClickShowPassword = () => {
       setPasswordValues({ ...paswordValues, showPassword: !paswordValues.showPassword });
     };
 
+    componentDidMount:
+      // custom rule will have name 'isPasswordMatch'
+      ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
+          if (value !== paswordValues.password) {
+              return false;
+          }
+          return true;
+      });
     const classes = useStyles();
     
     const uploadImage = async (e) => {
@@ -264,8 +273,75 @@ function EditProfileValidationForms_Personal (props) {
               </div>           
             </div>        
              <div class ="row" > <br/><br/> </div>
-
-            <div class = "row">
+            <div class="row">
+              <div class="col">
+                <ValidatorForm>
+              <TextValidator
+                                            variant="outlined"
+                                            required
+                                            name="password"
+                                            className={classes.textField}
+                                            label={"رمز عبور"}
+                                            id="password"
+                                            margin ="dense"
+                                            autoComplete="current-password"
+                                            type={paswordValues.showPassword ? 'text' : 'password'}
+                                            value={paswordValues.password}
+                                            onChange={handleChange('password')}
+                                            InputLabelProps={{style:{fontFamily: 'Vazir'},}}
+                                            validators={[ 'minStringLength:' + 8]}
+                                            errorMessages={['رمز عبور باید بیشتر از 8 حرف باشد']}
+                                            InputProps={{
+                                                style:{fontFamily: 'Vazir'},
+                                                endAdornment:(
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        style={{padding: '0px',color:'black'}}
+                                                        onClick={handleClickShowPassword}
+                                                        // onMouseDown={this.handleMouseDownPassword}
+                                                    >
+                                                        {paswordValues.showPassword ? <Visibility /> : <VisibilityOff />}
+                                                    </IconButton>
+                                                </InputAdornment>)
+                                            }}
+                                        />
+                                        </ValidatorForm>
+              </div>
+              <div class="col">
+              <ValidatorForm>
+              <TextValidator
+                                            variant="outlined"
+                                            required
+                                            name="password"
+                                            label={"تائید رمز عبور"}
+                                            id="password"
+                                            margin ="dense"
+                                            className={classes.textField}
+                                            autoComplete="current-password"
+                                            type={paswordValues.showConfirmedPassword ? 'text' : 'password'}
+                                            value={paswordValues.confirmPassword}
+                                            onChange={handleChange('confirmPassword')}
+                                            InputLabelProps={{style:{fontFamily: 'Vazir'},}}
+                                            validators={['isPasswordMatch', 'required']}
+                                            errorMessages={['رمز عبور مطابقت ندارد', 'لطفا رمز عبور خود را تکرار کنید']}
+                                            InputProps={{
+                                                style:{fontFamily: 'Vazir'},
+                                                endAdornment:(
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        style={{padding: '0px',color:'black'}}
+                                                        onClick={handleClickShowPassword}
+                                                        // onMouseDown={this.handleMouseDownPassword}
+                                                    >
+                                                        {paswordValues.showConfirmedPassword ? <Visibility /> : <VisibilityOff />}
+                                                    </IconButton>
+                                                </InputAdornment>)
+                                            }}
+                                        />
+                                        </ValidatorForm>
+              </div>
+            </div>
+            {/* <div class = "row">
 
                 <div class="col">
                     <InputLabel htmlFor="standard-adornment-password">تکرار رمز عبور جدید </InputLabel>
@@ -317,7 +393,7 @@ function EditProfileValidationForms_Personal (props) {
                     />
                 </div>
 
-            </div>        
+            </div>         */}
                   
             <div class="row"><br/><br/></div>
             
@@ -334,7 +410,8 @@ function EditProfileValidationForms_Personal (props) {
                     "uesrname" : username ,
                     "firstname" : firstname ,                           
                     "lastname" : lastname , 
-                    "email" : email ,                                                            
+                    "email" : email , 
+                    "password" : paswordValues.password ,                                                           
                   }
                   ,tokenConfig())
                   .then(res => {                                              
@@ -422,7 +499,7 @@ export default class PersonalForms extends Component {
 
             <div class="col-sm-4" ></div>
             <div class="col-sm-4" >
-              <CircularProgress />                                  
+              <CircularProgress style={{color: '#1ca0a0'}}/>                                  
             </div>
             <div class="col-sm-4" ></div>
 

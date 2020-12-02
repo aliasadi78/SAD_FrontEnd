@@ -104,9 +104,12 @@ class NewClassPage extends Component{
           tokenConfig())
           .then(res => {
             setPending(false);
+            setOpen(false);
+
             this.setState(prevstate => {
               return {
                 classCreated : 1 ,
+                open: false,
               }
             })
           })

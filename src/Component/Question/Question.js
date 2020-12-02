@@ -64,6 +64,8 @@ const useStyles = makeStyles((theme) => ({
       '.MuiAutocomplete-option': {
         display: 'block',
         fontFamily: 'Vazir',
+        textAlign: 'right',
+        direction: 'rtl',
       },
       '.MuiAutocomplete-inputRoot[class*="MuiFilledInput-root"][class*="MuiFilledInput-marginDense"] .MuiAutocomplete-input': {
         display: 'block',
