@@ -137,11 +137,15 @@ export default function UserDesignedQuestion(props) {
                                             fullWidth = 'true'
                                             className = {classes.BigForm}                                            
                                             variant="outlined"
+                                            InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                                InputProps={{
+                                                    style:{fontFamily: 'Vazir'},
+                                                }}
                                         />
                                     </Paper>
                                 </Grid>                
                                 <Grid className={classes.expandGrid} item xs={12} >
-                                    <ExpandMoreIcon style={{ color: "white" , align: 'center'}}/>
+                                    <ExpandMoreIcon style={{ color: "black" , align: 'center'}}/>
                                 </Grid>            
                             </Grid>                            
                         </AccordionSummary>
