@@ -8,24 +8,27 @@ import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import Dashboard from './Component/Dashboard/Dashboard';
 import InsideClass from './Component/Class/InsideClass/insideClass' ;
 import MembersList from './Component/Class/InsideClass/lists/membersList';
+import InsideClass from './Component/Class/insideClass' ;
+import JoinClass from './Component/Class/JoinClass';
+import Questions from './Component/Question/Questions' ;
+import questionBank from './Component/Question/QuestionBank' ;
 
 class App extends Component {
 
     render() {
         return (                
             <div className={classes.App}>                                
-                <Link to="/"> </Link>
-                <Link to="/signIn"> </Link>
-                <Link to="/signUp"> </Link>
-                <Link to="/profile/edit" ></Link>
                 <Route path="/" exact component={SignIn}/>
                 <Route path="/signIn" exact component={SignIn}/>
                 <Route path="/signUp" component={SignUp}/>
-                <Route path="/members/:classId" component = {MembersList} />    
-                <Route path="/class/:classId" component = {InsideClass} />                
-                <Route path="/profile/edit" component = {Dashboard} />                
-                <Route path="/ClassesPage" component = {ClassesPage} />
-                <Route path="/NewClassPage" component = {NewClassPage} />                                           
+                <Route path="/profile/edit" children={<Dashboard />} component = {VerticalTabs} />
+                <Route path="/user/classes" children={<Dashboard />} component = {ClassesPage} />
+                <Route path="/class/Create" component = {NewClassPage} />
+                <Route path="/class" component = {InsideClass} />
+                <Route path="/class/join" component = {JoinClass} />
+                <Route path="/user/questions" children={<Dashboard />} component = {Questions} />
+                <Route path="/questionBank" children={<Dashboard />} component = {questionBank  } />
+                <Route path="/Dashboard" component = {Dashboard} />
             </div>
 
         );
