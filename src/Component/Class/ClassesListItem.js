@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ClassListItem (props){
 
     const classes = useStyles();
+    console.log(props);
 
     return(
         <Card className={classes.card} variant="outlined">
@@ -60,7 +61,8 @@ export default function ClassListItem (props){
             </CardContent>
             <CardActions>
                 <Button variant="contained" onClick={()=>{
-                window.location.href = "/class" ;
+                    const url = "/class/" + props.classId ;
+                    window.location.href = url ;
                 }} size="small" className={classes.btn}>ورود به کلاس</Button>
             </CardActions>
         </Card>

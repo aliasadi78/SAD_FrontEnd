@@ -17,8 +17,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import RTL from '../M_RTL';
-import Vazir from '../../fonts/Vazir.ttf';
-import {Route} from "react-router-dom" ;
 class SignIn extends Component {
     constructor() {
         super();
@@ -154,7 +152,7 @@ class SignIn extends Component {
                                     <Grid container>
                                         <Grid item xs={12}>
                                             <Grid classes={classes.root} >
-                                            <LoadingButton onClick={handleClick} pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir'}} fullWidth>
+                                            <LoadingButton onClick={handleClick } pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir'}} fullWidth>
                                             ورود
                                             </LoadingButton>
                                             </Grid>

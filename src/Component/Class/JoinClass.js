@@ -49,8 +49,10 @@ export default function JoinClass(props) {
       <Material_RTL>
         <RTL>
           <Dialog open={open} dir='rtl' onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title" style={{fontFamily: 'Vazir' , color : 'white' , backgroundColor : '#3D5A80'}}>
+            <DialogTitle style={{ color : 'white' , backgroundColor : '#3D5A80' , textAlign : "center"}}>
+              <span style={{fontFamily: 'Vazir' ,}}>
               ورود به کلاس
+              </span>
             </DialogTitle>
             <DialogContent>
               <DialogContentText style={{fontFamily: 'Vazir' , color:'#4d4d4d'}} >
@@ -61,6 +63,7 @@ export default function JoinClass(props) {
                 margin="dense"
                 style={{fontFamily: 'Vazir'}}
                 id="name"
+                variant = "outlined"
                 onChange = {(e) => {
                   setCode(e.target.value);
                 }}

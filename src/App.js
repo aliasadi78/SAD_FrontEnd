@@ -6,9 +6,10 @@ import ClassesPage from  './Component/Class/ClassesPage';
 import NewClassPage from './Component/Class/NewClassPage';
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import Dashboard from './Component/Dashboard/Dashboard';
+import InsideClass from './Component/Class/InsideClass/insideClass' ;
+import MembersList from './Component/Class/InsideClass/lists/membersList';
 import InsideClass from './Component/Class/insideClass' ;
 import JoinClass from './Component/Class/JoinClass';
-import VerticalTabs from './Component/User/TabMenuEditProfile' ;
 import Questions from './Component/Question/Questions' ;
 import questionBank from './Component/Question/QuestionBank' ;
 

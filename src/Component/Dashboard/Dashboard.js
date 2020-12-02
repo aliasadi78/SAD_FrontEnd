@@ -11,7 +11,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import VerticalTabs from '../User/TabMenuEditProfile';
 import Button from '@material-ui/core/Button';
 import {
   BrowserRouter as Router,
@@ -23,6 +22,11 @@ import ClassesPage from '../Class/ClassesPage' ;
 import LogOutDialog from '../User/LogoutDialog';
 import QuestionBank from '../Question/QuestionBank';
 import Questions from '../Question/Questions';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import BallotIcon from '@material-ui/icons/Ballot';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PersonalForms from '../User/EditProfile';
 import DrawerList from './DrawerList';
 import JoinClass from '../Class/JoinClass';
 import NewClassDialog from '../Class/NewClassPage';
@@ -246,4 +250,5 @@ export default function Dashboard() {
         </Router>
       </div>
     );
+
   }
