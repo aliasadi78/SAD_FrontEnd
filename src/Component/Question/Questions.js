@@ -36,10 +36,31 @@ class Questions extends Component {
 
     this.state = {
       bool : false , 
-      editQuestionIndex : -1
+      editQuestionIndex : -1 ,
+      grades : [] ,       
+      types : [] ,
+      hardnesses : [] ,
+      chapters : [] ,
+      courses : []
     };    
 
     var userQuestions = [];
+
+    axios.get(serverURL() + "public/question/category" , tokenConfig())
+    .then(res => {        
+        console.log(res.data);      
+        this.setState(prevstate =>{
+          return{
+            grades : [...Object.entries(res.data.base)] , 
+            types : [...Object.entries(res.data.type)] , 
+            hardnesses : [...Object.entries(res.data.hardness)] , 
+            chapters : [...Object.entries(res.data.chapter)] ,             
+            courses : [...Object.entries(res.data.course)] ,             
+        }})                  
+    })
+    .catch(err=>{
+        console.log(err);
+    });
 
     axios.get(serverURL() + "question?limit=10" , tokenConfig() )    
       .then( res =>{          
@@ -124,6 +145,10 @@ class Questions extends Component {
                     submitButton="طرح"
                     backColor = '#f2f2f2'
                     questionIndex={editQuestionIndex}
+                    grades = {this.state.grades}
+                    courses = {this.state.courses}
+                    chapters = {this.state.chapters}
+                    types = {this.state.types}
                 />                                 
                 :
                 <p>

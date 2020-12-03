@@ -256,8 +256,7 @@ function EditProfileValidationForms_Personal (props) {
                   id="first-name"
                   defaultValue={props.firstname}
                   className={classes.textField}     
-                  variant="outlined"       
-                  // variant="filled"
+                  variant="outlined"                         
                   margin ="dense"              
                   onChange = {handleFirstnameChanged}
                   InputLabelProps={{style:{fontFamily: 'Vazir'}}}
@@ -439,23 +438,6 @@ export default class PersonalForms extends Component {
     .catch(err => {
         console.log(err)
     });     
-
-    // axios.get(
-    //   serverURL() + 'user/avatar' , tokenConfig())
-    //   .then(res => {      
-    //     console.log(res.data);  
-    //       this.setState(prevState => {
-    //         return{                 
-    //           avatar : res.data.avatar ,   
-    //           avatarFound : true  , 
-    //           userFound : true 
-    //         }
-    //       })
-    //   })  
-    //   .catch(err => {
-    //       console.log(err)
-    //   });     
-        
   }
 
   render(){  

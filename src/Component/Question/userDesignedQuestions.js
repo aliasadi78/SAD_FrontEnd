@@ -138,14 +138,14 @@ export default function UserDesignedQuestion(props) {
                                             className = {classes.BigForm}                                            
                                             variant="outlined"
                                             InputLabelProps={{style:{fontFamily: 'Vazir'}}}
-                                                InputProps={{
-                                                    style:{fontFamily: 'Vazir'},
-                                                }}
+                                            InputProps={{
+                                                style:{fontFamily: 'Vazir'},
+                                            }}
                                         />
                                     </Paper>
                                 </Grid>                
                                 <Grid className={classes.expandGrid} item xs={12} >
-                                    <ExpandMoreIcon style={{ color: "black" , align: 'center'}}/>
+                                    <ExpandMoreIcon style={{ color: "#EE6C4D    " , align: 'center'}}/>
                                 </Grid>            
                             </Grid>                            
                         </AccordionSummary>
@@ -167,30 +167,35 @@ export default function UserDesignedQuestion(props) {
                                         disabled                                        
                                         // defaultValue="Default Value"
                                         variant="outlined"
+                                        InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                            InputProps={{
+                                                style:{fontFamily: 'Vazir'},
+                                            }}
                                         />   
                                     :                                          
                                     props.type === 'TEST' ?
                                         <FormControl component="fieldset">                                                    
-                                            <RadioGroup aria-label="gender"  className = {classes.RadioChoice} name="gender1">
+                                            <RadioGroup aria-label="gender" 
+                                            value={props.answers[0].answer}  className = {classes.RadioChoice} name="gender1">
                                                 <Grid container>
                                                     <Grid item xs={6}>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="g1" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[0].option}  variant="filled" margin='dense' />
+                                                            <FormControlLabel value="1" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[0].option}  variant="filled" margin='dense' />
                                                         </form>       
                                                     </Grid>
                                                     <Grid item xs={6}>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="g2" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[1].option} variant="filled" margin='dense' />
+                                                            <FormControlLabel value="2" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[1].option} variant="filled" margin='dense' />
                                                         </form>       
                                                     </Grid>
                                                     <Grid item xs={6}>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="g3" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[2].option} variant="filled" margin='dense' />
+                                                            <FormControlLabel value="3" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[2].option} variant="filled" margin='dense' />
                                                         </form>       
                                                     </Grid>
                                                     <Grid item xs={6}>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="g4" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[3].option} variant="filled" margin='dense' />
+                                                            <FormControlLabel value="4" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[3].option} variant="filled" margin='dense' />
                                                         </form>                                                        
                                                     </Grid>
                                                 </Grid>
