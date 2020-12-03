@@ -153,13 +153,24 @@ export default function Question(props) {
     const [soalImageBase64 , setSoalImageBase64] = React.useState("");
     const [isSoalImage , setIsSoalImage] = React.useState(false);
     const [javabImageBase64 , setJavabImageBase64] = React.useState("");
-    const [isJavabImage , setIsJavabImage] = React.useState(false);    
+    const [isJavabImage , setIsJavabImage] = React.useState(false);  
+    
+    const [grades , setGrades] = React.useState([]);
 
-    const grades = [
-        { title: 'دوازدهم' , code : 12},
-         { title: 'یازدهم' , code : 11},
-            { title: 'دهم' , code : 10},            
-    ];
+    axios.get(serverURL() + "public/question/category" , tokenConfig())
+    .then(res => {
+        setGrades([...res.data.base]);
+        console.log(res.data);
+    })
+    .catch(err=>{
+        console.log(err);
+    });
+
+    // const grades = [
+    //     { title: 'دوازدهم' , code : 12},
+    //      { title: 'یازدهم' , code : 11},
+    //         { title: 'دهم' , code : 10},            
+    // ];
 
     const lessons = [
         { title: 'ریاضی' , code : "MATH"},        
@@ -371,8 +382,7 @@ export default function Question(props) {
                                 </IconButton>
                                 </Grid>
                                 }                             
-                            </Grid>                                                    
-                            <Paper className={classes.dropdownpaper}>
+                            </Grid>                                                                                
                                 <Grid container spacing={3} >                 
 
                                     <Grid item xs={4}>
@@ -428,11 +438,9 @@ export default function Question(props) {
                                             style={{fontFamily: 'Vazir'}} />    
                                                                                 
                                     </Grid>   
-                                </Grid>                             
-                            </Paper>
-                            <Paper className={classes.dropdownpaper}>                                    
+                                </Grid>                                                         
                                 <Grid container spacing = {3}>
-                                    <Grid item xs={4}>                                                                            
+                                    <Grid item xs={6}>                                                                            
                                             <Autocomplete                                                
                                                 options={questionTypes}
                                                 getOptionLabel={(questionTypes) => questionTypes.title}
@@ -451,7 +459,7 @@ export default function Question(props) {
                                             />                                                                            
                                     </Grid>
 
-                                    <Grid item xs={7}>                                        
+                                    <Grid item xs={6}>                                        
                                             <Typography id="discrete-slider" gutterBottom style = {{fontFamily: 'Vazir'}} >
                                                 درجه سختی سوال :  {valuetext(difficulty)}
                                             </Typography>
@@ -484,8 +492,7 @@ export default function Question(props) {
                                             </ThemeProvider>           
                                     </Grid>   
                                     <Grid item xs={1} ></Grid>
-                                </Grid>
-                            </Paper>
+                                </Grid>                            
                             <Grid container spacing = {3}>
                                 <Grid item xs={12}>     
                                     <Paper className={classes.paper}>
@@ -514,29 +521,36 @@ export default function Question(props) {
                                                         console.log(e.target.value)                                                        
                                                         setTestAnswer(e.target.value)}
                                                         }>
-                                                        <form class ="form-inline">
-                                                            <FormControlLabel value="g1" control={<Radio />} /> <TextField onChange={(e) => {
-                                                                setGozine1(e.target.value);
-                                                            }} variant="filled" margin='dense' />
-                                                        </form>       
-
-                                                        <form class ="form-inline">
-                                                            <FormControlLabel value="g2" control={<Radio />} /> <TextField onChange={(e) => {
-                                                                setGozine2(e.target.value);
-                                                            }} variant="filled" margin='dense' />
-                                                        </form>       
-
-                                                        <form class ="form-inline">
-                                                            <FormControlLabel value="g3" control={<Radio />} /> <TextField onChange={(e) => {
-                                                                setGozine3(e.target.value);
-                                                            }} variant="filled" margin='dense' />
-                                                        </form>       
-
-                                                        <form class ="form-inline">
-                                                            <FormControlLabel value="g4" control={<Radio />} /> <TextField onChange={(e) => {
-                                                                setGozine4(e.target.value);
-                                                            }} variant="filled" margin='dense' />
-                                                        </form>                                                        
+                                                        <Grid container >
+                                                            <Grid item xs={6}>
+                                                                <form class ="form-inline">
+                                                                    <FormControlLabel value="g1" control={<Radio />} /> <TextField onChange={(e) => {
+                                                                        setGozine1(e.target.value);
+                                                                    }} variant="filled" margin='dense' />
+                                                                </form>       
+                                                            </Grid>
+                                                            <Grid item xs={6}>
+                                                                <form class ="form-inline">
+                                                                    <FormControlLabel value="g2" control={<Radio />} /> <TextField onChange={(e) => {
+                                                                        setGozine2(e.target.value);
+                                                                    }} variant="filled" margin='dense' />
+                                                                </form>       
+                                                            </Grid>
+                                                            <Grid item xs={6}>
+                                                                <form class ="form-inline">
+                                                                    <FormControlLabel value="g3" control={<Radio />} /> <TextField onChange={(e) => {
+                                                                        setGozine3(e.target.value);
+                                                                    }} variant="filled" margin='dense' />
+                                                                </form>       
+                                                            </Grid>
+                                                            <Grid item xs={6}>
+                                                                <form class ="form-inline">
+                                                                    <FormControlLabel value="g4" control={<Radio />} /> <TextField onChange={(e) => {
+                                                                        setGozine4(e.target.value);
+                                                                    }} variant="filled" margin='dense' />
+                                                                </form>          
+                                                            </Grid>
+                                                        </Grid>                                              
                                                     </RadioGroup>
                                                 </FormControl>
                                             :

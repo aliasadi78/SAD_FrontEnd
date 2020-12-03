@@ -172,21 +172,28 @@ export default function UserDesignedQuestion(props) {
                                     props.type === 'TEST' ?
                                         <FormControl component="fieldset">                                                    
                                             <RadioGroup aria-label="gender"  className = {classes.RadioChoice} name="gender1">
-                                                <form class ="form-inline">
-                                                    <FormControlLabel value="g1" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[0].option}  variant="filled" margin='dense' />
-                                                </form>       
-
-                                                <form class ="form-inline">
-                                                    <FormControlLabel value="g2" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[1].option} variant="filled" margin='dense' />
-                                                </form>       
-
-                                                <form class ="form-inline">
-                                                    <FormControlLabel value="g3" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[2].option} variant="filled" margin='dense' />
-                                                </form>       
-
-                                                <form class ="form-inline">
-                                                    <FormControlLabel value="g4" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[3].option} variant="filled" margin='dense' />
-                                                </form>                                                        
+                                                <Grid container>
+                                                    <Grid item xs={6}>
+                                                        <form class ="form-inline">
+                                                            <FormControlLabel value="g1" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[0].option}  variant="filled" margin='dense' />
+                                                        </form>       
+                                                    </Grid>
+                                                    <Grid item xs={6}>
+                                                        <form class ="form-inline">
+                                                            <FormControlLabel value="g2" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[1].option} variant="filled" margin='dense' />
+                                                        </form>       
+                                                    </Grid>
+                                                    <Grid item xs={6}>
+                                                        <form class ="form-inline">
+                                                            <FormControlLabel value="g3" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[2].option} variant="filled" margin='dense' />
+                                                        </form>       
+                                                    </Grid>
+                                                    <Grid item xs={6}>
+                                                        <form class ="form-inline">
+                                                            <FormControlLabel value="g4" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[3].option} variant="filled" margin='dense' />
+                                                        </form>                                                        
+                                                    </Grid>
+                                                </Grid>
                                             </RadioGroup>
                                         </FormControl>
                                     :

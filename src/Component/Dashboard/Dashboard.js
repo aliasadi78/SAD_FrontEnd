@@ -34,7 +34,8 @@ import NewClassDialog from '../Class/NewClassPage';
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',                
+      display: 'flex',              
+      backgroundColor : 'white'        
     },
     toolbar: {
       paddingRight: 7, // keep right padding when drawer closed            
@@ -44,7 +45,8 @@ const useStyles = makeStyles((theme) => ({
       alignItems: 'center',
       justifyContent: 'flex-end',
       padding: '0 8px',
-      height: '54px' ,      
+      height: '54px' ,   
+      backgroundColor : 'white'   
     },
     appBar: {
       zIndex: theme.zIndex.drawer + 1 ,  //رو این کار کن 
