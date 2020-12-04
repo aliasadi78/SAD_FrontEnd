@@ -10,6 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import React, { Component } from "react";
 import Material_RTL from "../Material_RTL";
 import axios from 'axios';
+import { LightenDarkenColor } from 'lighten-darken-color'; 
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { AccountCircle, Visibility, VisibilityOff, login } from "@material-ui/icons";
@@ -17,8 +18,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import RTL from '../M_RTL';
-import Vazir from '../../fonts/Vazir.ttf';
-import {Route} from "react-router-dom" ;
 class SignIn extends Component {
     constructor() {
         super();
@@ -60,7 +59,7 @@ class SignIn extends Component {
                     console.log("first");
 
                     //redirect to edit profile page                                        
-                    window.location.href = "/profile/edit" ;
+                    window.location.href = "/user/classes" ;
                 }).catch(error => {
                     console.log(error);
                     alert(" خطا! نام کاربری یا رمز عبور شما اشتباه می باشد.لطفا تمام موارد * دار را پر کنید.");
@@ -154,7 +153,7 @@ class SignIn extends Component {
                                     <Grid container>
                                         <Grid item xs={12}>
                                             <Grid classes={classes.root} >
-                                            <LoadingButton onClick={handleClick} pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir'}} fullWidth>
+                                            <LoadingButton onClick={handleClick } pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir'}} fullWidth>
                                             ورود
                                             </LoadingButton>
                                             </Grid>
@@ -217,6 +216,10 @@ const useStyles = makeStyles((theme) => ({
     },
     topButton :{
         backgroundColor : '#EE6C4D' , 
+        "&:hover": {
+            backgroundColor: LightenDarkenColor('#EE6C4D', -40) ,        
+            color :'white'
+          },
     },
     submit: {
         margin: theme.spacing(3, 0, 2),

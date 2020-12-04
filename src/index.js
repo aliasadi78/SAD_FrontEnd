@@ -6,9 +6,14 @@ import App from './App';
 import { Provider } from 'react-redux' ;
 import store from "./app/store" ;
 import * as serviceWorker from './serviceWorker';
+import { createBrowserHistory } from "history";
 import '../src/fonts/Vazir.ttf'
+
+const history = createBrowserHistory();
+
 ReactDOM.render(
-  <Router>
+
+  <Router history = {history}>
     <Provider store={store}>
       <App />
     </Provider>

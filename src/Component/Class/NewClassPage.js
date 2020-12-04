@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Container from "@material-ui/core/Container";
 import Button from '@material-ui/core/Button';
 import CssBaseline from "@material-ui/core/CssBaseline";
+import axios from 'axios' ;
 import Material_RTL from "../Material_RTL";
 import M_RTL from "../M_RTL";
 import Grid from "@material-ui/core/Grid";
@@ -11,6 +12,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import serverURL from '../../utils/serverURL' ;
+import tokenConfig from '../../utils/tokenConfig' ;
 import Select from '@material-ui/core/Select';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import LoadingButton from '@material-ui/lab/LoadingButton';
@@ -18,6 +21,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Dialog, DialogContent } from '@material-ui/core';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
+import AlertDialog from '../Dialog';
 
 // import NewClassDialog from '../Pages/ClassesPage' ;
 class NewClassPage extends Component{
@@ -31,12 +35,12 @@ class NewClassPage extends Component{
             fullWidth : true , 
             maxWidth : 'sm' ,
             open : true , 
+            classCreated : 0 ,
         }
     }
 
     handleChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
-        console.log(this.state);
+        this.setState({ [e.target.name]: e.target.value });        
     }
     
     handleClose = () => {
@@ -52,7 +56,7 @@ class NewClassPage extends Component{
       const classes = this.props.classes;
       const [paye, setPaye] = this.props.a;
       const [lesson, setLesson] = this.props.l;
-      const [open, setOpen] = this.props.o;
+      const [open, setOpen] = this.props.o;      
       
       const handleDrawerOpen = () => {
         setOpen(true);
@@ -87,7 +91,35 @@ class NewClassPage extends Component{
       const handleClick = e => {
           setPending(true);
           e.preventDefault();
-          alert("OK");
+
+          const a = {
+            "name" : this.state.title ,
+            "description" : this.state.description
+          }
+
+          const ajson = JSON.stringify(a);
+
+          axios.post(serverURL() + "class" , 
+          ajson , 
+          tokenConfig())
+          .then(res => {
+            setPending(false);
+            setOpen(false);
+
+            this.setState(prevstate => {
+              return {
+                classCreated : 1 ,
+                open: false,
+              }
+            })
+          })
+          .catch(e =>{
+            this.setState(prevstate => {
+              return {
+                classCreated : 2 ,
+              }
+            })
+          });
       }
           
       return(
@@ -96,99 +128,41 @@ class NewClassPage extends Component{
             fullWidth={this.state.fullWidth}
             maxWidth={this.state.maxWidth}
             open={this.state.open}
+            
             onClose={this.handleClose}
             aria-labelledby="max-width-dialog-title" >
-              <Container component="main" maxWidth="xs">
-                  <CssBaseline />
                   <Material_RTL>
                       <M_RTL>
-                        <DialogTitle style={{fontFamily: 'Vazir' , color : 'white' , backgroundColor : '#3D5A80'}}>
-                          ایجاد کلاس جدید
+                        <DialogTitle style={{fontFamily: 'Vazir' , color : 'white' , backgroundColor : '#3D5A80',textAlign: 'center'}}>
+                          <span style={{fontFamily: 'Vazir' ,}}>ایجاد کلاس جدید</span>
                         </DialogTitle>
-                        <div className={classes.paper}>
-                        <br/>
-                        <DialogContentText>
-                          
-                        </DialogContentText>                          
+                        <div className={classes.paper}>                     
                         <DialogContent>
-                          <ValidatorForm className={classes.form} noValidate style={{fontFamily: 'Vazir'}}>
-                            <Grid container spacing={2} component="h6">
-                                <Grid item xs={12} style={{fontFamily: 'Vazir'}}>
-                                    <TextValidator
-                                    style={{fontFamily: 'Vazir'}}
-                                        variant="outlined"
-                                        margin="normal"
-                                        required
-                                        fullWidth
-                                        id="title"
-                                        label="عنوان کلاس"
-                                        name="title"
-                                        autoComplete="tiltle"
-                                        autoFocus
-                                        value={this.state.title}
-                                        onChange={this.handleChange}
-                                        InputLabelProps={{style:{fontFamily: 'Vazir'}}}
-                                        InputProps={{
-                                            style:{fontFamily: 'Vazir'},
-                                            // endAdornment: (
-                                            //     <InputAdornment position="start">
-                                            //         <AccountCircle />
-                                            //     </InputAdornment>
-                                            // ),
-                                        }}
-                                    />
-                                </Grid>
-                            </Grid>
-                            <FormControl variant="filled" style={{marginLeft: '10%',width: '45%',marginTop: '5%'}}>
-                            <InputLabel id="demo-simple-select-outlined-label">پایه</InputLabel>
-                            <Select
-                              labelId="demo-simple-select-outlined-label"
-                              id="demo-simple-select-outlined"
-                              value={paye}
-                              onChange={handleChangePaye}
-                              label="پایه"
-                              name="paye"
-                              InputLabelProps={{style:{fontFamily: 'Vazir'}}}
-                            >
-                              <MenuItem value="">
-                                <em>None</em>
-                              </MenuItem>
-                              <MenuItem value={10} InputProps={{style:{fontFamily: 'Vazir'}}}>دهم</MenuItem>
-                              <MenuItem value={11}>یازدهم</MenuItem>
-                              <MenuItem value={12}>دوازدهم</MenuItem>
-                            </Select>
-                            <br/>
-                            </FormControl>
-                            <FormControl variant="filled" style={{width: '45%',marginTop: '5%'}}>
-                            <InputLabel id="demo-simple-select-outlined-label">درس</InputLabel>
-                            <Select
-                              labelId="demo-simple-select-outlined-label"
-                              id="demo-simple-select-outlined"
-                              value={lesson}
-                              name="lesson"
-                              onChange={handleChangeLesson}
-                              label="درس"
-                            >
-                              <MenuItem value="">
-                                <em>None</em>
-                              </MenuItem>
-                              <MenuItem value={'ریاضی'}>ریاضی</MenuItem>
-                              <MenuItem value={'شیمی'}>شیمی</MenuItem>
-                              <MenuItem value={'ادبیات'}>ادبیات</MenuItem>
-                              <MenuItem value={'دین و زندگی'}>دین و زندگی</MenuItem>
-                              <MenuItem value={'زیست شناسی'}>زیست شناسی</MenuItem>
-                              <MenuItem value={'زبان انگلیسی'}>زبان انگلیسی</MenuItem>
-                              <MenuItem value={'فیزیک'}>فیزیک</MenuItem>
-                              <MenuItem value={'عربی'}>عربی</MenuItem>
-                              <MenuItem value={'هندسه'}>هندسه</MenuItem>
-                              <MenuItem value={'حسابان'}>حسابان</MenuItem>
-                              <MenuItem value={'ریاضیات گسسته'}>ریاضیات گسسته</MenuItem>
-                              <MenuItem value={'آمار و احتمال'}>آمار و احتمال</MenuItem>
-                              <MenuItem value={'ریاضی و آمار'}>ریاضی و آمار</MenuItem>
-                            </Select>
-                            </FormControl>
-                            <Grid container spacing={2} component="h6">
-                                <Grid item xs={12} style={{fontFamily: 'Vazir'}}>
+                          <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
+                            <TextValidator
+                            style={{fontFamily: 'Vazir'}}
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="title"
+                                label="عنوان کلاس"
+                                name="title"
+                                autoComplete="tiltle"
+                                autoFocus
+                                value={this.state.title}
+                                onChange={this.handleChange}
+                                InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                InputProps={{
+                                    style:{fontFamily: 'Vazir'},
+                                    // endAdornment: (
+                                    //     <InputAdornment position="start">
+                                    //         <AccountCircle />
+                                    //     </InputAdornment>
+                                    // ),
+                                }}
+                            />
+                                
                                 <TextareaAutosize
                                     style={{width: '100%',fontFamily: 'Vazir',fontSize: '14px'}}
                                     aria-label="minimum height"
@@ -199,30 +173,35 @@ class NewClassPage extends Component{
                                     placeholder="توضیحات کلاس"
                                     InputLabelProps={{style:{fontFamily: 'Vazir'}}}
                                 />
-                                </Grid>
-                            </Grid>
+                                
                             <br/>
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Grid  >                                                
-                                            <LoadingButton onClick={handleClick} pendingPosition="center" pending={pending} variant="contained" color="#EE6C4D" style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir'}} fullWidth>
-                                            ایجاد کلاس جدید
-                                            </LoadingButton>                                                
-                                    </Grid>
-                                </Grid>
-                            </Grid>
+                                    
                             <br/>
                       </ValidatorForm>
-                      </DialogContent>
+                      </DialogContent>                      
                       <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
+
+                      {
+                        this.state.classCreated == 1 ?
+                        <AlertDialog text ="کلاس اضافه شد"/>
+                        :
+                        this.state.classCreated == 2 ?
+                        <AlertDialog text = "خطا" />
+                        :
+                        <p></p> 
+                      }         
+                      <Grid style={{textAlign: 'right',width: '100%'}} >                                                
+                          <LoadingButton onClick={handleClick} pendingPosition="center" pending={pending} variant="contained" color="#EE6C4D" style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir',margin: '0% 20% 0% 5%',width: '25%'}}>
+                          ایجاد کلاس جدید
+                          </LoadingButton>         
+                        <Button onClick={this.handleClose} color="primary" style={{backgroundColor: '#98C1D9',color: 'white',fontFamily: 'Vazir',width: '25%'}}>
                           انصراف
                         </Button>
+                        </Grid>
                       </DialogActions>
                         </div>
                       </M_RTL>
-                  </Material_RTL>                  
-              </Container>
+                  </Material_RTL>
             </Dialog>                                                    
           </React.Fragment>
       );
@@ -284,7 +263,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'block',
     },
     paper: {
-      marginTop: theme.spacing(1),
+      // marginTop: theme.spacing(1),
       // display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',

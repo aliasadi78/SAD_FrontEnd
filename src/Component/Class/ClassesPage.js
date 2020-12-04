@@ -1,33 +1,55 @@
 import React, {Component} from 'react';
+import serverURL from '../../utils/serverURL';
+import tokenConfig from '../../utils/tokenConfig' ;
+import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Material_RTL from "../Material_RTL";
+import axios from 'axios' ;
 import M_RTL from "../M_RTL";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import ClassListItem from './ClassesListItem';
+import SpeakerNotesOffIcon from '@material-ui/icons/SpeakerNotesOff';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 
 class ClassesPage extends Component{
-    render(){
-      const [open, setOpen] = this.props.o;
-      const handleDrawerOpen = () => {
-        setOpen(true);
-      };
-      const handleDrawerClose = () => {
-        setOpen(false);
-      };
-      const classes = this.props.classes;
-      const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-        
+
+    constructor(props){
+      super(props);    
+      this.state = {
+        userClasses : [] ,
+        dataFound : false
+      };            
+
+      axios.get(serverURL()+"user/classes" , tokenConfig())
+      .then(res => {        
+        this.setState({
+          userClasses : res.data.classes , 
+          dataFound : true
+        });
+      })
+      .catch(e =>{
+        console.log('khata');
+      });       
+    }
+
+    componentDidMount(){            
+    }
+    
+    render(){                    
+  
+      const classes = this.props.classes;      
+      const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);      
+      console.log(this.state.userClasses);
       const btnCreateClass = () => {
             return window.location.href = "/NewClassPage" ;
       };
       const btnJoinClass = () => {
         //jaye Dialog box 
             // return window.location.href = "/ClassesPage" ;
+          
       };
         return(
           <div> 
@@ -35,83 +57,40 @@ class ClassesPage extends Component{
                 <Material_RTL>
                     <M_RTL>
                       <div className={classes.paper}>                        
-                        <h3 style={{fontFamily: 'Vazir'}} >لیست کلاس ها</h3>
+                        <h3 style={{fontFamily: 'Vazir' , textAlign : 'right'}} >لیست کلاس ها</h3>
                           <hr/>
-                          <div style={{fontFamily: 'Vazir'}}>
-                            <Card className={classes.card} variant="outlined" >
-                                <CardContent>
-                                  <Typography
-                                    variant="h5" 
-                                    component="h4"
-                                    className={classes.title}
-                                    color="black"
-                                    gutterBottom
-                                  > 
-                                    ریاضی دهم
+                          {/* <Grid
+                            container
+                            direction="row"
+                            justify="flex-end"
+                            alignItems="center"
+                          > */}
+                            <div style={{fontFamily: 'Vazir'}} className = {classes.classCards}>                            
+                              {
+                                this.state.userClasses.map((item) => 
+                                <ClassListItem 
+                                  title = {item.name}  
+                                  TeacherName = {item.ownerFullname}
+                                  classId = {item.classId} />
+                                )
+                              }
+                              {
+                                this.state.userClasses.length == 0 && this.state.dataFound == true &&
+                                <div>                                  
+                                  <Typography variant="h4" gutterBottom style={{fontFamily: 'Vazir' , color : '#8c8c8c' , marginTop : '120px'}}>
+                                    هنوز در کلاسی عضو نشده اید . 
                                   </Typography>
-                                  <Typography 
-                                  className={classes.pos} 
-                                  color="black">
-                                    نام دبیر: صفاری
-                                  </Typography>
-                                </CardContent>
-                                <CardActions>
-                                  <Button variant="contained" onClick={()=>{
-                                    window.location.href = "/class" ;
-                                  }} size="small" className={classes.btn}>ورود به کلاس</Button>
-                                </CardActions>
-                            </Card>
-                            <Card className={classes.card} variant="outlined">
-                                <CardContent>
-                                  <Typography
-                                    variant="h5" 
-                                    component="h4"
-                                    className={classes.title}
-                                    color="black"
-                                    gutterBottom
-                                  >
-                                    فیزیک دهم
-                                  </Typography>
-                                  <Typography 
-                                  className={classes.pos} 
-                                  color="black">
-                                    نام دبیر: امانی
-                                  </Typography>
-                                </CardContent>
-                                <CardActions>
-                                  <Button variant="contained" onClick={()=>{
-                                    window.location.href = "/class" ;
-                                  }} size="small" className={classes.btn}>ورود به کلاس</Button>
-                                </CardActions>
-                            </Card>
-                            <Card className={classes.card} variant="outlined" >
-                                <CardContent>
-                                  <Typography
-                                    variant="h5" 
-                                    component="h4"
-                                    className={classes.title}
-                                    color="black"
-                                    gutterBottom
-                                  >
-                                    شیمی دهم
-                                  </Typography>
-                                  <Typography 
-                                  className={classes.pos} 
-                                  color="black">
-                                    نام دبیر: صنیعی
-                                  </Typography>
-                                </CardContent>
-                                <CardActions>
-                                  <Button variant="contained" onClick={()=>{
-                                    window.location.href = "/class" ;
-                                  }}  size="small" className={classes.btn}>ورود به کلاس</Button>
-                                </CardActions>
-                            </Card>
-                          </div>
+                                </div>
+                              }
+                              {
+                                  this.state.dataFound == false &&
+                                  <CircularProgress className = {classes.progressCircle} variant="static" value={100} />
+                              }
+                            </div>
+                          {/* </Grid> */}
                         </div>
                     </M_RTL>
                 </Material_RTL>
-            {/* </Container> */}
             </div>
         );
     }
@@ -122,62 +101,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',      
   },
-  toolbar: {
-    paddingRight: 7, // keep right padding when drawer closed            
-  },
-  toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    height: '54px' ,      
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1 ,  //رو این کار کن 
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),      
-    backgroundColor : '#3D5A80' ,      
-  },
-  appBarShift: {
-    marginRight : drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,      
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),      
-  },
-  menuButton: {
-    marginRight: 0,      
-  },
-  menuButtonHidden: {
-    display: 'none',
-  },
-  ToolbarSpace :{
-     flexGrow: 1,
-  },
-  drawerPaper: {
-    // position: 'relative',
-    whiteSpace: 'nowrap',
-    width: drawerWidth,  
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),      
-  },
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing(7),      
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(7),
-    },
-  },
-  appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     height: '100vh',
@@ -201,47 +124,28 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: '#EE6C4D' ,
       color : 'white' , 
     },                
+  },    
+  classCards :{
+    justifyContent : 'flex-end' ,
   },
-    card:{
-        fontFamily: 'Vazir',
-        width: '25%',        
-        display: 'inline-block',
-        margin: '2%',                
-        boxShadow: '0 2px 1px 1px rgba(204, 204, 204, .6)',
-        "&:hover": {          
-          boxShadow: '0 5px 3px 3px rgba(204, 204, 204, .6)',
-        },       
-        // backgroundColor : '#E0FBFC',
-    },
+  progressCircle :{
+    margin : theme.spacing(2) ,
+    color : '#1CA0A0'      
+  },
     bullet: {
       display: 'inline-block',
       margin: '0 2px',
       transform: 'scale(0.8)',
-    },
-    title: {
-      // fontSize: 22,
-      fontFamily: 'Vazir',
-    },
-    btn:{
-        fontFamily: 'Vazir',
-        backgroundColor : '#0e918c' ,
-        "&:hover": {
-          backgroundColor: '#EE6C4D' ,
-          color : 'white' , 
-        },          
-    },
-    pos: {
-      marginBottom: 12,
-      fontFamily: 'Vazir',
-    },
+    },        
     switch: {
         display: 'block',
     },
     paper: {
       marginTop: theme.spacing(1),
       // display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',      
+      direction: 'row',
+      justify: 'flex-start',      
+      alignItems : 'left' ,
       color : '#3D5A80' , 
       backgroundColor: 'white',
       padding: '10px',

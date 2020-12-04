@@ -32,14 +32,14 @@ export default function AlertDialog(props) {
         {/* <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle> */}
         <DialogContent>
           <DialogContentText id="alert-dialog-description" style={{fontFamily: 'Vazir'}} >
-            <h5>
+            <h5 style={{fontFamily: 'Vazir'}}>
               {props.text}
             </h5>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary" style={{fontFamily: 'Vazir'}} >                      
-            ادامه ... 
+            <span style={{fontFamily: 'Vazir'}}>ادامه ... </span>
           </Button>          
         </DialogActions>
         </RTL>

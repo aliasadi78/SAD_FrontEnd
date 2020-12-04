@@ -14,6 +14,7 @@ import icon, {AccountCircle, Email, PersonAdd, Visibility, VisibilityOff, VpnKey
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from "@material-ui/core/IconButton";
 import  LoadingButton from '@material-ui/lab/LoadingButton';
+import { LightenDarkenColor } from 'lighten-darken-color'; 
 import Icon from '@material-ui/core/Icon';
 import RTL from '../M_RTL';
 
@@ -73,7 +74,7 @@ class SignUp extends Component {
                 
                 //redirect to editprofile page   
                 // history.push("/profile/edit");
-                window.location.href = "/profile/edit" ;
+                window.location.href = "/user/classes" ;
                 setPending(false);
             }).catch(error => {
                 console.log(error);
@@ -247,6 +248,10 @@ const useStyles = makeStyles((theme) => ({
     },
     topButton :{
         backgroundColor : '#EE6C4D' , 
+        "&:hover": {
+            backgroundColor: LightenDarkenColor('#EE6C4D', -40) ,        
+            color :'white'
+          },
     },
     paper: {
         marginTop: theme.spacing(1),
