@@ -9,6 +9,9 @@ import tokenConfig from '../../utils/tokenConfig';
 import serverURL from '../../utils/serverURL';
 import Question from './Question' ;
 import Paper from '@material-ui/core/Paper';
+import {
+  selectQuestion ,
+} from './QuestionsSlice' ;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,7 +83,6 @@ class Questions extends Component {
       }); 
 
   }
-  
 
   render(){
     const classes = this.props.classes;        
@@ -109,6 +111,9 @@ class Questions extends Component {
               </Paper>
             </Grid>
             <Grid item xs={12}>
+            <Grid item xs={12} sm={12}  lg={6} className = {classes.grid}>
+            <h3 style={{fontFamily: 'Vazir', color : '#3D5A80'}} >سوال هایی که تا کنون طرح کرده اید</h3>
+                            <hr/>
                 {
                   this.state.bool == true ?
                     <div>

@@ -5,6 +5,10 @@ import Paper from '@material-ui/core/Paper';
 import Material_RTL from "../Material_RTL";
 import RTL from '../M_RTL';
 import Grid from '@material-ui/core/Grid';
+import { useDispatch } from 'react-redux' ; 
+import {
+    loadEdittingQuestion
+} from './QuestionsSlice' ;
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
@@ -91,6 +95,8 @@ export default function UserDesignedQuestion(props) {
     const [choice2 , setChoice2] = React.useState(false);
     const [choice3 , setChoice3] = React.useState(false);
     const [choice4 , setChoice4] = React.useState(false);    
+
+    const dispatch = useDispatch();
 
     const classes = useStyles();
 
@@ -234,10 +240,12 @@ export default function UserDesignedQuestion(props) {
                                 </Grid>                            
                                 <Grid container xs={12} justifyContent='center' direction="row" >
                                     <Grid item xs={2}>
-                                        <Button variant="contained" onClick ={() => {
-                                            // localStorage.setItem('editable question' , props.index);        
-                                            props.onclick() ; 
-                                        }} className={classes.EditButton} href="#contained-buttons">
+                                        <Button variant="contained"                                        
+                                            onClick={() => {                                                
+                                                dispatch(loadEdittingQuestion(props.index));                                                
+                                            }} 
+                                            className={classes.EditButton} href="#contained-buttons">
+
                                             <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                                 ویرایش
                                             </Typography>

@@ -31,6 +31,8 @@ import UploadImage from './uploadImage';
 import { Dialog } from '@material-ui/core';
 import { findAllByTestId } from '@testing-library/react';
 
+import { useSelector } from 'react-redux' ;
+
 const theme = createMuiTheme({
   palette: {
     primary:{
@@ -112,10 +114,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TestAnswerToSend( choice1 , choice2 , choice3 , choice4 ){
-
-}
-
 function valuetext(value) {
     if(value=="LOW")
         return 'آسان';
@@ -126,7 +124,18 @@ function valuetext(value) {
   }   
 
 export default function Question(props) {
-    const classes = useStyles();        
+
+    const index = useSelector(state =>state.edittingQuestion.edittingQuestionIndex);    
+
+    const classes = useStyles();
+
+    var options = [];
+
+    const grades = [
+        { title: 'دوازدهم' , code : 12},
+         { title: 'یازدهم' , code : 11},
+            { title: 'دهم' , code : 10},            
+    ];
 
     const [soalImageBase64 , setSoalImageBase64] = React.useState("");
     const [javabImageBase64 , setJavabImageBase64] = React.useState("");
@@ -226,6 +235,11 @@ export default function Question(props) {
             });
     }    
 
+    if(index != -1){
+        const edittingQuestion = props.questions[index] ;
+        console.log(edittingQuestion);
+    }
+
 
     return (
         <React.Fragment>
@@ -241,11 +255,11 @@ export default function Question(props) {
                                             id="outlined-multiline-static"
                                             label="صورت سوال"
                                             multiline
+                                            defaultValue = {question}
                                             rows={4}
                                             onChange={(e) =>{setQuestion(e.target.value)} }
                                             fullWidth = 'true'
-                                            className = {classes.BigForm}
-                                            // defaultValue="Default Value"
+                                            className = {classes.BigForm}                                            
                                             variant="outlined"
                                             InputLabelProps={{style:{fontFamily: 'Vazir'}}}
                                             InputProps={{
@@ -278,7 +292,7 @@ export default function Question(props) {
                                                     style:{fontFamily: 'Vazir'},
                                                 }}
                                                 onChange ={(e)=>{                                                    
-                                                    setGrade(e.target.value);                                                                                                            
+                                                    setGrade(e.target.value);                                                                                                           
                                                 }}
                                                     >
                                                 {props.grades.map( ([key , value]) =>
