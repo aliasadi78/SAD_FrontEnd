@@ -12,6 +12,7 @@ import JoinClass from './Component/Class/JoinClass';
 import Questions from './Component/Question/Questions' ;
 import questionBank from './Component/Question/QuestionBank' ;
 import PersonalForms from './Component/User/EditProfile' ;
+import CreateExam from './Component/Exam/CreateExam';
 
 class App extends Component {
 
@@ -27,6 +28,7 @@ class App extends Component {
                 <Route path="/class/:classId" component = {InsideClass} />
                 <Route path="/members/:classId" component = {MembersList} />
                 <Route path="/class/join" component = {JoinClass} />
+                <Route path="/CreateExam" component = {CreateExam} />
                 <Route path="/user/questions" children={<Dashboard />} component = {Questions} />
                 <Route path="/questionBank" children={<Dashboard />} component = {questionBank  } />
                 <Route path="/Dashboard" component = {Dashboard} />

@@ -11,6 +11,7 @@ import IsoIcon from '@material-ui/icons/Iso';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ExamListItem from './examsListItem';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     grid:{
@@ -90,12 +91,15 @@ export default function Examslist (props){
                     <Paper elevation = {elevation}  className = {classes.ElanPaper}>                      
                         { props.isAdmin == true &&
                           <Grid item>                            
-                              <Button className={classes.groupbutton} variant="contained" color="primary"  >
+                            <Link href="/CreateExam">
+                              <Button className={classes.groupbutton}                               
+                              variant="contained" color="primary"  >
                                 <h5 style={{fontFamily: 'Vazir'}}>
                                   <AddIcon />
                                   آزمون جدید 
                                 </h5>
                               </Button>                            
+                            </Link>
                           </Grid>                           
                         }
                           <Grid item xs={12}>
