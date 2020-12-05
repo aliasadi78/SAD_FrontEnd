@@ -6,12 +6,14 @@ export const dashboardSlice = createSlice({
     isDrawerOpen : false 
   },
   reducers: {        
-    hanldeDrawerOpen : state => {
-      
+    handleMenuOpen  (state , action) {
+      state.isDrawerOpen = action.payload
     },
   }
 })
 
 export const { incrementByAmount } = dashboardSlice.actions
+
+export const {handleMenuOpen} = dashboardSlice.actions
 
 export default dashboardSlice.reducer
