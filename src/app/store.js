@@ -5,6 +5,6 @@ import dashboardReducer from '../Component/Dashboard/DashboardSlice' ;
 export default configureStore({
   reducer: {
     edittingQuestion: questionReducer ,
-    dashboard: dashboardReducer 
+    dashboard: dashboardReducer ,    
   }
 })
