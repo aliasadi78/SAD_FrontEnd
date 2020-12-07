@@ -13,11 +13,24 @@ import Questions from './Component/Question/Questions' ;
 import questionBank from './Component/Question/QuestionBank' ;
 import PersonalForms from './Component/User/EditProfile' ;
 import CreateExam from './Component/Exam/CreateExam';
+import {connect} from 'react-redux' ;
+import serverURL from './utils/serverURL' ;
+import tokenConfig from  './utils/tokenConfig' ;
+import { savePublicApis} from './Component/Question/QuestionsSlice' ;
+import axios from 'axios' ;
 
 class App extends Component {    
 
     constructor(props){
-        super(props);                
+        super(props);      
+        
+        // in this section we consider classes page as home page - taking public api s
+        axios.get(serverURL() + "public/question/category" , tokenConfig())
+        .then(res=>{            
+        props.savePublicApis(res.data);
+        console.log('publics found');         
+        })
+        .catch();
     }
 
     render() {
@@ -43,4 +56,10 @@ class App extends Component {
     }
 }
 
-export default App;
+const mapDispatchToProps = disptach => {
+    return {
+        savePublicApis : (data) => disptach(savePublicApis(data))
+    }
+}
+
+export default connect(null , mapDispatchToProps)(App);
