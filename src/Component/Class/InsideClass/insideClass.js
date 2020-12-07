@@ -26,7 +26,6 @@ import axios from 'axios' ;
 import serverURL from '../../../utils/serverURL' ;
 import tokenConfig from '../../../utils/tokenConfig' ;
 import Notelist from './lists/notelist';
-
 import DialogEditClass from './DialogEditClass';
 
 const drawerWidth = 220;
@@ -168,9 +167,9 @@ export default function InsideClass(props) {
       setAdminName(res.data.Class.admin.firstname + " " + res.data.Class.admin.lastname);
     })
     .catch(e =>{      
-    });
+    });    
 
-    //get user information 
+    //get user information ------------------------------------------------------------
     axios.get(serverURL() + "user" , tokenConfig())
     .then(res =>{
         if(res.data.user.firstname + " " + res.data.user.lastname == adminName)

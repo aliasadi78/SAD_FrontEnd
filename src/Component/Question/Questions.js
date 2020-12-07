@@ -67,8 +67,7 @@ class Questions extends Component {
 
     axios.get(serverURL() + "question?limit=10" , tokenConfig() )    
       .then( res =>{          
-        userQuestions.push(...res.data.questions);
-        console.log(userQuestions);
+        userQuestions.push(...res.data.questions);        
         var list = userQuestions.map((p) => p);                
         this.setState(prevstate => {        
           return { 
@@ -110,10 +109,8 @@ class Questions extends Component {
               سوال هایی که تا کنون طرح کرده اید
               </Paper>
             </Grid>
-            <Grid item xs={12}>
-            <Grid item xs={12} sm={12}  lg={6} className = {classes.grid}>
-            <h3 style={{fontFamily: 'Vazir', color : '#3D5A80'}} >سوال هایی که تا کنون طرح کرده اید</h3>
-                            <hr/>
+            {/* <Grid item xs={12}> */}
+            <Grid item xs={12}>  
                 {
                   this.state.bool == true ?
                     <div>
@@ -136,39 +133,40 @@ class Questions extends Component {
                   </div>              
                 }
               </Grid>
-            </Grid>      
-            <Grid item xs={12}  lg={6} className = {classes.grid}>          
-            <Grid item xs={12}>
-              <Paper elevation={3} className={classes.editprofilePaper}style={{backgroundColor: '#1CA0A0',color: 'white',padding: '2%',borderRadius: '5px',height: '40px'}}>
-                طرح سوال جدید
-              </Paper>
-            </Grid>
+            </Grid>                 
+            <Grid item xs={12} sm = {12}  lg={6} className = {classes.grid}>          
+              <Grid item xs={12}>
+                <Paper elevation={3} className={classes.editprofilePaper}style={{backgroundColor: '#1CA0A0',color: 'white',padding: '2%',borderRadius: '5px',height: '40px'}}>
+                  طرح سوال جدید
+                </Paper>
+              </Grid>
 
-            <Grid item xs={12}>
-              {this.state.editQuestionIndex == -1 ?                                     
-                <Question                                          
-                    submitButton="طرح"
-                    backColor = '#f2f2f2'
-                    questionIndex={editQuestionIndex}
-                    grades = {this.state.grades}
-                    courses = {this.state.courses}
-                    chapters = {this.state.chapters}
-                    types = {this.state.types}
-                />                                 
-                :
-                <p>
-                  edit
-                </p>
-              }
-              {/* <Question                                 
-                  submitButton="ویرایش"
-                  backColor = '#1CA0A0'    
-                  questionIndex={4}                            
-              /> 
-                                                                       */}
-            </Grid>                             
+              <Grid item xs={12}>
+                {this.state.editQuestionIndex == -1 ?                                     
+                  <Question                                          
+                      submitButton="طرح"
+                      backColor = '#f2f2f2'
+                      // questionIndex={editQuestionIndex}
+                      questions = {this.state.questions}
+                      grades = {this.state.grades}
+                      courses = {this.state.courses}
+                      chapters = {this.state.chapters}
+                      types = {this.state.types}
+                  />                                 
+                  :
+                  <p>
+                    edit
+                  </p>
+                }
+                {/* <Question                                 
+                    submitButton="ویرایش"
+                    backColor = '#1CA0A0'    
+                    questionIndex={4}                            
+                /> 
+                                                                        */}
+              </Grid>                             
             </Grid>                     
-          </Grid>
+          </Grid>          
         </Container>
       </div>
     );

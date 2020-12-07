@@ -24,6 +24,7 @@ import UserDesignedQuestion from "../Question/userDesignedQuestions";
 import { BrowserRouter as Router } from "react-router-dom";
 import Material_RTL from '../Material_RTL';
 import axios from 'axios' ;
+import { connect } from 'react-redux' ;
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -158,13 +159,18 @@ function TabPanel(props) {
       
   }));
   
-export default function CreateExam(props){
+function CreateExam(props){
 
     const [open, setOpen] = React.useState(false);    
 
     const classes = useStyles();
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
+
+    const [userQuestions , setUserQuestions] = React.useState([]);
+    const [questionsFound,setQuestionsFound] = React.useState(false);
+
+    console.log(props.index);
 
     const handleDrawerOpen = () => {
         setOpen(true);      
@@ -181,6 +187,17 @@ export default function CreateExam(props){
     const handleChangeIndex = (index) => {
         setValue(index);
     };
+
+    //get user questions ------------------------------------------------------
+    // axios.get(serverURL() + 'question?limit=10' , tokenConfig())
+    // .then(res=>{
+    //   console.log(res.data.questions);
+    //   setUserQuestions([...res.data.questions]);
+    //   setQuestionsFound (true);
+    // })
+    // .catch(err=>{
+
+    // });
 
     return (
     <div className = {classes.root}>
@@ -258,10 +275,27 @@ export default function CreateExam(props){
                     onChangeIndex={handleChangeIndex}
                 >
                     <TabPanel value={value} index={0} dir={theme.direction}>                      
-                      {/* <Question /> */}
+                      <Question
+                        grades = {props.grade}
+                        courses = {props.course}
+                        chapters = {props.chapter}
+                        types = {props.type}                          
+                      />
                     </TabPanel>
                     <TabPanel value={value} index={1} dir={theme.direction}>
-                      {/* <UserDesignedQuestion /> */}
+                      {questionsFound == true &&
+                        userQuestions.map((m , index) => 
+                          <UserDesignedQuestion 
+                            backColor = '#f2f2f2'   
+                            index = {index}
+                            questionId = {m._id}
+                            type={m.type}
+                            answers = {m.answers}
+                            question = {m.question}
+                            options = {m.options}
+                          />
+                        )
+                      }                      
                     </TabPanel>
                     <TabPanel value={value} index={2} dir={theme.direction}>
                     Item Three
@@ -279,3 +313,17 @@ export default function CreateExam(props){
     </div>
     );
 }
+
+const mapStateToProps = (state) => {  
+  console.log(state);
+  return {
+    grade : state.edittingQuestion.base ,
+    chapter : state.edittingQuestion.chapter ,
+    course : state.edittingQuestion.course , 
+    hardness : state.edittingQuestion.hardness , 
+    type : state.edittingQuestion.type , 
+    index : state.edittingQuestion.edittingQuestionIndex
+  }
+}
+
+export default connect(mapStateToProps)(CreateExam)

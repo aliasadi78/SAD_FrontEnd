@@ -25,6 +25,8 @@ import PersonalForms from '../User/EditProfile';
 import DrawerList from './DrawerList';
 import JoinClass from '../Class/JoinClass';
 import NewClassDialog from '../Class/NewClassPage';
+import { useDispatch } from 'react-redux' ;
+import {handleMenuOpen} from './DashboardSlice' ;
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
@@ -133,16 +135,20 @@ export default function Dashboard() {
     const [openCreateClassDialog, setOpenCreateClassDialog] = React.useState(false);
 
     const [openUserDrawerMethod , setopenUserDrawerMethod ] = React.useState(false);
+
+    const dispatch = useDispatch();
+
     const handleUserDrawerMenuClick = () => {
       setopenUserDrawerMethod(!openUserDrawerMethod);
     };
     const handleDrawerOpen = () => {
       setOpen(true);      
+      dispatch(handleMenuOpen(true));
     };
 
     const handleDrawerClose = () => {
       setOpen(!open);
-      setopenUserDrawerMethod(false);
+      dispatch(handleMenuOpen(false));
     };
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);    
@@ -204,7 +210,8 @@ export default function Dashboard() {
             </IconButton>
           </div>          
 
-            <DrawerList isDrawerOpen = {open} />            
+            <DrawerList />
+            {/* // isDrawerOpen = {open} />             */}
         </Drawer>
         
         <main className={clsx(classes.content, {

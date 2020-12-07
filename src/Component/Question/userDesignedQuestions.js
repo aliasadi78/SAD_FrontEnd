@@ -244,7 +244,7 @@ export default function UserDesignedQuestion(props) {
                                             onClick={() => {                                                
                                                 dispatch(loadEdittingQuestion(props.index));                                                
                                             }} 
-                                            className={classes.EditButton} href="#contained-buttons">
+                                            className={classes.EditButton}>
 
                                             <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                                 ویرایش

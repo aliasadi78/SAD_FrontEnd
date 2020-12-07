@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import Paper from '@material-ui/core/Paper';
 import tokenConfig from '../../utils/tokenConfig';
@@ -28,9 +27,7 @@ import FormControl from '@material-ui/core/FormControl';
 import { createMuiTheme } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
 import UploadImage from './uploadImage';
-import { Dialog } from '@material-ui/core';
-import { findAllByTestId } from '@testing-library/react';
-
+import { connect } from 'react-redux' ;
 import { useSelector } from 'react-redux' ;
 
 const theme = createMuiTheme({
@@ -123,19 +120,11 @@ function valuetext(value) {
         return 'سخت' ;;    
   }   
 
-export default function Question(props) {
+function Question(props) {
 
-    const index = useSelector(state =>state.edittingQuestion.edittingQuestionIndex);    
+    // const index = useSelector(state =>state.edittingQuestion.edittingQuestionIndex);    
 
     const classes = useStyles();
-
-    var options = [];
-
-    const grades = [
-        { title: 'دوازدهم' , code : 12},
-         { title: 'یازدهم' , code : 11},
-            { title: 'دهم' , code : 10},            
-    ];
 
     const [soalImageBase64 , setSoalImageBase64] = React.useState("");
     const [javabImageBase64 , setJavabImageBase64] = React.useState("");
@@ -156,11 +145,12 @@ export default function Question(props) {
     const [gozine4 , setGozine4] = React.useState("");  
     
     const [options , setOptions] = React.useState([]);
+    const [isEditting , setIsEditting] = React.useState(false);
     
     const [question , setQuestion] = React.useState(null);
     const [grade , setGrade] = React.useState('');
     const [lesson , setLesson] = React.useState(null);
-    const [ session , setSession] = React.useState(null);        
+    const [ session , setSession] = React.useState(null);            
 
     const [multitestOptions , setMultitestOptions] = React.useState([{ "option" : "" , "answer" : "" }])
 
@@ -235,19 +225,24 @@ export default function Question(props) {
             });
     }    
 
-    if(index != -1){
-        const edittingQuestion = props.questions[index] ;
-        console.log(edittingQuestion);
+
+    const editModeOn = () => {
+        setIsEditting(true);
+    };
+
+    if(props.index != -1){      
+        console.log('editting')  ;
+        console.log(props.index);
+        console.log(props.questions[props.index]);        
     }
-
-
+    
     return (
         <React.Fragment>
         <CssBaseline />
         <Container maxWidth="lg" className = {classes.root}>            
             <Material_RTL>
                 <RTL>
-                            <Paper style={{backgroundColor : props.backColor}} className = {classes.FormsPaper} >
+                        <Paper style={{backgroundColor : props.backColor}} className = {classes.FormsPaper} >
                             <Grid container spacing={0}>                                
                                 <Grid item xs={12}>
                                     <Paper className={classes.questionFacePaper}>
@@ -255,7 +250,7 @@ export default function Question(props) {
                                             id="outlined-multiline-static"
                                             label="صورت سوال"
                                             multiline
-                                            defaultValue = {question}
+                                            defaultValue = {props.index < 0 ? question : props.questions[0].question}                                            
                                             rows={4}
                                             onChange={(e) =>{setQuestion(e.target.value)} }
                                             fullWidth = 'true'
@@ -270,6 +265,9 @@ export default function Question(props) {
                                 </Grid>
 
                                 <UploadImage id="soal" />   
+                                {props.index != -1 &&
+                                    props.questions[props.index].id
+                                }
 
                             </Grid>                                                                                
                                 <Grid container spacing={3} >                 
@@ -284,6 +282,7 @@ export default function Question(props) {
                                             </InputLabel> 
                                             <Select
                                                 value = {grade}
+                                                defaultValue={props.index >= 0 && props.questions[0].base}
                                                 variant = "filled"                                                    
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
@@ -553,3 +552,12 @@ export default function Question(props) {
         </React.Fragment>
     );  
 }
+
+
+const mapStateToProps = state => {
+    return{
+      index : state.edittingQuestion.edittingQuestionIndex  
+    }
+}
+
+export default connect(mapStateToProps)(Question)
