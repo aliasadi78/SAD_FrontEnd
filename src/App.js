@@ -14,11 +14,16 @@ import questionBank from './Component/Question/QuestionBank' ;
 import PersonalForms from './Component/User/EditProfile' ;
 import CreateExam from './Component/Exam/CreateExam';
 
-class App extends Component {
+class App extends Component {    
+
+    constructor(props){
+        super(props);                
+    }
 
     render() {
+        
         return (                
-            <div className={classes.App}>                                
+            <div className={classes.App}>                                                
                 <Route path="/" exact component={SignIn}/>
                 <Route path="/signIn" exact component={SignIn}/>
                 <Route path="/signUp" component={SignUp}/>

@@ -67,8 +67,7 @@ class Questions extends Component {
 
     axios.get(serverURL() + "question?limit=10" , tokenConfig() )    
       .then( res =>{          
-        userQuestions.push(...res.data.questions);
-        console.log(userQuestions);
+        userQuestions.push(...res.data.questions);        
         var list = userQuestions.map((p) => p);                
         this.setState(prevstate => {        
           return { 

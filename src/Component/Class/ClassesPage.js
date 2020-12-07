@@ -32,11 +32,11 @@ class ClassesPage extends Component{
       })
       .catch(e =>{
         console.log('khata');
-      });       
+      });             
     }
 
     componentDidMount(){            
-    }
+    }    
     
     render(){                    
   
@@ -153,7 +153,8 @@ const useStyles = makeStyles((theme) => ({
       opacity: '95%' ,       
   },
 }));
-export default () => {
+export default () => {    
+
     const classes = useStyles();
     const o = React.useState(false)
     return (        

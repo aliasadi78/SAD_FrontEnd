@@ -12,6 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import ExamListItem from './examsListItem';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import { Link } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     grid:{
@@ -63,6 +64,8 @@ export default function Examslist (props){
       console.log(err);
     });
 
+    let history = useHistory();
+
     return (
         <Grid item  xs={4} sm={12}  lg={6} className = {classes.grid}>                                                                
                                                                                   
@@ -91,15 +94,19 @@ export default function Examslist (props){
                     <Paper elevation = {elevation}  className = {classes.ElanPaper}>                      
                         { props.isAdmin == true &&
                           <Grid item>                            
-                            <Link href="/CreateExam">
+                            {/* <Link href="/CreateExam"> */}
                               <Button className={classes.groupbutton}                               
+                              onClick={()=>{
+                                // window.location.href = "/CreateExam" ;
+                                history.push("/createExam");
+                              }}
                               variant="contained" color="primary"  >
                                 <h5 style={{fontFamily: 'Vazir'}}>
                                   <AddIcon />
                                   آزمون جدید 
                                 </h5>
                               </Button>                            
-                            </Link>
+                            {/* </Link> */}
                           </Grid>                           
                         }
                           <Grid item xs={12}>

@@ -4,12 +4,14 @@ import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import './index.css';
 import App from './App';
 import { Provider } from 'react-redux' ;
-import store from "./app/store" ;
 import * as serviceWorker from './serviceWorker';
 import { createBrowserHistory } from "history";
 import '../src/fonts/Vazir.ttf'
+import configureStore from "./app/store" ;
 
 const history = createBrowserHistory();
+
+const store = configureStore();
 
 ReactDOM.render(
 

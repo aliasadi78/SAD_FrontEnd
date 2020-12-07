@@ -26,7 +26,8 @@ import axios from 'axios' ;
 import serverURL from '../../../utils/serverURL' ;
 import tokenConfig from '../../../utils/tokenConfig' ;
 import Notelist from './lists/notelist';
-
+import { savePublicApis} from '../../Question/QuestionsSlice' ;
+import {useDispatch} from 'react-redux' ;
 import DialogEditClass from './DialogEditClass';
 
 const drawerWidth = 220;
@@ -168,14 +169,24 @@ export default function InsideClass(props) {
       setAdminName(res.data.Class.admin.firstname + " " + res.data.Class.admin.lastname);
     })
     .catch(e =>{      
-    });
+    });    
 
-    //get user information 
+    //get user information ------------------------------------------------------------
     axios.get(serverURL() + "user" , tokenConfig())
     .then(res =>{
         if(res.data.user.firstname + " " + res.data.user.lastname == adminName)
           setIsAdmin(true);
     })
+
+    const dispatch = useDispatch();
+    // in this section we consider classes page as home page - taking public api s
+    axios.get(serverURL() + "public/question/category" , tokenConfig())
+    .then(res=>{      
+      // dispatch(savePublicApis([...Object.entries(res.data.base)]));
+      dispatch(savePublicApis(res.data));
+      console.log('publics found');         
+    })
+    .catch();
 
     return (
       <div className={classes.root}>         
