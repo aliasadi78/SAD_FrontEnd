@@ -23,6 +23,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
+import LoadingButton from '@material-ui/lab/LoadingButton';
 import FormControl from '@material-ui/core/FormControl';
 import { createMuiTheme } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -150,7 +151,9 @@ function Question(props) {
     const [question , setQuestion] = React.useState(null);
     const [grade , setGrade] = React.useState('');
     const [lesson , setLesson] = React.useState(null);
-    const [ session , setSession] = React.useState(null);            
+    const [ session , setSession] = React.useState(null);   
+    
+    const [AddQuestionPending , setAddQuestionPending] = React.useState(false);
 
     const [multitestOptions , setMultitestOptions] = React.useState([{ "option" : "" , "answer" : "" }])
 
@@ -187,6 +190,7 @@ function Question(props) {
         .then(res => {
             console.log(res);            
             setQuestionAdded(true);
+            setAddQuestionPending(false);
         })
         .catch(e => {
             console.log(e);
@@ -264,7 +268,11 @@ function Question(props) {
                                     </Paper>
                                 </Grid>
 
-                                <UploadImage id="soal" />   
+                                <UploadImage
+                                getImage={(value)=>{
+                                    setSoalImageBase64(value)
+                                }}
+                                id="soal" />   
                                 {props.index != -1 &&
                                     props.questions[props.index].id
                                 }
@@ -506,12 +514,17 @@ function Question(props) {
                                 </Grid>
                                 {/* //  upload image */}                                  
                                 
-                                <UploadImage id = "javab" />
+                                <UploadImage
+                                getImage={(value)=>{
+                                    setJavabImageBase64(value)
+                                }}
+                                id = "javab" />
 
                                 <Grid item xs={4}>                                    
-                                    <Button variant="contained"
+                                    <LoadingButton variant="contained"
+                                     pending={AddQuestionPending}
                                      onClick={() => {                                                                                 
-
+                                        setAddQuestionPending(true)
                                         AddQuestion(                                            
                                         questionType , publicCheck , question ,
                                         answers , [
@@ -525,7 +538,7 @@ function Question(props) {
                                         <Typography variant='button' style = {{fontFamily: 'Vazir'}} >                                            
                                                 طرح
                                         </Typography>
-                                    </Button>                                    
+                                    </LoadingButton>                                    
                                 </Grid>
                                 <Grid item xs={8} className = {classes.grid} >                                    
                                     <FormControlLabel                                        
@@ -539,12 +552,7 @@ function Question(props) {
                                         }}
                                     />                                    
                                 </Grid>
-                            </Grid>
-                            { questionAdded == true ?
-                                <AlertDialog text = "سوال شما اضافه شد." />
-                                :   
-                                <p></p>
-                            }                        
+                            </Grid>                                             
                     </Paper>
                     </RTL>
                 </Material_RTL>                

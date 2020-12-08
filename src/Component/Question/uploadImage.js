@@ -21,7 +21,8 @@ export default function UploadImage(props){
     const uploadImage = async (e) => {        
         const file = e.target.files[0];          
         const base64 = await convertBase64(file);         
-        setImageBase64(base64);        
+        setImageBase64(base64);
+        props.getImage(btoa(base64));
         setIsImage(true);        
     }
 

@@ -66,25 +66,25 @@ class Questions extends Component {
     });
 
     axios.get(serverURL() + "question?limit=10" , tokenConfig() )    
-      .then( res =>{          
-        userQuestions.push(...res.data.questions);        
-        var list = userQuestions.map((p) => p);                
+      .then( res =>{                  
+        userQuestions.push(...res.data.questions);                
         this.setState(prevstate => {        
           return { 
-            questions : list , 
+            questions : userQuestions , 
             bool : true
           }
         })        
       })
       .catch(e =>{
-        console.log(e);
-        console.log("you have no question");
+        console.log(e);        
       }); 
 
   }
 
-  render(){
+  render(props){
     const classes = this.props.classes;        
+
+    console.log(this.props.questions);
 
     let editQuestionIndex = -1 ;
 
@@ -115,7 +115,8 @@ class Questions extends Component {
                   this.state.bool == true ?
                     <div>
                     {                              
-                        this.state.questions.map((m , index) =>
+                        // this.state.questions.map((m , index) =>
+                        this.props.questions.map((m , index) =>
                         <UserDesignedQuestion  
                           backColor = '#f2f2f2'   
                           index = {index}
@@ -124,6 +125,8 @@ class Questions extends Component {
                           answers = {m.answers}
                           question = {m.question}
                           options = {m.options}
+                          soalImage = {m.imageQuestion}
+                          javabImage = {m.imageAnswer}
                           onclick = {() => {edit(index)}}                          
                           />)
                     }
@@ -157,13 +160,7 @@ class Questions extends Component {
                   <p>
                     edit
                   </p>
-                }
-                {/* <Question                                 
-                    submitButton="ویرایش"
-                    backColor = '#1CA0A0'    
-                    questionIndex={4}                            
-                /> 
-                                                                        */}
+                }                                                                                        
               </Grid>                             
             </Grid>                     
           </Grid>          
@@ -175,9 +172,27 @@ class Questions extends Component {
 }
 export default () => {
   const classes = useStyles();  
+  const [questionsFound , setQuestionsFound ]  = React.useState(false);
+  const [questions , setQuestions] = React.useState([]);
+
+  axios.get(serverURL() + "question?limit=10" , tokenConfig() )    
+  .then(res =>{
+    console.log(res.data);
+    setQuestions([...res.data.questions]);
+    setQuestionsFound(true);
+  })
+  .catch(err=>{
+    console.log(err);
+  });
+  
   return (        
-      <Questions 
-        classes={classes}
-        />    
+    <div>
+      {questionsFound == true &&
+        <Questions 
+          questions = {questions}
+          classes={classes}
+          />    
+      }
+    </div>
   )
 }

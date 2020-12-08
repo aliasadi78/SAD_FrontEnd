@@ -150,6 +150,12 @@ export default function UserDesignedQuestion(props) {
                                         />
                                     </Paper>
                                 </Grid>                
+                                {props.soalImage != null &&
+                                    <Grid item xs={12} style={{marginBottom : '0px'}}>
+                                        <img src={atob(props.soalImage)} 
+                                        width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>
+                                    </Grid>
+                                }
                                 <Grid className={classes.expandGrid} item xs={12} >
                                     <ExpandMoreIcon style={{ color: "#EE6C4D    " , align: 'center'}}/>
                                 </Grid>            
@@ -237,7 +243,15 @@ export default function UserDesignedQuestion(props) {
 
                                 } 
                                 </Paper>
-                                </Grid>                            
+                                </Grid>   
+
+                                {props.javabImage != null &&
+                                    <Grid item xs={12} style={{marginBottom : '12px'}}>
+                                        <img src={atob(props.javabImage)} 
+                                        width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>
+                                    </Grid>
+                                }
+
                                 <Grid container xs={12} justifyContent='center' direction="row" >
                                     <Grid item xs={2}>
                                         <Button variant="contained"                                        
@@ -260,13 +274,7 @@ export default function UserDesignedQuestion(props) {
                                     </Grid>                                    
                                 </Grid>                                                                                         
                         </AccordionDetails>                        
-                    </Accordion> 
-                    {
-                        deleted == true ?
-                        <AlertDialog text = "سوال شما حذف شد" />
-                        :
-                        <p></p>
-                    }
+                    </Accordion>                     
                     </RTL>
                 </Material_RTL>                
             </Container>
