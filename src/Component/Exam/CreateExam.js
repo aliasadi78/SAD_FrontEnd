@@ -7,24 +7,24 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 import clsx from 'clsx';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
-import Question from '../Question/Question' ;
+import Box from '@material-ui/core/Box';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import serverURL from '../../utils/serverURL' ;
 import tokenConfig from  '../../utils/tokenConfig' ;
 import Button from '@material-ui/core/Button';
-import UserDesignedQuestion from "../Question/userDesignedQuestions";
+import QuestionHolder_Create from './QuestionHolder_CreateExam' ;
 import { BrowserRouter as Router } from "react-router-dom";
 import Material_RTL from '../Material_RTL';
 import axios from 'axios' ;
 import { connect } from 'react-redux' ;
+import AddQuestionExam from './AddQuestion' ;
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -142,7 +142,8 @@ function TabPanel(props) {
       appBarSpacer: theme.mixins.toolbar,    
       container: {
         paddingTop: theme.spacing(0),
-        paddingBottom: theme.spacing(4),            
+        paddingBottom: theme.spacing(4),        
+        marginLeft : theme.spacing(0) ,     
       },    
       fixedHeight: {
         height: 240,
@@ -159,6 +160,13 @@ function TabPanel(props) {
       
   }));
   
+const defaultProps = {
+  bgcolor: 'background.paper',
+  m: 1,
+  border: 1,
+  style: { width: '100%', height: '100%' },
+};
+
 function CreateExam(props){
 
     const [open, setOpen] = React.useState(false);    
@@ -189,15 +197,16 @@ function CreateExam(props){
     };
 
     //get user questions ------------------------------------------------------
-    // axios.get(serverURL() + 'question?limit=10' , tokenConfig())
-    // .then(res=>{
-    //   console.log(res.data.questions);
-    //   setUserQuestions([...res.data.questions]);
-    //   setQuestionsFound (true);
-    // })
-    // .catch(err=>{
+    if(questionsFound == false)
+      axios.get(serverURL() + 'question?limit=10' , tokenConfig())
+      .then(res=>{
+        console.log(res.data.questions);
+        setUserQuestions([...res.data.questions]);
+        setQuestionsFound (true);
+      })
+      .catch(err=>{
 
-    // });
+      });
 
     return (
     <div className = {classes.root}>
@@ -221,7 +230,7 @@ function CreateExam(props){
               onClick={()=>{                  
               }}
               >
-              ورود به کلاس 
+              تغییر مشخصات اولیه 
             </Button>
 
           </Toolbar>
@@ -275,7 +284,8 @@ function CreateExam(props){
                     onChangeIndex={handleChangeIndex}
                 >
                     <TabPanel value={value} index={0} dir={theme.direction}>                      
-                      <Question
+                      <AddQuestionExam
+                        backColor = '#f2f2f2'   
                         grades = {props.grade}
                         courses = {props.course}
                         chapters = {props.chapter}
@@ -285,14 +295,10 @@ function CreateExam(props){
                     <TabPanel value={value} index={1} dir={theme.direction}>
                       {questionsFound == true &&
                         userQuestions.map((m , index) => 
-                          <UserDesignedQuestion 
+                          <QuestionHolder_Create 
                             backColor = '#f2f2f2'   
-                            index = {index}
-                            questionId = {m._id}
-                            type={m.type}
-                            answers = {m.answers}
-                            question = {m.question}
-                            options = {m.options}
+                            index = {index}                            
+                            question = {m}
                           />
                         )
                       }                      
@@ -302,7 +308,19 @@ function CreateExam(props){
                     </TabPanel>
                 </SwipeableViews>
             </Grid>
-            <Grid item xs={12} sm={12} lg={6} ></Grid>
+            <Grid item xs={12} sm={12} lg={6} height="100%" >
+            <Box display="flex" justifyContent="center">      
+              <Box height="100%"              
+              borderColor="3D5A80"  {...defaultProps}/>
+                {
+                  props.questions.map((p , index)=> 
+                    <QuestionHolder_Create
+                      backColor="#f2f2f2"
+                      question={p} />
+                  )
+                }
+              </Box>
+            </Grid>
         </Grid>
         </Material_RTL>
 {/* ------------------------------------------------------------ */}
@@ -314,9 +332,9 @@ function CreateExam(props){
     );
 }
 
-const mapStateToProps = (state) => {  
-  console.log(state);
+const mapStateToProps = (state) => {    
   return {
+    questions : state.exam.examQuestions , 
     grade : state.edittingQuestion.base ,
     chapter : state.edittingQuestion.chapter ,
     course : state.edittingQuestion.course , 

@@ -22,9 +22,13 @@ export const ExamSlice = createSlice({
         setExamLength(state , action){
             state.examLength = action.payload  
         } ,
-        setQuestions(state , action){
-            state.examQuestions = action.payload  
-        } ,
+        addQuestion(state , action){
+            if(state.examQuestions.includes(action.payload) == false)
+                state.examQuestions.push(action.payload);
+        },
+        removeQuestion(state , action){
+            state.examQuestions = state.examQuestions.filter((item)=>item._id !== action.payload)
+        },
     }
 })
 
@@ -32,6 +36,7 @@ export const {setTitle ,
               setStartDate , 
               setEndDate , 
               setExamLength , 
-              setQuestions} = ExamSlice.actions
+              addQuestion ,
+              removeQuestion} = ExamSlice.actions
 
 export default ExamSlice.reducer    
