@@ -72,6 +72,10 @@ const useStyles = makeStyles((theme) => ({
         display: 'block',
         fontFamily: 'Vazir',
       },
+      //فونت گزینه ها
+      '.MuiFilledInput-root': {
+        fontFamily: 'Vazir',
+      },
     },
   RadioChoice :{
     

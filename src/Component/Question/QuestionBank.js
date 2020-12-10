@@ -56,7 +56,6 @@ class QuestionBank extends Component{
         .catch(e => {
             console.log(e);
         });}
-        console.log(category.base)
         const handleChangeBase = e => {
           setPending(false);
           setPendi(false);
@@ -388,7 +387,7 @@ class QuestionBank extends Component{
                 <Grid container>
                     <Grid item xs={12}>
                         <Grid classes={classes.root} >
-                        <LoadingButton onClick={handleClick} endIcon={<Icon>search</Icon>} pendingPosition="center" className={classes.topButton} pending={pendi} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#EE6C4D',}}>
+                        <LoadingButton onClick={handleClick} startIcon={<Icon>search</Icon>} pendingPosition="center" className={classes.topButton} pending={pendi} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#EE6C4D',}}>
                         جست و جو
                         </LoadingButton>
                         </Grid>
@@ -420,7 +419,7 @@ class QuestionBank extends Component{
                           }) : null}
                       </ol>
                     </div> 
-                </Container></div> : null}
+                </Container></div> : <div style={{margin: '5% 27.5% 0 0',fontSize: '30px'}}>هنوز سوالی جست و جو نکردی</div>}
                 </M_RTL>
                 </Material_RTL>
             </div>

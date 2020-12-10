@@ -72,17 +72,19 @@ function QuestionCard (props){
               </CardMedia>
             </Card>
             <div style={{position : 'relative',right: '4%',marginTop: '2%'}}>
-              {props.q.type === "TEST" ? (
-               <div>
+              <ul>
+                {props.q.type === "TEST" ? (
+                 <div style={{position: 'relative',right:'-6%'}}>
                 <div>۱){props.q.options[0].option}</div>
                 <div>۲){props.q.options[1].option}</div>
                 <div>۳){props.q.options[2].option}</div>
                 <div>۴){props.q.options[3].option}</div>
                </div>) : props.q.type === "MULTICHOISE" ? (
                  props.q.options.map((options) =>{
-                    return(<div><li>{options.option}</li></div>)
+                    return(<div><li style={{position: 'relative',right:'-3%'}}>{options.option}</li></div>)
                   }
-               )) : null}
+               ) ) : null}
+              </ul>
             </div>
             {openCollapse ? <Icon title="بستن جواب" style={{color: '#1CA0A0',position: 'relative',right: '48.5%',marginTop: '4%',cursor: 'pointer',}}   button  onClick={()=>{
                   handleCollapse();

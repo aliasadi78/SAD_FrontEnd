@@ -57,7 +57,7 @@ class NewClassPage extends Component{
       const [paye, setPaye] = this.props.a;
       const [lesson, setLesson] = this.props.l;
       const [open, setOpen] = this.props.o;      
-      
+      // const [openCreateClassDialog, setOpenCreateClassDialog] = this.props.openCreateClassDialog;
       const handleDrawerOpen = () => {
         setOpen(true);
       };
@@ -90,6 +90,7 @@ class NewClassPage extends Component{
       const [pending, setPending] = this.props.p;
       const handleClick = e => {
           setPending(true);
+          setOpen(true);
           e.preventDefault();
 
           const a = {
@@ -105,15 +106,18 @@ class NewClassPage extends Component{
           .then(res => {
             setPending(false);
             setOpen(false);
-
+            // setOpenCreateClassDialog(false)
             this.setState(prevstate => {
               return {
                 classCreated : 1 ,
                 open: false,
+                title: '',
+                description: '',
               }
             })
           })
           .catch(e =>{
+            // setOpenCreateClassDialog(false)
             this.setState(prevstate => {
               return {
                 classCreated : 2 ,
@@ -124,12 +128,16 @@ class NewClassPage extends Component{
           
       return(
           <React.Fragment>
+             //دکمه ایجاد کلاس اینجاست به جای داشبودر اونجا ایمپورتش کردم
+            <Button onClick={()=>{setOpen(true)}} className = {classes.button}>
+              ایجاد کلاس
+            </Button>
             <Dialog
             fullWidth={this.state.fullWidth}
             maxWidth={this.state.maxWidth}
-            open={this.state.open}
+            open={open}
             
-            onClose={this.handleClose}
+            onClose={()=>{setOpen(false)}}
             aria-labelledby="max-width-dialog-title" >
                   <Material_RTL>
                       <M_RTL>
@@ -181,20 +189,12 @@ class NewClassPage extends Component{
                       </DialogContent>                      
                       <DialogActions>
 
-                      {
-                        this.state.classCreated == 1 ?
-                        <AlertDialog text ="کلاس اضافه شد"/>
-                        :
-                        this.state.classCreated == 2 ?
-                        <AlertDialog text = "خطا" />
-                        :
-                        <p></p> 
-                      }         
+                              
                       <Grid style={{textAlign: 'right',width: '100%'}} >                                                
                           <LoadingButton onClick={handleClick} pendingPosition="center" pending={pending} variant="contained" color="#EE6C4D" style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir',margin: '0% 20% 0% 5%',width: '25%'}}>
                           ایجاد کلاس جدید
                           </LoadingButton>         
-                        <Button onClick={this.handleClose} color="primary" style={{backgroundColor: '#98C1D9',color: 'white',fontFamily: 'Vazir',width: '25%'}}>
+                        <Button onClick={()=>{setOpen(false)}} color="primary" style={{backgroundColor: '#98C1D9',color: 'white',fontFamily: 'Vazir',width: '25%'}}>
                           انصراف
                         </Button>
                         </Grid>
@@ -202,7 +202,15 @@ class NewClassPage extends Component{
                         </div>
                       </M_RTL>
                   </Material_RTL>
-            </Dialog>                                                    
+            </Dialog> {
+                        this.state.classCreated == 1 ?
+                        <AlertDialog text ="کلاس اضافه شد"/>
+                        :
+                        this.state.classCreated == 2 ?
+                        <AlertDialog text = "خطا" />
+                        :
+                        <p></p> 
+                      }                                                    
           </React.Fragment>
       );
     }
@@ -232,6 +240,8 @@ const useStyles = makeStyles((theme) => ({
   button : {
     marginRight : theme.spacing(2) ,       
     backgroundColor : '#98C1D9' ,
+    fontFamily: 'Vazir',
+    color: 'black',
     "&:hover": {
       backgroundColor: '#EE6C4D' ,
       color : 'white' , 
@@ -275,13 +285,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NewClassDialog () {
+export default function NewClassDialog (props) {
     const classes = useStyles();
     const a = React.useState('');
     const l = React.useState('');
     const p = React.useState(false);
     const o = React.useState(false)
+    const openCreateClassDialog = props.openCreateClassDialog;
     return (        
-        <NewClassPage classes={classes} a={a} l={l} p={p} o={o}/>    
+        <NewClassPage classes={classes} a={a} l={l} p={p} o={o} openCreateClassDialog={openCreateClassDialog}/>    
     )
 }

@@ -6,6 +6,7 @@ import axios from 'axios' ;
 import serverURL from '../../../../utils/serverURL' ;
 import tokenConfig from  '../../../../utils/tokenConfig' ;
 import Button from '@material-ui/core/Button';
+import  LoadingButton from '@material-ui/lab/LoadingButton';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import Grid from "@material-ui/core/Grid";
@@ -16,9 +17,9 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import M_RTL from '../../../M_RTL';
 import IconButton from '@material-ui/core/IconButton';
 import AlertDialog from "../../../Dialog";
-import { ValidatorForm } from 'react-material-ui-form-validator';
+import { ValidatorForm,TextValidator } from 'react-material-ui-form-validator';
 import CreateIcon from '@material-ui/icons/Create';
-
+import DialogDeleteNote from './DialogDeleteNote';
 const useStyles = makeStyles((theme) => ({    
     Toast:{
         margin : theme.spacing(3) ,
@@ -37,18 +38,23 @@ export default function PostListItem (props){
     const [title , setTitle] = React.useState(props.title);
     const [body , setBody] = React.useState(props.content);
     const [successState , setSuccessState] = React.useState(0);
+    const [noteListLoad,setNoteListLoad] = props.noteListLoad;
+    const [pending,setPending] = React.useState(false);
     const classes = useStyles();    
 
     const handleClose = () => {
         setShowEditNote(false);
+        setPending(false);
     };
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
+        setPending(false);
     };
 
     const handleBodyChange = (e) => {
         setBody(e.target.value);
+        setPending(false);
     };
 
     const hazf = () => {
@@ -56,25 +62,35 @@ export default function PostListItem (props){
         .then(res =>{
             console.log('done');            
             setShowEditNote(false);
+            setNoteListLoad(true)
         })
         .catch(err =>{
             console.log(err);
         });
     }
-
-    const handleSubmit = () => {        
-        axios.put(serverURL() + "class/" + props.classId + "/notes/" + props.noteId , {
-            "title" : title ,
-            "body" : body
-        } , tokenConfig())
-        .then(res=>{
-            console.log("done");
-            setShowEditNote(false);
-        })
-        .catch(err =>{
-            console.log(err);
-        });
-
+    //ویرایش اعلان و کنترل
+    const handleSubmit = () => {      
+        if(body.length >= 5 && title.length >=5 && body.length <= 120 && title.length <=120 ) {
+            setPending(true);
+            axios.put(serverURL() + "class/" + props.classId + "/notes/" + props.noteId , {
+                "title" : title ,
+                "body" : body
+            } , tokenConfig())
+            .then(res=>{
+                console.log("done");
+                setShowEditNote(false);
+                setNoteListLoad(true)
+                setPending(false);
+            })
+            .catch(err =>{
+                console.log(err);
+                setPending(false);
+            });
+        }
+        else{
+            alert("عنوان باید بیشتر از ۵ حرف و متن اعلان باید بین ۵ تا ۱۲۰ حرف باشد")
+            setPending(false);
+        }
     };
 
     return(
@@ -122,7 +138,7 @@ export default function PostListItem (props){
                     <div className={classes.paper}> 
                     <DialogContent>
                     <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
-                    <TextField
+                    <TextValidator
                         autoFocus
                         margin="dense"
                         id="title"
@@ -134,6 +150,8 @@ export default function PostListItem (props){
                         fullWidth
                         autoFocus
                         value={title}
+                        validators={['required', 'minStringLength:' + 5]}
+                        errorMessages={['لطفا یک عنوان مناسب وارد کنید', 'عنوان باید بیشتر از ۵ حرف باشد']}
                         onChange={(e) => {handleTitleChange(e)}}
                         InputLabelProps={{style:{fontFamily: 'Vazir'}}}
                         InputProps={{
@@ -154,19 +172,28 @@ export default function PostListItem (props){
                     />
                     
                     </ValidatorForm >
+                    //کنترل اندازه حروف
+                    {body.length < 5 && body.length > 0 ? (
+                      <span style={{color: 'red',textAlign: 'right',direction: 'rtl',position: 'relative',left: '64%'}}>متن اعلان باید بیشتر از ۵ حرف باشد</span>
+                    ) : null}
+                    {body.length > 120  ? (
+                      <span style={{color: 'red',textAlign: 'right',direction: 'rtl',position: 'relative',left: '64%'}}>متن اعلان باید کمتر از ۱۲۰ حرف باشد</span>
+                    ) : null}
                     </DialogContent>
 
                     <DialogActions>
                     <Grid style={{textAlign: 'right',width: '100%'}} container >                        
-                        <Button onClick={()=> handleSubmit() }  variant="contained" color="#EE6C4D" style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir',margin: '0% 21% 0% 5%',width: '25%'}}>
+                        <LoadingButton onClick={()=> handleSubmit() } pendingPosition="center" pending={pending}  variant="contained" color="#EE6C4D" style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir',margin: '0% 21% 0% 5%',width: '25%', }}>
                             ویرایش
-                        </Button>                                 
+                        </LoadingButton>                                 
                         {/* <Button onClick={handleClose} color="primary" style={{backgroundColor: '#98C1D9',color: 'white',fontFamily: 'Vazir',width: '25%'}}>
                             انصراف
                         </Button>                         */}
-                        <Button onClick={() => hazf() } color="primary" style={{backgroundColor: '#E63946',color: 'white',fontFamily: 'Vazir',width: '25%'}}>
+                        {/* <Button onClick={() => hazf() } color="primary" style={{backgroundColor: '#E63946',color: 'white',fontFamily: 'Vazir',width: '25%'}}>
                             حذف 
-                        </Button>                        
+                        </Button>  */}
+                        {/* //مطمئنی که میخوایی اعلان رو پاک کنی؟ */}
+                        <DialogDeleteNote classId={props.classId} noteId={props.noteId} noteListLoad={[noteListLoad,setNoteListLoad]} showEditNote={[showEditNote,setShowEditNote]}/>                       
                     </Grid>
                     </DialogActions>
                     </div>

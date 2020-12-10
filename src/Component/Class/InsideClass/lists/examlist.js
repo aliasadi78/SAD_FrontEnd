@@ -49,19 +49,19 @@ export default function Examslist (props){
     const classes = useStyles();
     const [examList , setExamList] = React.useState([]);
     const [examsListLoad , setExamsListLoad ] = React.useState(true);
-    
-    //get class exams list ----------------------------------------------------------         
-    axios.get(serverURL() + "class/" + props.classId + "/exams" , tokenConfig())
-    .then(res =>{      
-      setExamList([...res.data.exams]); 
-      setExamsListLoad(false);
-      console.log(examList);
-      // console.ChevronLeftIcong(res);
-    })
-    .catch(err=> {
-      console.log(err);
-    });
-
+    //پشت سر هم ریکوئست میفرستاد
+    componentWillMount:
+    if(examsListLoad != false){
+        axios.get(serverURL() + "class/" + props.classId + "/exams" , tokenConfig())
+        .then(res =>{      
+          setExamList([...res.data.exams]); 
+          setExamsListLoad(false);
+          console.log(examList);
+          // console.ChevronLeftIcong(res);
+        })
+        .catch(err=> {
+          console.log(err);
+        });}
     return (
         <Grid item  xs={4} sm={12}  lg={6} className = {classes.grid}>                                                                
                                                                                   
@@ -92,8 +92,8 @@ export default function Examslist (props){
                           <Grid item>                            
                               <Button className={classes.groupbutton} variant="contained" color="primary"  >
                                 <h5 style={{fontFamily: 'Vazir'}}>
-                                  <AddIcon />
-                                  آزمون جدید 
+                                  
+                                  آزمون جدید <AddIcon />
                                 </h5>
                               </Button>                            
                           </Grid>                           

@@ -38,6 +38,12 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles((theme) => ({
+    //برای فونت
+    '@global':{
+        '.MuiInputBase-input.Mui-disabled' : {
+        fontFamily: 'Vazir',
+        },
+      },
   root: {
     flexGrow: 1,    
     width : '100%',
@@ -157,7 +163,7 @@ export default function UserDesignedQuestion(props) {
                                     props.type === 'LONGANSWER' ?
                                         <TextField                                                                    
                                         id="outlined-multiline-static"
-                                        label="جواب"
+                                        label={<span style={{fontFamily: 'Vazir'}}>جواب</span>}
                                         multiline
                                         disabled
                                         defaultValue = {props.answers[0].answer}

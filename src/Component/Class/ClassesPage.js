@@ -34,9 +34,20 @@ class ClassesPage extends Component{
         console.log('khata');
       });       
     }
-
-    componentDidMount(){            
+    // اپدیت لیست کلاس ها
+    componentDidUpdate() {
+      axios.get(serverURL()+"user/classes" , tokenConfig())
+      .then(res => {        
+        this.setState({
+          userClasses : res.data.classes , 
+          dataFound : true
+        });
+      })
+      .catch(e =>{
+        console.log('khata');
+      });   
     }
+      
     
     render(){                    
   

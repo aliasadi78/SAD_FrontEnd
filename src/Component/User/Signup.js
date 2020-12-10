@@ -113,7 +113,7 @@ class SignUp extends Component {
                                             onChange={this.handleChange}
                                             InputLabelProps={{style:{fontFamily: 'Vazir'},}}
                                             validators={['required', 'minStringLength:' + 6, 'matchRegexp:^[a-zA-Z0-9_]*$']}
-                                            errorMessages={['لطفا یک نام کاربری مناسب وارد کنید', 'طول نام کاربری باید بیشتر از 6 باشد', 'a-z 0-9_ لطفا از حروف مجاز استفاده کنید']}
+                                            errorMessages={['لطفا یک نام کاربری مناسب وارد کنید', 'طول نام کاربری باید بیشتر از ۶ باشد', 'a-z 0-9_ لطفا از حروف مجاز استفاده کنید']}
                                             InputProps={{
                                                 style:{fontFamily: 'Vazir'},
                                                 endAdornment: (
@@ -162,8 +162,8 @@ class SignUp extends Component {
                                             value={this.state.password}
                                             onChange={this.handleChange}
                                             InputLabelProps={{style:{fontFamily: 'Vazir'},}}
-                                            validators={['required', 'minStringLength:' + 8]}
-                                            errorMessages={['لطفا رمز عبور خود را وارد کنید','رمز عبور باید بیشتر از 8 حرف باشد']}
+                                            validators={['required', 'minStringLength:' + 6]}
+                                            errorMessages={['لطفا رمز عبور خود را وارد کنید','رمز عبور باید بیشتر از ۶ حرف باشد']}
                                             InputProps={{
                                                 style:{fontFamily: 'Vazir'},
                                                 endAdornment:(
@@ -244,6 +244,11 @@ class SignUp extends Component {
 }
 
 const useStyles = makeStyles((theme) => ({
+    '@global':{
+        '.MuiFormHelperText-root.Mui-error' : {
+        fontFamily: 'Vazir',
+        },
+    },
     root:{        
     },
     topButton :{
