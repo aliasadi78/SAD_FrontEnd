@@ -25,6 +25,10 @@ import Material_RTL from '../Material_RTL';
 import axios from 'axios' ;
 import { connect } from 'react-redux' ;
 import AddQuestionExam from './AddQuestion' ;
+import { Dialog, Paper } from '@material-ui/core';
+import FirstDialogExam from './DialogExamFirst';
+import {mainListItems} from '../Class/InsideClass/insideClassDrawerList' ;
+import List from '@material-ui/core/List';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -66,7 +70,8 @@ function TabPanel(props) {
       display : 'flex' , 
     },
     toolbar: {
-        paddingRight: 7, // keep right padding when drawer closed            
+        paddingRight: 7,
+         // keep right padding when drawer closed            
       },    
       toolbarIcon: {
         display: 'flex',
@@ -157,7 +162,11 @@ function TabPanel(props) {
           color : 'white' , 
         },                
       },
-      
+      paper : {
+        paddingBottom : theme.spacing(3),
+        paddingTop : theme.spacing(3),
+        backgroundColor : '#f2f2f2'
+      },
   }));
   
 const defaultProps = {
@@ -230,8 +239,30 @@ function CreateExam(props){
               onClick={()=>{                  
               }}
               >
-              تغییر مشخصات اولیه 
-            </Button>
+              ذخیره
+            </Button>   
+
+            <Button variant="contained" color="#98C1D9" 
+              style={{fontFamily: 'Vazir'}}
+              className = {classes.button}
+              onClick={()=>{                  
+              }}
+              >
+              تغییر مشخصات 
+            </Button>            
+
+            <Button variant="contained" color="#98C1D9" 
+              style={{fontFamily: 'Vazir'}}
+              className = {classes.button}
+              onClick={()=>{                  
+              }}
+              >
+              حذف آزمون
+            </Button>   
+
+            <Typography style={{fontFamily: 'Vazir'}} >
+              
+            </Typography>
 
           </Toolbar>
         </AppBar> 
@@ -252,7 +283,9 @@ function CreateExam(props){
             <IconButton onClick={handleDrawerClose} >
               <ChevronLeftIcon/>
             </IconButton>
-          </div>                      
+          </div>                
+
+          <List>{mainListItems}</List>
         </Drawer>
         
         <main className={clsx(classes.content, {
@@ -260,6 +293,7 @@ function CreateExam(props){
         })}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>            
+            <FirstDialogExam />
            {/* ------------------------------------------------------------------------ */}
             <Material_RTL >
            <Grid container spacing ={2} style={{width:'100%'}}>
@@ -268,14 +302,14 @@ function CreateExam(props){
                     <Tabs
                     value={value}
                     onChange={handleChange}
-                    indicatorColor="primary"
+                    indicatorColor="secondary"
                     textColor="primary"
-                    variant="fullWidth"
+                    variant="fullWidth"                    
                     aria-label="full width tabs example"
                     >
-                    <Tab style={{fontFamily: 'Vazir'}} label="بانک" {...a11yProps(0)} />
-                    <Tab style={{fontFamily: 'Vazir'}} label="سوال های طرح شده " {...a11yProps(1)} />
-                    <Tab style={{fontFamily: 'Vazir'}} label="طرح سوال جدید" {...a11yProps(2)} />
+                    <Tab style={{fontFamily: 'Vazir' , backgroundColor : '#1CA0A0' , color:'white'}} label="طرح سوال جدید" {...a11yProps(0)} />
+                    <Tab style={{fontFamily: 'Vazir' , backgroundColor : '#1CA0A0' , color:'white'}} label="سوال های طرح شده " {...a11yProps(1)} />
+                    <Tab style={{fontFamily: 'Vazir' , backgroundColor : '#1CA0A0' , color:'white'}} label="بانک" {...a11yProps(2)} />
                     </Tabs>
                 </AppBar>
                 <SwipeableViews
@@ -295,8 +329,9 @@ function CreateExam(props){
                     <TabPanel value={value} index={1} dir={theme.direction}>
                       {questionsFound == true &&
                         userQuestions.map((m , index) => 
-                          <QuestionHolder_Create 
+                          <QuestionHolder_Create                             
                             backColor = '#f2f2f2'   
+                            mode = "select question"                            
                             index = {index}                            
                             question = {m}
                           />
@@ -309,17 +344,21 @@ function CreateExam(props){
                 </SwipeableViews>
             </Grid>
             <Grid item xs={12} sm={12} lg={6} height="100%" >
-            <Box display="flex" justifyContent="center">      
-              <Box height="100%"              
-              borderColor="3D5A80"  {...defaultProps}/>
+              <Paper className={classes.paper} >
                 {
                   props.questions.map((p , index)=> 
                     <QuestionHolder_Create
-                      backColor="#f2f2f2"
+                      backColor="#1CA0A0"
+                      mode = "preview"
                       question={p} />
                   )
-                }
-              </Box>
+                }   
+                {props.questions.length == 0 &&
+                  <Typography style={{fontFamily: 'Vazir' , color : '#8c8c8c'}} >
+                      سوالات امتحان اینجا نمایش داده میشوند . 
+                  </Typography>
+                } 
+              </Paper>                        
             </Grid>
         </Grid>
         </Material_RTL>
@@ -340,7 +379,9 @@ const mapStateToProps = (state) => {
     course : state.edittingQuestion.course , 
     hardness : state.edittingQuestion.hardness , 
     type : state.edittingQuestion.type , 
-    index : state.edittingQuestion.edittingQuestionIndex
+    index : state.edittingQuestion.edittingQuestionIndex ,
+    // --------------------------------
+    
   }
 }
 

@@ -7,7 +7,7 @@ import RTL from '../M_RTL';
 import Grid from '@material-ui/core/Grid';
 import { useDispatch } from 'react-redux' ; 
 import {
-    addQuestion
+    addQuestion , removeQuestion
 } from './ExamSlice' ;
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
@@ -149,10 +149,46 @@ export default function QuestionHolder_Create(props) {
                                             }}
                                         />
                                     </Paper>
-                                </Grid>                
-                                <Grid className={classes.expandGrid} item xs={12} >
-                                    <ExpandMoreIcon style={{ color: "#EE6C4D    " , align: 'center'}}/>
-                                </Grid>            
+                                </Grid>     
+                                {props.question.imageQuestion != null &&
+                                    <Grid item xs={12} style={{marginBottom : '0px'}}>
+                                        <img src={atob(props.question.imageQuestion)} 
+                                        width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>
+                                    </Grid>
+                                }
+                                {props.mode == "select question" &&     
+                                <Grid container xs={12} justifyContent='center' direction="row" >
+                                    <Grid item xs={2}>
+                                        <Button variant="contained"                                        
+                                            onClick={() => {                                                
+                                                dispatch(addQuestion(props.question));                                                
+                                            }} 
+                                            className={classes.EditButton}>
+
+                                            <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
+                                                اضافه
+                                            </Typography>
+                                        </Button>                                       
+                                    </Grid>
+                                    <Grid item xs={2}>                                        
+                                        <Button variant="contained" onClick={() => {
+                                            if(props.mode=="select question")
+                                                handleDeleteQuestion( props.question._id);
+                                            if(props.mode=="preview")
+                                                dispatch(removeQuestion(props.question._id))
+                                                }} className={classes.DeleteButton}>
+                                            <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
+                                                حذف
+                                            </Typography>
+                                        </Button>                                                                         
+                                    </Grid>                                    
+                                </Grid>   
+                                }     
+                                {props.mode == "preview"  &&
+                                    <Grid className={classes.expandGrid} item xs={12} >
+                                        <ExpandMoreIcon style={{ color: "white" , align: 'center'}}/>
+                                    </Grid>            
+                                }
                             </Grid>                            
                         </AccordionSummary>
                         <AccordionDetails className = {classes.details}>
@@ -160,7 +196,7 @@ export default function QuestionHolder_Create(props) {
                                 <Grid item justifyContent='center' spacing={3} xs={12} >
                                 <Paper className={classes.paper}>
                                 {
-                                    props.question.type === 'LONGANSWER' ?
+                                    props.question.type === "LONGANSWER" ?
                                         <TextField                                                                    
                                         id="outlined-multiline-static"
                                         label="جواب"
@@ -207,7 +243,7 @@ export default function QuestionHolder_Create(props) {
                                                 </Grid>
                                             </RadioGroup>
                                         </FormControl>
-                                    :
+                                    :props.question.type === 'MULTICHOISE' &&
                                         <FormGroup>
                                             <form class="form-inline">
                                                 <Checkbox checked={choice1}  name="gilad"  disabled
@@ -238,6 +274,15 @@ export default function QuestionHolder_Create(props) {
                                 } 
                                 </Paper>
                                 </Grid>                            
+                                
+                                {props.question.imageAnswer != null &&
+                                    <Grid item xs={12} style={{marginBottom : '0px'}}>
+                                        <img src={atob(props.question.imageAnswer)} 
+                                        width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>
+                                    </Grid>
+                                }
+                                
+                                {props.mode == "preview" &&     
                                 <Grid container xs={12} justifyContent='center' direction="row" >
                                     <Grid item xs={2}>
                                         <Button variant="contained"                                        
@@ -252,13 +297,20 @@ export default function QuestionHolder_Create(props) {
                                         </Button>                                       
                                     </Grid>
                                     <Grid item xs={2}>                                        
-                                        <Button variant="contained" onClick={() => {handleDeleteQuestion( props.question._id)}} className={classes.DeleteButton}>
+                                        <Button variant="contained" onClick={() => {
+                                            if(props.mode=="select question")
+                                                handleDeleteQuestion( props.question._id);
+                                            if(props.mode=="preview")
+                                                dispatch(removeQuestion(props.question._id))
+                                                }} className={classes.DeleteButton}>
                                             <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                                 حذف
                                             </Typography>
                                         </Button>                                                                         
                                     </Grid>                                    
-                                </Grid>                                                                                         
+                                </Grid>   
+                                } 
+                                                                                                                      
                         </AccordionDetails>                        
                     </Accordion> 
                     {

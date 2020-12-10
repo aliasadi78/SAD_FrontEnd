@@ -13,18 +13,21 @@ export const ExamSlice = createSlice({
         setTitle(state , action){
            state.title = action.payload  
         } ,
-        setStartDate(state , action){
+        setDate(state , action){
            state.startDate = action.payload  
         } ,
-        setEndDate(state , action){
+        setStartHour(state , action){
            state.endDate = action.payload  
         } ,
+        setEndHour(state , action){
+            state.endDate = action.payload  
+         } ,
         setExamLength(state , action){
             state.examLength = action.payload  
         } ,
         addQuestion(state , action){
             if(state.examQuestions.includes(action.payload) == false)
-                state.examQuestions.push(action.payload);
+                state.examQuestions.push(action.payload);   
         },
         removeQuestion(state , action){
             state.examQuestions = state.examQuestions.filter((item)=>item._id !== action.payload)
@@ -33,8 +36,9 @@ export const ExamSlice = createSlice({
 })
 
 export const {setTitle , 
-              setStartDate , 
-              setEndDate , 
+              setDate , 
+              setEndHour ,
+              setStartHour ,  
               setExamLength , 
               addQuestion ,
               removeQuestion} = ExamSlice.actions
