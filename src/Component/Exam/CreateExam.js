@@ -24,6 +24,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Material_RTL from '../Material_RTL';
 import axios from 'axios' ;
 import { connect } from 'react-redux' ;
+import { useHistory } from "react-router-dom";
 import AddQuestionExam from './AddQuestion' ;
 import { Dialog, Paper } from '@material-ui/core';
 import FirstDialogExam from './DialogExamFirst';
@@ -186,6 +187,11 @@ function CreateExam(props){
 
     const [userQuestions , setUserQuestions] = React.useState([]);
     const [questionsFound,setQuestionsFound] = React.useState(false);
+    const [editMode , isEditMode] = React.useState(props.location.pathname.includes("EditExam"));
+    
+    const examId = props.match.params.examId ;    
+    const classId = props.match.params.classId ;  
+    const history = useHistory() ;      
 
     console.log(props.index);
 
@@ -233,14 +239,50 @@ function CreateExam(props){
               <MenuIcon />
             </IconButton>
                        
-            <Button variant="contained" color="#98C1D9" 
+            {editMode == true &&  <Button variant="contained" color="#98C1D9" 
               style={{fontFamily: 'Vazir'}}
               className = {classes.button}
               onClick={()=>{                  
               }}
               >
               ذخیره
-            </Button>   
+            </Button>    }
+
+            {editMode == false && 
+            <Button variant="contained" color="#98C1D9" 
+              style={{fontFamily: 'Vazir'}}
+              className = {classes.button}
+              onClick={()=>{    
+                
+                const arr = [] ;
+                props.questions.forEach(q => {
+                    arr.push({"question" : q.question._id , "grade" : q.grade });
+                });
+
+                const a = {
+                  "name" : props.title , 
+                  "startDate" : "2020-12-14T23:28:26.607Z" , // props.startDate , 
+                  "endDate" :  "2020-12-15T23:28:26.607Z" ,//props.endDate ,
+                  "questions" :  arr ,
+                  "examLength" :  props.examLength ,
+                  "useInClass" : classId                  
+                };
+                
+                const ajson = JSON.stringify(a);
+                console.log(ajson);
+                axios.post(serverURL() + "exam" , ajson , tokenConfig() )
+                .then(res => {
+                  console.log("success");
+                  history.push("/class/" + classId);
+                })
+                .catch(err => {
+                  console.log(err.message);
+                });
+              }}
+              >
+              ایحاد آزمون
+            </Button>
+            }   
 
             <Button variant="contained" color="#98C1D9" 
               style={{fontFamily: 'Vazir'}}
@@ -251,17 +293,23 @@ function CreateExam(props){
               تغییر مشخصات 
             </Button>            
 
+            {editMode == true && 
             <Button variant="contained" color="#98C1D9" 
               style={{fontFamily: 'Vazir'}}
               className = {classes.button}
-              onClick={()=>{                  
+              onClick={()=>{   
+                axios.delete(serverURL() + "exam/" + examId , tokenConfig())
+                .then(res => {
+                  history.push("/class/" + classId);
+                });                              
               }}
               >
               حذف آزمون
-            </Button>   
+            </Button>    
+            }
 
-            <Typography style={{fontFamily: 'Vazir'}} >
-              
+            <Typography style={{fontFamily: 'Vazir' , marginRight : '16px'}} >
+              {props.title}
             </Typography>
 
           </Toolbar>
@@ -346,9 +394,9 @@ function CreateExam(props){
             <Grid item xs={12} sm={12} lg={6} height="100%" >
               <Paper className={classes.paper} >
                 {
-                  props.questions.map((p , index)=> 
+                  props.questions.map(q => q.question).map((p , index)=> 
                     <QuestionHolder_Create
-                      backColor="#1CA0A0"
+                      backColor="#98C1D9"
                       mode = "preview"
                       question={p} />
                   )
@@ -372,8 +420,7 @@ function CreateExam(props){
 }
 
 const mapStateToProps = (state) => {    
-  return {
-    questions : state.exam.examQuestions , 
+  return {    
     grade : state.edittingQuestion.base ,
     chapter : state.edittingQuestion.chapter ,
     course : state.edittingQuestion.course , 
@@ -381,7 +428,11 @@ const mapStateToProps = (state) => {
     type : state.edittingQuestion.type , 
     index : state.edittingQuestion.edittingQuestionIndex ,
     // --------------------------------
-    
+    title : state.exam.name ,
+    questions : state.exam.examQuestions ,  
+    startDate : state.exam.startDate , 
+    endDate : state.exam.endDate ,     
+    examLength : state.exam.examLength
   }
 }
 

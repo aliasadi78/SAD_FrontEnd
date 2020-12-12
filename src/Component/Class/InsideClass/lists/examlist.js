@@ -98,7 +98,7 @@ export default function Examslist (props){
                               <Button className={classes.groupbutton}                               
                               onClick={()=>{
                                 // window.location.href = "/CreateExam" ;
-                                history.push("/createExam");
+                                history.push("/createExam/" + props.classId);
                               }}
                               variant="contained" color="primary"  >
                                 <h5 style={{fontFamily: 'Vazir'}}>
@@ -120,6 +120,9 @@ export default function Examslist (props){
                                   elevation = {elevation}                              
                                   start = {m.startDate}
                                   end = {m.endDate}
+                                  id = {m._id}
+                                  classId = {props.classId}
+                                  isAdmin = {props.isAdmin}
                                 />
                               )
                             }                                                        

@@ -5,9 +5,10 @@ import Paper from '@material-ui/core/Paper';
 import Material_RTL from "../Material_RTL";
 import RTL from '../M_RTL';
 import Grid from '@material-ui/core/Grid';
+import { Form , Col , Row} from 'react-bootstrap';
 import { useDispatch } from 'react-redux' ; 
 import {
-    addQuestion , removeQuestion
+    addQuestion , removeQuestion , addGrade
 } from './ExamSlice' ;
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
@@ -131,7 +132,22 @@ export default function QuestionHolder_Create(props) {
                             id="panel1c-header"
                             className = {classes.accordion}                            
                             >                            
-                            <Grid container spacing={0}  >                                
+                            <Grid container spacing={0}  >  
+                                {props.mode == "preview" &&
+                                    <div>
+                                    <Form.Group as={Row} controlId="formPlaintextEmail">
+                                        <Form.Label column sm="2" style={{color: 'white'}}>
+                                        نمره
+                                        </Form.Label>
+                                        <Col sm="4">
+                                            <Form.Control type="text" defaultValue="0" 
+                                            onChange={(e) => {
+                                                dispatch(addGrade([props.question._id ,e.target.value ]))
+                                            }} />
+                                        </Col>
+                                    </Form.Group>
+                                    </div>
+                                }                              
                                 <Grid item xs={12}>
                                     <Paper className={classes.paper}>
                                         <TextField                    

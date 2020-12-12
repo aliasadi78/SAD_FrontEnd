@@ -46,7 +46,8 @@ class App extends Component {
                 <Route path="/class/:classId" component = {InsideClass} />
                 <Route path="/members/:classId" component = {MembersList} />
                 <Route path="/class/join" component = {JoinClass} />
-                <Route path="/CreateExam" component = {CreateExam} />
+                <Route path="/CreateExam/:classId" component = {CreateExam} />
+                <Route path="/EditExam/:classId/:examId" component = {CreateExam} />
                 <Route path="/user/questions" children={<Dashboard />} component = {Questions} />
                 <Route path="/questionBank" children={<Dashboard />} component = {questionBank  } />
                 <Route path="/Dashboard" component = {Dashboard} />

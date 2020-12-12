@@ -14,6 +14,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Grid from "@material-ui/core/Grid";
 import { CircularProgress } from '@material-ui/core';
+import { Form , Col , Row} from 'react-bootstrap';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import {connect} from 'react-redux' ;
 import {setTitle ,
@@ -21,12 +22,10 @@ import {setTitle ,
         setStartHour ,
         setEndHour , 
         setExamLength } from './ExamSlice' ;
-
-import {
-    MuiPickersUtilsProvider,
-    KeyboardTimePicker,
-    KeyboardDatePicker,
-  } from '@material-ui/pickers';
+        
+import {MuiPickersUtilsProvider,
+        KeyboardTimePicker,
+        KeyboardDatePicker } from '@material-ui/pickers';
 
 class DialogExamFirst extends Component {
   constructor() {
@@ -36,7 +35,7 @@ class DialogExamFirst extends Component {
           description: '',
           generateNewClassId: true,
           success: false,
-          StartDate : new Date('2014-08-18T21:11:54')
+          StartDate : null
         }
         
   }
@@ -66,7 +65,7 @@ class DialogExamFirst extends Component {
     this.props.setDate(this.state.StartDate);
     this.props.setStartHour(this.state.StartHour);
     this.props.setEndHour(this.state.endHour);
-    // this.props.setLength(this.state);
+    this.props.setLength(this.state.examLength);
     setOpen(false);
   }  
 
@@ -146,7 +145,7 @@ class DialogExamFirst extends Component {
                 this.setState(prevstate=>{
                     console.log(e);
                     return{
-                        StartHour : e
+                        StartDate : e
                     }
                 })
             }}
@@ -174,6 +173,24 @@ class DialogExamFirst extends Component {
                   'aria-label': 'change time',
               }}
               />
+          </Grid>
+          <Grid container xs={12} justifyContent='center'>
+            <Form.Group as={Row} style={{marginTop : '16px'}} controlId="formPlaintextEmail">
+                <Col sm="1" ></Col>
+                <Form.Label column sm="5">
+                زمان آزمون به دقیقه :
+                </Form.Label>
+                <Col sm="4">
+                    <Form.Control type="text" defaultValue="0" 
+                    onChange={(e) => {
+                        this.setState(prevstate => {
+                          return {
+                            examLength : e.target.value
+                          }
+                        });                        
+                    }} />
+                </Col>
+            </Form.Group> 
           </Grid>
         </Grid>        
         </M_RTL>
