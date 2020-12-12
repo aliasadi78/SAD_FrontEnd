@@ -129,8 +129,8 @@ function AddQuestionExam(props) {
 
     const classes = useStyles();
 
-    const [soalImageBase64 , setSoalImageBase64] = React.useState("");
-    const [javabImageBase64 , setJavabImageBase64] = React.useState("");
+    const [soalImageBase64 , setSoalImageBase64] = React.useState(null);
+    const [javabImageBase64 , setJavabImageBase64] = React.useState(null);
 
     const [publicCheck , setpublicCheck ] = React.useState(false);
     const [difficulty , setDifficulty] = React.useState("LOW");
@@ -166,7 +166,7 @@ function AddQuestionExam(props) {
     };    
 
     const handleChangeAddToMyQuestion = () => {
-        setpublicCheck(!publicCheck);        
+        setAddToMyQuestions(!addToMyQuestions);        
     };    
     const AddQuestion = (type , publicCheck , question , 
     answer , options , base , hardness , course , chapter , soalImage , javabImage ) => {
@@ -188,17 +188,16 @@ function AddQuestionExam(props) {
         }
         const ajson = JSON.stringify(a);
         
-        dispatch(addQuestion(ajson));
-
-        if(addToMyQuestions == true)
-            axios.post(serverURL() + "question" , ajson , tokenConfig() )
-            .then(res => {
-                console.log(res);            
-                setQuestionAdded(true);
-            })
-            .catch(e => {
-                console.log(e);
-            });
+        dispatch(addQuestion(a));
+        
+        axios.post(serverURL() + "question" , ajson , tokenConfig() )
+        .then(res => {
+            console.log(res);            
+            setQuestionAdded(true);
+        })
+        .catch(e => {
+            console.log(e);
+        });
     }
     return (
         <React.Fragment>
@@ -473,38 +472,10 @@ function AddQuestionExam(props) {
                                 
                                 <UploadImage
                                 getImage={(value)=>{
-                                    setSoalImageBase64(value)
+                                    setJavabImageBase64(value)
                                 }}
                                  id = "javab" />
-                                
-                                <Grid item xs={5} className = {classes.grid} >                                    
-                                    <FormControlLabel                                        
-                                        control={<Checkbox checked={addToMyQuestions} onChange={handleChangeAddToMyQuestion}
-                                            className ={classes.checkbox} color='#EE6C4D' />}
-                                        label="سوال برای خودم ذخیره شود"
-                                        style = {{fontFamily: 'Vazir' , color : 'black'}}
-                                        LabelProps={{style:{fontFamily: 'Vazir'}}}
-                                        InputProps={{
-                                            style:{fontFamily: 'Vazir'},
-                                        }}
-                                    />                                    
-                                </Grid>
-
-                                <Grid item xs={7} className = {classes.grid} >                                    
-                                    <FormControlLabel                                        
-                                        control={<Checkbox checked={publicCheck} onChange={handleChange}
-                                            className ={classes.checkbox} color='#EE6C4D' />}
-                                        label="سوالم برای بقیه کاربران در دسترس باشد."
-                                        style = {{fontFamily: 'Vazir' , color : 'black'}}
-                                        LabelProps={{style:{fontFamily: 'Vazir'}}}
-                                        InputProps={{
-                                            style:{fontFamily: 'Vazir'},
-                                        }}
-                                    />                                    
-                                </Grid>
-
-                                <Grid item xs={3}></Grid>
-
+                                                                
                                 <Grid item xs={4}>                                    
                                     <Button variant="contained"
                                      onClick={() => {                                                                                                                                                                 
@@ -523,6 +494,19 @@ function AddQuestionExam(props) {
                                         </Typography>
                                     </Button>                                    
                                 </Grid>
+
+                                <Grid item xs={7} className = {classes.grid} >                                    
+                                    <FormControlLabel                                        
+                                        control={<Checkbox checked={publicCheck} onChange={handleChange}
+                                            className ={classes.checkbox} color='#EE6C4D' />}
+                                        label="سوالم برای بقیه کاربران در دسترس باشد."
+                                        style = {{fontFamily: 'Vazir' , color : 'black'}}
+                                        LabelProps={{style:{fontFamily: 'Vazir'}}}
+                                        InputProps={{
+                                            style:{fontFamily: 'Vazir'},
+                                        }}
+                                    />                                    
+                                </Grid>                                                                
 
                             </Grid>
                             { questionAdded == true ?

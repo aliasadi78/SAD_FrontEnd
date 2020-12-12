@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ExamListItem(props) {
   const classes = useStyles();
+  const history = useHistory();
 
   return (
     <div className={classes.root}>
@@ -44,11 +46,21 @@ export default function ExamListItem(props) {
           alignItems="center"
         >
             <Grid item xs = {4} className={classes.grid}>
+              {props.isAdmin == false ?
                 <Button variant="contained" className = {classes.button}>          
                     <h5 style={{fontFamily: 'Vazir'}}>                        
                     مشاهده 
                     </h5>                    
                 </Button>
+                :
+                <Button variant="contained" className = {classes.button} onClick={()=> {
+                  history.push("/EditExam/"+ props.classId + "/" + props.id);
+                }}>          
+                    <h5 style={{fontFamily: 'Vazir'}}>                        
+                    ویرایش
+                    </h5>                    
+                </Button>
+              }
             </Grid>
             <Grid item xs = {4} className={classes.grid}>
                 از 9/9/99 تا 10/9/99
