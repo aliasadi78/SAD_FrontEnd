@@ -33,6 +33,12 @@ import { Dialog, Paper } from '@material-ui/core';
 import FirstDialogExam from './DialogExamFirst';
 import {mainListItems} from '../Class/InsideClass/insideClassDrawerList' ;
 import List from '@material-ui/core/List';
+import {setTitle ,
+  setDate ,
+  setStartHour ,
+  setEndHour , 
+  setExamLength ,
+  setQuestions } from './ExamSlice' ;
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -191,12 +197,30 @@ function CreateExam(props){
     const [userQuestions , setUserQuestions] = React.useState([]);
     const [questionsFound,setQuestionsFound] = React.useState(false);
     const [editMode , isEditMode] = React.useState(props.location.pathname.includes("EditExam"));
-    
+    const [ informationLoad , setInformationLoad] = React.useState(false);
     const examId = props.match.params.examId ;    
     const classId = props.match.params.classId ;  
     const history = useHistory() ;      
-
-    console.log(props.index);
+    
+    if(editMode && !informationLoad){
+      axios.get(serverURL() + "class/" + classId + "/exams/" + examId , tokenConfig())
+      .then(res=>{
+        console.log(res.data);        
+        props.setTitle(res.data.exam.name);
+        // handle date here immediatly
+        props.setLength(res.data.exam.examLength);
+        props.setQuestions(res.data.exam.questions);
+        setInformationLoad(true);        
+      })
+      .catch(err=>{
+        console.log(err);
+      });
+    }
+    if(editMode == false){
+      // props.setQuestions([]);
+      // props.setTitle(null);
+      console.log("qwerqe");
+    }
 
     const handleDrawerOpen = () => {
         setOpen(true);      
@@ -245,7 +269,31 @@ function CreateExam(props){
             {editMode == true &&  <Button variant="contained" color="#98C1D9" 
               style={{fontFamily: 'Vazir'}}
               className = {classes.button}
-              onClick={()=>{                  
+              onClick={()=>{                                      
+                  const arr = [] ;
+                  props.questions.forEach(q => {
+                      arr.push({"question" : q.question._id , "grade" : q.grade });
+                  });
+  
+                  const a = {
+                    "name" : props.title , 
+                    "startDate" : "2020-12-14T23:28:26.607Z" , // props.startDate , 
+                    "endDate" :  "2020-12-15T23:28:26.607Z" ,//props.endDate ,
+                    "questions" :  arr ,
+                    "examLength" :  props.examLength ,
+                    "examId" : examId                  
+                  };
+                  
+                  const ajson = JSON.stringify(a);
+                  console.log(ajson);
+                  axios.put(serverURL() + "exam" , ajson , tokenConfig() )
+                  .then(res => {                  
+                    // history.push("/class/" + classId);
+                    console.log("edit shod");
+                  })
+                  .catch(err => {
+                    console.log(err.message);
+                  });                
               }}
               >
               ذخیره
@@ -274,8 +322,7 @@ function CreateExam(props){
                 const ajson = JSON.stringify(a);
                 console.log(ajson);
                 axios.post(serverURL() + "exam" , ajson , tokenConfig() )
-                .then(res => {
-                  console.log("success");
+                .then(res => {                  
                   history.push("/class/" + classId);
                 })
                 .catch(err => {
@@ -344,7 +391,7 @@ function CreateExam(props){
         })}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>            
-            <FirstDialogExam />
+            {editMode==false && <FirstDialogExam /> }
            {/* ------------------------------------------------------------------------ */}
             <Material_RTL >
            <Grid container spacing ={2} style={{width:'100%'}}>
@@ -398,11 +445,12 @@ function CreateExam(props){
             <Grid item xs={12} sm={12} lg={6} height="100%" >
               <Paper className={classes.paper} >
                 {
-                  props.questions.map(q => q.question).map((p , index)=> 
+                  props.questions.map((p , index)=> 
                     <QuestionHolder_Create
                       backColor="#98C1D9"
                       mode = "preview"
-                      question={p} />
+                      question={p.question}
+                      grade={p.grade} />
                   )
                 }   
                 {props.questions.length == 0 &&
@@ -440,4 +488,15 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(CreateExam)
+const mapDispatchToProps = (dispatch) => {
+  return{
+    setTitle : (t) => dispatch(setTitle(t)) , 
+    setDate : (t) => dispatch(setDate(t)),
+    setStartHour : (t) => dispatch(setStartHour(t)) ,
+    setEndHour : (t) => dispatch(setEndHour(t)) ,
+    setLength : (t) => dispatch(setExamLength(t)) ,
+    setQuestions : (t) => dispatch(setQuestions(t))
+  }
+}
+
+export default connect(mapStateToProps , mapDispatchToProps)(CreateExam)

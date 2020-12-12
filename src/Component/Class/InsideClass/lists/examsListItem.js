@@ -54,7 +54,8 @@ export default function ExamListItem(props) {
                 </Button>
                 :
                 <Button variant="contained" className = {classes.button} onClick={()=> {
-                  history.push("/EditExam/"+ props.classId + "/" + props.id);
+                  // history.push("/EditExam/"+ props.classId + "/" + props.id);
+                  window.location.href = "/EditExam/"+ props.classId + "/" + props.id ;
                 }}>          
                     <h5 style={{fontFamily: 'Vazir'}}>                        
                     ویرایش

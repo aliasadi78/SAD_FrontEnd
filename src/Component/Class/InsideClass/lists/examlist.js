@@ -97,8 +97,8 @@ export default function Examslist (props){
                             {/* <Link href="/CreateExam"> */}
                               <Button className={classes.groupbutton}                               
                               onClick={()=>{
-                                // window.location.href = "/CreateExam" ;
-                                history.push("/createExam/" + props.classId);
+                                window.location.href = "/CreateExam/" + props.classId ;
+                                // history.push("/createExam/" + props.classId);
                               }}
                               variant="contained" color="primary"  >
                                 <h5 style={{fontFamily: 'Vazir'}}>
