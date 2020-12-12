@@ -140,7 +140,7 @@ export default function QuestionHolder_Create(props) {
                                         نمره
                                         </Form.Label>
                                         <Col sm="4">
-                                            <Form.Control type="text" defaultValue="0" 
+                                            <Form.Control type="text" defaultValue={props.grade} 
                                             onChange={(e) => {
                                                 dispatch(addGrade([props.question._id ,e.target.value ]))
                                             }} />
@@ -300,19 +300,7 @@ export default function QuestionHolder_Create(props) {
                                 
                                 {props.mode == "preview" &&     
                                 <Grid container xs={12} justifyContent='center' direction="row" >
-                                    <Grid item xs={2}>
-                                        <Button variant="contained"                                        
-                                            onClick={() => {                                                
-                                                dispatch(addQuestion(props.question));                                                
-                                            }} 
-                                            className={classes.EditButton}>
-
-                                            <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
-                                                اضافه
-                                            </Typography>
-                                        </Button>                                       
-                                    </Grid>
-                                    <Grid item xs={2}>                                        
+                                    <Grid item xs={4}>                                        
                                         <Button variant="contained" onClick={() => {
                                             if(props.mode=="select question")
                                                 handleDeleteQuestion( props.question._id);
@@ -320,7 +308,7 @@ export default function QuestionHolder_Create(props) {
                                                 dispatch(removeQuestion(props.question._id))
                                                 }} className={classes.DeleteButton}>
                                             <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
-                                                حذف
+                                                حذف از آزمون
                                             </Typography>
                                         </Button>                                                                         
                                     </Grid>                                    
