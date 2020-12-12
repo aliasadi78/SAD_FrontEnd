@@ -25,7 +25,7 @@ import Material_RTL from '../Material_RTL';
 import axios from 'axios' ;
 import { connect } from 'react-redux' ;
 import AddQuestionExam from './AddQuestion' ;
-
+import QuestionBank from './ExamQuestionBank';
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
   
@@ -282,6 +282,7 @@ function CreateExam(props){
                     axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
                     index={value}
                     onChangeIndex={handleChangeIndex}
+                    style={{overflowX: 'visible'}}
                 >
                     <TabPanel value={value} index={0} dir={theme.direction}>                      
                       <AddQuestionExam
@@ -304,7 +305,7 @@ function CreateExam(props){
                       }                      
                     </TabPanel>
                     <TabPanel value={value} index={2} dir={theme.direction}>
-                    Item Three
+                      <QuestionBank/>
                     </TabPanel>
                 </SwipeableViews>
             </Grid>
