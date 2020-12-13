@@ -36,13 +36,13 @@ function QuestionCard (props){
   var data;
   var Example;
   return (
-    <div style={{backgroundColor: 'white',position: 'relative',border: 'solid',margin: '6% 0% 0% 6%',right: '-2%'}}>
+    <div style={{position: 'relative',right: '-10%',width: '112%',backgroundColor:'white'}}>
       <div style={{}}>
-      <Typography style={{backgroundColor: 'white',color: 'black',fontFamily: 'Vazir',marginTop: '2%',direction: 'rtl',textAlign: 'right',position: 'relative'}} >
+      <Typography style={{backgroundColor: 'white',color: 'black',fontFamily: 'Vazir',direction: 'rtl',textAlign: 'right',}} >
         <div style={{color : 'gray'}}>
           <Shenase q={props.q} category={props.category}/>
         </div>
-          <div style={{position: 'relative',marginTop: '1%',right: '3%',width: '95%'}}>{props.q.question}</div>
+          <div style={{textAlign: 'justify',margin: '0 5px 0 5px'}}>{props.q.question}</div>
             <Card style={{position: 'relative',right: '37%',width:'25%',}}>
               <CardMedia title="بزرگ نمایی تصویر">
                 {props.q.imageQuestion !== null ? ( 
@@ -71,7 +71,7 @@ function QuestionCard (props){
                 </Dialog>
               </CardMedia>
             </Card>
-            <div style={{position : 'relative',right: '4%',marginTop: '2%'}}>
+            <div style={{position : 'relative',right: '2%',marginTop: '1%'}}>
               {props.q.type === "TEST" ? (
                <div>
                 <div>۱){props.q.options[0].option}</div>
@@ -84,15 +84,14 @@ function QuestionCard (props){
                   }
                )) : null}
             </div>
-            {openCollapse ? <Icon title="بستن جواب" style={{color: '#1CA0A0',position: 'relative',right: '48.5%',marginTop: '4%',cursor: 'pointer',}}   button  onClick={()=>{
+            {openCollapse ? <Icon title="بستن جواب" style={{color: '#1CA0A0',position: 'relative',right: '48.5%',cursor: 'pointer',}}   button  onClick={()=>{
                   handleCollapse();
-            }}>vpn_key</Icon>: <Icon title="دیدن جواب" style={{color: '#1CA0A0',position: 'relative',right: '48.5%',marginTop: '4%',cursor: 'pointer'}} button onClick={()=>{
+            }}>vpn_key</Icon>: <Icon title="دیدن جواب" style={{color: '#1CA0A0',position: 'relative',right: '48.5%',cursor: 'pointer'}} button onClick={()=>{
                   handleCollapse();
             }}>vpn_key</Icon>}</Typography>
         </div>
-        <Collapse in={openCollapse} timeout="auto" unmountOnExit>
-          <div style={{border: 'solid'}}>
-          <Typography style={{fontFamily: 'Vazir',textAlign: 'right',width: '95%',margin: '0% 3% 0% 0%',color:'black'}}>
+        <Collapse in={openCollapse} timeout="auto" unmountOnExit >
+          <Typography style={{fontFamily: 'Vazir',textAlign: 'right',color:'black'}}>
             <hr/>
             {props.q.answers.map((answers) => {
             return (<div>{answers.answer}</div>)})}
@@ -125,7 +124,6 @@ function QuestionCard (props){
               </CardMedia>
             </Card>
           </Typography>
-        </div>
       </Collapse>
  </div>)
 }

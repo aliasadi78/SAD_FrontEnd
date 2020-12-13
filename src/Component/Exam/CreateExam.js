@@ -437,7 +437,7 @@ function CreateExam(props){
                         )
                       }                      
                     </TabPanel>
-                    <TabPanel value={value} index={2} dir={theme.direction}>
+                    <TabPanel value={value} index={2} dir={theme.direction} >
                       <QuestionBank/>
                     </TabPanel>
                 </SwipeableViews>

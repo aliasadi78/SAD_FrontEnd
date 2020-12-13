@@ -33,6 +33,53 @@ class QuestionBank extends Component{
             chapter: [],
         }
     }
+    componentDidMount(){
+        const [pending, setPending] = this.props.pending;
+        const [pendi, setPendi] = this.props.pendi;
+        const [list, setList] = this.props.list;
+        const [category, setCategory] = this.props.category;
+        const [totalpage, setTotalpage] = this.props.totalpage;
+        const [check,setCheck] = this.props.check;
+        var res;
+          if(check != true ){
+            axios.get(serverURL() + "public/question/category", tokenConfig() )
+            .then(res => {
+                setCategory(res.data);
+                console.log(this.state)
+                this.setState({ base : [],course: [],hardness: [],chapter: [],type :[]});
+                setPending(true);
+                setPendi(true);
+                res = [];
+                setList([]);
+                axios.post(serverURL() + "bank?page=1&limit=20",
+                this.state,tokenConfig())
+                    .then(result => {
+                      res.push(...result.data.questions);
+                        console.log(result);
+                        console.log(res);
+                        var ll = res.map((q) => q);
+                        setList([...ll]);
+                        console.log(this.state);
+                        setPendi(false);
+                        setTotalpage(result.data.totalPages)
+                        setCheck(true);
+                        
+                    }).catch(error => {
+                        console.log(error.messege);
+                        this.setState({ base : [],course: [],hardness: [],chapter: [],type :[]});
+                        alert("سوالی با این مشخصات فعلا در بانک سوال موجود نمی باشد");
+                        setPending(false); 
+                        setPendi(false);
+                        console.log("bad");
+                        setCheck(true);
+                    })
+                    setCheck(true);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+            
+            }}
     render(){
         const classes = this.props.classes;
         const [pending, setPending] = this.props.pending;
@@ -45,18 +92,7 @@ class QuestionBank extends Component{
         const [hardness, setHardness] = this.props.hardness;
         const [chapter, setChapter] = this.props.chapter;
         const [totalpage, setTotalpage] = this.props.totalpage;
-        const [check,setCheck] = this.props.check;
         var res;
-        if(check != true ){
-        axios.get(serverURL() + "public/question/category", tokenConfig() )
-        .then(res => {
-            setCategory(res.data);
-            setCheck(true);
-        })
-        .catch(e => {
-            console.log(e);
-        });}
-        console.log(category.base)
         const handleChangeBase = e => {
           setPending(false);
           setPendi(false);
@@ -188,7 +224,6 @@ class QuestionBank extends Component{
                   }
                 }
             })
-            console.log(this.state)
             e.preventDefault();
             res = [];
             setList([]);
@@ -239,11 +274,10 @@ class QuestionBank extends Component{
             <div>
                 <Material_RTL>
                 <M_RTL>
-                  <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir',backgroundColor : '#f2f2f2',width: '108%',display: 'block',margin: '0px -17px 0px 0px'}}>
+                  <Container className={classes.paper} alignItems="center" component="main" style={{position: 'relative',fontFamily: 'Vazir',backgroundColor : '#f2f2f2',width: '109%',margin: '0px -4% 0px 0px',}}>
                     <CssBaseline/>
-                <div style={{position: 'relative',}}>
                 <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
-                <div>
+                <Grid  item xs={12}>
                 <FormControl className={classes.formControl}>
                   <InputLabel id="demo-mutiple-checkbox-label1"><span style={{fontFamily: 'Vazir',color:'#1CA0A0'}}>پایه</span></InputLabel>
                   <Select
@@ -260,12 +294,12 @@ class QuestionBank extends Component{
                     >
                     <MenuItem value={"all"}>
                       <Checkbox  checked={base.length === Object.values(category.base).length ? ("انتخاب همه") : null}  style={{color: '#1CA0A0',fontFamily: 'Vazir'}}/>
-                      <ListItemText primary={'انتخاب همه'} />
+                        <ListItemText primary={<span style={{fontFamily: 'Vazir'}}>{'انتخاب همه'}</span> }/>
                       </MenuItem>
                       {(Object.values(category.base)).map((name) => (
                         <MenuItem key={name} value={name}>
                           <Checkbox  checked={base.indexOf(name) > -1} style={{color: '#1CA0A0',fontFamily: 'Vazir'}}/>
-                          <ListItemText primary={name}/>
+                          <ListItemText primary={<span style={{fontFamily: 'Vazir'}}>{name}</span>}/>
                         </MenuItem>
                       ))}
                       </Select>
@@ -286,12 +320,12 @@ class QuestionBank extends Component{
                   >
                     <MenuItem value={"all"}>
                       <Checkbox  checked={course.length === Object.values(category.course).length ? ("انتخاب همه") : null}  style={{color: '#1CA0A0',fontFamily: 'Vazir'}}/>
-                      <ListItemText primary={'انتخاب همه'} />
+                      <ListItemText primary={<span style={{fontFamily: 'Vazir'}}>{'انتخاب همه'}</span> } />
                       </MenuItem>
                       {(Object.values(category.course)).map((name) => (
                         <MenuItem key={name} value={name}>
                           <Checkbox  checked={course.indexOf(name) > -1} style={{color: '#1CA0A0',fontFamily: 'Vazir'}}/>
-                          <ListItemText primary={name} />
+                          <ListItemText primary={<span style={{fontFamily: 'Vazir'}}>{name}</span>} />
                         </MenuItem>
                       ))}
                       </Select>
@@ -312,12 +346,12 @@ class QuestionBank extends Component{
                   >
                     <MenuItem value={"all"}>
                       <Checkbox  checked={type.length === Object.values(category.type).length ? ("انتخاب همه") : null}  style={{color: '#1CA0A0',fontFamily: 'Vazir'}}/>
-                      <ListItemText primary={'انتخاب همه'} />
+                      <ListItemText primary={<span style={{fontFamily: 'Vazir'}}>{'انتخاب همه'}</span> } />
                       </MenuItem>
                       {(Object.values(category.type)).map((name) => (
                         <MenuItem key={name} value={name}>
                           <Checkbox  checked={type.indexOf(name) > -1} style={{color: '#1CA0A0',fontFamily: 'Vazir'}}/>
-                          <ListItemText primary={name} />
+                          <ListItemText primary={<span style={{fontFamily: 'Vazir'}}>{name}</span>} />
                         </MenuItem>
                       ))}
                       </Select>
@@ -338,12 +372,12 @@ class QuestionBank extends Component{
                   >
                     <MenuItem value={"all"}>
                       <Checkbox  checked={hardness.length === Object.values(category.hardness).length ? ("انتخاب همه") : null}  style={{color: '#1CA0A0',fontFamily: 'Vazir'}}/>
-                      <ListItemText primary={'انتخاب همه'} />
+                      <ListItemText primary={<span style={{fontFamily: 'Vazir'}}>{'انتخاب همه'}</span> } />
                       </MenuItem>
                       {(Object.values(category.hardness)).map((name) => (
                         <MenuItem key={name} value={name}>
                           <Checkbox  checked={hardness.indexOf(name) > -1} style={{color: '#1CA0A0',fontFamily: 'Vazir'}}/>
-                          <ListItemText primary={name} />
+                          <ListItemText primary={<span style={{fontFamily: 'Vazir'}}>{name}</span>} />
                         </MenuItem>
                       ))}
                       </Select>
@@ -365,22 +399,22 @@ class QuestionBank extends Component{
                   >
                     <MenuItem value={"all"}>
                       <Checkbox  checked={chapter.length === (Object.values(category.chapter)).length ? ("انتخاب همه") : null}  style={{color: '#1CA0A0',fontFamily: 'Vazir'}}/>
-                      <ListItemText primary={'انتخاب همه'} />
+                      <ListItemText primary={<span style={{fontFamily: 'Vazir'}}>{'انتخاب همه'}</span> } />
                       </MenuItem>
                       {(Object.values(category.chapter)).map((name) => (
                         <MenuItem key={name} value={name}>
                           <Checkbox  checked={chapter.indexOf(name) > -1} style={{color: '#1CA0A0',fontFamily: 'Vazir'}}/>
-                          <ListItemText primary={name}/>
+                          <ListItemText primary={<span style={{fontFamily: 'Vazir'}}>{name}</span>}/>
                         </MenuItem>
                       ))}
                       </Select>
                     </FormControl>
-                  </div>
+                  </Grid>
                 <br/>
                 <Grid container>
                     <Grid item xs={12}>
                         <Grid classes={classes.root} >
-                        <LoadingButton onClick={handleClick} startIcon={<Icon>search</Icon>} pendingPosition="center" className={classes.topButton} pending={pendi} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#EE6C4D',position: 'absolute',top: '60%',right: '40%'}}>
+                        <LoadingButton onClick={handleClick} startIcon={<Icon>search</Icon>} pendingPosition="center" className={classes.topButton} pending={pendi} variant="contained"  style={{fontFamily: 'Vazir',backgroundColor: '#EE6C4D',position: 'relative',right: '-1%'}}>
                         جست و جو
                         </LoadingButton>
                         </Grid>
@@ -388,30 +422,35 @@ class QuestionBank extends Component{
                 </Grid>
                 <br/>  
                 </ValidatorForm >
-                <div style={{position: 'relative',color: 'black'}}>
-                        {pending ? (
-                              <ThemeProvider theme={this.props.state} className={classes.root}>
-                                <Pagination onChange={handlePage} variant="outlined" size="small" siblingCount={0} boundaryCount={1} count={totalpage} shape="rounded" />
-                              </ThemeProvider>
-                            )
-                        : null}</div> 
-                </div>
                 </Container>
                 <br/>
                 {pending ? 
-                   pendi ? <div style={{margin: '5% 27.5% 0 0'}}><CircularProgress style={{color: '#1CA0A0'}}/></div>  :
+                   pendi ? <div style={{margin: '5% 0 0 0'}}><CircularProgress style={{color: '#1CA0A0'}}/></div>  :
                    <div>
-                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir', backgroundColor : "rgb(242 242 242)", position: 'fixed',width:'65%',display: 'block',height: '82%',margin: '25px 26.5% 19px 0px'}}>
+                <Container className={classes.paper} alignItems="center" component="main" style={{fontFamily: 'Vazir', backgroundColor : "rgb(242 242 242)",width: '109%',marginRight: '-4%',paddingTop: '2%'}}>
                 <CssBaseline/>
-                    <div id="ress" style={{width:'100%',height:'100%',position: 'absolute'}}>
-                      <ol style={{listStyle: 'none'}}>
+                  <Grid item xs={12}>
+                    <Grid>
+                      <div id="ress">
+                      <ol style={{listStyle: 'none',}}>
                           {pending ? list.map((question)=>{
                               return(
                               <li key={question}><QuestionCard q={question} category={category}/><br/></li>
                             )
                           }) : null}
                       </ol>
-                    </div> 
+                    </div>
+                    </Grid>
+                  </Grid>
+                     
+                    <Grid >
+                        {pending ? (
+                              <Grid style={{display: 'flex',justifyContent: 'center'}}>
+                                <Pagination onChange={handlePage} variant="outlined" size="small" siblingCount={0} boundaryCount={1} count={totalpage} shape="rounded" />
+                              </Grid>
+                            )
+                        : null}
+                    </Grid> 
                 </Container></div> : null}
                 </M_RTL>
                 </Material_RTL>
@@ -435,6 +474,7 @@ const useStyles = makeStyles((theme) => ({
     '.MuiListItemText-primary' : {
     display: 'block',
     fontFamily: 'Vazir',
+    color: 'red'
     },
     root: {
       maxWidth: 345,
@@ -448,7 +488,9 @@ const useStyles = makeStyles((theme) => ({
       color : '#3D5A80' , 
       backgroundColor: 'white',
       color : 'white' ,
-      borderRadius: '5px',       
+      borderRadius: '5px',   
+      flexGrow: 1,
+      width : '100%'    
     },
     formControl: {
       margin: theme.spacing(1),
