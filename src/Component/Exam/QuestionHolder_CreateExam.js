@@ -10,6 +10,8 @@ import { useDispatch } from 'react-redux' ;
 import {
     addQuestion , removeQuestion , addGrade , moveUp
 } from './ExamSlice' ;
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -17,9 +19,10 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button' ;
 import axios from 'axios' ;
+import AddToQueueIcon from '@material-ui/icons/AddToQueue';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -48,7 +51,9 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,    
+    flexGrow: 1,        
+    paddingRight : '1px' ,
+    paddingLeft :  '1px' ,
     width : '100%',
     marginBottom : theme.spacing(2) 
   },
@@ -122,7 +127,7 @@ export default function QuestionHolder_Create(props) {
     return (
         <React.Fragment>
         <CssBaseline />
-        <Container maxWidth="lg" className = {classes.root}>            
+        <Container maxWidth="lg" className = {classes.root} >            
             <Material_RTL>
                 <RTL>
                     <Accordion   square              
@@ -178,7 +183,7 @@ export default function QuestionHolder_Create(props) {
                                             defaultValue = {props.question.question}                                  
                                             multiline
                                             disabled
-                                            rows={4}
+                                            // rows={4}
                                             fullWidth = 'true'
                                             className = {classes.BigForm}                                            
                                             variant="outlined"
@@ -198,28 +203,23 @@ export default function QuestionHolder_Create(props) {
                                 {props.mode == "select question" &&     
                                 <Grid container xs={12} justifyContent='center' direction="row" >
                                     <Grid item xs={2}>
-                                        <Button variant="contained"                                        
-                                            onClick={() => {                                                
-                                                dispatch(addQuestion(props.question));                                                
-                                            }} 
-                                            className={classes.EditButton}>
-
-                                            <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
-                                                اضافه
-                                            </Typography>
-                                        </Button>                                       
-                                    </Grid>
-                                    <Grid item xs={2}>                                        
-                                        <Button variant="contained" onClick={() => {
-                                            if(props.mode=="select question")
-                                                handleDeleteQuestion( props.question._id);
-                                            if(props.mode=="preview")
-                                                dispatch(removeQuestion(props.question._id))
-                                                }} className={classes.DeleteButton}>
-                                            <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
-                                                حذف
-                                            </Typography>
-                                        </Button>                                                                         
+                                        <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '12px'}}>اضافه به آزمون</span>}>
+                                            <IconButton variant="contained"                                        
+                                                onClick={() => {                                                
+                                                    dispatch(addQuestion(props.question));                                                
+                                                }} >
+                                                        <AddToQueueIcon fontSize="large" style={{color: '#EE6C4D',cursor:'pointer'}} />                                            
+                                            </IconButton>                                       
+                                        </Tooltip>
+                                    </Grid>                                    
+                                    <Grid item xs={2}>  
+                                        <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '12px'}}> حذف از سوالات من </span>}>
+                                            <IconButton variant="contained" onClick={() => {                                            
+                                                    handleDeleteQuestion( props.question._id);                                            
+                                                    }}>
+                                                        <DeleteIcon fontSize="large" style={{color: '#E63946',cursor:'pointer'}} />                                            
+                                            </IconButton>   
+                                        </Tooltip>                                                                      
                                     </Grid>                                    
                                 </Grid>   
                                 }     
