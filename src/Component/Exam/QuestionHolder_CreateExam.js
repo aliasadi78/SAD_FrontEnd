@@ -8,8 +8,12 @@ import Grid from '@material-ui/core/Grid';
 import { Form , Col , Row} from 'react-bootstrap';
 import { useDispatch } from 'react-redux' ; 
 import {
-    addQuestion , removeQuestion , addGrade
+    addQuestion , removeQuestion , addGrade , moveUp
 } from './ExamSlice' ;
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
@@ -134,9 +138,9 @@ export default function QuestionHolder_Create(props) {
                             >                            
                             <Grid container spacing={0}  >  
                                 {props.mode == "preview" &&
-                                    <div>
+                                    <Grid item xs={4}>
                                     <Form.Group as={Row} controlId="formPlaintextEmail">
-                                        <Form.Label column sm="2" style={{color: 'white'}}>
+                                        <Form.Label column sm="2" style={{color: 'balck'}}>
                                         نمره
                                         </Form.Label>
                                         <Col sm="4">
@@ -146,10 +150,29 @@ export default function QuestionHolder_Create(props) {
                                             }} />
                                         </Col>
                                     </Form.Group>
-                                    </div>
-                                }                              
+                                    </Grid>
+                                }                                      
+                                {props.mode == "preview" &&                                     
+                                    <Grid item xs={4}></Grid>
+                                }   
+                                {props.mode == "preview" &&                                     
+                                    <Grid item xs={4}>              
+                                        <ButtonGroup size="small" variant="contained" color="#3D5A80" aria-label="contained primary button group">
+                                            <Button onClick={()=> {
+                                                dispatch(moveUp(props.index));
+                                            }}><ArrowUpwardIcon /></Button>
+                                            <Button><ArrowDownwardIcon /></Button>
+                                            <Button onClick={() => {
+                                            if(props.mode=="select question")
+                                                handleDeleteQuestion( props.question._id);
+                                            if(props.mode=="preview")
+                                                dispatch(removeQuestion(props.question._id))
+                                                }}><HighlightOffIcon /></Button>
+                                        </ButtonGroup>                          
+                                    </Grid>                                                                
+                                }                       
                                 <Grid item xs={12}>
-                                    <Paper className={classes.paper}>
+                                    <Paper className={classes.paper} elevation={0}>
                                         <TextField                    
                                             id="outlined-multiline-static"
                                             defaultValue = {props.question.question}                                  
@@ -202,7 +225,7 @@ export default function QuestionHolder_Create(props) {
                                 }     
                                 {props.mode == "preview"  &&
                                     <Grid className={classes.expandGrid} item xs={12} >
-                                        <ExpandMoreIcon style={{ color: "white" , align: 'center'}}/>
+                                        <ExpandMoreIcon style={{ color: "#3D5A80" , align: 'center'}}/>
                                     </Grid>            
                                 }
                             </Grid>                            
@@ -296,24 +319,7 @@ export default function QuestionHolder_Create(props) {
                                         <img src={atob(props.question.imageAnswer)} 
                                         width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>
                                     </Grid>
-                                }
-                                
-                                {props.mode == "preview" &&     
-                                <Grid container xs={12} justifyContent='center' direction="row" >
-                                    <Grid item xs={4}>                                        
-                                        <Button variant="contained" onClick={() => {
-                                            if(props.mode=="select question")
-                                                handleDeleteQuestion( props.question._id);
-                                            if(props.mode=="preview")
-                                                dispatch(removeQuestion(props.question._id))
-                                                }} className={classes.DeleteButton}>
-                                            <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
-                                                حذف از آزمون
-                                            </Typography>
-                                        </Button>                                                                         
-                                    </Grid>                                    
-                                </Grid>   
-                                } 
+                                }                                                                 
                                                                                                                       
                         </AccordionDetails>                        
                     </Accordion> 

@@ -11,6 +11,10 @@ import M_RTL from "../M_RTL";
 import { makeStyles } from '@material-ui/core/styles';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import DateFnsUtils from '@date-io/date-fns';
+import { DatePicker, Space } from 'antd';
+import 'antd/dist/antd.css';
+import ReactDOM from 'react-dom';
+import '../../index.css' ;
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Grid from "@material-ui/core/Grid";
 import { CircularProgress } from '@material-ui/core';
@@ -26,6 +30,17 @@ import {setTitle ,
 import {MuiPickersUtilsProvider,
         KeyboardTimePicker,
         KeyboardDatePicker } from '@material-ui/pickers';
+
+const { RangePicker } = DatePicker;
+
+function onChange(value, dateString) {
+  console.log('Selected Time: ', value);
+  console.log('Formatted Selected Time: ', dateString);
+}
+
+function onOk(value) {
+  console.log('onOk: ', value);
+}
 
 class DialogExamFirst extends Component {
   constructor() {
@@ -72,8 +87,8 @@ class DialogExamFirst extends Component {
   return (
     <div>      
       <Dialog fullWidth style={{fontFamily: 'Vazir'}} open={open} onClose={handleClose} aria-labelledby="form-dialog-title">      
-      <DialogTitle style={{fontFamily: 'Vazir' , color : 'white' , backgroundColor : '#3D5A80',textAlign: 'center'}}>
-      <span style={{fontFamily: 'Vazir' ,}}>اضافه کردن آزمون جدید</span>
+      <DialogTitle style={{fontFamily: 'Vazir' , backgroundColor : '#3D5A80',textAlign: 'center'}}>
+      <span style={{fontFamily: 'Vazir' , color : 'white'}}>اضافه کردن آزمون جدید</span>
       </DialogTitle>
         {/* <DialogTitle  id="form-dialog-title"><span style={{direction: 'rtl',fontFamily: 'Vazir',position: 'absolute',right: '36%',top: '10%'}}>ویرایش کلاس</span></DialogTitle> */}
         {pendi ? (<div style={{margin: '3% 0% 3% 46%'}}><CircularProgress style={{color: '#0e918c'}}/></div> ) :
@@ -85,7 +100,7 @@ class DialogExamFirst extends Component {
           <Material_RTL>
           <M_RTL>
             <Grid container >
-        <Grid item xs={12}>        
+        <Grid item xs={12} id="dialog">        
         <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
           <TextField
             // autoFocus
@@ -114,8 +129,17 @@ class DialogExamFirst extends Component {
           
           </ValidatorForm >
           </Grid>
-          <Grid container xs={12} justifyContent='center'>
-            <KeyboardDatePicker
+          {/* <Grid id="examDate" container xs={12} justifyContent='center'> */}
+          <Space direction="vertical" size={12}>          
+          <RangePicker
+            showTime={{ format: 'HH:mm' }}
+            format="YYYY-MM-DD HH:mm"
+            onChange={onChange}
+            onOk={onOk}
+          />
+          </Space>
+                       
+            {/* <KeyboardDatePicker
             margin="normal"
             id="date-picker-dialog"
             label="تاریخ امتحان"            
@@ -174,6 +198,8 @@ class DialogExamFirst extends Component {
               }}
               />
           </Grid>
+          <Grid container xs={12} justifyContent='center'> */}
+          {/* </Grid> */}
           <Grid container xs={12} justifyContent='center'>
             <Form.Group as={Row} style={{marginTop : '16px'}} controlId="formPlaintextEmail">
                 <Col sm="1" ></Col>

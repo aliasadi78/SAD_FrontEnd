@@ -17,6 +17,7 @@ import {connect} from 'react-redux' ;
 import serverURL from './utils/serverURL' ;
 import tokenConfig from  './utils/tokenConfig' ;
 import { savePublicApis} from './Component/Question/QuestionsSlice' ;
+import DP from './Component/Exam/datepicker' ;
 import axios from 'axios' ;
 
 class App extends Component {    
@@ -37,7 +38,8 @@ class App extends Component {
         
         return (                
             <div className={classes.App}>                                                
-                <Route path="/" exact component={SignIn}/>
+                <DP />
+                {/* <Route path="/" exact component={SignIn}/>
                 <Route path="/signIn" exact component={SignIn}/>
                 <Route path="/signUp" component={SignUp}/>
                 <Route path="/profile/edit" children={<Dashboard />} component = {PersonalForms} />
@@ -50,7 +52,7 @@ class App extends Component {
                 <Route path="/EditExam/:classId/:examId" component = {CreateExam} />
                 <Route path="/user/questions" children={<Dashboard />} component = {Questions} />
                 <Route path="/questionBank" children={<Dashboard />} component = {questionBank  } />
-                <Route path="/Dashboard" component = {Dashboard} />
+                <Route path="/Dashboard" component = {Dashboard} /> */}
             </div>
 
         );

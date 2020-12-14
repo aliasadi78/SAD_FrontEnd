@@ -6,11 +6,17 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Zoom from '@material-ui/core/Zoom';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import { DragDropContext , Droppable , Draggable  } from 'react-beautiful-dnd';
+import DeleteIcon from '@material-ui/icons/Delete';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import EditIcon from '@material-ui/icons/Edit';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
+import SaveIcon from '@material-ui/icons/Save';
+import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
@@ -35,7 +41,7 @@ import {setTitle ,
   setStartHour ,
   setEndHour , 
   setExamLength ,
-  setQuestions } from './ExamSlice' ;
+  setQuestions } from './ExamSlice' ; 
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -263,38 +269,44 @@ function CreateExam(props){
               <MenuIcon />
             </IconButton>
                        
-            {editMode == true &&  <Button variant="contained" color="#98C1D9" 
-              style={{fontFamily: 'Vazir'}}
-              className = {classes.button}
-              onClick={()=>{                                      
-                  const arr = [] ;
-                  props.questions.forEach(q => {
-                      arr.push({"question" : q.question._id , "grade" : q.grade });
-                  });
-  
-                  const a = {
-                    "name" : props.title , 
-                    "startDate" : "2020-12-14T23:28:26.607Z" , // props.startDate , 
-                    "endDate" :  "2020-12-15T23:28:26.607Z" ,//props.endDate ,
-                    "questions" :  arr ,
-                    "examLength" :  props.examLength ,
-                    "examId" : examId                  
-                  };
-                  
-                  const ajson = JSON.stringify(a);
-                  console.log(ajson);
-                  axios.put(serverURL() + "exam" , ajson , tokenConfig() )
-                  .then(res => {                  
-                    // history.push("/class/" + classId);
-                    console.log("edit shod");
-                  })
-                  .catch(err => {
-                    console.log(err.message);
-                  });                
-              }}
-              >
-              ذخیره
-            </Button>    }
+            {editMode == true &&  
+            
+            <Tooltip title="ذخیره" TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
+              <Button variant="contained" color="#98C1D9" 
+                style={{fontFamily: 'Vazir'}}
+                className = {classes.button}
+                onClick={()=>{                                      
+                    const arr = [] ;
+                    props.questions.forEach(q => {
+                        arr.push({"question" : q.question._id , "grade" : q.grade });
+                    });
+    
+                    const a = {
+                      "name" : props.title , 
+                      "startDate" : "2020-12-14T23:28:26.607Z" , // props.startDate , 
+                      "endDate" :  "2020-12-15T23:28:26.607Z" ,//props.endDate ,
+                      "questions" :  arr ,
+                      "examLength" :  props.examLength ,
+                      "examId" : examId                  
+                    };
+                    
+                    const ajson = JSON.stringify(a);
+                    console.log(ajson);
+                    axios.put(serverURL() + "exam" , ajson , tokenConfig() )
+                    .then(res => {                  
+                      // history.push("/class/" + classId);
+                      console.log("edit shod");
+                    })
+                    .catch(err => {
+                      console.log(err.message);
+                    });                
+                }}
+                >
+                  <SaveIcon style={{color : '#3D5A80'}} />
+                {/* ذخیره */}
+              </Button>   
+            </Tooltip>
+               }
 
             {editMode == false && 
             <Button variant="contained" color="#98C1D9" 
@@ -309,8 +321,8 @@ function CreateExam(props){
 
                 const a = {
                   "name" : props.title , 
-                  "startDate" : "2020-12-14T23:28:26.607Z" , // props.startDate , 
-                  "endDate" :  "2020-12-15T23:28:26.607Z" ,//props.endDate ,
+                  "startDate" : props.startDate , 
+                  "endDate" :  props.endDate ,
                   "questions" :  arr ,
                   "examLength" :  props.examLength ,
                   "useInClass" : classId                  
@@ -320,7 +332,7 @@ function CreateExam(props){
                 console.log(ajson);
                 axios.post(serverURL() + "exam" , ajson , tokenConfig() )
                 .then(res => {                  
-                  history.push("/class/" + classId);
+                  // history.push("/class/" + classId);
                 })
                 .catch(err => {
                   console.log(err.message);
@@ -331,28 +343,34 @@ function CreateExam(props){
             </Button>
             }   
 
-            <Button variant="contained" color="#98C1D9" 
-              style={{fontFamily: 'Vazir'}}
-              className = {classes.button}
-              onClick={()=>{                  
-              }}
-              >
-              تغییر مشخصات 
-            </Button>            
+            <Tooltip title="تغییر مشخصات" TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
+              <Button variant="contained" color="#98C1D9" 
+                style={{fontFamily: 'Vazir'}}
+                className = {classes.button}
+                onClick={()=>{                  
+                }}
+                >
+                  <EditIcon  style={{color : '#3D5A80'}} />
+                {/* تغییر مشخصات  */}
+              </Button>            
+            </Tooltip>
 
             {editMode == true && 
-            <Button variant="contained" color="#98C1D9" 
-              style={{fontFamily: 'Vazir'}}
-              className = {classes.button}
-              onClick={()=>{   
-                axios.delete(serverURL() + "exam/" + examId , tokenConfig())
-                .then(res => {
-                  history.push("/class/" + classId);
-                });                              
-              }}
-              >
-              حذف آزمون
-            </Button>    
+            <Tooltip title="حذف آزمون" TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
+              <Button variant="contained" color="#98C1D9" 
+                style={{fontFamily: 'Vazir'}}
+                className = {classes.button}
+                onClick={()=>{   
+                  axios.delete(serverURL() + "exam/" + examId , tokenConfig())
+                  .then(res => {
+                    // history.push("/class/" + classId);
+                  });                              
+                }}
+                >
+                  <DeleteIcon style={{color : '#3D5A80'}} />
+                {/* حذف آزمون */}
+              </Button>    
+            </Tooltip>
             }
 
             <Typography style={{fontFamily: 'Vazir' , marginRight : '16px'}} >
@@ -423,13 +441,13 @@ function CreateExam(props){
                     </TabPanel>
                     <TabPanel value={value} index={1} dir={theme.direction}>
                       {questionsFound == true &&
-                        userQuestions.map((m , index) => 
+                        userQuestions.map((m , index) =>                           
                           <QuestionHolder_Create                             
                             backColor = '#f2f2f2'   
                             mode = "select question"                            
                             index = {index}                            
                             question = {m}
-                          />
+                          />                          
                         )
                       }                      
                     </TabPanel>
@@ -439,16 +457,38 @@ function CreateExam(props){
                 </SwipeableViews>
             </Grid>
             <Grid item xs={12} sm={12} lg={6} height="100%" >
+              <Paper square elevation={3} style={{backgroundColor : '#1ca0a0' ,paddingBottom : '10px' , paddingTop : '10px'
+                     , marginBottom : '25px'}}>
+                <Typography variant='h6' style={{fontFamily: 'Vazir' , color : 'white'}} >
+                      پیش نمایش امتحان
+                </Typography>
+              </Paper>
               <Paper className={classes.paper} >
-                {
-                  props.questions.map((p , index)=> 
-                    <QuestionHolder_Create
-                      backColor="#98C1D9"
-                      mode = "preview"
-                      question={p.question}
-                      grade={p.grade} />
-                  )
-                }   
+                <DragDropContext>
+                  <Droppable droppableId="characters">
+                    {(provided) => (
+                        <ul>
+                        {
+                          props.questions.map((p , index)=>                             
+                            <Draggable key={index} draggableId={index} index={index}>
+                              {(provided) => (
+                                <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                  <QuestionHolder_Create
+                                    backColor="#white"
+                                    mode = "preview"
+                                    index = {index}
+                                    elevation = {0}
+                                    question={p.question}
+                                    grade={p.grade} />                    
+                                </li>
+                              )}
+                            </Draggable>                                                
+                          )
+                        }   
+                        </ul>
+                    )}                                        
+                </Droppable>
+                </DragDropContext>
                 {props.questions.length == 0 &&
                   <Typography style={{fontFamily: 'Vazir' , color : '#8c8c8c'}} >
                       سوالات امتحان اینجا نمایش داده میشوند . 
