@@ -32,6 +32,9 @@ import axios from 'axios' ;
 import { connect } from 'react-redux' ;
 import { useHistory } from "react-router-dom";
 import AddQuestionExam from './AddQuestion' ;
+
+import QuestionBank from './ExamQuestionBank';
+
 import { Dialog, Paper } from '@material-ui/core';
 import FirstDialogExam from './DialogExamFirst';
 import {mainListItems} from '../Class/InsideClass/insideClassDrawerList' ;
@@ -429,6 +432,7 @@ function CreateExam(props){
                     axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
                     index={value}
                     onChangeIndex={handleChangeIndex}
+                    style={{overflowX: 'visible'}}
                 >
                     <TabPanel value={value} index={0} dir={theme.direction}>                      
                       <AddQuestionExam
@@ -451,8 +455,8 @@ function CreateExam(props){
                         )
                       }                      
                     </TabPanel>
-                    <TabPanel value={value} index={2} dir={theme.direction}>
-                    Item Three
+                    <TabPanel value={value} index={2} dir={theme.direction} >
+                      <QuestionBank/>
                     </TabPanel>
                 </SwipeableViews>
             </Grid>
