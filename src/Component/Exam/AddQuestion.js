@@ -189,14 +189,28 @@ function AddQuestionExam(props) {
             "imageQuestion": soalImage,
             "imageAnswer": javabImage,
         }
-        const ajson = JSON.stringify(a);
-        
-        dispatch(addQuestion(a));
+        const ajson = JSON.stringify(a);                
         
         axios.post(serverURL() + "question" , ajson , tokenConfig() )
         .then(res => {
-            console.log(res);            
-            setQuestionAdded(true);
+            console.log(res);    
+            const b = {
+                "type": type ,
+                "public": publicCheck,            
+                "question": question,
+                "answers": answers ,
+                "options": options,
+                "base": "" +  base + "",
+                "hardness":  hardness,
+                "course": course , 
+                "chapter" : chapter,
+                "imageQuestion": soalImage,
+                "imageAnswer": javabImage,
+                "_id" : res.data.questionId
+            }
+            const bjson = JSON.stringify(b);         
+            dispatch(addQuestion(b));
+            // setQuestionAdded(true);
         })
         .catch(e => {
             console.log(e);

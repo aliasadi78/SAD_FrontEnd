@@ -281,7 +281,14 @@ function CreateExam(props){
                 onClick={()=>{                                      
                     const arr = [] ;
                     props.questions.forEach(q => {
+                      if(q.question._id != null)
                         arr.push({"question" : q.question._id , "grade" : q.grade });
+
+                      if(q.question.qId != null)
+                        arr.push({"question" : q.question.qId , "grade" : q.grade });
+
+                      if(q._id != null)
+                        arr.push({"question" : q._id , "grade" : q.grade });
                     });
     
                     const a = {
@@ -318,8 +325,16 @@ function CreateExam(props){
               onClick={()=>{    
                 
                 const arr = [] ;
-                props.questions.forEach(q => {
-                    arr.push({"question" : q.question._id , "grade" : q.grade });
+                props.questions.forEach(q => {    
+                    if(q.question._id != null)
+                      arr.push({"question" : q.question._id , "grade" : q.grade });
+
+                    if(q.question.qId != null)
+                      arr.push({"question" : q.question.qId , "grade" : q.grade });
+
+                    if(q._id != null)
+                      arr.push({"question" : q._id , "grade" : q.grade });
+
                 });
 
                 const a = {
@@ -514,6 +529,7 @@ function CreateExam(props){
 
 const mapStateToProps = (state) => {    
   return {    
+    ...state, 
     grade : state.edittingQuestion.base ,
     chapter : state.edittingQuestion.chapter ,
     course : state.edittingQuestion.course , 
