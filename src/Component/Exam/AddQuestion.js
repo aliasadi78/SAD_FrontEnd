@@ -48,7 +48,9 @@ const useStyles = makeStyles((theme) => ({
     
     
   root: {
-    flexGrow: 1,
+    // flexGrow: 1,
+    paddingLeft : '0px' , 
+    paddingRight : '0px' , 
     backgroundColor : 'white' ,
     // marginTop : theme.spacing(5) ,
     width : '100%'
@@ -89,8 +91,8 @@ const useStyles = makeStyles((theme) => ({
   BigForm :{},
   details :{},
   dropdowns : {
-    marginRight : theme.spacing(1) ,
-    marginLeft : theme.spacing(1) ,
+    // marginRight : theme.spacing(1) ,
+    // marginLeft : theme.spacing(1) ,
   },
   Button :{
       backgroundColor :'#EE6C4D' ,
@@ -111,6 +113,7 @@ const useStyles = makeStyles((theme) => ({
   },
   FormsPaper :{
     padding : theme.spacing(2), 
+    width : 'inherit'
   },
 }));
 
@@ -205,7 +208,7 @@ function AddQuestionExam(props) {
         <Container maxWidth="lg" className = {classes.root}>            
             <Material_RTL>
                 <RTL>
-                        <Paper style={{backgroundColor : props.backColor}} className = {classes.FormsPaper} >
+                        <Paper style={{backgroundColor : props.backColor }} className = {classes.FormsPaper} >
                             <Grid container spacing={0}>                                
                                 <Grid item xs={12}>
                                     <Paper className={classes.questionFacePaper}>
@@ -235,24 +238,23 @@ function AddQuestionExam(props) {
 
                             </Grid>                                                                                
                                 <Grid container spacing={3} >                 
-
-                                    <Grid item xs={4}>                                            
-                                        <FormControl className={classes.formControl}>
+                                    
+                                        <FormControl className={classes.formControl}>                                            
                                             <InputLabel 
                                             id="demo-simple-select-label"
-                                            style={{fontFamily: 'Vazir'}}                                                
+                                            style={{fontFamily: 'Vazir' ,color:'#1CA0A0'}}                                                
                                             >
                                                 پایه
                                             </InputLabel> 
                                             <Select
                                                 value = {grade}
                                                 defaultValue={props.index >= 0 && props.questions[0].base}
-                                                variant = "filled"                                                    
+                                                // variant = "filled"                                                    
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
-                                                margin = "dense"
+                                                // margin = "dense"
                                                 style={{
-                                                    style:{fontFamily: 'Vazir'},
+                                                    fontFamily: 'Vazir'
                                                 }}
                                                 onChange ={(e)=>{                                                    
                                                     setGrade(e.target.value);                                                                                                           
@@ -262,25 +264,22 @@ function AddQuestionExam(props) {
                                                     <MenuItem value={key} style={{fontFamily: 'Vazir'}}> {value} </MenuItem>      
                                                 )}                                                    
                                             </Select>                                  
-                                        </FormControl>
-                                    </Grid>         
-
-                                    <Grid item xs={4}>                                            
+                                        </FormControl>                                    
+                                 
                                         <FormControl className={classes.formControl}>
                                             <InputLabel 
                                             id="demo-simple-select-label"
-                                            style={{fontFamily: 'Vazir'}}                                                
+                                            style={{fontFamily: 'Vazir',color:'#1CA0A0'}}                                                
                                             >
                                                 درس
                                             </InputLabel> 
                                             <Select
                                                 value = {lesson}
-                                                variant = "filled"                                                    
+                                                // variant = "filled"                                                    
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                                 margin = "dense"
-                                                style={{
-                                                    style:{fontFamily: 'Vazir'},
+                                                style={{fontFamily: 'Vazir',
                                                 }}
                                                 onChange ={(e)=>{                                                    
                                                     setLesson(e.target.value);                                                                                                            
@@ -291,24 +290,21 @@ function AddQuestionExam(props) {
                                                 )}                                                    
                                             </Select>                                  
                                         </FormControl>
-                                    </Grid>                                                                 
-
-                                    <Grid item xs={4}>                                            
+                                   
                                         <FormControl className={classes.formControl}>
                                             <InputLabel 
                                             id="demo-simple-select-label"
-                                            style={{fontFamily: 'Vazir'}}                                                
+                                            style={{fontFamily: 'Vazir',color:'#1CA0A0'}}                                                
                                             >
                                                 فصل
                                             </InputLabel> 
                                             <Select
                                                 value = {session}
-                                                variant = "filled"                                                    
+                                                // variant = "filled"                                                    
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                                 margin = "dense"
-                                                style={{
-                                                    style:{fontFamily: 'Vazir'},
+                                                style={{fontFamily: 'Vazir'
                                                 }}
                                                 onChange ={(e)=>{                                                    
                                                     setSession(e.target.value);                                                                                                            
@@ -319,24 +315,22 @@ function AddQuestionExam(props) {
                                                 )}                                                    
                                             </Select>                                  
                                         </FormControl>
-                                    </Grid>         
-
-                                    <Grid item xs={6}>                                            
+                                    
                                         <FormControl className={classes.formControl}>
                                             <InputLabel 
                                             id="demo-simple-select-label"
-                                            style={{fontFamily: 'Vazir'}}                                                
+                                            style={{fontFamily: 'Vazir',color:'#1CA0A0'}}                                                
                                             >
                                                 نوع سوال
                                             </InputLabel> 
                                             <Select
                                                 value = {questionType}
-                                                variant = "filled"                                                    
+                                                // variant = "filled"                                                    
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                                 margin = "dense"
                                                 style={{
-                                                    style:{fontFamily: 'Vazir'},
+                                                    fontFamily: 'Vazir',
                                                 }}
                                                 onChange ={(e)=>{                                                    
                                                     setQuestionType(e.target.value);                                                                                                            
@@ -346,10 +340,11 @@ function AddQuestionExam(props) {
                                                     <MenuItem value={key} style={{fontFamily: 'Vazir'}}> {value} </MenuItem>      
                                                 )}                                                    
                                             </Select>                                  
-                                        </FormControl>
-                                    </Grid>                                         
+                                        </FormControl>                                    
 
-                                    <Grid item xs={5}>                                        
+                                    <Grid item xs={4}></Grid>
+
+                                    <Grid item xs={4}>                                        
                                             <Typography id="discrete-slider" gutterBottom style = {{fontFamily: 'Vazir'}} >
                                                 درجه سختی سوال :  {valuetext(difficulty)}
                                             </Typography>

@@ -274,7 +274,7 @@ function CreateExam(props){
                        
             {editMode == true &&  
             
-            <Tooltip title="ذخیره" TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
+            <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '12px'}}>ذخیره</span>} TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
               <Button variant="contained" color="#98C1D9" 
                 style={{fontFamily: 'Vazir'}}
                 className = {classes.button}
@@ -324,8 +324,8 @@ function CreateExam(props){
 
                 const a = {
                   "name" : props.title , 
-                  "startDate" : props.startDate , 
-                  "endDate" :  props.endDate ,
+                  "startDate" : "2020-12-20T11:55:34.798Z" , // props.startDate , 
+                  "endDate" : "2020-12-25T11:55:34.798Z"  , // props.endDate ,
                   "questions" :  arr ,
                   "examLength" :  props.examLength ,
                   "useInClass" : classId                  
@@ -346,7 +346,7 @@ function CreateExam(props){
             </Button>
             }   
 
-            <Tooltip title="تغییر مشخصات" TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
+            <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '12px'}}>تغییر مشخصات</span>}  TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
               <Button variant="contained" color="#98C1D9" 
                 style={{fontFamily: 'Vazir'}}
                 className = {classes.button}
@@ -359,14 +359,14 @@ function CreateExam(props){
             </Tooltip>
 
             {editMode == true && 
-            <Tooltip title="حذف آزمون" TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
+            <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '16px'}}>تغییر مشخصات</span>}title={<span style={{fontFamily: 'Vazir',fontSize: '12px'}}>حذف آزمون</span>} TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
               <Button variant="contained" color="#98C1D9" 
                 style={{fontFamily: 'Vazir'}}
                 className = {classes.button}
                 onClick={()=>{   
                   axios.delete(serverURL() + "exam/" + examId , tokenConfig())
                   .then(res => {
-                    // history.push("/class/" + classId);
+                    history.push("/class/" + classId);
                   });                              
                 }}
                 >
@@ -431,6 +431,7 @@ function CreateExam(props){
                 <SwipeableViews
                     axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
                     index={value}
+                    
                     onChangeIndex={handleChangeIndex}
                     style={{overflowX: 'visible'}}
                 >
@@ -443,7 +444,7 @@ function CreateExam(props){
                         types = {props.type}                          
                       />
                     </TabPanel>
-                    <TabPanel value={value} index={1} dir={theme.direction}>
+                    <TabPanel value={value} index={1} dir={theme.direction} >
                       {questionsFound == true &&
                         userQuestions.map((m , index) =>                           
                           <QuestionHolder_Create                             
@@ -468,15 +469,16 @@ function CreateExam(props){
                 </Typography>
               </Paper>
               <Paper className={classes.paper} >
-                <DragDropContext>
+                {/* <DragDropContext>
                   <Droppable droppableId="characters">
                     {(provided) => (
                         <ul>
-                        {
-                          props.questions.map((p , index)=>                             
-                            <Draggable key={index} draggableId={index} index={index}>
+                        { */}
+                         
+                            {/* <Draggable key={index} draggableId={index} index={index}>
                               {(provided) => (
-                                <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}> */}
+                                {props.questions.map((p , index)=>                             
                                   <QuestionHolder_Create
                                     backColor="#white"
                                     mode = "preview"
@@ -484,15 +486,14 @@ function CreateExam(props){
                                     elevation = {0}
                                     question={p.question}
                                     grade={p.grade} />                    
-                                </li>
+                                )}
+                                {/* </li>
                               )}
-                            </Draggable>                                                
-                          )
-                        }   
-                        </ul>
+                            </Draggable>                        
+                       </ul>
                     )}                                        
                 </Droppable>
-                </DragDropContext>
+                </DragDropContext> */}
                 {props.questions.length == 0 &&
                   <Typography style={{fontFamily: 'Vazir' , color : '#8c8c8c'}} >
                       سوالات امتحان اینجا نمایش داده میشوند . 

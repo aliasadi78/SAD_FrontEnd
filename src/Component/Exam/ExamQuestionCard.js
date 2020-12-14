@@ -99,7 +99,7 @@ function QuestionCard (props){
             <Grid container>
               <Grid item xs={12}>
                 <Grid >
-                  <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '16px'}}>اضافه کردن به آزمون</span>} >
+                  <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '12px'}}>اضافه کردن به آزمون</span>} >
                 <Icon  style={{color: '#1CA0A0',cursor:'pointer',margin: '0% 95% -27px 0%'}} button onClick={() => {                                                
                           dispatch(addQuestion(props.q));                                                
                         }} >add_to_queue</Icon></Tooltip>
