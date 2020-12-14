@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import Card from '@material-ui/core/Card';
+import Grid from "@material-ui/core/Grid";
 import CardMedia from '@material-ui/core/CardMedia';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -12,8 +13,17 @@ import Shenase from './Shenase';
 import Typography from '@material-ui/core/Typography';
 import Slide from '@material-ui/core/Slide';
 import Icon from "@material-ui/core/Icon";
+import Button from '@material-ui/core/Button';
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  addQuestion , removeQuestion , addGrade
+} from './ExamSlice' ;
+import { useDispatch } from 'react-redux' ; 
+import Tooltip from '@material-ui/core/Tooltip';
 
 function QuestionCard (props){
+  const classes = useStyles();
+  const dispatch = useDispatch();
   const [openDialogQuestion, setOpenDialogQuestion] = React.useState(false);
   const [openDialogAnswer, setOpenDialogAnswer] = React.useState(false);
   const [openCollapse , setopenCollapse ] = React.useState(false);
@@ -44,11 +54,13 @@ function QuestionCard (props){
         </div>
           <div style={{textAlign: 'justify',margin: '0 5px 0 5px'}}>{props.q.question}</div>
             <Card style={{position: 'relative',right: '37%',width:'25%',}}>
-              <CardMedia title="بزرگ نمایی تصویر">
+              <CardMedia>
                 {props.q.imageQuestion !== null ? ( 
                 data = props.q.imageQuestion.toString(),
                 Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} onClick={handleClickOpenQuestion} width="100%" height="100%" style={{cursor: 'pointer'}}/>,
-                <Example data={data} />
+                <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '16px'}}>بزرگ نمایی تصویر</span>}>
+                  <Example data={data} />
+                </Tooltip>
               ): null}
                 <Dialog
                   open={openDialogQuestion}
@@ -84,11 +96,24 @@ function QuestionCard (props){
                   }
                )) : null}
             </div>
-            {openCollapse ? <Icon title="بستن جواب" style={{color: '#1CA0A0',position: 'relative',right: '48.5%',cursor: 'pointer',}}   button  onClick={()=>{
+            <Grid container>
+              <Grid item xs={12}>
+                <Grid >
+                  <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '16px'}}>اضافه کردن به آزمون</span>} >
+                <Icon  style={{color: '#1CA0A0',cursor:'pointer',margin: '0% 95% -27px 0%'}} button onClick={() => {                                                
+                          dispatch(addQuestion(props.q));                                                
+                        }} >add_to_queue</Icon></Tooltip>
+                </Grid>
+              </Grid>
+            </Grid>
+            {openCollapse ? <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '16px'}}>بستن جواب</span>} >
+              <Icon  style={{color: '#1CA0A0',position: 'relative',right: '48.5%',cursor: 'pointer',}}   button  onClick={()=>{
                   handleCollapse();
-            }}>vpn_key</Icon>: <Icon title="دیدن جواب" style={{color: '#1CA0A0',position: 'relative',right: '48.5%',cursor: 'pointer'}} button onClick={()=>{
+            }}>vpn_key</Icon></Tooltip>: 
+            <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '16px'}}>دیدن جواب</span>} >
+              <Icon  style={{color: '#1CA0A0',position: 'relative',right: '48.5%',cursor: 'pointer'}} button onClick={()=>{
                   handleCollapse();
-            }}>vpn_key</Icon>}</Typography>
+            }}>vpn_key</Icon></Tooltip>}</Typography>
         </div>
         <Collapse in={openCollapse} timeout="auto" unmountOnExit >
           <Typography style={{fontFamily: 'Vazir',textAlign: 'right',color:'black'}}>
@@ -96,11 +121,12 @@ function QuestionCard (props){
             {props.q.answers.map((answers) => {
             return (<div>{answers.answer}</div>)})}
             <Card style={{position: 'relative',right: '35%',width:'27%'}}>
-              <CardMedia title="بزرگ نمایی تصویر">
+              <CardMedia>
                 {props.q.imageAnswer !== null ? ( 
                   data = props.q.imageAnswer.toString(),
                   Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} onClick={handleClickOpenAnswer} width="100%" height="100%" style={{cursor: 'pointer'}}/>,
-                  <Example data={data}/>
+                  <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '16px'}}>بزرگ نمایی تصویر</span>} >
+                  <Example data={data}/></Tooltip>
                   ): null}
                 <Dialog
                   open={openDialogAnswer}
@@ -130,4 +156,9 @@ function QuestionCard (props){
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
+const useStyles = makeStyles((theme) => ({
+  
+}));
+
 export default QuestionCard;
