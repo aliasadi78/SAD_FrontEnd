@@ -38,8 +38,8 @@ class App extends Component {
         
         return (                
             <div className={classes.App}>                                                
-                <DP />
-                {/* <Route path="/" exact component={SignIn}/>
+                {/* <DP /> */}
+                <Route path="/" exact component={SignIn}/>
                 <Route path="/signIn" exact component={SignIn}/>
                 <Route path="/signUp" component={SignUp}/>
                 <Route path="/profile/edit" children={<Dashboard />} component = {PersonalForms} />
@@ -52,7 +52,7 @@ class App extends Component {
                 <Route path="/EditExam/:classId/:examId" component = {CreateExam} />
                 <Route path="/user/questions" children={<Dashboard />} component = {Questions} />
                 <Route path="/questionBank" children={<Dashboard />} component = {questionBank  } />
-                <Route path="/Dashboard" component = {Dashboard} /> */}
+                <Route path="/Dashboard" component = {Dashboard} />
             </div>
 
         );

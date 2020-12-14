@@ -46,6 +46,8 @@ import {setTitle ,
   setExamLength ,
   setQuestions } from './ExamSlice' ; 
 
+import { faList,faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
   
@@ -494,8 +496,8 @@ function CreateExam(props){
                 </Droppable>
                 </DragDropContext>
                 {props.questions.length == 0 &&
-                  <Typography style={{fontFamily: 'Vazir' , color : '#8c8c8c'}} >
-                      سوالات امتحان اینجا نمایش داده میشوند . 
+                  <Typography style={{fontFamily: 'Vazir' , color : '#8c8c8c'}} ><FontAwesomeIcon size="2x" icon={faList} style={{color: '#8c8c8c',paddingTop: '2%'}}/>
+                      سوالات امتحان اینجا نمایش داده میشوند  
                   </Typography>
                 } 
               </Paper>                        
