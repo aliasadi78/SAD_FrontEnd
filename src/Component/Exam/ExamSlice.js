@@ -30,7 +30,9 @@ export const ExamSlice = createSlice({
                 state.examQuestions.push({"question" : action.payload , "grade" : 0 });   
         },
         removeQuestion(state , action){
-            state.examQuestions = state.examQuestions.filter((item)=>item.question._id !== action.payload)
+            // state.examQuestions = state.examQuestions.filter((item)=>(item.question._id != null && item.question._id !== action.payload) || 
+            //                                                          (item.question.qId != null && item.question.qId !== action.payload))
+            state.examQuestions = state.examQuestions.filter((item)=>!(item.question._id == action.payload || item.question.qId == action.payload));
         },
         addGrade(state , action){
             state.examQuestions.find(item => item.question._id == action.payload[0]).grade = parseInt(action.payload[1]) ;

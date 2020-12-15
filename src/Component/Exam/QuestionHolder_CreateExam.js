@@ -171,7 +171,12 @@ export default function QuestionHolder_Create(props) {
                                             if(props.mode=="select question")
                                                 handleDeleteQuestion( props.question._id);
                                             if(props.mode=="preview")
-                                                dispatch(removeQuestion(props.question._id))
+                                            {
+                                                if(props.question._id !== null)
+                                                    dispatch(removeQuestion(props.question._id));
+                                                if(props.question.qId !== null)
+                                                    dispatch(removeQuestion(props.question.qId));
+                                            }                                                
                                                 }}><HighlightOffIcon /></Button>
                                         </ButtonGroup>                          
                                     </Grid>                                                                
