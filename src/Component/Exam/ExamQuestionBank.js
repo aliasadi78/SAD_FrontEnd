@@ -33,7 +33,7 @@ class QuestionBank extends Component{
             chapter: [],
         }
     }
-    componentDidMount(){
+    componentWillMount(){
         const [pending, setPending] = this.props.pending;
         const [pendi, setPendi] = this.props.pendi;
         const [list, setList] = this.props.list;
