@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import LoadingButton from '@material-ui/lab/LoadingButton';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import SaveIcon from '@material-ui/icons/Save';
@@ -200,6 +201,9 @@ function CreateExam(props){
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
 
+    const [savePending , setSavePending] = React.useState(false);
+    const [examFound , setExamFound] = React.useState(false);  
+
     const [userQuestions , setUserQuestions] = React.useState([]);
     const [questionsFound,setQuestionsFound] = React.useState(false);
     const [editMode , isEditMode] = React.useState(props.location.pathname.includes("EditExam"));
@@ -208,9 +212,9 @@ function CreateExam(props){
     const classId = props.match.params.classId ;  
     const history = useHistory() ;      
     
-    if(editMode && !informationLoad){
+    if(editMode && !informationLoad && !examFound){
       axios.get(serverURL() + "class/" + classId + "/exams/" + examId , tokenConfig())
-      .then(res=>{
+      .then(res=>{        
         const start = String(res.data.exam.startDate) ;
         const end  = String(res.data.exam.endDate);        
         props.setTitle(res.data.exam.name);
@@ -219,7 +223,8 @@ function CreateExam(props){
         props.setEndDate(end.replace('Z' , ''));
         props.setLength(res.data.exam.examLength);
         props.setQuestions(res.data.exam.questions);
-        setInformationLoad(true);        
+        setInformationLoad(true);   
+        setExamFound(true)     ;
       })
       .catch(err=>{
         console.log(err);
@@ -251,6 +256,7 @@ function CreateExam(props){
     if(questionsFound == false)
       axios.get(serverURL() + 'question?limit=10' , tokenConfig())
       .then(res=>{        
+        console.log("shit");
         setUserQuestions([...res.data.questions]);
         setQuestionsFound (true);
       })
@@ -277,10 +283,11 @@ function CreateExam(props){
             {editMode == true &&  
             
             <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '12px'}}>ذخیره</span>} TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
-              <Button variant="contained" color="#98C1D9" 
+              <LoadingButton pending = {savePending} variant="contained" color="#98C1D9" 
                 style={{fontFamily: 'Vazir'}}
                 className = {classes.button}
-                onClick={()=>{                                      
+                onClick={()=>{     
+                    setSavePending(true);
                     const arr = [] ;
                     props.questions.forEach(q => {
                       if(q.question._id != null)
@@ -305,18 +312,19 @@ function CreateExam(props){
                     const ajson = JSON.stringify(a);
                     console.log(ajson);
                     axios.put(serverURL() + "exam" , ajson , tokenConfig() )
-                    .then(res => {                  
+                    .then(res => {  
+                      setSavePending(false);                
                       // history.push("/class/" + classId);
                       console.log("edit shod");
                     })
                     .catch(err => {
-                      console.log(err.message);
+                      console.log(err.error);
                     });                
                 }}
                 >
                   <SaveIcon style={{color : '#3D5A80'}} />
                 {/* ذخیره */}
-              </Button>   
+              </LoadingButton>   
             </Tooltip>
                }
 

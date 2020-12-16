@@ -26,19 +26,16 @@ export const ExamSlice = createSlice({
             if(state.examQuestions.includes(action.payload) == false)
                 state.examQuestions.push({"question" : action.payload , "grade" : 0 });   
         },
-        removeQuestion(state , action){
-            // state.examQuestions = state.examQuestions.filter((item)=>(item.question._id != null && item.question._id !== action.payload) || 
-            //                                                          (item.question.qId != null && item.question.qId !== action.payload))
-            state.examQuestions = state.examQuestions.filter((item)=>!(item.question._id == action.payload || item.question.qId == action.payload));
-        },
-        addGrade(state , action){
-            state.examQuestions.find(item => item.question._id == action.payload[0]).grade = parseInt(action.payload[1]) ;
+        removeQuestion(state , action){            
+            delete state.examQuestions[action.payload] ;
         },
         setQuestions(state , action){
             state.examQuestions = action.payload ;
         },
-        moveUp(state , action){
-            console.log("shit clicked:" + action.payload);
+        addGrade(state , action){            
+            state.examQuestions[action.payload.index].grade = parseInt(action.payload.grade);
+        },        
+        moveUp(state , action){            
             if(action.payload >= 1){
                 let temp = state.examQuestions[action.payload];
                 state.examQuestions[action.payload] = state.examQuestions[action.payload-1];

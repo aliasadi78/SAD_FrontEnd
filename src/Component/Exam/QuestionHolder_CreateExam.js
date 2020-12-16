@@ -150,8 +150,8 @@ export default function QuestionHolder_Create(props) {
                                         </Form.Label>
                                         <Col sm="4">
                                             <Form.Control type="text" defaultValue={props.grade} 
-                                            onChange={(e) => {
-                                                dispatch(addGrade([props.question._id ,e.target.value ]))
+                                            onChange={(e) => {                                            
+                                                dispatch(addGrade({"index" : props.index , "grade" : e.target.value}));
                                             }} />
                                         </Col>
                                     </Form.Group>
@@ -172,10 +172,11 @@ export default function QuestionHolder_Create(props) {
                                                 handleDeleteQuestion( props.question._id);
                                             if(props.mode=="preview")
                                             {
-                                                if(props.question._id !== null)
-                                                    dispatch(removeQuestion(props.question._id));
-                                                if(props.question.qId !== null)
-                                                    dispatch(removeQuestion(props.question.qId));
+                                                // if(props.question._id !== null)
+                                                //     dispatch(removeQuestion(props.question._id));
+                                                // if(props.question.qId !== null)
+                                                //     dispatch(removeQuestion(props.question.qId));                                                
+                                                dispatch(removeQuestion(props.index));
                                             }                                                
                                                 }}><HighlightOffIcon /></Button>
                                         </ButtonGroup>                          
