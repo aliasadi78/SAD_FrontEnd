@@ -57,7 +57,7 @@ class ClassesPage extends Component{
                 <Material_RTL>
                     <M_RTL>
                       <div className={classes.paper}>                        
-                        <h3 style={{fontFamily: 'Vazir' , textAlign : 'right'}} >لیست کلاس ها</h3>
+                        <h3 style={{fontFamily: 'Vazir' , textAlign : 'right' , color : '#3D5A80'}} >لیست کلاس ها</h3>
                           <hr/>
                           {/* <Grid
                             container
@@ -145,8 +145,7 @@ const useStyles = makeStyles((theme) => ({
       // display: 'flex',
       direction: 'row',
       justify: 'flex-start',      
-      alignItems : 'left' ,
-      color : '#3D5A80' , 
+      alignItems : 'left' ,       
       backgroundColor: 'white',
       padding: '10px',
       borderRadius: '10px',      
