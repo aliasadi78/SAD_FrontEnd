@@ -1,5 +1,4 @@
 import React from 'react';
-import CreateIcon from '@material-ui/icons/Create';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -26,13 +25,13 @@ import axios from 'axios' ;
 import serverURL from '../../../utils/serverURL' ;
 import tokenConfig from '../../../utils/tokenConfig' ;
 import Notelist from './lists/notelist';
-
 import DialogEditClass from './DialogEditClass';
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',              
+      backgroundColor : 'white'
     },
     toolbar: {
       paddingRight: 7, // keep right padding when drawer closed            
@@ -168,9 +167,9 @@ export default function InsideClass(props) {
       setAdminName(res.data.Class.admin.firstname + " " + res.data.Class.admin.lastname);
     })
     .catch(e =>{      
-    });
+    });    
 
-    //get user information 
+    //get user information ------------------------------------------------------------
     axios.get(serverURL() + "user" , tokenConfig())
     .then(res =>{
         if(res.data.user.firstname + " " + res.data.user.lastname == adminName)
@@ -245,12 +244,12 @@ export default function InsideClass(props) {
                   </Typography>
                   </Link> */}
                   <Link color="inherit" href="/user/classes" >
-                    <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
+                    <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color: '#3D5A80'}}>                          
                         کلاس ها
                     </Typography>
                   </Link>
                   {/* {props.title} */}
-                  <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir'}}>                          
+                  <Typography dir="rtl" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir', color: '#3D5A80'}}>                          
                     {className}
                   </Typography>
                 </Breadcrumbs>              
@@ -271,12 +270,12 @@ export default function InsideClass(props) {
                     justify="center"
                     alignItems="center">   
                     <Grid item>
-                      <Typography dir="rtl" component="h1" variant="h2" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#white', textAlign : 'right'}}>                          
+                      <Typography dir="rtl" component="h1" variant="h2" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : 'white', textAlign : 'right'}}>                          
                           {className} 
                       </Typography>                                  
                     </Grid>
                     <Grid item>
-                    <Typography dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : '#white', textAlign : 'right'}}>                          
+                    <Typography dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir' , color : 'white', textAlign : 'right'}}>                          
                         {adminName}
                     </Typography>                                      
                     </Grid>

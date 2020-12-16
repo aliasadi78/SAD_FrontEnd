@@ -15,7 +15,11 @@ import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
+import {useDispatch} from 'react-redux';
 import axios from 'axios' ;
+import {
+    addQuestion
+} from './ExamSlice' ;
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Slider from '@material-ui/core/Slider';
@@ -23,13 +27,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import LoadingButton from '@material-ui/lab/LoadingButton';
 import FormControl from '@material-ui/core/FormControl';
 import { createMuiTheme } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
-import UploadImage from './uploadImage';
+import UploadImage from '../Question/uploadImage';
 import { connect } from 'react-redux' ;
-import { useSelector } from 'react-redux' ;
 
 const theme = createMuiTheme({
   palette: {
@@ -46,42 +48,14 @@ const useStyles = makeStyles((theme) => ({
     
     
   root: {
-    flexGrow: 1,
+    // flexGrow: 1,
+    paddingLeft : '0px' , 
+    paddingRight : '0px' , 
     backgroundColor : 'white' ,
     // marginTop : theme.spacing(5) ,
     width : '100%'
   },
-  '@global':{
-        '.MuiInputLabel-filled.MuiInputLabel-shrink.MuiInputLabel-marginDense' : {
-        display: 'block',
-        fontFamily: 'Vazir',
-      },
-      '.MuiInputLabel-filled.MuiInputLabel-marginDense': {
-        display: 'block',
-        fontFamily: 'Vazir',
-      },
-      '.MuiAutocomplete-option': {
-        display: 'block',
-        fontFamily: 'Vazir',
-        textAlign: 'right',
-        direction: 'rtl',
-      },
-      '.MuiAutocomplete-inputRoot[class*="MuiFilledInput-root"][class*="MuiFilledInput-marginDense"] .MuiAutocomplete-input': {
-        display: 'block',
-        fontFamily: 'Vazir',
-      },
-      '.MuiFormControlLabel-label': {
-        display: 'block',
-        fontFamily: 'Vazir',
-      },
-      //فونت گزینه ها
-      '.MuiFilledInput-root': {
-        fontFamily: 'Vazir',
-      },
-    },
-  RadioChoice :{
-    
-  },
+  
   questionFacePaper: {
     padding: theme.spacing(1),    
     marginBottom : theme.spacing(0) ,
@@ -117,8 +91,8 @@ const useStyles = makeStyles((theme) => ({
   BigForm :{},
   details :{},
   dropdowns : {
-    marginRight : theme.spacing(1) ,
-    marginLeft : theme.spacing(1) ,
+    // marginRight : theme.spacing(1) ,
+    // marginLeft : theme.spacing(1) ,
   },
   Button :{
       backgroundColor :'#EE6C4D' ,
@@ -139,6 +113,7 @@ const useStyles = makeStyles((theme) => ({
   },
   FormsPaper :{
     padding : theme.spacing(2), 
+    width : 'inherit'
   },
 }));
 
@@ -151,14 +126,14 @@ function valuetext(value) {
         return 'سخت' ;;    
   }   
 
-function Question(props) {
+function AddQuestionExam(props) {
 
     // const index = useSelector(state =>state.edittingQuestion.edittingQuestionIndex);    
 
     const classes = useStyles();
 
-    const [soalImageBase64 , setSoalImageBase64] = React.useState("");
-    const [javabImageBase64 , setJavabImageBase64] = React.useState("");
+    const [soalImageBase64 , setSoalImageBase64] = React.useState(null);
+    const [javabImageBase64 , setJavabImageBase64] = React.useState(null);
 
     const [publicCheck , setpublicCheck ] = React.useState(false);
     const [difficulty , setDifficulty] = React.useState("LOW");
@@ -176,14 +151,14 @@ function Question(props) {
     const [gozine4 , setGozine4] = React.useState("");  
     
     const [options , setOptions] = React.useState([]);
-    const [isEditting , setIsEditting] = React.useState(false);
-    
+
+    const dispatch = useDispatch();
+    const [addToMyQuestions , setAddToMyQuestions] = React.useState(false);
+
     const [question , setQuestion] = React.useState(null);
     const [grade , setGrade] = React.useState('');
     const [lesson , setLesson] = React.useState(null);
-    const [ session , setSession] = React.useState(null);   
-    
-    const [AddQuestionPending , setAddQuestionPending] = React.useState(false);
+    const [ session , setSession] = React.useState(null);            
 
     const [multitestOptions , setMultitestOptions] = React.useState([{ "option" : "" , "answer" : "" }])
 
@@ -193,6 +168,9 @@ function Question(props) {
         setpublicCheck(!publicCheck);        
     };    
 
+    const handleChangeAddToMyQuestion = () => {
+        setAddToMyQuestions(!addToMyQuestions);        
+    };    
     const AddQuestion = (type , publicCheck , question , 
     answer , options , base , hardness , course , chapter , soalImage , javabImage ) => {
 
@@ -210,29 +188,13 @@ function Question(props) {
             "chapter" : chapter,
             "imageQuestion": soalImage,
             "imageAnswer": javabImage,
-
         }
-        const ajson = JSON.stringify(a);
-        // console.log(ajson);
-        console.log("add question");
-        console.log(ajson);
+        const ajson = JSON.stringify(a);                
+        
         axios.post(serverURL() + "question" , ajson , tokenConfig() )
         .then(res => {
-            console.log(res);            
-            setQuestionAdded(true);
-            setAddQuestionPending(false);
-        })
-        .catch(e => {
-            console.log(e);
-        });
-    }
-
-    const EditQuestion = (type , publicCheck , question , 
-        answer , options , base , hardness , course , chapter , soalImage , javabImage ) => {
-    
-            console.log(options);
-    
-            const a = {
+            console.log(res);    
+            const b = {
                 "type": type ,
                 "public": publicCheck,            
                 "question": question,
@@ -244,39 +206,23 @@ function Question(props) {
                 "chapter" : chapter,
                 "imageQuestion": soalImage,
                 "imageAnswer": javabImage,
+                "_id" : res.data.questionId
             }
-            const ajson = JSON.stringify(a);
-            // console.log(ajson);
-            console.log("add question");
-            console.log(ajson);
-            axios.put(serverURL() + "question" , ajson , tokenConfig() )
-            .then(res => {
-                console.log(res);            
-                // setQuestionAdded(true);
-            })
-            .catch(e => {
-                console.log(e);
-            });
-    }    
-
-
-    const editModeOn = () => {
-        setIsEditting(true);
-    };
-
-    if(props.index != -1){      
-        console.log('editting')  ;
-        console.log(props.index);
-        console.log(props.questions[props.index]);        
+            const bjson = JSON.stringify(b);         
+            dispatch(addQuestion(b));
+            // setQuestionAdded(true);
+        })
+        .catch(e => {
+            console.log(e);
+        });
     }
-    
     return (
         <React.Fragment>
         <CssBaseline />
         <Container maxWidth="lg" className = {classes.root}>            
             <Material_RTL>
                 <RTL>
-                        <Paper style={{backgroundColor : props.backColor}} className = {classes.FormsPaper} >
+                        <Paper style={{backgroundColor : props.backColor }} className = {classes.FormsPaper} >
                             <Grid container spacing={0}>                                
                                 <Grid item xs={12}>
                                     <Paper className={classes.questionFacePaper}>
@@ -298,35 +244,31 @@ function Question(props) {
                                     </Paper>
                                 </Grid>
 
-                                <UploadImage
+                                <UploadImage 
                                 getImage={(value)=>{
                                     setSoalImageBase64(value)
                                 }}
-                                id="soal" />   
-                                {props.index != -1 &&
-                                    props.questions[props.index].id
-                                }
+                                id="soal" />                                   
 
                             </Grid>                                                                                
                                 <Grid container spacing={3} >                 
-
-                                    <Grid item xs={4}>                                            
-                                        <FormControl className={classes.formControl}>
+                                    
+                                        <FormControl className={classes.formControl}>                                            
                                             <InputLabel 
                                             id="demo-simple-select-label"
-                                            style={{fontFamily: 'Vazir'}}                                                
+                                            style={{fontFamily: 'Vazir' ,color:'#1CA0A0'}}                                                
                                             >
                                                 پایه
                                             </InputLabel> 
                                             <Select
                                                 value = {grade}
                                                 defaultValue={props.index >= 0 && props.questions[0].base}
-                                                variant = "filled"                                                    
+                                                // variant = "filled"                                                    
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
-                                                margin = "dense"
+                                                // margin = "dense"
                                                 style={{
-                                                    style:{fontFamily: 'Vazir'},
+                                                    fontFamily: 'Vazir'
                                                 }}
                                                 onChange ={(e)=>{                                                    
                                                     setGrade(e.target.value);                                                                                                           
@@ -336,25 +278,22 @@ function Question(props) {
                                                     <MenuItem value={key} style={{fontFamily: 'Vazir'}}> {value} </MenuItem>      
                                                 )}                                                    
                                             </Select>                                  
-                                        </FormControl>
-                                    </Grid>         
-
-                                    <Grid item xs={4}>                                            
+                                        </FormControl>                                    
+                                 
                                         <FormControl className={classes.formControl}>
                                             <InputLabel 
                                             id="demo-simple-select-label"
-                                            style={{fontFamily: 'Vazir'}}                                                
+                                            style={{fontFamily: 'Vazir',color:'#1CA0A0'}}                                                
                                             >
                                                 درس
                                             </InputLabel> 
                                             <Select
                                                 value = {lesson}
-                                                variant = "filled"                                                    
+                                                // variant = "filled"                                                    
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                                 margin = "dense"
-                                                style={{
-                                                    style:{fontFamily: 'Vazir'},
+                                                style={{fontFamily: 'Vazir',
                                                 }}
                                                 onChange ={(e)=>{                                                    
                                                     setLesson(e.target.value);                                                                                                            
@@ -365,24 +304,21 @@ function Question(props) {
                                                 )}                                                    
                                             </Select>                                  
                                         </FormControl>
-                                    </Grid>                                                                 
-
-                                    <Grid item xs={4}>                                            
+                                   
                                         <FormControl className={classes.formControl}>
                                             <InputLabel 
                                             id="demo-simple-select-label"
-                                            style={{fontFamily: 'Vazir'}}                                                
+                                            style={{fontFamily: 'Vazir',color:'#1CA0A0'}}                                                
                                             >
                                                 فصل
                                             </InputLabel> 
                                             <Select
                                                 value = {session}
-                                                variant = "filled"                                                    
+                                                // variant = "filled"                                                    
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                                 margin = "dense"
-                                                style={{
-                                                    style:{fontFamily: 'Vazir'},
+                                                style={{fontFamily: 'Vazir'
                                                 }}
                                                 onChange ={(e)=>{                                                    
                                                     setSession(e.target.value);                                                                                                            
@@ -393,24 +329,22 @@ function Question(props) {
                                                 )}                                                    
                                             </Select>                                  
                                         </FormControl>
-                                    </Grid>         
-
-                                    <Grid item xs={6}>                                            
+                                    
                                         <FormControl className={classes.formControl}>
                                             <InputLabel 
                                             id="demo-simple-select-label"
-                                            style={{fontFamily: 'Vazir'}}                                                
+                                            style={{fontFamily: 'Vazir',color:'#1CA0A0'}}                                                
                                             >
                                                 نوع سوال
                                             </InputLabel> 
                                             <Select
                                                 value = {questionType}
-                                                variant = "filled"                                                    
+                                                // variant = "filled"                                                    
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                                 margin = "dense"
                                                 style={{
-                                                    style:{fontFamily: 'Vazir'},
+                                                    fontFamily: 'Vazir',
                                                 }}
                                                 onChange ={(e)=>{                                                    
                                                     setQuestionType(e.target.value);                                                                                                            
@@ -420,10 +354,11 @@ function Question(props) {
                                                     <MenuItem value={key} style={{fontFamily: 'Vazir'}}> {value} </MenuItem>      
                                                 )}                                                    
                                             </Select>                                  
-                                        </FormControl>
-                                    </Grid>                                         
+                                        </FormControl>                                    
 
-                                    <Grid item xs={5}>                                        
+                                    <Grid item xs={4}></Grid>
+
+                                    <Grid item xs={4}>                                        
                                             <Typography id="discrete-slider" gutterBottom style = {{fontFamily: 'Vazir'}} >
                                                 درجه سختی سوال :  {valuetext(difficulty)}
                                             </Typography>
@@ -456,7 +391,7 @@ function Question(props) {
                                             </ThemeProvider>           
                                     </Grid>   
                                     
-                                    <Grid item xs={1} ></Grid>
+                                     <Grid item xs={1} ></Grid>
                                 </Grid>                            
                             <Grid container spacing = {3}>
                                 <Grid item xs={12}>     
@@ -548,13 +483,11 @@ function Question(props) {
                                 getImage={(value)=>{
                                     setJavabImageBase64(value)
                                 }}
-                                id = "javab" />
-
+                                 id = "javab" />
+                                                                
                                 <Grid item xs={4}>                                    
-                                    <LoadingButton variant="contained"
-                                     pending={AddQuestionPending}
-                                     onClick={() => {                                                                                 
-                                        setAddQuestionPending(true)
+                                    <Button variant="contained"
+                                     onClick={() => {                                                                                                                                                                 
                                         AddQuestion(                                            
                                         questionType , publicCheck , question ,
                                         answers , [
@@ -562,15 +495,16 @@ function Question(props) {
                                             { "option" : gozine2 } , 
                                             { "option" : gozine3 } , 
                                             { "option" : gozine4 } ] , grade , difficulty , lesson , session
-                                        , soalImageBase64 , javabImageBase64
-                                    )}} 
+                                        , soalImageBase64 , javabImageBase64 );
+                                    }} 
                                     className={classes.Button}>
                                         <Typography variant='button' style = {{fontFamily: 'Vazir'}} >                                            
-                                                طرح
+                                                اضافه
                                         </Typography>
-                                    </LoadingButton>                                    
+                                    </Button>                                    
                                 </Grid>
-                                <Grid item xs={8} className = {classes.grid} >                                    
+
+                                <Grid item xs={7} className = {classes.grid} >                                    
                                     <FormControlLabel                                        
                                         control={<Checkbox checked={publicCheck} onChange={handleChange}
                                             className ={classes.checkbox} color='#EE6C4D' />}
@@ -581,8 +515,14 @@ function Question(props) {
                                             style:{fontFamily: 'Vazir'},
                                         }}
                                     />                                    
-                                </Grid>
-                            </Grid>                                             
+                                </Grid>                                                                
+
+                            </Grid>
+                            { questionAdded == true ?
+                                <AlertDialog text = "سوال شما اضافه شد." />
+                                :   
+                                <p></p>
+                            }                        
                     </Paper>
                     </RTL>
                 </Material_RTL>                
@@ -598,4 +538,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Question)
+export default connect(mapStateToProps)(AddQuestionExam)

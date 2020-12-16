@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -22,19 +21,18 @@ import ClassesPage from '../Class/ClassesPage' ;
 import LogOutDialog from '../User/LogoutDialog';
 import QuestionBank from '../Question/QuestionBank';
 import Questions from '../Question/Questions';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import BallotIcon from '@material-ui/icons/Ballot';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonalForms from '../User/EditProfile';
 import DrawerList from './DrawerList';
 import JoinClass from '../Class/JoinClass';
 import NewClassDialog from '../Class/NewClassPage';
+import { useDispatch } from 'react-redux' ;
+import {handleMenuOpen} from './DashboardSlice' ;
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',                
+      display: 'flex',              
+      backgroundColor : 'white'        
     },
     toolbar: {
       paddingRight: 7, // keep right padding when drawer closed            
@@ -44,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
       alignItems: 'center',
       justifyContent: 'flex-end',
       padding: '0 8px',
-      height: '54px' ,      
+      height: '54px' ,   
+      backgroundColor : 'white'   
     },
     appBar: {
       zIndex: theme.zIndex.drawer + 1 ,  //رو این کار کن 
@@ -136,16 +135,20 @@ export default function Dashboard() {
     const [openCreateClassDialog, setOpenCreateClassDialog] = React.useState(false);
 
     const [openUserDrawerMethod , setopenUserDrawerMethod ] = React.useState(false);
+
+    const dispatch = useDispatch();
+
     const handleUserDrawerMenuClick = () => {
       setopenUserDrawerMethod(!openUserDrawerMethod);
     };
     const handleDrawerOpen = () => {
       setOpen(true);      
+      dispatch(handleMenuOpen(true));
     };
 
     const handleDrawerClose = () => {
       setOpen(!open);
-      setopenUserDrawerMethod(false);
+      dispatch(handleMenuOpen(false));
     };
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);    
@@ -211,7 +214,8 @@ export default function Dashboard() {
             </IconButton>
           </div>          
 
-            <DrawerList isDrawerOpen = {open} />            
+            <DrawerList />
+            {/* // isDrawerOpen = {open} />             */}
         </Drawer>
         
         <main className={clsx(classes.content, {
