@@ -52,7 +52,7 @@ function QuestionCard (props){
         <div style={{color : 'gray'}}>
           <Shenase q={props.q} category={props.category}/>
         </div>
-          <div style={{textAlign: 'justify',margin: '0 5px 0 5px'}}>{props.q.question}</div>
+          <div style={{textAlign: 'justify',margin: '0 10px 0 10px'}}>{props.q.question}</div>
             <Card style={{position: 'relative',right: '37%',width:'25%',}}>
               <CardMedia>
                 {props.q.imageQuestion !== null ? ( 
@@ -83,19 +83,19 @@ function QuestionCard (props){
                 </Dialog>
               </CardMedia>
             </Card>
-            <div style={{position : 'relative',right: '2%',marginTop: '1%'}}>
+            <ul style={{listStyle:'persian',position : 'relative',marginTop: '1%'}}>
               {props.q.type === "TEST" ? (
-               <div>
-                <div>۱){props.q.options[0].option}</div>
-                <div>۲){props.q.options[1].option}</div>
-                <div>۳){props.q.options[2].option}</div>
-                <div>۴){props.q.options[3].option}</div>
+               <div style={{}}>
+                <div><li>{props.q.options[0].option}</li></div>
+                <div><li>{props.q.options[1].option}</li></div>
+                <div><li>{props.q.options[2].option}</li></div>
+                <div><li>{props.q.options[3].option}</li></div>
                </div>) : props.q.type === "MULTICHOISE" ? (
                  props.q.options.map((options) =>{
-                    return(<div><li>{options.option}</li></div>)
+                    return(<div><li style={{listStyle:'persian'}}>{options.option}</li></div>)
                   }
                )) : null}
-            </div>
+            </ul>
             <Grid container>
               <Grid item xs={12}>
                 <Grid >
@@ -119,7 +119,7 @@ function QuestionCard (props){
           <Typography style={{fontFamily: 'Vazir',textAlign: 'right',color:'black'}}>
             <hr/>
             {props.q.answers.map((answers) => {
-            return (<div>{answers.answer}</div>)})}
+            return (<div style={{position: 'relative',padding: '2% 2% 4% 2%'}}>{answers.answer}</div>)})}
             <Card style={{position: 'relative',right: '35%',width:'27%'}}>
               <CardMedia>
                 {props.q.imageAnswer !== null ? ( 

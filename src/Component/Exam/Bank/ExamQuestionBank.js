@@ -421,6 +421,14 @@ class QuestionBank extends Component{
                     </Grid>
                 </Grid>
                 <br/>  
+                <Grid >
+                        {pending ? (
+                              <Grid style={{display: 'flex',justifyContent: 'center'}}>
+                                <Pagination onChange={handlePage} variant="outlined" size="small" siblingCount={0} boundaryCount={1} count={totalpage} shape="rounded" />
+                              </Grid>
+                            )
+                        : null}
+                    </Grid> 
                 </ValidatorForm >
                 </Container>
                 <br/>
@@ -442,7 +450,7 @@ class QuestionBank extends Component{
                     </div>
                     </Grid>
                   </Grid>
-                     
+{/*                      
                     <Grid >
                         {pending ? (
                               <Grid style={{display: 'flex',justifyContent: 'center'}}>
@@ -450,7 +458,7 @@ class QuestionBank extends Component{
                               </Grid>
                             )
                         : null}
-                    </Grid> 
+                    </Grid>  */}
                 </Container></div> : null}
                 </M_RTL>
                 </Material_RTL>
