@@ -84,7 +84,8 @@ export default function Examslist (props){
                           <Grid item xs={4} ></Grid>
                         </Grid>
                   <Grid
-                    // item xs={12}                    
+                    // item xs={12}   
+                    container                 
                     direction="column"
                     justify="center"
                     alignItems="center"

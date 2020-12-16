@@ -9,10 +9,8 @@ import Tab from '@material-ui/core/Tab';
 import Zoom from '@material-ui/core/Zoom';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import { DragDropContext , Droppable , Draggable  } from 'react-beautiful-dnd';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import EditIcon from '@material-ui/icons/Edit';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import SaveIcon from '@material-ui/icons/Save';
@@ -20,6 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
+import DialogEditExam from './EditExamDialog' ;
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import serverURL from '../../utils/serverURL' ;
@@ -33,16 +32,15 @@ import { connect } from 'react-redux' ;
 import { useHistory } from "react-router-dom";
 import AddQuestionExam from './AddQuestion' ;
 
-import QuestionBank from './ExamQuestionBank';
+import QuestionBank from './Bank/ExamQuestionBank';
 
 import { Dialog, Paper } from '@material-ui/core';
 import FirstDialogExam from './DialogExamFirst';
 import {mainListItems} from '../Class/InsideClass/insideClassDrawerList' ;
 import List from '@material-ui/core/List';
 import {setTitle ,
-  setDate ,
-  setStartHour ,
-  setEndHour , 
+  setStartDate , 
+  setEndDate ,              
   setExamLength ,
   setQuestions } from './ExamSlice' ; 
 
@@ -211,9 +209,12 @@ function CreateExam(props){
     if(editMode && !informationLoad){
       axios.get(serverURL() + "class/" + classId + "/exams/" + examId , tokenConfig())
       .then(res=>{
-        console.log(res.data);        
+        const start = String(res.data.exam.startDate) ;
+        const end  = String(res.data.exam.endDate);        
         props.setTitle(res.data.exam.name);
         // handle date here immediatly
+        props.setStartDate(start.replace('Z' , ''));
+        props.setEndDate(end.replace('Z' , ''));
         props.setLength(res.data.exam.examLength);
         props.setQuestions(res.data.exam.questions);
         setInformationLoad(true);        
@@ -225,7 +226,7 @@ function CreateExam(props){
     if(editMode == false){
       // props.setQuestions([]);
       // props.setTitle(null);
-      console.log("qwerqe");
+      // console.log("qwerqe");
     }
 
     const handleDrawerOpen = () => {
@@ -247,8 +248,7 @@ function CreateExam(props){
     //get user questions ------------------------------------------------------
     if(questionsFound == false)
       axios.get(serverURL() + 'question?limit=10' , tokenConfig())
-      .then(res=>{
-        console.log(res.data.questions);
+      .then(res=>{        
         setUserQuestions([...res.data.questions]);
         setQuestionsFound (true);
       })
@@ -293,8 +293,8 @@ function CreateExam(props){
     
                     const a = {
                       "name" : props.title , 
-                      "startDate" : "2020-12-14T23:28:26.607Z" , // props.startDate , 
-                      "endDate" :  "2020-12-15T23:28:26.607Z" ,//props.endDate ,
+                      "startDate" : props.startDate + "Z" , 
+                      "endDate" :     props.endDate + "Z" ,
                       "questions" :  arr ,
                       "examLength" :  props.examLength ,
                       "examId" : examId                  
@@ -339,8 +339,8 @@ function CreateExam(props){
 
                 const a = {
                   "name" : props.title , 
-                  "startDate" : "2020-12-20T11:55:34.798Z" , // props.startDate , 
-                  "endDate" : "2020-12-25T11:55:34.798Z"  , // props.endDate ,
+                  "startDate" : props.startDate + "Z" , 
+                  "endDate" :     props.endDate + "Z" ,
                   "questions" :  arr ,
                   "examLength" :  props.examLength ,
                   "useInClass" : classId                  
@@ -350,10 +350,10 @@ function CreateExam(props){
                 console.log(ajson);
                 axios.post(serverURL() + "exam" , ajson , tokenConfig() )
                 .then(res => {                  
-                  // history.push("/class/" + classId);
+                  history.push("/class/" + classId);
                 })
                 .catch(err => {
-                  console.log(err.message);
+                  console.log(err.error);
                 });
               }}
               >
@@ -361,17 +361,7 @@ function CreateExam(props){
             </Button>
             }   
 
-            <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '12px'}}>تغییر مشخصات</span>}  TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
-              <Button variant="contained" color="#98C1D9" 
-                style={{fontFamily: 'Vazir'}}
-                className = {classes.button}
-                onClick={()=>{                  
-                }}
-                >
-                  <EditIcon  style={{color : '#3D5A80'}} />
-                {/* تغییر مشخصات  */}
-              </Button>            
-            </Tooltip>
+            <DialogEditExam examId = {examId} />
 
             {editMode == true && 
             <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '16px'}}>تغییر مشخصات</span>}title={<span style={{fontFamily: 'Vazir',fontSize: '12px'}}>حذف آزمون</span>} TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
@@ -547,12 +537,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return{
-    setTitle : (t) => dispatch(setTitle(t)) , 
-    setDate : (t) => dispatch(setDate(t)),
-    setStartHour : (t) => dispatch(setStartHour(t)) ,
-    setEndHour : (t) => dispatch(setEndHour(t)) ,
+    setTitle : (t) => dispatch(setTitle(t)) ,           
     setLength : (t) => dispatch(setExamLength(t)) ,
-    setQuestions : (t) => dispatch(setQuestions(t))
+    setQuestions : (t) => dispatch(setQuestions(t)) ,
+    setStartDate : (t) => dispatch(setStartDate(t)),
+    setEndDate : (t) => dispatch(setEndDate(t)),    
   }
 }
 
