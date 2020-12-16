@@ -4,28 +4,32 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
+import Tooltip from '@material-ui/core/Tooltip';
 import DialogContent from '@material-ui/core/DialogContent';
+import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Material_RTL from "../Material_RTL";
 import M_RTL from "../M_RTL";
-import axios from 'axios';
-import serverURL from '../../utils/serverURL' ;
-import tokenConfig from  '../../utils/tokenConfig' ;
+import DateFnsUtils from '@date-io/date-fns';
+import EditIcon from '@material-ui/icons/Edit';
+import Zoom from '@material-ui/core/Zoom';
 import { makeStyles } from '@material-ui/core/styles';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
-import DateFnsUtils from '@date-io/date-fns';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { ValidatorForm } from 'react-material-ui-form-validator';
 import Grid from "@material-ui/core/Grid";
 import { CircularProgress } from '@material-ui/core';
 import { Form , Col , Row} from 'react-bootstrap';
 import LoadingButton from '@material-ui/lab/LoadingButton';
+import serverURL from '../../utils/serverURL' ;
+import tokenConfig from  '../../utils/tokenConfig' ;
 import {connect} from 'react-redux' ;
+import axios from 'axios' ;
 import {setTitle ,
         setStartDate , 
-        setEndDate ,
+        setEndDate ,        
         setExamLength } from './ExamSlice' ;
         
-import {MuiPickersUtilsProvider } from '@material-ui/pickers';
+import {MuiPickersUtilsProvider,} from '@material-ui/pickers';
 
 function onChange(value, dateString) {
   console.log('Selected Time: ', value);
@@ -36,33 +40,17 @@ function onOk(value) {
   console.log('onOk: ', value);
 }
 
-class DialogExamFirst extends Component {
-
-  componentDidMount(){
-    axios.get(serverURL() + "public/time")
-    .then(res=>{
-      const f = String(res.data.date);    
-      console.log(f.replace('Z' , ''));
-      this.setState(prevstate => {
-        return {
-          date : f.replace('Z' , '')
-        }
-      })
-    })
-    .catch(err=>{
-
-    });
-  }
-
-  constructor() {
+class EditExam extends Component {
+  constructor(props) {
     super();
     this.state = {
-          name: '',
+          name: props.title,
           description: '',
           generateNewClassId: true,
           success: false,
-          startDate : "2020-12-14T10:30" ,
-          endDate :   "2020-12-14T10:30"
+          startDate : props.startDate ,
+          endDate : props.endDate ,           
+          examLength : props.examLength
         }
         
   }
@@ -88,19 +76,62 @@ class DialogExamFirst extends Component {
     
   };
   const handleSubmit = () =>{    
+   {/* 
     this.props.setTitle(this.state.name);
     this.props.setStartDate(this.state.startDate);    
     this.props.setEndDate(this.state.endDate);    
-    this.props.setLength(this.state.examLength);    
-    setOpen(false);
-  }    
+    this.props.setLength(this.state.examLength);
+  */}    
+     
+    if(this.props.examId != null){
+      setPending(true); 
+      setTimeout(() => {
+          const a = {
+              "name" :        this.props.title , 
+              "startDate" :   this.props.startDate + "Z" , 
+              "endDate" :     this.props.endDate + "Z" ,        
+              "examLength" :  this.props.examLength ,
+              "examId" :      this.props.examId                  
+          };
+          
+          const ajson = JSON.stringify(a);
+
+          console.log(ajson);
+
+          axios.put(serverURL() + "exam" , ajson , tokenConfig() )
+          .then(res => {                        
+              console.log("edit shod");                      
+              setPending(false);
+          })
+          .catch(err => {
+              console.log(err.message);
+          }); 
+
+      } , 500);    
+    }
+    else
+      setOpen(false);
+  }  
 
   return (
-    <div>      
+    <div>     
+        <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '12px'}}>تغییر مشخصات</span>}  TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
+            <Button variant="contained" color="#98C1D9" 
+            style={{fontFamily: 'Vazir'}}
+            className = {classes.button}
+            onClick={()=>{        
+                setOpen(true);
+            }}
+            >
+                <EditIcon  style={{color : '#3D5A80'}} />
+            {/* تغییر مشخصات  */}
+            </Button>            
+        </Tooltip> 
       <Dialog fullWidth style={{fontFamily: 'Vazir'}} open={open} onClose={handleClose} aria-labelledby="form-dialog-title">      
       <DialogTitle style={{fontFamily: 'Vazir' , backgroundColor : '#3D5A80',textAlign: 'center'}}>
-      <span style={{fontFamily: 'Vazir' , color : 'white'}}>اضافه کردن آزمون جدید</span>
-      </DialogTitle>        
+      <span style={{fontFamily: 'Vazir' , color : 'white'}}>ویرایش مشخصات آزمون</span>
+      </DialogTitle>
+        {/* <DialogTitle  id="form-dialog-title"><span style={{direction: 'rtl',fontFamily: 'Vazir',position: 'absolute',right: '36%',top: '10%'}}>ویرایش کلاس</span></DialogTitle> */}
         {pendi ? (<div style={{margin: '3% 0% 3% 46%'}}><CircularProgress style={{color: '#0e918c'}}/></div> ) :
                   <div>
                     <div className={classes.paper}> 
@@ -121,10 +152,12 @@ class DialogExamFirst extends Component {
             label="عنوان آزمون"
             type="text"
             name="name"
+            value = {this.props.title}
             fullWidth
             // autoFocus
-            value={this.state.name}
-            onChange={(e)=>{
+            // value={this.state.name}
+            onChange={(e)=>{   
+                this.props.setTitle(e.target.value);             
               this.setState(prevstate=>{
                   return{
                       name : e.target.value
@@ -147,14 +180,14 @@ class DialogExamFirst extends Component {
                 id="datetime-local"
                 variant = "outlined"
                 label={<div style={{fontFamily: 'Vazir'}} > شروع آزمون </div>}
-                type="datetime-local"
-                defaultValue="2020-12-14T10:30"
-                // value={this.state.date}
+                type="datetime-local"                
+                defaultValue={this.props.startDate}
                 className={classes.textField}
                 InputLabelProps={{
                   shrink: true,
                 }}
-                onChange={(e) => {                  
+                onChange={(e) => {   
+                this.props.setStartDate(e.target.value);                   
                   this.setState(prevstate => {
                     return {
                       startDate : e.target.value ,
@@ -171,13 +204,13 @@ class DialogExamFirst extends Component {
                 variant="outlined"
                 label={<div style={{fontFamily: 'Vazir'}} > پایان آزمون </div>}
                 type="datetime-local"
-                // defaultValue={this.state.startDate}
-                defaultValue="2020-12-14T10:30"
+                defaultValue={this.props.endDate}
                 className={classes.textField}
                 InputLabelProps={{
                   shrink: true,
                 }}
                 onChange={(e) => {
+                    this.props.setEndDate(e.target.value);    
                   this.setState(prevstate => {
                     return {
                       endDate : e.target.value ,
@@ -196,8 +229,9 @@ class DialogExamFirst extends Component {
                 زمان آزمون به دقیقه :
                 </Form.Label>
                 <Col sm="4">
-                    <Form.Control type="text" defaultValue="0" 
+                    <Form.Control type="text" defaultValue={this.props.examLength} 
                     onChange={(e) => {
+                        this.props.setLength(e.target.value);
                         this.setState(prevstate => {
                           return {
                             examLength : e.target.value
@@ -257,19 +291,26 @@ const useStyles = makeStyles((theme) => ({
     opacity: '95%'
 },
 }));
-function FirstDialogExam (props){
+function DialogEditExam (props){
   const classes = useStyles();
-  const open = React.useState(true);
+  const open = React.useState(false);
   const check = React.useState(false);
   const classId= props.classId;
   const pending = React.useState(false);
   const pendi = React.useState(false);
   return (        
-      <DialogExamFirst
+      <EditExam
       setTitle ={props.setTitle}
       setEndDate = {props.setEndDate}
       setStartDate = {props.setStartDate}      
       setLength = {props.setLength}
+
+      title = {props.title}
+      startDate={props.startDate}
+      endDate = {props.endDate}
+      examLength = {props.examLength}
+
+      examId = {props.examId}
       classes={classes} open={open} check={check} classId={classId} pending={pending} pendi={pendi}/>    
   )
 }
@@ -283,5 +324,16 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null , mapDispatchToProps)(FirstDialogExam)
+
+const mapStateToProps = (state) => {    
+    return {          
+      title : state.exam.name ,      
+      startDate : state.exam.startDate , 
+      endDate : state.exam.endDate ,     
+      examLength : state.exam.examLength
+    }
+  }
+  
+
+export default connect(mapStateToProps , mapDispatchToProps)(DialogEditExam)
 

@@ -61,7 +61,7 @@ export default function Notelist (props){
                 <Grid item xs={4} >
 
                 <Paper elevation = {elevation} className = {classes.ListTitle}>                          
-                    <h5 style={{fontFamily: 'Vazir' }}>                                                      
+                    <h5 style={{fontFamily: 'Vazir' , color : 'white'}}>                                                      
                     اعلان ها 
                     <NotificationsIcon />
                     </h5>
@@ -79,7 +79,7 @@ export default function Notelist (props){
             spacing = {1}
         >     
                                                                 
-            <Paper elevation = {elevation}  className = {classes.ElanPaper} style={{width : 'inherit'}}>                      
+            <Paper elevation = {elevation}  className = {classes.ElanPaper} style={{width : '90%'}}>                      
                 {props.isAdmin == true &&    
                     <Grid item>                                                
                         <h5 style={{fontFamily: 'Vazir'}}>

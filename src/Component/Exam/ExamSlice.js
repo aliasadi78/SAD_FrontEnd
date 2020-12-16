@@ -6,22 +6,19 @@ export const ExamSlice = createSlice({
         examQuestions : [] , 
         name : null ,
         startDate : null ,
-        endDate : null ,
+        endDate : null ,        
         examLength : null ,        
     } ,
     reducers : {
         setTitle(state , action){
            state.name = action.payload  
         } ,
-        setDate(state , action){
+        setStartDate(state , action){
            state.startDate = action.payload  
         } ,
-        setStartHour(state , action){
-           state.endDate = action.payload  
-        } ,
-        setEndHour(state , action){
+        setEndDate(state , action){
             state.endDate = action.payload  
-         } ,
+         } ,        
         setExamLength(state , action){
             state.examLength = action.payload  
         } ,
@@ -52,9 +49,8 @@ export const ExamSlice = createSlice({
 })
 
 export const {setTitle , 
-              setDate , 
-              setEndHour ,
-              setStartHour ,  
+              setStartDate , 
+              setEndDate ,              
               setExamLength , 
               addQuestion ,
               removeQuestion , 

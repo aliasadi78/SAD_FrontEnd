@@ -74,7 +74,7 @@ export default function Examslist (props){
                           <Grid item xs={4} >
 
                             <Paper elevation = {elevation} className = {classes.ListTitle}>
-                              <h5 style={{fontFamily: 'Vazir'}}>
+                              <h5 style={{fontFamily: 'Vazir' , color : 'white'}}>
                                 امتحان ها 
                                 <IsoIcon />
                               </h5>
@@ -84,14 +84,15 @@ export default function Examslist (props){
                           <Grid item xs={4} ></Grid>
                         </Grid>
                   <Grid
-                    // item xs={12}                    
+                    // item xs={12}   
+                    container                 
                     direction="column"
                     justify="center"
                     alignItems="center"
                     spacing = {1}
                   >     
                                                                         
-                    <Paper elevation = {elevation}  className = {classes.ElanPaper}>                      
+                    <Paper elevation = {elevation}  className = {classes.ElanPaper} style={{width : '90%'}}>                      
                         { props.isAdmin == true &&
                           <Grid item>                            
                             {/* <Link href="/CreateExam"> */}
@@ -101,7 +102,7 @@ export default function Examslist (props){
                                 // history.push("/createExam/" + props.classId);
                               }}
                               variant="contained" color="primary"  >
-                                <h5 style={{fontFamily: 'Vazir'}}>
+                                <h5 style={{fontFamily: 'Vazir', color: 'white'}}>
                                   <AddIcon />
                                   آزمون جدید 
                                 </h5>

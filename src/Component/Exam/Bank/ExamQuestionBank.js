@@ -3,8 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Material_RTL from "../Material_RTL";
-import M_RTL from "../M_RTL";
+import Material_RTL from "../../Material_RTL";
+import M_RTL from "../../M_RTL";
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -19,8 +19,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { CircularProgress } from '@material-ui/core';
 import Pagination from '@material-ui/core/Pagination';
 import { ThemeProvider } from '@material-ui/core/styles';
-import tokenConfig from '../../utils/tokenConfig';
-import serverURL from '../../utils/serverURL';
+import tokenConfig from '../../../utils/tokenConfig';
+import serverURL from '../../../utils/serverURL';
 import QuestionCard from './ExamQuestionCard'; 
 class QuestionBank extends Component{
     constructor() {
@@ -421,6 +421,14 @@ class QuestionBank extends Component{
                     </Grid>
                 </Grid>
                 <br/>  
+                <Grid >
+                        {pending ? (
+                              <Grid style={{display: 'flex',justifyContent: 'center'}}>
+                                <Pagination onChange={handlePage} variant="outlined" size="small" siblingCount={0} boundaryCount={1} count={totalpage} shape="rounded" />
+                              </Grid>
+                            )
+                        : null}
+                    </Grid> 
                 </ValidatorForm >
                 </Container>
                 <br/>
@@ -442,7 +450,7 @@ class QuestionBank extends Component{
                     </div>
                     </Grid>
                   </Grid>
-                     
+{/*                      
                     <Grid >
                         {pending ? (
                               <Grid style={{display: 'flex',justifyContent: 'center'}}>
@@ -450,7 +458,7 @@ class QuestionBank extends Component{
                               </Grid>
                             )
                         : null}
-                    </Grid> 
+                    </Grid>  */}
                 </Container></div> : null}
                 </M_RTL>
                 </Material_RTL>

@@ -47,10 +47,11 @@ export default function ExamListItem(props) {
         >
             <Grid item xs = {4} className={classes.grid}>
               {props.isAdmin == false ?
+
                 <Button variant="contained" className = {classes.button} onClick={()=>{
                   window.location.href = "/exam/" + props.id + "/questions" ;
-                }}>          
-                    <h5 style={{fontFamily: 'Vazir'}}>                        
+                }}>                        
+                    <h5 style={{fontFamily: 'Vazir' , color : '#1CA0A0'}}>                        
                     مشاهده 
                     </h5>                    
                 </Button>
@@ -59,7 +60,7 @@ export default function ExamListItem(props) {
                   // history.push("/EditExam/"+ props.classId + "/" + props.id);
                   window.location.href = "/EditExam/"+ props.classId + "/" + props.id ;
                 }}>          
-                    <h5 style={{fontFamily: 'Vazir'}}>                        
+                    <h5 style={{fontFamily: 'Vazir' , color : '#1CA0A0'}}>                        
                     ویرایش
                     </h5>                    
                 </Button>
@@ -69,7 +70,7 @@ export default function ExamListItem(props) {
                 از 9/9/99 تا 10/9/99
             </Grid>
             <Grid item xs = {4} className={classes.grid}>
-                <h6 dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir', textAlign : 'right' , marginBottom : 0 }}>                                          
+                <h6 dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir', textAlign : 'right', color : 'white' , marginBottom : 0 }}>                                          
                 {props.name}
                 </h6>                
             </Grid>            
