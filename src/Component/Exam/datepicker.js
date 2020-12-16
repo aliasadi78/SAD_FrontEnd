@@ -17,6 +17,7 @@ function onOk(value) {
 
 export default function DP(props){
   return (
+    <div >
   <Space direction="vertical" size={12}>    
     <RangePicker
       showPanels={['year', 'year']}
@@ -26,5 +27,6 @@ export default function DP(props){
       onOk={onOk}
     />
   </Space>
+  </div>
   );
 }

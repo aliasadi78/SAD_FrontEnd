@@ -15,7 +15,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import M_RTL from '../../../M_RTL';
 import IconButton from '@material-ui/core/IconButton';
-import AlertDialog from "../../../Dialog";
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import CreateIcon from '@material-ui/icons/Create';
 
