@@ -47,7 +47,9 @@ export default function ExamListItem(props) {
         >
             <Grid item xs = {4} className={classes.grid}>
               {props.isAdmin == false ?
-                <Button variant="contained" className = {classes.button}>          
+                <Button variant="contained" className = {classes.button} onClick={()=>{
+                  window.location.href = "/exam/" + props.id + "/questions" ;
+                }}>          
                     <h5 style={{fontFamily: 'Vazir'}}>                        
                     مشاهده 
                     </h5>                    

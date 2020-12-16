@@ -13,6 +13,7 @@ import Questions from './Component/Question/Questions' ;
 import questionBank from './Component/Question/QuestionBank' ;
 import PersonalForms from './Component/User/EditProfile' ;
 import CreateExam from './Component/Exam/CreateExam';
+import ExamPage from './Component/Exam/ExamPage/ExamPage';
 import {connect} from 'react-redux' ;
 import serverURL from './utils/serverURL' ;
 import tokenConfig from  './utils/tokenConfig' ;
@@ -53,6 +54,7 @@ class App extends Component {
                 <Route path="/user/questions" children={<Dashboard />} component = {Questions} />
                 <Route path="/questionBank" children={<Dashboard />} component = {questionBank  } />
                 <Route path="/Dashboard" component = {Dashboard} />
+                <Route path="/exam/:examId/questions"  component={ExamPage} />
             </div>
 
         );
