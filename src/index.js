@@ -1,13 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'antd/dist/antd.css';  
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
-import './index.css';
 import App from './App';
+import { Provider } from 'react-redux' ;
 import * as serviceWorker from './serviceWorker';
-import '../src/fonts/Vazir.ttf'
+import { createBrowserHistory } from "history";
+import '../src/fonts/Vazir.ttf' ;
+import './index.css';
+import configureStore from "./app/store" ;
+
+const history = createBrowserHistory();
+
+const store = configureStore();
+
 ReactDOM.render(
-  <Router>
-    <App />
+
+  <Router history = {history}>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </Router>,
   document.getElementById('root')
 );
