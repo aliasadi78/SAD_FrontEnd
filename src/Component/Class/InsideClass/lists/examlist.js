@@ -51,20 +51,22 @@ export default function Examslist (props){
     const classes = useStyles();
     const [examList , setExamList] = React.useState([]);
     const [examsListLoad , setExamsListLoad ] = React.useState(true);
-    
-    //get class exams list ----------------------------------------------------------         
-    axios.get(serverURL() + "class/" + props.classId + "/exams" , tokenConfig())
-    .then(res =>{      
-      setExamList([...res.data.exams]); 
-      setExamsListLoad(false);
-      console.log(examList);
-      // console.ChevronLeftIcong(res);
-    })
-    .catch(err=> {
-      console.log(err);
-    });
 
+    //پشت سر هم ریکوئست میفرستاد
+    componentWillMount:
+    if(examsListLoad != false){
+        axios.get(serverURL() + "class/" + props.classId + "/exams" , tokenConfig())
+        .then(res =>{      
+          setExamList([...res.data.exams]); 
+          setExamsListLoad(false);
+          console.log(examList);
+          // console.ChevronLeftIcong(res);
+        })
+        .catch(err=> {
+          console.log(err);
+        });}
     let history = useHistory();
+
 
     return (
         <Grid item  xs={4} sm={12}  lg={6} className = {classes.grid}>                                                                
@@ -95,6 +97,7 @@ export default function Examslist (props){
                     <Paper elevation = {elevation}  className = {classes.ElanPaper} style={{width : '90%'}}>                      
                         { props.isAdmin == true &&
                           <Grid item>                            
+
                             {/* <Link href="/CreateExam"> */}
                               <Button className={classes.groupbutton}                               
                               onClick={()=>{

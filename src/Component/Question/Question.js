@@ -51,7 +51,37 @@ const useStyles = makeStyles((theme) => ({
     // marginTop : theme.spacing(5) ,
     width : '100%'
   },
-  
+  '@global':{
+        '.MuiInputLabel-filled.MuiInputLabel-shrink.MuiInputLabel-marginDense' : {
+        display: 'block',
+        fontFamily: 'Vazir',
+      },
+      '.MuiInputLabel-filled.MuiInputLabel-marginDense': {
+        display: 'block',
+        fontFamily: 'Vazir',
+      },
+      '.MuiAutocomplete-option': {
+        display: 'block',
+        fontFamily: 'Vazir',
+        textAlign: 'right',
+        direction: 'rtl',
+      },
+      '.MuiAutocomplete-inputRoot[class*="MuiFilledInput-root"][class*="MuiFilledInput-marginDense"] .MuiAutocomplete-input': {
+        display: 'block',
+        fontFamily: 'Vazir',
+      },
+      '.MuiFormControlLabel-label': {
+        display: 'block',
+        fontFamily: 'Vazir',
+      },
+      //فونت گزینه ها
+      '.MuiFilledInput-root': {
+        fontFamily: 'Vazir',
+      },
+    },
+  RadioChoice :{
+    
+  },
   questionFacePaper: {
     padding: theme.spacing(1),    
     marginBottom : theme.spacing(0) ,

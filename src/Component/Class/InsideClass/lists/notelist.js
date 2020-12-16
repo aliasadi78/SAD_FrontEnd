@@ -41,18 +41,21 @@ export default function Notelist (props){
     const classes = useStyles();
     const [noteList , setNoteList] = React.useState([]);        
     const [noteListLoad , setNoteListLoad] = React.useState(true);
-    
-    //get class note list-----------------------------------------------------------
-    axios.get(serverURL() + "class/" + props.classId + "/notes" , tokenConfig() )
-    .then(res => {
-      setNoteList([...res.data.classNotes]);      
-      setNoteListLoad(false);          
-    })
-    .catch(err => {
-      console.log("Not Found");   
-      console.log(err)     
-    });
-
+    //پشت سر هم ریکوئست میفرستاد
+    componentWillMount:
+        if(noteListLoad != false){
+            axios.get(serverURL() + "class/" + props.classId + "/notes" , tokenConfig() )
+            .then(res => {
+                console.log("axios get notes!!!!!!!")
+              setNoteList([...res.data.classNotes]);  
+              console.log(noteList)    
+              setNoteListLoad(false);          
+            })
+            .catch(err => {
+              console.log("Not Found");   
+              console.log(err)     
+            });
+        }
     return (
         <Grid item xs={4} sm={12}  lg={6} className = {classes.grid}>
 
@@ -83,8 +86,8 @@ export default function Notelist (props){
                 {props.isAdmin == true &&    
                     <Grid item>                                                
                         <h5 style={{fontFamily: 'Vazir'}}>
-                            
-                            <DialogNote classId={props.classId}/>
+                            {/* //پراپس ها برای هندل کردن اپدیت شدن که یه راه بهتر وجود داشت:) */}
+                            <DialogNote classId={props.classId} noteListLoad={[noteListLoad,setNoteListLoad]}/>
                         </h5>                       
                     </Grid>     
                 }
@@ -102,6 +105,7 @@ export default function Notelist (props){
                             CreatorName = {m.creator.firstname + " " + m.creator.lastname}  
                             noteId = {m.classNoteId}  
                             classId = {props.classId}
+                            noteListLoad={[noteListLoad,setNoteListLoad]}
                             />
                         ) 
                     }                              

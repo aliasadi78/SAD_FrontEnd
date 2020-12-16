@@ -27,6 +27,12 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 const useStyles = makeStyles((theme) => ({
+  //فونت
+    '@global':{
+      '.MuiFormHelperText-root.Mui-error' : {
+        fontFamily: 'Vazir',
+      },
+    },
     progressBar : {
       display: 'flex',
       '& > * + *': {
@@ -300,8 +306,8 @@ function EditProfileValidationForms_Personal (props) {
                                             value={paswordValues.password}
                                             onChange={handleChange('password')}
                                             InputLabelProps={{style:{fontFamily: 'Vazir'},}}
-                                            validators={[ 'minStringLength:' + 8]}
-                                            errorMessages={['رمز عبور باید بیشتر از 8 حرف باشد']}
+                                            validators={[ 'minStringLength:' + 6]}
+                                            errorMessages={['رمز عبور باید بیشتر از ۶ حرف باشد']}
                                             InputProps={{
                                                 style:{fontFamily: 'Vazir'},
                                                 endAdornment:(
@@ -337,16 +343,7 @@ function EditProfileValidationForms_Personal (props) {
                                             errorMessages={['رمز عبور مطابقت ندارد', 'لطفا رمز عبور خود را تکرار کنید']}
                                             InputProps={{
                                                 style:{fontFamily: 'Vazir'},
-                                                endAdornment:(
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        style={{padding: '0px',color:'black'}}
-                                                        onClick={handleClickShowPassword}
-                                                        // onMouseDown={this.handleMouseDownPassword}
-                                                    >
-                                                        {paswordValues.showConfirmedPassword ? <Visibility /> : <VisibilityOff />}
-                                                    </IconButton>
-                                                </InputAdornment>)
+                                                
                                             }}
                                         />
                                         </ValidatorForm>
