@@ -7,7 +7,7 @@ import RTL from '../M_RTL';
 import Grid from '@material-ui/core/Grid';
 import { useDispatch } from 'react-redux' ; 
 import {
-    loadEdittingQuestion
+    loadEdittingQuestion , selectQuestion
 } from './QuestionsSlice' ;
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
@@ -22,7 +22,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { createMuiTheme } from '@material-ui/core/styles';
 import serverURL from '../../utils/serverURL';
 import tokenConfig from '../../utils/tokenConfig';
-import AlertDialog from '../Dialog';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Radio from '@material-ui/core/Radio';
@@ -142,7 +141,7 @@ export default function UserDesignedQuestion(props) {
                                     <Paper className={classes.paper}>
                                         <TextField                    
                                             id="outlined-multiline-static"
-                                            defaultValue = {props.question}                                  
+                                            defaultValue = {props.question.question}                                  
                                             multiline
                                             disabled
                                             rows={4}
@@ -263,6 +262,7 @@ export default function UserDesignedQuestion(props) {
                                         <Button variant="contained"                                        
                                             onClick={() => {                                                
                                                 dispatch(loadEdittingQuestion(props.index));                                                
+                                                dispatch(selectQuestion(props.question));
                                             }} 
                                             className={classes.EditButton}>
 
@@ -272,7 +272,8 @@ export default function UserDesignedQuestion(props) {
                                         </Button>                                       
                                     </Grid>
                                     <Grid item xs={2}>                                        
-                                        <Button variant="contained" onClick={() => {handleDeleteQuestion( props.questionId)}} className={classes.DeleteButton}>
+                                        <Button variant="contained" onClick={() => {                                            
+                                            handleDeleteQuestion( props.question._id)}} className={classes.DeleteButton}>
                                             <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                                 حذف
                                             </Typography>

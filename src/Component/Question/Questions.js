@@ -37,9 +37,7 @@ class Questions extends Component {
   constructor (props){
     super(props);
 
-    this.state = {
-      bool : false , 
-      editQuestionIndex : -1 ,
+    this.state = {      
       grades : [] ,       
       types : [] ,
       hardnesses : [] ,
@@ -68,18 +66,7 @@ class Questions extends Component {
   }
 
   render(props){
-    const classes = this.props.classes;            
-
-    let editQuestionIndex = -1 ;
-
-    const edit = (i) => {            
-      editQuestionIndex = i ;      
-      console.log(i);
-      this.setState(prevstate => {
-        return{
-          editQuestionIndex : i 
-        }})      
-    }
+    const classes = this.props.classes;                
 
     return (
       <div className={classes.root}>
@@ -98,15 +85,14 @@ class Questions extends Component {
                         this.props.questions.map((m , index) =>
                         <UserDesignedQuestion  
                           backColor = '#f2f2f2'   
-                          index = {index}
-                          questionId = {m._id}
+                          question = {m}
+                          index = {index}                          
                           type={m.type}
-                          answers = {m.answers}
-                          question = {m.question}
+                          answers = {m.answers}                          
                           options = {m.options}
                           soalImage = {m.imageQuestion}
                           javabImage = {m.imageAnswer}
-                          onclick = {() => {edit(index)}}                          
+                          // onclick = {() => {edit(index)}}                          
                           />)
                     }
                     </div>                            
@@ -119,23 +105,17 @@ class Questions extends Component {
                 </Paper>
               </Grid>
 
-              <Grid item xs={12}>
-                {this.state.editQuestionIndex == -1 ?                                     
+              <Grid item xs={12}>                
                   <Question                                          
                       submitButton="طرح"
                       backColor = '#f2f2f2'
                       // questionIndex={editQuestionIndex}
-                      questions = {this.state.questions}
+                      questions = {this.props.questions}
                       grades = {this.state.grades}
                       courses = {this.state.courses}
                       chapters = {this.state.chapters}
                       types = {this.state.types}
-                  />                                 
-                  :
-                  <p>
-                    edit
-                  </p>
-                }                                                                                        
+                  />                                                                                                                                                      
               </Grid>                             
             </Grid>                     
           </Grid>          
@@ -150,7 +130,7 @@ export default () => {
   const [questionsFound , setQuestionsFound ]  = React.useState(false);
   const [questions , setQuestions] = React.useState([]);
 
-  // if(questionsFound == false)
+  if(questionsFound == false)
     axios.get(serverURL() + "question?limit=10" , tokenConfig() )    
     .then(res =>{      
       setQuestions([...res.data.questions]);

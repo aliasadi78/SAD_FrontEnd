@@ -8,8 +8,9 @@ import Material_RTL from "../Material_RTL";
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import RTL from '../M_RTL';
+import CloseIcon from '@material-ui/icons/Close';
 import Grid from '@material-ui/core/Grid';
-import AlertDialog from '../Dialog' ;
+import IconButton from '@material-ui/core/IconButton';
 import InputLabel from '@material-ui/core/InputLabel';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -29,7 +30,23 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
 import UploadImage from './uploadImage';
 import { connect } from 'react-redux' ;
-import { useSelector } from 'react-redux' ;
+import { savePublicApis , 
+    selectQuestion ,
+    question , 
+    answer ,
+    base , 
+    type , 
+    hardness , 
+    course , 
+    chapter ,
+    addOption , 
+    imageAnswer ,
+    imageQuestion , 
+    setPublic ,
+    removeOption ,
+    editOption ,
+    MultiChoiseCheck
+  } from './QuestionsSlice' ;
 
 const theme = createMuiTheme({
   palette: {
@@ -153,78 +170,62 @@ function valuetext(value) {
 
 function Question(props) {
 
-    // const index = useSelector(state =>state.edittingQuestion.edittingQuestionIndex);    
-
     const classes = useStyles();
 
-    const [soalImageBase64 , setSoalImageBase64] = React.useState("");
-    const [javabImageBase64 , setJavabImageBase64] = React.useState("");
-
-    const [publicCheck , setpublicCheck ] = React.useState(false);
-    const [difficulty , setDifficulty] = React.useState("LOW");
-    const [questionType , setQuestionType] = React.useState(null);
-    const [questionAdded , setQuestionAdded] = React.useState(false);
-    
-    const [choice1 , setChoice1] = React.useState(false);
-    const [choice2 , setChoice2] = React.useState(false);
-    const [choice3 , setChoice3] = React.useState(false);
-    const [choice4 , setChoice4] = React.useState(false);    
+    const [publicCheck , setpublicCheck ] = React.useState(props.question.public);
+    const [difficulty , setDifficulty] = React.useState(props.question.hardness);
 
     const [gozine1 , setGozine1] = React.useState("");
     const [gozine2 , setGozine2] = React.useState("");
     const [gozine3 , setGozine3] = React.useState("");
     const [gozine4 , setGozine4] = React.useState("");  
-    
-    const [options , setOptions] = React.useState([]);
-    const [isEditting , setIsEditting] = React.useState(false);
-    
-    const [question , setQuestion] = React.useState(null);
-    const [grade , setGrade] = React.useState('');
-    const [lesson , setLesson] = React.useState(null);
-    const [ session , setSession] = React.useState(null);   
+
+    const [testAnswer , setTestAnswer] = React.useState("");
+
+    const [question , setQuestion] = React.useState(props.question.question);
     
     const [AddQuestionPending , setAddQuestionPending] = React.useState(false);
 
-    const [multitestOptions , setMultitestOptions] = React.useState([{ "option" : "" , "answer" : "" }])
+    const [answers , setAnswers] = React.useState(props.question.answers);    
 
-    const [answers , setAnswers] = React.useState([]);
+    const AddQuestion = () => {
 
-    const handleChange = () => {
-        setpublicCheck(!publicCheck);        
-    };    
+        const options = [];
 
-    const AddQuestion = (type , publicCheck , question , 
-    answer , options , base , hardness , course , chapter , soalImage , javabImage ) => {
+        props.questionOptions.forEach(element => {
+            options.push(element)
+        });
 
-        console.log(options);
+        console.log(props.questionOptions);
 
         const a = {
-            "type": type ,
-            "public": publicCheck,            
-            "question": question,
-            "answers": answers ,
-            "options": options,
-            "base": "" +  base + "",
-            "hardness":  hardness,
-            "course": course , 
-            "chapter" : chapter,
-            "imageQuestion": soalImage,
-            "imageAnswer": javabImage,
+            "type":          props.question.type ,
+            "public":        props.question.public,            
+            "question":      props.question.question,
+            "answers":       props.question.answers ,
+            "options":       options , 
+            "base": ""+      props.question.base + "",
+            "hardness":      props.question.hardness,
+            "course":        props.question.course , 
+            "chapter" :      props.question.chapter,
+            "imageQuestion": props.question.soalImage,
+            "imageAnswer":   props.question.javabImage,
+        }        
 
-        }
         const ajson = JSON.stringify(a);
-        // console.log(ajson);
-        console.log("add question");
+
+        console.log(options);
         console.log(ajson);
-        axios.post(serverURL() + "question" , ajson , tokenConfig() )
-        .then(res => {
-            console.log(res);            
-            setQuestionAdded(true);
-            setAddQuestionPending(false);
-        })
-        .catch(e => {
-            console.log(e);
-        });
+
+        // axios.post(serverURL() + "question" , ajson , tokenConfig() )
+        // .then(res => {
+        //     console.log(res);            
+        //     setQuestionAdded(true);
+        //     setAddQuestionPending(false);
+        // })
+        // .catch(e => {
+        //     console.log(e);
+        // });
     }
 
     const EditQuestion = (type , publicCheck , question , 
@@ -259,11 +260,6 @@ function Question(props) {
             });
     }    
 
-
-    const editModeOn = () => {
-        setIsEditting(true);
-    };
-
     if(props.index != -1){      
         console.log('editting')  ;
         console.log(props.index);
@@ -284,9 +280,9 @@ function Question(props) {
                                             id="outlined-multiline-static"
                                             label="صورت سوال"
                                             multiline
-                                            defaultValue = {props.index < 0 ? question : props.questions[0].question}                                            
+                                            defaultValue = {props.index < 0 ? question : props.question.question}                                            
                                             rows={4}
-                                            onChange={(e) =>{setQuestion(e.target.value)} }
+                                            onChange={(e) =>{props.setQuestion(e.target.value)} }
                                             fullWidth = 'true'
                                             className = {classes.BigForm}                                            
                                             variant="outlined"
@@ -298,14 +294,7 @@ function Question(props) {
                                     </Paper>
                                 </Grid>
 
-                                <UploadImage
-                                getImage={(value)=>{
-                                    setSoalImageBase64(value)
-                                }}
-                                id="soal" />   
-                                {props.index != -1 &&
-                                    props.questions[props.index].id
-                                }
+                                <UploadImage id="soal" />                                   
 
                             </Grid>                                                                                
                                 <Grid container spacing={3} >                 
@@ -319,8 +308,8 @@ function Question(props) {
                                                 پایه
                                             </InputLabel> 
                                             <Select
-                                                value = {grade}
-                                                defaultValue={props.index >= 0 && props.questions[0].base}
+                                                value = {props.question.base}
+                                                // defaultValue={props.question.base}
                                                 variant = "filled"                                                    
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
@@ -329,7 +318,7 @@ function Question(props) {
                                                     style:{fontFamily: 'Vazir'},
                                                 }}
                                                 onChange ={(e)=>{                                                    
-                                                    setGrade(e.target.value);                                                                                                           
+                                                    props.setBase(e.target.value);                                                                                                           
                                                 }}
                                                     >
                                                 {props.grades.map( ([key , value]) =>
@@ -348,7 +337,7 @@ function Question(props) {
                                                 درس
                                             </InputLabel> 
                                             <Select
-                                                value = {lesson}
+                                                value = {props.question.course}
                                                 variant = "filled"                                                    
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
@@ -357,7 +346,7 @@ function Question(props) {
                                                     style:{fontFamily: 'Vazir'},
                                                 }}
                                                 onChange ={(e)=>{                                                    
-                                                    setLesson(e.target.value);                                                                                                            
+                                                    props.setCourse(e.target.value);                                                                                                            
                                                 }}
                                                     >
                                                 {props.courses.map( ([key , value]) =>
@@ -376,7 +365,7 @@ function Question(props) {
                                                 فصل
                                             </InputLabel> 
                                             <Select
-                                                value = {session}
+                                                value = {props.question.chapters}
                                                 variant = "filled"                                                    
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
@@ -385,7 +374,7 @@ function Question(props) {
                                                     style:{fontFamily: 'Vazir'},
                                                 }}
                                                 onChange ={(e)=>{                                                    
-                                                    setSession(e.target.value);                                                                                                            
+                                                    props.setChapter(e.target.value);                                                                                                            
                                                 }}
                                                     >
                                                 {props.chapters.map( ([key , value]) =>
@@ -404,7 +393,7 @@ function Question(props) {
                                                 نوع سوال
                                             </InputLabel> 
                                             <Select
-                                                value = {questionType}
+                                                value = {props.question.type}                                                
                                                 variant = "filled"                                                    
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
@@ -413,7 +402,7 @@ function Question(props) {
                                                     style:{fontFamily: 'Vazir'},
                                                 }}
                                                 onChange ={(e)=>{                                                    
-                                                    setQuestionType(e.target.value);                                                                                                            
+                                                    props.setType(e.target.value);                                                                                                            
                                                 }}
                                                     >
                                                 {props.types.map( ([key , value]) =>
@@ -430,6 +419,7 @@ function Question(props) {
                                             <ThemeProvider theme = {theme}>
                                                 <Slider
                                                     dir = "rtl"
+                                                    // defaultValue={props.index != -1 ? props.questions[props.index].hardness : 1}
                                                     defaultValue={1}
                                                     getAriaValueText={valuetext}
                                                     aria-labelledby="discrete-slider"
@@ -439,12 +429,9 @@ function Question(props) {
                                                     }}
                                                     // valueLabelDisplay="auto"     
                                                     onChange ={(e)=>{
-                                                        if(e.target.value==1)
-                                                            setDifficulty("LOW");
-                                                        if(e.target.value==2)
-                                                            setDifficulty("MEDIUM");
-                                                        if(e.target.value==3)
-                                                            setDifficulty("HARD");
+                                                        if(e.target.value==1) props.setHardness("LOW");
+                                                        if(e.target.value==2) props.setHardness("MEDIUM");
+                                                        if(e.target.value==3) props.setHardness("HARD");
                                                     }}                                       
                                                     step={1}
                                                     color = "secondary"
@@ -462,33 +449,41 @@ function Question(props) {
                                 <Grid item xs={12}>     
                                     <Paper className={classes.paper}>
                                         {
-                                            questionType === 'MULTICHOISE' ?
+                                            props.question.type === 'MULTICHOISE' ?
                                             <Grid container spacing={2} >                                                
                                                 <Grid item xs={6}>                                                                                                            
-                                                    <FormGroup>                                                        
+                                                    <FormGroup>          
+                                                        {props.question.options.map((m , index) =>                                               
                                                         <form class="form-inline">
-                                                            <Checkbox checked={choice1} onChange={()=>(setChoice1(!choice1))} name="gilad" 
+                                                            <IconButton onClick={()=>{
+                                                                props.removeOption(index)
+                                                            }}>
+                                                                <CloseIcon />
+                                                            </IconButton>
+                                                            <Checkbox checked={props.options[index].answer} onChange={()=>(props.MultiChoiseCheck({"index": index , "answer": !props.options[index].answer}))} name="gilad" 
                                                                 className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                                <TextField variant="filled" onChange={(e) => {
-                                                                    setGozine1(e.target.value);                                                                
-                                                                }} margin='dense' />
+                                                            <TextField variant="filled"  value={m.option} onChange={(e) => {
+                                                                props.editOption({"option" : e.target.value , "index" : index});                                                                
+                                                            }} margin='dense' />                                                            
                                                         </form>                                                        
+                                                        )}
                                                     </FormGroup>                                                                                         
                                                 </Grid> 
                                                 <Grid item xs={6}></Grid>
                                                 <Grid item xs={6} >
-                                                    <Button variant="contained" style = {{fontFamily: 'Vazir'}} >
+                                                    <Button variant="contained" onClick={() => {
+                                                        props.addOption();
+                                                    }} style = {{fontFamily: 'Vazir'}} >
                                                         گزینه جدید
                                                     </Button>  
                                                 </Grid>                                              
                                             </Grid>
                                             :                                          
-                                            questionType === 'TEST' ?
+                                            props.question.type === 'TEST' ?
                                                 <FormControl component="fieldset">                                                    
-                                                    <RadioGroup aria-label="gender"  className = {classes.RadioChoice} name="gender1" onChange={(e) => {
-                                                        console.log(e.target.value)                                                        
-                                                        setAnswers([{"answer" : e.target.value}])}
-                                                        }>
+                                                    <RadioGroup aria-label="gender"  className = {classes.RadioChoice} name="gender1" onChange={(e) => {                                                                                                             
+                                                        setTestAnswer(e.target.value);
+                                                        }} >
                                                         <Grid container >
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
@@ -528,8 +523,9 @@ function Question(props) {
                                                 multiline
                                                 rows={4}
                                                 fullWidth = 'true'
+                                                defaultValue={props.index < 0 ? null : props.question.answers[0].answer}
                                                 className = {classes.BigForm}
-                                                onChange = {(e)=>{setAnswers([ {"answer" : e.target.value}])}}
+                                                onChange = {(e)=>{props.setAnswer([ {"answer" : e.target.value}])}}
                                                 InputLabelProps={{style:{fontFamily: 'Vazir'}}}
                                                 InputProps={{
                                                     style:{fontFamily: 'Vazir'},
@@ -542,28 +538,37 @@ function Question(props) {
                                         }                                                                           
                                     </Paper>
                                 </Grid>
-                                {/* //  upload image */}                                  
-                                
-                                <UploadImage
-                                getImage={(value)=>{
-                                    setJavabImageBase64(value)
-                                }}
-                                id = "javab" />
+
+                                <UploadImage id = "javab" />
 
                                 <Grid item xs={4}>                                    
                                     <LoadingButton variant="contained"
                                      pending={AddQuestionPending}
                                      onClick={() => {                                                                                 
                                         setAddQuestionPending(true)
-                                        AddQuestion(                                            
-                                        questionType , publicCheck , question ,
-                                        answers , [
-                                            { "option" : gozine1 } ,
-                                            { "option" : gozine2 } , 
-                                            { "option" : gozine3 } , 
-                                            { "option" : gozine4 } ] , grade , difficulty , lesson , session
-                                        , soalImageBase64 , javabImageBase64
-                                    )}} 
+                                        if(props.question.type=='TEST')
+                                        {
+                                            props.addOption(); props.addOption(); props.addOption(); props.addOption();
+                                            props.editOption({ "option" : gozine1 , "index" : 0}) ; 
+                                            props.editOption({ "option" : gozine2 , "index" : 1}) ;
+                                            props.editOption({ "option" : gozine3 , "index" : 2}) ; 
+                                            props.editOption({ "option" : gozine4 , "index" : 3}) ;                                             
+                                            props.setAnswer({"answer" : testAnswer});
+                                        }
+
+                                        // console.log(props.question);
+
+                                        AddQuestion();
+                                        // AddQuestion(                                            
+                                        // questionType , publicCheck , question ,
+                                        // answers , [
+                                        //     { "option" : gozine1 } ,
+                                        //     { "option" : gozine2 } , 
+                                        //     { "option" : gozine3 } , 
+                                        //     { "option" : gozine4 } ]  , grade , difficulty , lesson , session
+                                        // , soalImageBase64 , javabImageBase64
+                                    // )
+                                }} 
                                     className={classes.Button}>
                                         <Typography variant='button' style = {{fontFamily: 'Vazir'}} >                                            
                                                 طرح
@@ -572,7 +577,10 @@ function Question(props) {
                                 </Grid>
                                 <Grid item xs={8} className = {classes.grid} >                                    
                                     <FormControlLabel                                        
-                                        control={<Checkbox checked={publicCheck} onChange={handleChange}
+                                        control={<Checkbox checked={publicCheck} onChange={()=> {
+                                            props.setPublic(!publicCheck);
+                                            setpublicCheck(!publicCheck);                                                    
+                                        }}
                                             className ={classes.checkbox} color='#EE6C4D' />}
                                         label="سوالم برای بقیه کاربران در دسترس باشد."
                                         style = {{fontFamily: 'Vazir' , color : 'black'}}
@@ -592,10 +600,35 @@ function Question(props) {
 }
 
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return{
-      index : state.edittingQuestion.edittingQuestionIndex  
+      index : state.edittingQuestion.edittingQuestionIndex  , 
+      question : state.edittingQuestion.edittedQuestion ,
+
+      questionOptions : state.edittingQuestion.questionOptions ,
+      questionAnswers : state.edittingQuestion.questionAnswers ,
+      imageAnswer : state.edittingQuestion.imageAnswer ,
+      imageQuestion : state.edittingQuestion.imageQuestion ,
+
+      options : state.edittingQuestion.options       
     }
 }
 
-export default connect(mapStateToProps)(Question)
+const mapDispatchToProps = dispatch => {
+    return {
+        setQuestion: (e) => dispatch(question (e))
+        ,setAnswer: (e) => dispatch(answer(e))
+        ,setBase: (e) => dispatch(base (e))
+        ,setType: (e) => dispatch(type (e))
+        ,setHardness: (e) => dispatch(hardness (e))
+        ,setCourse: (e) => dispatch(course (e))
+        ,setChapter: (e) => dispatch(chapter(e))
+        ,addOption: () => dispatch(addOption())
+        ,setPublic: (e) => dispatch(setPublic(e))
+        ,editOption: (e) => dispatch(editOption(e))
+        ,removeOption: (e) => dispatch(removeOption(e))
+        ,MultiChoiseCheck : (e) => dispatch(MultiChoiseCheck(e))
+    }
+}
+
+export default connect(mapStateToProps , mapDispatchToProps)(Question)
