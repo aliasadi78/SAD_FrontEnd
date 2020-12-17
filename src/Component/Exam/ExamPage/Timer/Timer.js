@@ -106,7 +106,7 @@ class Timer extends React.Component {
       this.renderCountdownDate(this.countDownDate);
       this.setState({
         isCountdownSet: false,
-        infoMessage: 'Countdown ended. Click the Settings button to start a new countdown.'
+        infoMessage: 'آزمون در دسترس نمی باشد!'
       });
     }
   }
