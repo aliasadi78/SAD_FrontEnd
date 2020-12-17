@@ -44,7 +44,8 @@ import {
     editOption ,
     MultiChoiseCheck ,
     addAnswer , 
-    cancelEdit
+    cancelEdit ,
+    addAnswerField
   } from './QuestionsSlice' ;
 
 const theme = createMuiTheme({
@@ -179,11 +180,13 @@ function Question(props) {
 
         console.log(props.questionOptions);
 
+        const answers = [] ;
+
         if(props.question.type == 'MULTICHOISE'){
             for (let index = 0; index < props.options.length; index++) {
                 const element = props.options[index];
                 if(element.answer == true)
-                    addAnswer({"answer" : index});
+                    answers.push({"answer" : index});
             }
         }
         
@@ -191,7 +194,7 @@ function Question(props) {
             "type":          props.question.type ,
             "public":        props.question.public,            
             "question":      props.question.question,
-            "answers":       props.question.answers ,
+            "answers":       answers ,
             "options":       props.question.options ,             
             "base": ""+      props.question.base + "",
             "hardness":      props.question.hardness,
@@ -208,7 +211,8 @@ function Question(props) {
         .then(res => {
             console.log(res);                        
             setAddQuestionPending(false);
-        props.onRefresh() ;
+            props.onRefresh() ;
+            props.cancelEdit();    
         })
         .catch(e => {
             console.log(e);
@@ -245,6 +249,14 @@ function Question(props) {
                 console.log(e);
             });
     }    
+
+    if(props.index > -1 && props.question.type == 'MULTICHOISE')
+    {
+        for (let index = 0; index < props.question.options.length; index++) {
+            const element = props.question.options[index];
+            // props.addAnswerField({})
+        }
+    }
             
     return (
         <React.Fragment>
@@ -608,6 +620,7 @@ const mapDispatchToProps = (dispatch) => {
         ,MultiChoiseCheck : (e) => dispatch(MultiChoiseCheck(e))
         ,addAnswer : (e) => dispatch(addAnswer(e))
         ,cancelEdit : () => dispatch(cancelEdit())
+        ,addAnswerField : (e) => dispatch(addAnswerField(e))
     }
 }
 

@@ -82,6 +82,9 @@ export const QuestionsSlice = createSlice({
       state.edittedQuestion.options.push({"option" : null});      
       state.options.push({"answer" : false });      
     },
+    addAnswerField(state , action){
+      state.options.push({"answer" : action.payload });      
+    },
     removeOption(state , action){
       delete state.edittedQuestion.options[action.payload] ;
       delete state.options[action.payload] ;
@@ -132,7 +135,8 @@ export const { savePublicApis ,
                removeOption , 
                MultiChoiseCheck,
                addAnswer ,
-               cancelEdit
+               cancelEdit,
+               addAnswerField
              } = QuestionsSlice.actions
 
 export default QuestionsSlice.reducer

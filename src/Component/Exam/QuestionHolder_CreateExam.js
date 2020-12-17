@@ -290,30 +290,13 @@ export default function QuestionHolder_Create(props) {
                                         </FormControl>
                                     :props.question.type === 'MULTICHOISE' &&
                                         <FormGroup>
+                                            {props.question.options.map((m , index) => 
                                             <form class="form-inline">
                                                 <Checkbox checked={choice1}  name="gilad"  disabled
                                                     className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField variant="filled"  margin='dense'disabled  defaultValue={props.question.options[0].option}/>
-                                            </form>
-                                            
-                                            <form class="form-inline">
-                                                <Checkbox checked={choice2} name="gilad" disabled
-                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField variant="filled" margin='dense' disabled defaultValue={props.question.options[1].option}/>
-                                            </form>
-
-                                            <form class="form-inline">
-                                                <Checkbox checked={choice3} name="gilad" disabled
-                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField  variant="filled" margin='dense' disabled defaultValue={props.question.options[2].option}/>
-                                            </form>
-
-                                            <form class="form-inline">
-                                                <Checkbox checked={choice4} name="gilad" disabled
-                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField disabled
-                                                    variant="filled" margin='dense'  defaultValue={props.question.options[3].option}/>
-                                            </form>                                                    
+                                                    <TextField variant="filled"  margin='dense'disabled  defaultValue={props.question.options[index].option}/>
+                                            </form>                                    
+                                            )}                                                         
                                         </FormGroup>
 
                                 } 

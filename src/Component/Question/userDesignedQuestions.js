@@ -94,12 +94,7 @@ function editQuestion (){
 
 function UserDesignedQuestion(props) {
 
-    const [deleted , setDeleted] = React.useState(false);
-
-    const [choice1 , setChoice1] = React.useState(false);
-    const [choice2 , setChoice2] = React.useState(false);
-    const [choice3 , setChoice3] = React.useState(false);
-    const [choice4 , setChoice4] = React.useState(false);    
+    const [deleted , setDeleted] = React.useState(false);    
 
     const dispatch = useDispatch();
 
@@ -118,8 +113,6 @@ function UserDesignedQuestion(props) {
         });
     };
 
-    // const [answers , ]
-
     return (
         <React.Fragment>
         <CssBaseline />
@@ -131,8 +124,7 @@ function UserDesignedQuestion(props) {
                     style={{backgroundColor: props.backColor }}
                     expanded = {props.alwaysExpand}
                     >
-                        <AccordionSummary
-                            // expandIcon={<ExpandMoreIcon style={{ color: "white" }}/>}
+                        <AccordionSummary                            
                             aria-controls="panel1c-content"
                             id="panel1c-header"
                             className = {classes.accordion}                            
@@ -223,7 +215,7 @@ function UserDesignedQuestion(props) {
                                         <FormGroup>
                                             {props.question.options.map((m , index) => 
                                             <form class="form-inline">
-                                                <Checkbox checked={choice1}  name="gilad"  disabled
+                                                <Checkbox checked={props.question.answers.includes({"answer" : "" + index})}  name="gilad"  disabled
                                                     className ={classes.multiCheckbox} color='#3D5A80' /> 
                                                     <TextField variant="filled"  margin='dense'disabled  defaultValue={m.option}/>
                                             </form>  
