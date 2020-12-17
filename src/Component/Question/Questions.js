@@ -110,9 +110,7 @@ class Questions extends Component {
                   <Question                                          
                       submitButton="طرح"
                       onRefresh = {this.props.onRefresh}
-                      backColor = '#f2f2f2'
-                      // questionIndex={editQuestionIndex}
-                      questions = {this.props.questions}
+                      backColor = '#f2f2f2'                                          
                       grades = {this.state.grades}
                       courses = {this.state.courses}
                       chapters = {this.state.chapters}

@@ -145,7 +145,7 @@ function UserDesignedQuestion(props) {
                                             defaultValue = {props.question.question}                                  
                                             multiline
                                             disabled
-                                            rows={4}
+                                            // rows={4}
                                             fullWidth = 'true'
                                             className = {classes.BigForm}                                            
                                             variant="outlined"

@@ -3,11 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const QuestionsSlice = createSlice({
   name: 'editting question',
   initialState: {    
-    options : [] ,
-    questionOptions : [] ,
-    questionAnswers : [] ,
-    imageAnswer : null ,
-    imageQuestion : null ,
+    options : [] ,    
     edittingQuestionIndex : -1 ,    
     edittedQuestion : {
       "_id": "",
@@ -30,6 +26,23 @@ export const QuestionsSlice = createSlice({
     type : []
   },
   reducers: {    
+    cancelEdit (state){
+      state.edittingQuestionIndex = -1 ;
+      state.edittedQuestion = {
+        "_id": "",
+        "type": null,
+        "base": '',
+        "hardness": "LOW",
+        "course": null,
+        "chapter": null ,
+        "public": false,
+        "imageQuestion": null,
+        "imageAnswer": null,
+        "question": null,
+        "answers": [],
+        "options": []
+      } ;
+    },
     loadEdittingQuestion  (state , action) {        
       state.edittingQuestionIndex = action.payload // action.payload      
     } ,
@@ -118,7 +131,8 @@ export const { savePublicApis ,
                editOption ,
                removeOption , 
                MultiChoiseCheck,
-               addAnswer
+               addAnswer ,
+               cancelEdit
              } = QuestionsSlice.actions
 
 export default QuestionsSlice.reducer

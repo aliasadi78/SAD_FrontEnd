@@ -28,9 +28,9 @@ function UploadImage(props){
         const base64 = await convertBase64(file);         
         // setImageBase64(base64);
         if(props.id == 'soal')
-            props.addImageQuestion(base64)
+            props.addImageQuestion(btoa(base64))
         if(props.id == 'javab')
-            props.addImageAnswer(base64)
+            props.addImageAnswer(btoa(base64))
         // setIsImage(true);        
     }
 
@@ -65,14 +65,12 @@ function UploadImage(props){
                 </label>    
             </Grid>
             {(props.id=='soal' && props.imageQuestion != null) || 
-                (props.id == 'javab' && props.imageAnswer != null) &&
+                (props.id == 'javab' && props.imageAnswer != null) ?
 
                 <Grid item xs={12}>
-                    <img 
-                    // src={props.id=='soal' ? atob(props.imageQuestion) : props.id == 'javab' && atob(props.imageAnswer)}                     
-                    // src={props.id == 'soal' ? 
-                    // atob(props.imageQuestion) : props.id == 'javab' && atob(props.imageAnswer)}
-                    src ={atob(props.imageQuestion)}
+                    <img                     
+                    src={props.id == 'soal' ? 
+                    atob(props.imageQuestion) : props.id == 'javab' && atob(props.imageAnswer)}                    
                     width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>  
                     <IconButton onClick={()=>{
                         // setImageBase64(null);
@@ -85,6 +83,7 @@ function UploadImage(props){
                         <CloseIcon style={{color:'#EE6C4D'}} />
                     </IconButton>
                 </Grid>
+                : null
             }     
         </Grid  >
     );

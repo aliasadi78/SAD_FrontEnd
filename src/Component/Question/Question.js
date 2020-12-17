@@ -43,7 +43,8 @@ import {
     removeOption ,
     editOption ,
     MultiChoiseCheck ,
-    addAnswer
+    addAnswer , 
+    cancelEdit
   } from './QuestionsSlice' ;
 
 const theme = createMuiTheme({
@@ -172,9 +173,7 @@ function Question(props) {
 
     const [publicCheck , setpublicCheck ] = React.useState(props.question.public);    
     
-    const [AddQuestionPending , setAddQuestionPending] = React.useState(false);
-
-    const [answers , setAnswers] = React.useState(props.question.answers);    
+    const [AddQuestionPending , setAddQuestionPending] = React.useState(false);    
 
     const AddQuestion = () => {
 
@@ -232,15 +231,14 @@ function Question(props) {
                 "questionId" : props.question.id
             } 
 
-            const ajson = JSON.stringify(a);
-            // console.log(ajson);
-            console.log("add question");
+            const ajson = JSON.stringify(a);            
             console.log(ajson);
             axios.put(serverURL() + "question" , ajson , tokenConfig() )
             .then(res => {
                 console.log(res);  
                 setAddQuestionPending(false);  
-                props.onRefresh() ;        
+                props.onRefresh() ;    
+                props.cancelEdit();    
                 // setQuestionAdded(true);
             })
             .catch(e => {
@@ -255,7 +253,21 @@ function Question(props) {
             <Material_RTL>
                 <RTL>
                         <Paper style={{backgroundColor : props.backColor}} className = {classes.FormsPaper} >
-                            <Grid container spacing={0}>                                
+                            <Grid container spacing={0}>  
+                                {props.index >= 0 &&
+                                <Grid item xs={12}>
+                                    <Button variant="contained"  
+                                    style={{backgroundColor : '#E63946' , marginBottom : '16px'}}                                      
+                                        onClick={() => {                                                                                                                             
+                                            props.cancelEdit();
+                                        }} 
+                                        className={classes.Button}>
+                                            <Typography variant='button' style = {{fontFamily: 'Vazir'}} >                                            
+                                                    لغو ویرایش         
+                                            </Typography>
+                                    </Button>                                    
+                                </Grid>          
+                                }                    
                                 <Grid item xs={12}>
                                     <Paper className={classes.questionFacePaper}>
                                         <TextField                    
@@ -380,9 +392,7 @@ function Question(props) {
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                                 margin = "dense"
-                                                style={{
-                                                    style:{fontFamily: 'Vazir'},
-                                                }}
+                                                style={{ fontFamily: 'Vazir', width : '200px' }}
                                                 onChange ={(e)=>{                                                    
                                                     props.setType(e.target.value);
                                                     if(e.target.value == 'TEST')                                                                                                            
@@ -404,9 +414,8 @@ function Question(props) {
                                             </Typography>
                                             <ThemeProvider theme = {theme}>
                                                 <Slider
-                                                    dir = "rtl"
-                                                    // defaultValue={props.index != -1 ? props.questions[props.index].hardness : 1}
-                                                    defaultValue={props.question.hardness === "LOW" ? 1 :
+                                                    dir = "rtl"                                                    
+                                                    value={props.question.hardness === "LOW" ? 1 :
                                                     props.question.hardness === "MEDIUM" ? 2 :
                                                     props.question.hardness === "HARD" && 3}                                                    
                                                     getAriaValueText={valuetext}
@@ -542,7 +551,11 @@ function Question(props) {
                                 }} 
                                     className={classes.Button}>
                                         <Typography variant='button' style = {{fontFamily: 'Vazir'}} >                                            
-                                                طرح
+                                                {props.index == -1 ?
+                                                <p>طرح </p>
+                                                :
+                                                <p>ویرایش  </p>
+                                                }                                                
                                         </Typography>
                                     </LoadingButton>                                    
                                 </Grid>
@@ -575,12 +588,6 @@ const mapStateToProps = (state) => {
     return{
       index : state.edittingQuestion.edittingQuestionIndex  , 
       question : state.edittingQuestion.edittedQuestion ,
-
-      questionOptions : state.edittingQuestion.questionOptions ,
-      questionAnswers : state.edittingQuestion.questionAnswers ,
-      imageAnswer : state.edittingQuestion.imageAnswer ,
-      imageQuestion : state.edittingQuestion.imageQuestion ,
-
       options : state.edittingQuestion.options       
     }
 }
@@ -600,6 +607,7 @@ const mapDispatchToProps = (dispatch) => {
         ,removeOption: (e) => dispatch(removeOption(e))
         ,MultiChoiseCheck : (e) => dispatch(MultiChoiseCheck(e))
         ,addAnswer : (e) => dispatch(addAnswer(e))
+        ,cancelEdit : () => dispatch(cancelEdit())
     }
 }
 
