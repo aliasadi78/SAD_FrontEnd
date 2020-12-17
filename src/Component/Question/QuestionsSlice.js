@@ -88,7 +88,10 @@ export const QuestionsSlice = createSlice({
     },
     setPublic (state , action){
       state.edittedQuestion.public = action.payload ;
-    }
+    },
+    addAnswer(state , action){
+      state.edittedQuestion.answers.push(action.payload);
+    } 
   }
 })
 
@@ -114,7 +117,8 @@ export const { savePublicApis ,
                setPublic ,
                editOption ,
                removeOption , 
-               MultiChoiseCheck
+               MultiChoiseCheck,
+               addAnswer
              } = QuestionsSlice.actions
 
 export default QuestionsSlice.reducer

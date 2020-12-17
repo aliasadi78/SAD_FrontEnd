@@ -91,6 +91,7 @@ class Questions extends Component {
                           answers = {m.answers}                          
                           options = {m.options}
                           soalImage = {m.imageQuestion}
+                          onRefresh = {this.props.onRefresh}
                           javabImage = {m.imageAnswer}
                           // onclick = {() => {edit(index)}}                          
                           />)
@@ -108,6 +109,7 @@ class Questions extends Component {
               <Grid item xs={12}>                
                   <Question                                          
                       submitButton="طرح"
+                      onRefresh = {this.props.onRefresh}
                       backColor = '#f2f2f2'
                       // questionIndex={editQuestionIndex}
                       questions = {this.props.questions}
@@ -144,6 +146,9 @@ export default () => {
     <div>
       {questionsFound == true &&
         <Questions 
+          onRefresh = {() => {
+            setQuestionsFound(false);
+          }}
           questions = {questions}
           classes={classes}
           />    

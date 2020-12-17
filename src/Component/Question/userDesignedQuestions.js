@@ -28,7 +28,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
-
+import { connect } from 'react-redux' ;
 const theme = createMuiTheme({
   palette: {
     primary:{
@@ -92,7 +92,7 @@ function editQuestion (){
 }
 
 
-export default function UserDesignedQuestion(props) {
+function UserDesignedQuestion(props) {
 
     const [deleted , setDeleted] = React.useState(false);
 
@@ -111,6 +111,7 @@ export default function UserDesignedQuestion(props) {
         .then(res => {
             console.log(res);
             setDeleted(true);
+            props.onRefresh() ;
         })
         .catch(e => {
             console.log(e);
@@ -200,52 +201,35 @@ export default function UserDesignedQuestion(props) {
                                                             <FormControlLabel value="1" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[0].option}  variant="filled" margin='dense' />
                                                         </form>       
                                                     </Grid>
-                                                    <Grid item xs={6}>
-                                                        <form class ="form-inline">
-                                                            <FormControlLabel value="2" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[1].option} variant="filled" margin='dense' />
-                                                        </form>       
-                                                    </Grid>
-                                                    <Grid item xs={6}>
-                                                        <form class ="form-inline">
-                                                            <FormControlLabel value="3" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[2].option} variant="filled" margin='dense' />
-                                                        </form>       
-                                                    </Grid>
-                                                    <Grid item xs={6}>
-                                                        <form class ="form-inline">
-                                                            <FormControlLabel value="4" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[3].option} variant="filled" margin='dense' />
-                                                        </form>                                                        
-                                                    </Grid>
+                                                        <Grid item xs={6}>
+                                                            <form class ="form-inline">
+                                                                <FormControlLabel value="2" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[1].option} variant="filled" margin='dense' />
+                                                            </form>       
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <form class ="form-inline">
+                                                                <FormControlLabel value="3" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[2].option} variant="filled" margin='dense' />
+                                                            </form>       
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <form class ="form-inline">
+                                                                <FormControlLabel value="4" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[3].option} variant="filled" margin='dense' />
+                                                            </form>                                                        
+                                                        </Grid>
                                                 </Grid>
                                             </RadioGroup>
                                         </FormControl>
                                     :
                                         <FormGroup>
+                                            {props.question.options.map((m , index) => 
                                             <form class="form-inline">
                                                 <Checkbox checked={choice1}  name="gilad"  disabled
                                                     className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField variant="filled"  margin='dense'disabled  defaultValue={props.options[0].option}/>
-                                            </form>
-                                            
-                                            <form class="form-inline">
-                                                <Checkbox checked={choice2} name="gilad" disabled
-                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField variant="filled" margin='dense' disabled defaultValue={props.options[1].option}/>
-                                            </form>
-
-                                            <form class="form-inline">
-                                                <Checkbox checked={choice3} name="gilad" disabled
-                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField  variant="filled" margin='dense' disabled defaultValue={props.options[2].option}/>
-                                            </form>
-
-                                            <form class="form-inline">
-                                                <Checkbox checked={choice4} name="gilad" disabled
-                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField disabled
-                                                    variant="filled" margin='dense'  defaultValue={props.options[3].option}/>
-                                            </form>                                                    
+                                                    <TextField variant="filled"  margin='dense'disabled  defaultValue={m.option}/>
+                                            </form>  
+                                            )}                                                                                                                                        
                                         </FormGroup>
-
+                                                    
                                 } 
                                 </Paper>
                                 </Grid>   
@@ -262,7 +246,8 @@ export default function UserDesignedQuestion(props) {
                                         <Button variant="contained"                                        
                                             onClick={() => {                                                
                                                 dispatch(loadEdittingQuestion(props.index));                                                
-                                                dispatch(selectQuestion(props.question));
+                                                props.loadQuestion(props.question);
+                                                console.log(props.question);
                                             }} 
                                             className={classes.EditButton}>
 
@@ -273,7 +258,8 @@ export default function UserDesignedQuestion(props) {
                                     </Grid>
                                     <Grid item xs={2}>                                        
                                         <Button variant="contained" onClick={() => {                                            
-                                            handleDeleteQuestion( props.question._id)}} className={classes.DeleteButton}>
+                                            handleDeleteQuestion( props.question._id);                                            
+                                            }} className={classes.DeleteButton}>
                                             <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                                 حذف
                                             </Typography>
@@ -288,3 +274,11 @@ export default function UserDesignedQuestion(props) {
         </React.Fragment>
     );  
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        loadQuestion : (e) => dispatch(selectQuestion(e))
+    }
+}
+
+export default connect(null , mapDispatchToProps)(UserDesignedQuestion)

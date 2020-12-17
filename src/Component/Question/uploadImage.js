@@ -17,20 +17,21 @@ function UploadImage(props){
 
     const classes = useStyles();            
     
-    const [ImageBase64 , setImageBase64] = React.useState(props.id == 'soal' ? 
-        props.imageQuestion : props.id == 'javab' && props.imageAnswer);
+    // const [ImageBase64 , setImageBase64] = React.useState(props.id == 'soal' ? 
+    //     (props.imageQuestion) : props.id == 'javab' && props.imageAnswer);
     
-    const [isImage , setIsImage] = React.useState(ImageBase64 != null);  
+    // const [isImage , setIsImage] = React.useState((props.id=='soal' && props.imageQuestion != null) || 
+    //     (props.id == 'javab' && props.imageAnswer != null));  
 
     const uploadImage = async (e) => {        
         const file = e.target.files[0];          
         const base64 = await convertBase64(file);         
-        setImageBase64(base64);
+        // setImageBase64(base64);
         if(props.id == 'soal')
-            props.addImageQuestion(btoa(base64))
+            props.addImageQuestion(base64)
         if(props.id == 'javab')
-            props.addImageAnswer(btoa(base64))        
-        setIsImage(true);        
+            props.addImageAnswer(base64)
+        // setIsImage(true);        
     }
 
 
@@ -63,17 +64,23 @@ function UploadImage(props){
                     </IconButton>
                 </label>    
             </Grid>
-            {isImage == true &&
+            {(props.id=='soal' && props.imageQuestion != null) || 
+                (props.id == 'javab' && props.imageAnswer != null) &&
+
                 <Grid item xs={12}>
-                    <img src={props.isEditting? props.image : ImageBase64}                     
+                    <img 
+                    // src={props.id=='soal' ? atob(props.imageQuestion) : props.id == 'javab' && atob(props.imageAnswer)}                     
+                    // src={props.id == 'soal' ? 
+                    // atob(props.imageQuestion) : props.id == 'javab' && atob(props.imageAnswer)}
+                    src ={atob(props.imageQuestion)}
                     width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>  
                     <IconButton onClick={()=>{
-                        setImageBase64(null);
+                        // setImageBase64(null);
                         if(props.id=='soal')
                             props.addImageQuestion(null);
                         if(props.id=='javab')
                             props.addImageAnswer(null);
-                        setIsImage(false);
+                        // setIsImage(false);
                     }}>
                         <CloseIcon style={{color:'#EE6C4D'}} />
                     </IconButton>

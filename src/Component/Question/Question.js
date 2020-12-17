@@ -30,8 +30,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
 import UploadImage from './uploadImage';
 import { connect } from 'react-redux' ;
-import { savePublicApis , 
-    selectQuestion ,
+import { 
     question , 
     answer ,
     base , 
@@ -39,13 +38,12 @@ import { savePublicApis ,
     hardness , 
     course , 
     chapter ,
-    addOption , 
-    imageAnswer ,
-    imageQuestion , 
+    addOption ,     
     setPublic ,
     removeOption ,
     editOption ,
-    MultiChoiseCheck
+    MultiChoiseCheck ,
+    addAnswer
   } from './QuestionsSlice' ;
 
 const theme = createMuiTheme({
@@ -172,17 +170,7 @@ function Question(props) {
 
     const classes = useStyles();
 
-    const [publicCheck , setpublicCheck ] = React.useState(props.question.public);
-    const [difficulty , setDifficulty] = React.useState(props.question.hardness);
-
-    const [gozine1 , setGozine1] = React.useState("");
-    const [gozine2 , setGozine2] = React.useState("");
-    const [gozine3 , setGozine3] = React.useState("");
-    const [gozine4 , setGozine4] = React.useState("");  
-
-    const [testAnswer , setTestAnswer] = React.useState("");
-
-    const [question , setQuestion] = React.useState(props.question.question);
+    const [publicCheck , setpublicCheck ] = React.useState(props.question.public);    
     
     const [AddQuestionPending , setAddQuestionPending] = React.useState(false);
 
@@ -190,82 +178,76 @@ function Question(props) {
 
     const AddQuestion = () => {
 
-        const options = [];
-
-        props.questionOptions.forEach(element => {
-            options.push(element)
-        });
-
         console.log(props.questionOptions);
 
+        if(props.question.type == 'MULTICHOISE'){
+            for (let index = 0; index < props.options.length; index++) {
+                const element = props.options[index];
+                if(element.answer == true)
+                    addAnswer({"answer" : index});
+            }
+        }
+        
         const a = {
             "type":          props.question.type ,
             "public":        props.question.public,            
             "question":      props.question.question,
             "answers":       props.question.answers ,
-            "options":       options , 
+            "options":       props.question.options ,             
             "base": ""+      props.question.base + "",
             "hardness":      props.question.hardness,
             "course":        props.question.course , 
             "chapter" :      props.question.chapter,
-            "imageQuestion": props.question.soalImage,
-            "imageAnswer":   props.question.javabImage,
+            "imageQuestion": props.question.imageQuestion,
+            "imageAnswer":   props.question.imageAnswer,
         }        
 
-        const ajson = JSON.stringify(a);
+        const ajson = JSON.stringify(a);        
+        console.log(ajson);        
 
-        console.log(options);
-        console.log(ajson);
-
-        // axios.post(serverURL() + "question" , ajson , tokenConfig() )
-        // .then(res => {
-        //     console.log(res);            
-        //     setQuestionAdded(true);
-        //     setAddQuestionPending(false);
-        // })
-        // .catch(e => {
-        //     console.log(e);
-        // });
+        axios.post(serverURL() + "question" , ajson , tokenConfig() )
+        .then(res => {
+            console.log(res);                        
+            setAddQuestionPending(false);
+        props.onRefresh() ;
+        })
+        .catch(e => {
+            console.log(e);
+        });
     }
 
-    const EditQuestion = (type , publicCheck , question , 
-        answer , options , base , hardness , course , chapter , soalImage , javabImage ) => {
-    
-            console.log(options);
-    
+    const EditQuestion = () => {            
             const a = {
-                "type": type ,
-                "public": publicCheck,            
-                "question": question,
-                "answers": answers ,
-                "options": options,
-                "base": "" +  base + "",
-                "hardness":  hardness,
-                "course": course , 
-                "chapter" : chapter,
-                "imageQuestion": soalImage,
-                "imageAnswer": javabImage,
-            }
+                "type":          props.question.type ,
+                "public":        props.question.public,            
+                "question":      props.question.question,
+                "answers":       props.question.answers ,
+                "options":       props.question.options ,             
+                "base": ""+      props.question.base + "",
+                "hardness":      props.question.hardness,
+                "course":        props.question.course , 
+                "chapter" :      props.question.chapter,
+                "imageQuestion": props.question.imageQuestion,
+                "imageAnswer":   props.question.imageAnswer,
+                "questionId" : props.question.id
+            } 
+
             const ajson = JSON.stringify(a);
             // console.log(ajson);
             console.log("add question");
             console.log(ajson);
             axios.put(serverURL() + "question" , ajson , tokenConfig() )
             .then(res => {
-                console.log(res);            
+                console.log(res);  
+                setAddQuestionPending(false);  
+                props.onRefresh() ;        
                 // setQuestionAdded(true);
             })
             .catch(e => {
                 console.log(e);
             });
     }    
-
-    if(props.index != -1){      
-        console.log('editting')  ;
-        console.log(props.index);
-        console.log(props.questions[props.index]);        
-    }
-    
+            
     return (
         <React.Fragment>
         <CssBaseline />
@@ -280,7 +262,7 @@ function Question(props) {
                                             id="outlined-multiline-static"
                                             label="صورت سوال"
                                             multiline
-                                            defaultValue = {props.index < 0 ? question : props.question.question}                                            
+                                            defaultValue = {props.question.question}                                            
                                             rows={4}
                                             onChange={(e) =>{props.setQuestion(e.target.value)} }
                                             fullWidth = 'true'
@@ -365,7 +347,7 @@ function Question(props) {
                                                 فصل
                                             </InputLabel> 
                                             <Select
-                                                value = {props.question.chapters}
+                                                value = {props.question.chapter}
                                                 variant = "filled"                                                    
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
@@ -402,7 +384,11 @@ function Question(props) {
                                                     style:{fontFamily: 'Vazir'},
                                                 }}
                                                 onChange ={(e)=>{                                                    
-                                                    props.setType(e.target.value);                                                                                                            
+                                                    props.setType(e.target.value);
+                                                    if(e.target.value == 'TEST')                                                                                                            
+                                                    {
+                                                        props.addOption(); props.addOption(); props.addOption(); props.addOption();
+                                                    }
                                                 }}
                                                     >
                                                 {props.types.map( ([key , value]) =>
@@ -414,13 +400,15 @@ function Question(props) {
 
                                     <Grid item xs={5}>                                        
                                             <Typography id="discrete-slider" gutterBottom style = {{fontFamily: 'Vazir'}} >
-                                                درجه سختی سوال :  {valuetext(difficulty)}
+                                                درجه سختی سوال :  {valuetext(props.question.hardness)}
                                             </Typography>
                                             <ThemeProvider theme = {theme}>
                                                 <Slider
                                                     dir = "rtl"
                                                     // defaultValue={props.index != -1 ? props.questions[props.index].hardness : 1}
-                                                    defaultValue={1}
+                                                    defaultValue={props.question.hardness === "LOW" ? 1 :
+                                                    props.question.hardness === "MEDIUM" ? 2 :
+                                                    props.question.hardness === "HARD" && 3}                                                    
                                                     getAriaValueText={valuetext}
                                                     aria-labelledby="discrete-slider"
                                                     InputLabelProps={{style:{fontFamily: 'Vazir'}}}
@@ -482,35 +470,35 @@ function Question(props) {
                                             props.question.type === 'TEST' ?
                                                 <FormControl component="fieldset">                                                    
                                                     <RadioGroup aria-label="gender"  className = {classes.RadioChoice} name="gender1" onChange={(e) => {                                                                                                             
-                                                        setTestAnswer(e.target.value);
-                                                        }} >
+                                                        props.setAnswer([{"answer" : e.target.value}]);                                                        
+                                                        }} value={props.question.answers.length > 0 && props.question.answers[0].answer}>
                                                         <Grid container >
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="1" control={<Radio />} /> <TextField onChange={(e) => {
-                                                                        setGozine1(e.target.value);
-                                                                    }} variant="filled" margin='dense' />
+                                                                    <FormControlLabel value="1" control={<Radio />} /> <TextField onChange={(e) => {                                                                        
+                                                                        props.editOption({ "option" : e.target.value , "index" : 0}) ; 
+                                                                    }} variant="filled" value={props.question.options[0].option} margin='dense' />
                                                                 </form>       
                                                             </Grid>
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="2" control={<Radio />} /> <TextField onChange={(e) => {
-                                                                        setGozine2(e.target.value);
-                                                                    }} variant="filled" margin='dense' />
+                                                                    <FormControlLabel value="2" control={<Radio />} /> <TextField onChange={(e) => {                                                                        
+                                                                        props.editOption({ "option" : e.target.value , "index" : 1}) ; 
+                                                                    }} variant="filled" value={props.question.options[1].option} margin='dense' />
                                                                 </form>       
                                                             </Grid>
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="3" control={<Radio />} /> <TextField onChange={(e) => {
-                                                                        setGozine3(e.target.value);
-                                                                    }} variant="filled" margin='dense' />
+                                                                    <FormControlLabel value="3" control={<Radio />} /> <TextField onChange={(e) => {                                                                        
+                                                                        props.editOption({ "option" : e.target.value , "index" : 2}) ; 
+                                                                    }} variant="filled" value={props.question.options[2].option} margin='dense' />
                                                                 </form>       
                                                             </Grid>
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="4" control={<Radio />} /> <TextField onChange={(e) => {
-                                                                        setGozine4(e.target.value);
-                                                                    }} variant="filled" margin='dense' />
+                                                                    <FormControlLabel value="4" control={<Radio />} /> <TextField onChange={(e) => {                                                                        
+                                                                        props.editOption({ "option" : e.target.value , "index" : 3}) ; 
+                                                                    }} variant="filled" value={props.question.options[3].option} margin='dense' />
                                                                 </form>          
                                                             </Grid>                                                            
                                                         </Grid>                                              
@@ -545,29 +533,12 @@ function Question(props) {
                                     <LoadingButton variant="contained"
                                      pending={AddQuestionPending}
                                      onClick={() => {                                                                                 
-                                        setAddQuestionPending(true)
-                                        if(props.question.type=='TEST')
-                                        {
-                                            props.addOption(); props.addOption(); props.addOption(); props.addOption();
-                                            props.editOption({ "option" : gozine1 , "index" : 0}) ; 
-                                            props.editOption({ "option" : gozine2 , "index" : 1}) ;
-                                            props.editOption({ "option" : gozine3 , "index" : 2}) ; 
-                                            props.editOption({ "option" : gozine4 , "index" : 3}) ;                                             
-                                            props.setAnswer({"answer" : testAnswer});
-                                        }
+                                        setAddQuestionPending(true)                                        
 
-                                        // console.log(props.question);
-
-                                        AddQuestion();
-                                        // AddQuestion(                                            
-                                        // questionType , publicCheck , question ,
-                                        // answers , [
-                                        //     { "option" : gozine1 } ,
-                                        //     { "option" : gozine2 } , 
-                                        //     { "option" : gozine3 } , 
-                                        //     { "option" : gozine4 } ]  , grade , difficulty , lesson , session
-                                        // , soalImageBase64 , javabImageBase64
-                                    // )
+                                        if(props.index != -1)
+                                            EditQuestion();
+                                        else
+                                            AddQuestion()
                                 }} 
                                     className={classes.Button}>
                                         <Typography variant='button' style = {{fontFamily: 'Vazir'}} >                                            
@@ -577,7 +548,7 @@ function Question(props) {
                                 </Grid>
                                 <Grid item xs={8} className = {classes.grid} >                                    
                                     <FormControlLabel                                        
-                                        control={<Checkbox checked={publicCheck} onChange={()=> {
+                                        control={<Checkbox checked={props.question.public} onChange={()=> {
                                             props.setPublic(!publicCheck);
                                             setpublicCheck(!publicCheck);                                                    
                                         }}
@@ -614,7 +585,7 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
         setQuestion: (e) => dispatch(question (e))
         ,setAnswer: (e) => dispatch(answer(e))
@@ -628,6 +599,7 @@ const mapDispatchToProps = dispatch => {
         ,editOption: (e) => dispatch(editOption(e))
         ,removeOption: (e) => dispatch(removeOption(e))
         ,MultiChoiseCheck : (e) => dispatch(MultiChoiseCheck(e))
+        ,addAnswer : (e) => dispatch(addAnswer(e))
     }
 }
 
