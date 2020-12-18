@@ -23,6 +23,15 @@ import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import TextField from '@material-ui/core/TextField';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Slide from '@material-ui/core/Slide';
 class ExamPage extends Component{
     constructor(props){
         super(props);
@@ -291,6 +300,8 @@ function QuestionCard(props){
     
     
     const [checked,setChecked] = React.useState(false);
+    
+    
     console.log(props.answer)
     const [selectedValue,setSelectedValue] = React.useState(props.answer)
     console.log(selectedValue)
@@ -304,7 +315,16 @@ function QuestionCard(props){
     if(typeof(testanswer[props.idx]) === "undefined") 
     {testanswer[props.idx] = props.answer}
     console.log(testanswer)
-    // console.log(Answers[1].answerText)
+    const [shortAnswer,setShortAnswer] = React.useState();
+    // if(props.q.question.type === "SHORTANSWER"){
+    //     setShortAnswer(props.answer)
+    // }
+    const [longAnswer,setLongAnswer] = React.useState();
+    // if(props.q.question.type === "LONGANSWER"){
+    //     setLongAnswer(props.answer)
+    // }
+    console.log(longAnswer)
+    console.log(shortAnswer)
     const handleRadioChange = (event) => {
         console.log(event.target.value)
         setSelectedValue(event.target.value);
@@ -315,9 +335,56 @@ function QuestionCard(props){
     const handleChange = (event) => {
         setChecked(...event.target.value)
     }
+    const handleChangeShortAnswer = (event) => {
+        setShortAnswer(event.target.value)
+        testanswer[props.idx] = event.target.value
+    }
+    const handleChangeLongAnswer = (event) => {
+        setLongAnswer(event.target.value)
+        testanswer[props.idx]= event.target.value
+    }
+    const [openDialogQuestion, setOpenDialogQuestion] = React.useState(false);
+    const handleClickOpenQuestion = () => {
+        setOpenDialogQuestion(true);
+    };
+    const handleCloseQuestion = () => {
+        setOpenDialogQuestion(false);
+    };
+    var data;
+    var Example;
     return(
         <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px',direction: 'rtl',textAlign: 'right'}}>
             <span>{faNumber(props.idx + 1)}.</span><span>{props.q.question.question}</span>
+            <div>
+            <Card style={{position: 'relative',right: '37%',width:'25%',}}>
+              <CardMedia>
+            {typeof(props.q.question.imageQuestion) !== "undefined" ? ( 
+                data = props.q.question.imageQuestion.toString(),
+                Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} onClick={handleClickOpenQuestion} width="100%" height="100%" style={{cursor: 'pointer'}}/>,
+                  <Example data={data} />
+              ): null}
+              <Dialog
+                  open={openDialogQuestion}
+                  TransitionComponent={Transition}
+                  keepMounted
+                  onClose={handleCloseQuestion}
+                  aria-labelledby="alert-dialog-slide-title"
+                  aria-describedby="alert-dialog-slide-description"
+                >
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                    {typeof(props.q.question.imageQuestion) !== "undefined" ? ( 
+                      <Example data={data}/>
+                      ): null}
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <div onClick={handleCloseQuestion} style={{fontFamily: 'Vazir',color: 'red',position: 'absolute',right:'1%',top: '2%',cursor:'pointer'}}><FontAwesomeIcon icon={faWindowClose} size="2x"/></div>
+                  </DialogActions>
+                </Dialog>
+              </CardMedia>
+            </Card>
+            </div>
             <br/><br/>
                 {props.q.question.type === "TEST" ? (
                     <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
@@ -343,11 +410,6 @@ function QuestionCard(props){
                         <FormControl component="fieldset">
                         <FormGroup>
                             {props.q.question.options.map((options,idx)=>{
-                                // setSelectedValue('');
-                                // console.log(selectedValue)
-                                // console.log(props.q.question.options)
-                                // console.log(options.option)
-                                // console.log(props.q.question)
                                 return(
                                     <li key={idx + 1} >
                                         <FormControlLabel control={<Checkbox style={{color: '#1CA0A0'}} onChange={handleChange} name={options.option} />}
@@ -364,6 +426,8 @@ function QuestionCard(props){
                         id="outlined-textarea"
                         placeholder="کادر جواب"
                         multiline
+                        value={testanswer[props.idx]}
+                        onChange={handleChangeLongAnswer}
                         variant="outlined"
                         InputProps={{
                             style:{fontFamily: 'Vazir'},
@@ -375,6 +439,8 @@ function QuestionCard(props){
                         style={{width: '100%'}}
                         id="outlined-textarea"
                         placeholder="کادر جواب"
+                        value={testanswer[props.idx]}
+                        onChange={handleChangeShortAnswer}
                         multiline
                         variant="outlined"
                         InputProps={{
@@ -394,6 +460,9 @@ function faNumber(n){
     .map(x => farsidigit[x])
     .join("")
 }
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
 const useStyles = makeStyles((theme) => ({
     
   }));
