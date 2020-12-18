@@ -41,6 +41,13 @@ export const ExamSlice = createSlice({
                 state.examQuestions[action.payload] = state.examQuestions[action.payload-1];
                 state.examQuestions[action.payload-1] = temp ;
             }   
+        },
+        moveDown(state , action){            
+            if(action.payload < state.examQuestions.length -1){
+                let temp = state.examQuestions[action.payload];
+                state.examQuestions[action.payload] = state.examQuestions[action.payload+1];
+                state.examQuestions[action.payload+1] = temp ;
+            }   
         }        
     }
 })
@@ -53,6 +60,7 @@ export const {setTitle ,
               removeQuestion , 
               addGrade,
               setQuestions , 
-              moveUp} = ExamSlice.actions
+              moveUp , 
+              moveDown} = ExamSlice.actions
 
 export default ExamSlice.reducer    

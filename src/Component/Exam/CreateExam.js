@@ -9,14 +9,12 @@ import Tab from '@material-ui/core/Tab';
 import Zoom from '@material-ui/core/Zoom';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import DeleteIcon from '@material-ui/icons/Delete';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import SaveIcon from '@material-ui/icons/Save';
 import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import DialogEditExam from './EditExamDialog' ;
@@ -32,8 +30,13 @@ import axios from 'axios' ;
 import { connect } from 'react-redux' ;
 import { useHistory } from "react-router-dom";
 import AddQuestionExam from './AddQuestion' ;
-
+import DialogDeleteExam from './DialogDeleteExam';
 import QuestionBank from './Bank/ExamQuestionBank';
+
+import Alert from '@material-ui/lab/Alert';
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
 
 import { Dialog, Paper } from '@material-ui/core';
 import FirstDialogExam from './DialogExamFirst';
@@ -204,6 +207,9 @@ function CreateExam(props){
     const [savePending , setSavePending] = React.useState(false);
     const [examFound , setExamFound] = React.useState(false);  
 
+    const [error , setError] = React.useState(null);
+    const [openAlert , setOpenAlert] = React.useState(false)
+
     const [userQuestions , setUserQuestions] = React.useState([]);
     const [questionsFound,setQuestionsFound] = React.useState(false);
     const [editMode , isEditMode] = React.useState(props.location.pathname.includes("EditExam"));
@@ -254,6 +260,7 @@ function CreateExam(props){
 
     //get user questions ------------------------------------------------------
     if(questionsFound == false)
+    {
       axios.get(serverURL() + 'question?limit=10' , tokenConfig())
       .then(res=>{        
         console.log("shit");
@@ -263,6 +270,7 @@ function CreateExam(props){
       .catch(err=>{
 
       });
+    }
 
     return (
     <div className = {classes.root}>
@@ -317,8 +325,12 @@ function CreateExam(props){
                       // history.push("/class/" + classId);
                       console.log("edit shod");
                     })
-                    .catch(err => {
-                      console.log(err.error);
+                    .catch(err => {                                                          
+                      if(err.response.data.error != null)
+                        setError(err.response.data.error);                                      
+                      else if(err.response.data.message != null)
+                        setError(err.response.data.message);                  
+                      setOpenAlert(true);
                     });                
                 }}
                 >
@@ -362,8 +374,12 @@ function CreateExam(props){
                 .then(res => {                  
                   history.push("/class/" + classId);
                 })
-                .catch(err => {
-                  console.log(err.error);
+                .catch(err => {                
+                  if(err.response.data.error != null)
+                    setError(err.response.data.error);                                      
+                  else if(err.response.data.message != null)
+                    setError(err.response.data.message);                  
+                  setOpenAlert(true);
                 });
               }}
               >
@@ -374,21 +390,7 @@ function CreateExam(props){
             <DialogEditExam examId = {examId} />
 
             {editMode == true && 
-            <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '16px'}}>تغییر مشخصات</span>}title={<span style={{fontFamily: 'Vazir',fontSize: '12px'}}>حذف آزمون</span>} TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
-              <Button variant="contained" color="#98C1D9" 
-                style={{fontFamily: 'Vazir'}}
-                className = {classes.button}
-                onClick={()=>{   
-                  axios.delete(serverURL() + "exam/" + examId , tokenConfig())
-                  .then(res => {
-                    history.push("/class/" + classId);
-                  });                              
-                }}
-                >
-                  <DeleteIcon style={{color : '#3D5A80'}} />
-                {/* حذف آزمون */}
-              </Button>    
-            </Tooltip>
+              <DialogDeleteExam examId = {examId} classId={classId} />
             }
 
             <Typography style={{fontFamily: 'Vazir' , marginRight : '16px'}} >
@@ -428,6 +430,29 @@ function CreateExam(props){
            {/* ------------------------------------------------------------------------ */}
             <Material_RTL >
            <Grid container spacing ={2} style={{width:'100%'}}>
+
+            <Grid item xs={12} sm={12} lg={12}>
+              <Collapse in={openAlert}>
+                <Alert
+                  severity = "error"
+                  action={
+                    <IconButton
+                      aria-label="close"
+                      color="inherit"
+                      size="small"
+                      onClick={() => {
+                        setOpenAlert(false);
+                      }}
+                    >
+                      <CloseIcon fontSize="inherit" />                      
+                    </IconButton>
+                  }
+                >
+                  <span style={{fontFamily: 'Vazir' , marginLeft : '8px' , marginRight : '8px'}}>{error} </span>                  
+                </Alert>
+              </Collapse>
+            </Grid>
+
             <Grid item xs={12} sm={12} lg={6} >
                 <AppBar position="static" color="default">
                     <Tabs
@@ -459,7 +484,7 @@ function CreateExam(props){
                         types = {props.type}                          
                       />
                     </TabPanel>
-                    <TabPanel value={value} index={1} dir={theme.direction} >
+                    <TabPanel value={value} index={1} dir={theme.direction} >                      
                       {questionsFound == true &&
                         userQuestions.map((m , index) =>                           
                           <QuestionHolder_Create                             

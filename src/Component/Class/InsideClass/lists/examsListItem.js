@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from "react-router-dom";
-
+import moment from "moment" ;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,7 +64,9 @@ export default function ExamListItem(props) {
               }
             </Grid>
             <Grid item xs = {4} className={classes.grid}>
-                از 9/9/99 تا 10/9/99
+                از
+                {moment(props.start).format("L")}
+                تا {moment(props.end).format("L")}
             </Grid>
             <Grid item xs = {4} className={classes.grid}>
                 <h6 dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir', textAlign : 'right', color : 'white' , marginBottom : 0 }}>                                          

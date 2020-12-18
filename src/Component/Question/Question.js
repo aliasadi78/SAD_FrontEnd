@@ -189,6 +189,8 @@ function Question(props) {
                     answers.push({"answer" : index});
             }
         }
+        else 
+            answers.push(...props.question.answers) ;  
         
         const a = {
             "type":          props.question.type ,
