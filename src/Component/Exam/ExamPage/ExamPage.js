@@ -90,6 +90,7 @@ class ExamPage extends Component{
                             (<div>
                               {questionsList.length > 0 ? (questionsList.map((question,idx)=>{
                                   if(idx === 0){
+                                    // alert(questionsList[idx])
                                   return(
                                   <QuestionCard q={question} idx={idx} answer={questionsList[idx]}/>
                                 )}
@@ -102,10 +103,15 @@ class ExamPage extends Component{
                     <Grid >
                         <Grid style={{display: 'flex',justifyContent: 'center'}}>
                           <Pagination onChange={(event,value) => {
+                        
+                        alert(value)
                               if(questionsList.length > 0 ){ questionsList.map((question,idx)=>{
                                 if(idx === value - 1){
+                                    alert("value:" + value)
+                                    alert("value - 1:" + (value - 1))
+                                    alert("idx:" + idx)
                                 return(
-                                    ReactDOM.render(<QuestionCard q={question} idx={idx} s={true}/>,document.getElementById('Grid1'))
+                                    ReactDOM.render(<QuestionCard q={question} idx={idx} answer={questionsList[idx]}/>,document.getElementById('Grid1'))
                                 )}
                               }
                               )}
@@ -148,19 +154,28 @@ function QuestionCard(props){
     //         console.log(err)
     //     })
     // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
-    const [selectedValue, setSelectedValue] = React.useState(props.answer.question.answerText);
+    const [selectedValue,setSelectedValue] = React.useState(()=>{
+        try{return(props.answer.answerText)}
+        catch(err){
+        return("")
+        }})
+    // componentDidUpdate:
+    //     setSelectedValue("")
+    
     const [checked,setChecked] = React.useState();
     // console.log(Answers[1].answerText)
     const handleRadioChange = (event) => {
         console.log(event.target.value)
         setSelectedValue(event.target.value);
+        console.log(selectedValue)
     };
     const handleChange = (event) => {
         setChecked(...event.target.value)
     }
-    console.log(props.answer.question.answerText)
-    console.log(props.q.question)
-    console.log(props.q.question.question)
+    // console.log(props.answer)
+    // console.log(props.answer.answerText)
+    // console.log(props.q.question)
+    // console.log(props.q.question.question)
     return(
         <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px',direction: 'rtl',textAlign: 'right'}}>
             <span>{faNumber(props.idx + 1)}.</span><span>{props.q.question.question}</span>
@@ -171,13 +186,13 @@ function QuestionCard(props){
                             <RadioGroup
                                 aria-label="quiz"
                                 name="quiz"
-                                value={selectedValue}
+                                value={parseInt(selectedValue)}
                                 onChange={handleRadioChange}
                                 
                             >
                             {props.q.question.options.map((options,idx)=>{
                                 // setSelectedValue('');
-                                // console.log(idx)
+                                console.log(idx)
                                 // console.log(props.idx)
                                 // console.log(Answers[props.idx])
                                 // console.log(props.idx+1)
