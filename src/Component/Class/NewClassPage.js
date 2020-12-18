@@ -127,8 +127,7 @@ class NewClassPage extends Component{
       }
           
       return(
-          <React.Fragment>
-             //دکمه ایجاد کلاس اینجاست به جای داشبودر اونجا ایمپورتش کردم
+          <React.Fragment>             
             <Button onClick={()=>{setOpen(true)}} className = {classes.button}>
               ایجاد کلاس
             </Button>

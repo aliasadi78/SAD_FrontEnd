@@ -46,8 +46,7 @@ export default function JoinClass(props) {
   }
 
   return (
-    <div>
-      //دکمه ورود به کلاس اینجاست به جای داشبودر اونجا ایمپورتش کردم
+    <div>      
       <Button onClick={()=>{setOpen(true)}} className = {classes.button}>
         ورود به کلاس
       </Button>
