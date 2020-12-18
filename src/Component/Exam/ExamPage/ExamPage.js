@@ -72,6 +72,129 @@ class ExamPage extends Component{
     const [questionsList,setQuestionsList] = this.props.questionsList;
     const [pending,setPending] = this.props.pending;
     console.log(questionsList)
+    // function QuestionCard(props){
+    //     // var Answers = []
+    //     // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
+    //     //     .then(res=>{
+    //     //         console.log(res)
+    //     //             // console.log(res.data.questions);
+    //     //             res.data.questions.map((q,i) =>{ 
+    //     //             Answers.push(q.answerText);
+    //     //             console.log(Answers)
+    //     //             });
+    //     //             // setQuestionsList([...ll]);
+    //     //     }).catch(err=>{
+    //     //         console.log(err)
+    //     //     })
+    //     // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
+    //     const [selectedValue,setSelectedValue] = React.useState(()=>{
+    //         try{
+    //             console.log(props.answer.answerText)
+    //             return(props.answer.answerText)}
+    //         catch(err){
+    //         return("")
+    //         }})
+    //     // componentDidUpdate:
+    //     //     setSelectedValue("")
+        
+    //     const [checked,setChecked] = React.useState();
+    //     // console.log(Answers[1].answerText)
+    //     var handleRadioChange = (event) => {
+    //         console.log(event.target.value)
+    //         setSelectedValue(event.target.value);
+    //         console.log(selectedValue)
+    //     };
+    //     const handleChange = (event) => {
+    //         setChecked(...event.target.value)
+    //     }
+    //     console.log(selectedValue)
+    //     // console.log(props.answer.answerText)
+    //     // console.log(props.q.question)
+    //     // console.log(props.q.question.question)
+    //     return(
+    //         <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px',direction: 'rtl',textAlign: 'right'}}>
+    //             <span>{faNumber(props.idx + 1)}.</span><span>{props.q.question.question}</span>
+    //             <br/><br/>
+    //                 {props.q.question.type === "TEST" ? (
+    //                     <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
+    //                         <FormControl component="fieldset">
+    //                             <RadioGroup
+    //                                 aria-label="quiz"
+    //                                 name="quiz"
+    //                                 value={parseInt(selectedValue)}
+    //                                 onChange={handleRadioChange}
+                                    
+    //                             >
+    //                             {props.q.question.options.map((options,idx)=>{
+    //                                 // setSelectedValue('');
+    //                                 console.log(idx)
+    //                                 // console.log(props.idx)
+    //                                 // console.log(Answers[props.idx])
+    //                                 // console.log(props.idx+1)
+    //                                 // console.log(Answers[props.idx+1])
+    //                                 // console.log(props.idx - 1)
+    //                                 // console.log(Answers[props.idx] - 1)
+    
+    //                                 // console.log(props.q.question.options)
+    //                                 // console.log(options.option)
+    //                                 console.log(selectedValue)
+    //                                 return(
+    //                                     <li key={idx + 1} >
+    //                                         <FormControlLabel style={{marginRight: '0px'}} value={idx+1} control={<Radio style={{color: '#1CA0A0'}}/>} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
+    //                                     </li>
+    //                                 )
+    //                             })}
+    //                 </RadioGroup>
+    //                 </FormControl>
+    //                     </ul>): null}
+    //                     {props.q.question.type === "MULTICHOISE" ? (
+    //                     <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
+    //                         <FormControl component="fieldset">
+    //                         <FormGroup>
+    //                             {props.q.question.options.map((options,idx)=>{
+    //                                 // setSelectedValue('');
+    //                                 console.log(selectedValue)
+    //                                 console.log(props.q.question.options)
+    //                                 console.log(options.option)
+    //                                 console.log(props.q.question)
+    //                                 return(
+    //                                     <li key={idx + 1} >
+    //                                         <FormControlLabel control={<Checkbox style={{color: '#1CA0A0'}} onChange={handleChange} name={options.option} />}
+    //                                         style={{marginRight: '0px'}} value={options.option} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
+    //                                     </li>
+    //                                 )
+    //                             })}
+    //                 </FormGroup>
+    //                 </FormControl>
+    //                     </ul>): null}
+    //                     {props.q.question.type === "LONGANSWER" ? (
+    //                         <TextField
+    //                         style={{width: '100%'}}
+    //                         id="outlined-textarea"
+    //                         placeholder="کادر جواب"
+    //                         multiline
+    //                         variant="outlined"
+    //                         InputProps={{
+    //                             style:{fontFamily: 'Vazir'},
+    //                         }}
+    //                       />
+    //                     ):null}
+    //                     {props.q.question.type === "SHORTANSWER" ? (
+    //                         <TextField
+    //                         style={{width: '100%'}}
+    //                         id="outlined-textarea"
+    //                         placeholder="کادر جواب"
+    //                         multiline
+    //                         variant="outlined"
+    //                         InputProps={{
+    //                             style:{fontFamily: 'Vazir'},
+    //                         }}
+    //                       />
+    //                     ):null}
+    //                     <br/><br/>
+    //         </Container>
+    //     )
+    // }
     return(
         <div style={{height: '100%',backgroundColor: 'white'}}> 
         <Material_RTL style={{backgroundColor: 'white'}}>
@@ -92,7 +215,7 @@ class ExamPage extends Component{
                                   if(idx === 0){
                                     // alert(questionsList[idx])
                                   return(
-                                  <QuestionCard q={question} idx={idx} answer={questionsList[idx]}/>
+                                  <QuestionCard q={question} idx={idx} answer={questionsList[idx].answerText}/>
                                 )}
                                 })):null}
                               </div>)
@@ -104,14 +227,16 @@ class ExamPage extends Component{
                         <Grid style={{display: 'flex',justifyContent: 'center'}}>
                           <Pagination onChange={(event,value) => {
                         
-                        alert(value)
+                        console.log(value)
                               if(questionsList.length > 0 ){ questionsList.map((question,idx)=>{
                                 if(idx === value - 1){
-                                    alert("value:" + value)
-                                    alert("value - 1:" + (value - 1))
-                                    alert("idx:" + idx)
+                                    console.log("value:" + value)
+                                    console.log("value - 1:" + (value - 1))
+                                    console.log("idx:" + idx)
+                                    console.log(questionsList[idx].answerText)
+                                    // {handleRadioChange}
                                 return(
-                                    ReactDOM.render(<QuestionCard q={question} idx={idx} answer={questionsList[idx]}/>,document.getElementById('Grid1'))
+                                    ReactDOM.render(<QuestionCard q={question} idx={idx} answer={questionsList[idx].answerText}/>,document.getElementById('Grid1'))
                                 )}
                               }
                               )}
@@ -139,6 +264,7 @@ class ExamPage extends Component{
 //         )
 //     }
 // }
+var testanswer=[]
 function QuestionCard(props){
     // var Answers = []
     // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
@@ -154,28 +280,41 @@ function QuestionCard(props){
     //         console.log(err)
     //     })
     // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
-    const [selectedValue,setSelectedValue] = React.useState(()=>{
-        try{return(props.answer.answerText)}
-        catch(err){
-        return("")
-        }})
-    // componentDidUpdate:
-    //     setSelectedValue("")
+    // const [selectedValue,setSelectedValue] = React.useState(()=>{
+    //     try{
+    //         console.log(props.answer.answerText)
+    //         return(props.answer.answerText)}
+    //     catch(err){
+    //         console.log(props.answer)
+    //     return(props.answer.answerText)
+    //     }})
     
-    const [checked,setChecked] = React.useState();
+    
+    const [checked,setChecked] = React.useState(false);
+    console.log(props.answer)
+    const [selectedValue,setSelectedValue] = React.useState(props.answer)
+    console.log(selectedValue)
+    // const componentDidUpdate = () =>{
+    //     setSelectedValue(parseInt(props.answer))}
+    // if(!checked && parseInt(props.answer) != selectedValue){
+    //     setSelectedValue(parseInt(props.answer))
+    //     setChecked(false)
+    // }
+    console.log(typeof(testanswer[props.idx]))
+    if(typeof(testanswer[props.idx]) === "undefined") 
+    {testanswer[props.idx] = props.answer}
+    console.log(testanswer)
     // console.log(Answers[1].answerText)
     const handleRadioChange = (event) => {
         console.log(event.target.value)
         setSelectedValue(event.target.value);
         console.log(selectedValue)
+        testanswer[props.idx] = parseInt(event.target.value);
+        console.log(testanswer)
     };
     const handleChange = (event) => {
         setChecked(...event.target.value)
     }
-    // console.log(props.answer)
-    // console.log(props.answer.answerText)
-    // console.log(props.q.question)
-    // console.log(props.q.question.question)
     return(
         <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px',direction: 'rtl',textAlign: 'right'}}>
             <span>{faNumber(props.idx + 1)}.</span><span>{props.q.question.question}</span>
@@ -186,23 +325,10 @@ function QuestionCard(props){
                             <RadioGroup
                                 aria-label="quiz"
                                 name="quiz"
-                                value={parseInt(selectedValue)}
+                                value={parseInt(testanswer[props.idx])}
                                 onChange={handleRadioChange}
-                                
                             >
                             {props.q.question.options.map((options,idx)=>{
-                                // setSelectedValue('');
-                                console.log(idx)
-                                // console.log(props.idx)
-                                // console.log(Answers[props.idx])
-                                // console.log(props.idx+1)
-                                // console.log(Answers[props.idx+1])
-                                // console.log(props.idx - 1)
-                                // console.log(Answers[props.idx] - 1)
-
-                                // console.log(props.q.question.options)
-                                // console.log(options.option)
-                                console.log(selectedValue)
                                 return(
                                     <li key={idx + 1} >
                                         <FormControlLabel style={{marginRight: '0px'}} value={idx+1} control={<Radio style={{color: '#1CA0A0'}}/>} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
@@ -218,10 +344,10 @@ function QuestionCard(props){
                         <FormGroup>
                             {props.q.question.options.map((options,idx)=>{
                                 // setSelectedValue('');
-                                console.log(selectedValue)
-                                console.log(props.q.question.options)
-                                console.log(options.option)
-                                console.log(props.q.question)
+                                // console.log(selectedValue)
+                                // console.log(props.q.question.options)
+                                // console.log(options.option)
+                                // console.log(props.q.question)
                                 return(
                                     <li key={idx + 1} >
                                         <FormControlLabel control={<Checkbox style={{color: '#1CA0A0'}} onChange={handleChange} name={options.option} />}
