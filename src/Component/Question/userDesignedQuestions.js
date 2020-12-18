@@ -5,6 +5,10 @@ import Paper from '@material-ui/core/Paper';
 import Material_RTL from "../Material_RTL";
 import RTL from '../M_RTL';
 import Grid from '@material-ui/core/Grid';
+import { useDispatch } from 'react-redux' ; 
+import {
+    loadEdittingQuestion , selectQuestion
+} from './QuestionsSlice' ;
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
@@ -18,14 +22,13 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { createMuiTheme } from '@material-ui/core/styles';
 import serverURL from '../../utils/serverURL';
 import tokenConfig from '../../utils/tokenConfig';
-import AlertDialog from '../Dialog';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
-
+import { connect } from 'react-redux' ;
 const theme = createMuiTheme({
   palette: {
     primary:{
@@ -38,6 +41,12 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles((theme) => ({
+    //برای فونت
+    '@global':{
+        '.MuiInputBase-input.Mui-disabled' : {
+        fontFamily: 'Vazir',
+        },
+      },
   root: {
     flexGrow: 1,    
     width : '100%',
@@ -83,14 +92,11 @@ function editQuestion (){
 }
 
 
-export default function UserDesignedQuestion(props) {
+function UserDesignedQuestion(props) {
 
-    const [deleted , setDeleted] = React.useState(false);
+    const [deleted , setDeleted] = React.useState(false);    
 
-    const [choice1 , setChoice1] = React.useState(false);
-    const [choice2 , setChoice2] = React.useState(false);
-    const [choice3 , setChoice3] = React.useState(false);
-    const [choice4 , setChoice4] = React.useState(false);    
+    const dispatch = useDispatch();
 
     const classes = useStyles();
 
@@ -100,13 +106,12 @@ export default function UserDesignedQuestion(props) {
         .then(res => {
             console.log(res);
             setDeleted(true);
+            props.onRefresh() ;
         })
         .catch(e => {
             console.log(e);
         });
     };
-
-    // const [answers , ]
 
     return (
         <React.Fragment>
@@ -119,8 +124,7 @@ export default function UserDesignedQuestion(props) {
                     style={{backgroundColor: props.backColor }}
                     expanded = {props.alwaysExpand}
                     >
-                        <AccordionSummary
-                            // expandIcon={<ExpandMoreIcon style={{ color: "white" }}/>}
+                        <AccordionSummary                            
                             aria-controls="panel1c-content"
                             id="panel1c-header"
                             className = {classes.accordion}                            
@@ -130,22 +134,28 @@ export default function UserDesignedQuestion(props) {
                                     <Paper className={classes.paper}>
                                         <TextField                    
                                             id="outlined-multiline-static"
-                                            defaultValue = {props.question}                                  
+                                            defaultValue = {props.question.question}                                  
                                             multiline
                                             disabled
-                                            rows={4}
+                                            // rows={4}
                                             fullWidth = 'true'
                                             className = {classes.BigForm}                                            
                                             variant="outlined"
                                             InputLabelProps={{style:{fontFamily: 'Vazir'}}}
-                                                InputProps={{
-                                                    style:{fontFamily: 'Vazir'},
-                                                }}
+                                            InputProps={{
+                                                style:{fontFamily: 'Vazir'},
+                                            }}
                                         />
                                     </Paper>
                                 </Grid>                
+                                {props.soalImage != null &&
+                                    <Grid item xs={12} style={{marginBottom : '0px'}}>
+                                        <img src={atob(props.soalImage)} 
+                                        width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>
+                                    </Grid>
+                                }
                                 <Grid className={classes.expandGrid} item xs={12} >
-                                    <ExpandMoreIcon style={{ color: "black" , align: 'center'}}/>
+                                    <ExpandMoreIcon style={{ color: "#EE6C4D    " , align: 'center'}}/>
                                 </Grid>            
                             </Grid>                            
                         </AccordionSummary>
@@ -157,7 +167,7 @@ export default function UserDesignedQuestion(props) {
                                     props.type === 'LONGANSWER' ?
                                         <TextField                                                                    
                                         id="outlined-multiline-static"
-                                        label="جواب"
+                                        label={<span style={{fontFamily: 'Vazir'}}>جواب</span>}
                                         multiline
                                         disabled
                                         defaultValue = {props.answers[0].answer}
@@ -167,72 +177,81 @@ export default function UserDesignedQuestion(props) {
                                         disabled                                        
                                         // defaultValue="Default Value"
                                         variant="outlined"
+                                        InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                            InputProps={{
+                                                style:{fontFamily: 'Vazir'},
+                                            }}
                                         />   
                                     :                                          
                                     props.type === 'TEST' ?
                                         <FormControl component="fieldset">                                                    
-                                            <RadioGroup aria-label="gender"  className = {classes.RadioChoice} name="gender1">
-                                                <form class ="form-inline">
-                                                    <FormControlLabel value="g1" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[0].option}  variant="filled" margin='dense' />
-                                                </form>       
-
-                                                <form class ="form-inline">
-                                                    <FormControlLabel value="g2" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[1].option} variant="filled" margin='dense' />
-                                                </form>       
-
-                                                <form class ="form-inline">
-                                                    <FormControlLabel value="g3" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[2].option} variant="filled" margin='dense' />
-                                                </form>       
-
-                                                <form class ="form-inline">
-                                                    <FormControlLabel value="g4" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[3].option} variant="filled" margin='dense' />
-                                                </form>                                                        
+                                            <RadioGroup aria-label="gender" 
+                                            value={props.answers[0].answer}  className = {classes.RadioChoice} name="gender1">
+                                                <Grid container>
+                                                    <Grid item xs={6}>
+                                                        <form class ="form-inline">
+                                                            <FormControlLabel value="1" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[0].option}  variant="filled" margin='dense' />
+                                                        </form>       
+                                                    </Grid>
+                                                        <Grid item xs={6}>
+                                                            <form class ="form-inline">
+                                                                <FormControlLabel value="2" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[1].option} variant="filled" margin='dense' />
+                                                            </form>       
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <form class ="form-inline">
+                                                                <FormControlLabel value="3" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[2].option} variant="filled" margin='dense' />
+                                                            </form>       
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <form class ="form-inline">
+                                                                <FormControlLabel value="4" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[3].option} variant="filled" margin='dense' />
+                                                            </form>                                                        
+                                                        </Grid>
+                                                </Grid>
                                             </RadioGroup>
                                         </FormControl>
                                     :
                                         <FormGroup>
+                                            {props.question.options.map((m , index) => 
                                             <form class="form-inline">
-                                                <Checkbox checked={choice1}  name="gilad"  disabled
+                                                <Checkbox checked={props.question.answers.includes({"answer" : "" + index})}  name="gilad"  disabled
                                                     className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField variant="filled"  margin='dense'disabled  defaultValue={props.options[0].option}/>
-                                            </form>
-                                            
-                                            <form class="form-inline">
-                                                <Checkbox checked={choice2} name="gilad" disabled
-                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField variant="filled" margin='dense' disabled defaultValue={props.options[1].option}/>
-                                            </form>
-
-                                            <form class="form-inline">
-                                                <Checkbox checked={choice3} name="gilad" disabled
-                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField  variant="filled" margin='dense' disabled defaultValue={props.options[2].option}/>
-                                            </form>
-
-                                            <form class="form-inline">
-                                                <Checkbox checked={choice4} name="gilad" disabled
-                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField disabled
-                                                    variant="filled" margin='dense'  defaultValue={props.options[3].option}/>
-                                            </form>                                                    
+                                                    <TextField variant="filled"  margin='dense'disabled  defaultValue={m.option}/>
+                                            </form>  
+                                            )}                                                                                                                                        
                                         </FormGroup>
-
+                                                    
                                 } 
                                 </Paper>
-                                </Grid>                            
+                                </Grid>   
+
+                                {props.javabImage != null &&
+                                    <Grid item xs={12} style={{marginBottom : '12px'}}>
+                                        <img src={atob(props.javabImage)} 
+                                        width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>
+                                    </Grid>
+                                }
+
                                 <Grid container xs={12} justifyContent='center' direction="row" >
                                     <Grid item xs={2}>
-                                        <Button variant="contained" onClick ={() => {
-                                            // localStorage.setItem('editable question' , props.index);        
-                                            props.onclick() ; 
-                                        }} className={classes.EditButton} href="#contained-buttons">
+                                        <Button variant="contained"                                        
+                                            onClick={() => {                                                
+                                                dispatch(loadEdittingQuestion(props.index));                                                
+                                                props.loadQuestion(props.question);
+                                                console.log(props.question);
+                                            }} 
+                                            className={classes.EditButton}>
+
                                             <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                                 ویرایش
                                             </Typography>
                                         </Button>                                       
                                     </Grid>
                                     <Grid item xs={2}>                                        
-                                        <Button variant="contained" onClick={() => {handleDeleteQuestion( props.questionId)}} className={classes.DeleteButton}>
+                                        <Button variant="contained" onClick={() => {                                            
+                                            handleDeleteQuestion( props.question._id);                                            
+                                            }} className={classes.DeleteButton}>
                                             <Typography variant='button' style = {{fontFamily: 'Vazir'}} >
                                                 حذف
                                             </Typography>
@@ -240,16 +259,18 @@ export default function UserDesignedQuestion(props) {
                                     </Grid>                                    
                                 </Grid>                                                                                         
                         </AccordionDetails>                        
-                    </Accordion> 
-                    {
-                        deleted == true ?
-                        <AlertDialog text = "سوال شما حذف شد" />
-                        :
-                        <p></p>
-                    }
+                    </Accordion>                     
                     </RTL>
                 </Material_RTL>                
             </Container>
         </React.Fragment>
     );  
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        loadQuestion : (e) => dispatch(selectQuestion(e))
+    }
+}
+
+export default connect(null , mapDispatchToProps)(UserDesignedQuestion)

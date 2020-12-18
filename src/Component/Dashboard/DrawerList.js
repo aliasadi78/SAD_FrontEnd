@@ -17,6 +17,7 @@ import LogOutDialog from '../User/LogoutDialog';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core';
+import {connect} from 'react-redux' ;
 
 const useStyles = makeStyles((theme) => ({
     nested: {
@@ -24,25 +25,26 @@ const useStyles = makeStyles((theme) => ({
       },    
 }));
 
-export default function DrawerList(props){
+function DrawerList(props){
 
     const classes = useStyles();
 
     const [openLogoutDialog, setOpenLogoutDialog] = React.useState(false);
     const [openUserDrawerMethod , setopenUserDrawerMethod ] = React.useState(false);
-
     const handleUserDrawerMenuClick = () => {
-        setopenUserDrawerMethod(!openUserDrawerMethod);
+        setopenUserDrawerMethod(!openUserDrawerMethod);        
     };
     
-    // if(props.isDrawerOpen == true)
-    //     setopenUserDrawerMethod(false);       
+    if(props.isDrawerOpen == true)        
+    {
+        console.log("closed");
+    }
 
     return(    
         
         <List>
             
-                <ListItem button onClick={()=>{                
+                <ListItem button onClick={()=>{                    
                 if( props.isDrawerOpen == true)
                     handleUserDrawerMenuClick();
                 }}>
@@ -54,10 +56,10 @@ export default function DrawerList(props){
                     حساب کاربری
                 </Typography>
                 </ListItemText>
-                {openUserDrawerMethod ? <ExpandLess/> : <ExpandMore />}
+                {props.isDrawerOpen && openUserDrawerMethod ? <ExpandLess/> : <ExpandMore />}
                 </ListItem>            
 
-            <Collapse in={openUserDrawerMethod} timeout="auto" unmountOnExit>
+            <Collapse in={props.isDrawerOpen && openUserDrawerMethod} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
 
                 <Link to = "/profile/edit">
@@ -141,3 +143,11 @@ export default function DrawerList(props){
         </List>        
     );
 }
+
+const mapStateToProps= (state) => {
+    return {
+        isDrawerOpen : state.dashboard.isDrawerOpen
+    }
+}
+
+export default connect(mapStateToProps)(DrawerList)

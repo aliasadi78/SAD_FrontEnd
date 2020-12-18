@@ -32,11 +32,22 @@ class ClassesPage extends Component{
       })
       .catch(e =>{
         console.log('khata');
-      });       
+      });             
     }
 
-    componentDidMount(){            
-    }
+    // اپدیت لیست کلاس ها
+    componentDidUpdate() {
+      axios.get(serverURL()+"user/classes" , tokenConfig())
+      .then(res => {        
+        this.setState({
+          userClasses : res.data.classes , 
+          dataFound : true
+        });
+      })
+      .catch(e =>{
+        console.log('khata');
+      });   
+    }     
     
     render(){                    
   
@@ -57,7 +68,7 @@ class ClassesPage extends Component{
                 <Material_RTL>
                     <M_RTL>
                       <div className={classes.paper}>                        
-                        <h3 style={{fontFamily: 'Vazir' , textAlign : 'right'}} >لیست کلاس ها</h3>
+                        <h3 style={{fontFamily: 'Vazir' , textAlign : 'right' , color : '#3D5A80'}} >لیست کلاس ها</h3>
                           <hr/>
                           {/* <Grid
                             container
@@ -145,15 +156,15 @@ const useStyles = makeStyles((theme) => ({
       // display: 'flex',
       direction: 'row',
       justify: 'flex-start',      
-      alignItems : 'left' ,
-      color : '#3D5A80' , 
+      alignItems : 'left' ,       
       backgroundColor: 'white',
       padding: '10px',
       borderRadius: '10px',      
       opacity: '95%' ,       
   },
 }));
-export default () => {
+export default () => {    
+
     const classes = useStyles();
     const o = React.useState(false)
     return (        

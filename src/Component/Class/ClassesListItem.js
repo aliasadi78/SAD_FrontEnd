@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 12,
     fontFamily: 'Vazir',
     },
-    card:{
+    card:{        
         fontFamily: 'Vazir',
         width: '25%',        
         display: 'inline-block',
@@ -33,13 +33,14 @@ const useStyles = makeStyles((theme) => ({
           backgroundColor: '#EE6C4D' ,
           color : 'white' , 
         },          
+        width : 'inherit'
     },    
 }));
 
 export default function ClassListItem (props){
 
     const classes = useStyles();
-    console.log(props);
+    // console.log(props);
 
     return(
         <Card className={classes.card} variant="outlined">
@@ -60,10 +61,11 @@ export default function ClassListItem (props){
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button variant="contained" onClick={()=>{
+                <Button square variant="contained" s onClick={()=>{
                     const url = "/class/" + props.classId ;
                     window.location.href = url ;
-                }} size="small" className={classes.btn}>ورود به کلاس</Button>
+                }} className={classes.btn}
+                style={{width : '100%'}}>ورود به کلاس</Button>
             </CardActions>
         </Card>
     );

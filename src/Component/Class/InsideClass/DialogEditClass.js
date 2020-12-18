@@ -20,6 +20,8 @@ import Grid from "@material-ui/core/Grid";
 import AlertDialog from '../../Dialog';
 import { CircularProgress } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
+import DialogDeleteClass from './DialogDeleteClass';
+
 class DialogEditClass extends Component {
   constructor() {
     super();
@@ -177,12 +179,14 @@ class DialogEditClass extends Component {
           
         <DialogActions>
         <Grid style={{textAlign: 'right',width: '100%'}} >  
-        <LoadingButton onClick={handleSubmit}  variant="contained" color="#EE6C4D" pending={pending} style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir',margin: '0% 22% 0% 5%',width: '25%'}}>
+        <LoadingButton onClick={handleSubmit}  variant="contained" color="#EE6C4D" pending={pending} style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir',position: 'absolute',margin: '-3% 19% 0% 0%',width: '25%'}}>
           ویرایش کلاس
           </LoadingButton>         
-          <LoadingButton onClick={handleDelete}  variant="contained" pending={pending} style={{backgroundColor: '#E63946' ,color: 'white',fontFamily: 'Vazir',width: '25%'}}>
+          {/* <LoadingButton onClick={handleDelete}  variant="contained" pending={pending} style={{backgroundColor: '#E63946' ,color: 'white',fontFamily: 'Vazir',width: '25%'}}>
           پاک کردن کلاس
-          </LoadingButton>         
+          </LoadingButton>   */}
+          {/* //مطمئنی که میخوای کلاس رو حذف کنی؟ و لودینگ باتن ویرایش کلاس */}
+          <DialogDeleteClass classId={this.props.classId}/>       
         {/* <Button onClick={handleClose} color="primary" style={{backgroundColor: '#98C1D9',color: 'white',fontFamily: 'Vazir',width: '25%'}}>
           انصراف
         </Button> */}

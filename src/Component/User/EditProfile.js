@@ -27,6 +27,12 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 const useStyles = makeStyles((theme) => ({
+  //فونت
+    '@global':{
+      '.MuiFormHelperText-root.Mui-error' : {
+        fontFamily: 'Vazir',
+      },
+    },
     progressBar : {
       display: 'flex',
       '& > * + *': {
@@ -256,8 +262,7 @@ function EditProfileValidationForms_Personal (props) {
                   id="first-name"
                   defaultValue={props.firstname}
                   className={classes.textField}     
-                  variant="outlined"       
-                  // variant="filled"
+                  variant="outlined"                         
                   margin ="dense"              
                   onChange = {handleFirstnameChanged}
                   InputLabelProps={{style:{fontFamily: 'Vazir'}}}
@@ -301,8 +306,8 @@ function EditProfileValidationForms_Personal (props) {
                                             value={paswordValues.password}
                                             onChange={handleChange('password')}
                                             InputLabelProps={{style:{fontFamily: 'Vazir'},}}
-                                            validators={[ 'minStringLength:' + 8]}
-                                            errorMessages={['رمز عبور باید بیشتر از 8 حرف باشد']}
+                                            validators={[ 'minStringLength:' + 6]}
+                                            errorMessages={['رمز عبور باید بیشتر از ۶ حرف باشد']}
                                             InputProps={{
                                                 style:{fontFamily: 'Vazir'},
                                                 endAdornment:(
@@ -338,16 +343,7 @@ function EditProfileValidationForms_Personal (props) {
                                             errorMessages={['رمز عبور مطابقت ندارد', 'لطفا رمز عبور خود را تکرار کنید']}
                                             InputProps={{
                                                 style:{fontFamily: 'Vazir'},
-                                                endAdornment:(
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        style={{padding: '0px',color:'black'}}
-                                                        onClick={handleClickShowPassword}
-                                                        // onMouseDown={this.handleMouseDownPassword}
-                                                    >
-                                                        {paswordValues.showConfirmedPassword ? <Visibility /> : <VisibilityOff />}
-                                                    </IconButton>
-                                                </InputAdornment>)
+                                                
                                             }}
                                         />
                                         </ValidatorForm>
@@ -439,23 +435,6 @@ export default class PersonalForms extends Component {
     .catch(err => {
         console.log(err)
     });     
-
-    // axios.get(
-    //   serverURL() + 'user/avatar' , tokenConfig())
-    //   .then(res => {      
-    //     console.log(res.data);  
-    //       this.setState(prevState => {
-    //         return{                 
-    //           avatar : res.data.avatar ,   
-    //           avatarFound : true  , 
-    //           userFound : true 
-    //         }
-    //       })
-    //   })  
-    //   .catch(err => {
-    //       console.log(err)
-    //   });     
-        
   }
 
   render(){  

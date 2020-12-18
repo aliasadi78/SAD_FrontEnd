@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import Card from '@material-ui/core/Card';
+import Grid from "@material-ui/core/Grid";
 import CardMedia from '@material-ui/core/CardMedia';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -12,8 +13,17 @@ import Shenase from './Shenase';
 import Typography from '@material-ui/core/Typography';
 import Slide from '@material-ui/core/Slide';
 import Icon from "@material-ui/core/Icon";
+import Button from '@material-ui/core/Button';
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  addQuestion , removeQuestion , addGrade
+} from '../ExamSlice' ;
+import { useDispatch } from 'react-redux' ; 
+import Tooltip from '@material-ui/core/Tooltip';
 
 function QuestionCard (props){
+  const classes = useStyles();
+  const dispatch = useDispatch();
   const [openDialogQuestion, setOpenDialogQuestion] = React.useState(false);
   const [openDialogAnswer, setOpenDialogAnswer] = React.useState(false);
   const [openCollapse , setopenCollapse ] = React.useState(false);
@@ -36,19 +46,21 @@ function QuestionCard (props){
   var data;
   var Example;
   return (
-    <div style={{backgroundColor: 'white',position: 'relative',border: 'solid',margin: '6% 0% 0% 6%',right: '-2%'}}>
+    <div style={{position: 'relative',right: '-10%',width: '112%',backgroundColor:'white'}}>
       <div style={{}}>
-      <Typography style={{backgroundColor: 'white',color: 'black',fontFamily: 'Vazir',marginTop: '2%',direction: 'rtl',textAlign: 'right',position: 'relative'}} >
+      <Typography style={{backgroundColor: 'white',color: 'black',fontFamily: 'Vazir',direction: 'rtl',textAlign: 'right',}} >
         <div style={{color : 'gray'}}>
           <Shenase q={props.q} category={props.category}/>
         </div>
-          <div style={{position: 'relative',marginTop: '1%',right: '3%',width: '95%'}}>{props.q.question}</div>
+          <div style={{textAlign: 'justify',margin: '0 10px 0 10px'}}>{props.q.question}</div>
             <Card style={{position: 'relative',right: '37%',width:'25%',}}>
-              <CardMedia title="بزرگ نمایی تصویر">
+              <CardMedia>
                 {props.q.imageQuestion !== null ? ( 
                 data = props.q.imageQuestion.toString(),
                 Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} onClick={handleClickOpenQuestion} width="100%" height="100%" style={{cursor: 'pointer'}}/>,
-                <Example data={data} />
+                <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '16px'}}>بزرگ نمایی تصویر</span>}>
+                  <Example data={data} />
+                </Tooltip>
               ): null}
                 <Dialog
                   open={openDialogQuestion}
@@ -71,39 +83,50 @@ function QuestionCard (props){
                 </Dialog>
               </CardMedia>
             </Card>
-            <div style={{position : 'relative',right: '4%',marginTop: '2%'}}>
-              <ul>
-                {props.q.type === "TEST" ? (
-                 <div style={{position: 'relative',right:'-6%'}}>
-                <div>۱){props.q.options[0].option}</div>
-                <div>۲){props.q.options[1].option}</div>
-                <div>۳){props.q.options[2].option}</div>
-                <div>۴){props.q.options[3].option}</div>
+            <ul style={{listStyle:'persian',position : 'relative',marginTop: '1%'}}>
+              {props.q.type === "TEST" ? (
+               <div style={{}}>
+                <div><li>{props.q.options[0].option}</li></div>
+                <div><li>{props.q.options[1].option}</li></div>
+                <div><li>{props.q.options[2].option}</li></div>
+                <div><li>{props.q.options[3].option}</li></div>
                </div>) : props.q.type === "MULTICHOISE" ? (
                  props.q.options.map((options) =>{
-                    return(<div><li style={{position: 'relative',right:'-3%'}}>{options.option}</li></div>)
+                    return(<div><li style={{listStyle:'persian'}}>{options.option}</li></div>)
                   }
-               ) ) : null}
-              </ul>
-            </div>
-            {openCollapse ? <Icon title="بستن جواب" style={{color: '#1CA0A0',position: 'relative',right: '48.5%',marginTop: '4%',cursor: 'pointer',}}   button  onClick={()=>{
+               )) : null}
+            </ul>
+            <Grid container>
+              <Grid item xs={12}>
+                <Grid >
+                  <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '12px'}}>اضافه کردن به آزمون</span>} >
+                <Icon  style={{color: '#1CA0A0',cursor:'pointer',margin: '0% 95% -27px 0%'}} button onClick={() => {                                                
+                          dispatch(addQuestion(props.q));                                                
+                        }} >add_to_queue</Icon></Tooltip>
+                </Grid>
+              </Grid>
+            </Grid>
+            {openCollapse ? <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '16px'}}>بستن جواب</span>} >
+              <Icon  style={{color: '#1CA0A0',position: 'relative',right: '48.5%',cursor: 'pointer',}}   button  onClick={()=>{
                   handleCollapse();
-            }}>vpn_key</Icon>: <Icon title="دیدن جواب" style={{color: '#1CA0A0',position: 'relative',right: '48.5%',marginTop: '4%',cursor: 'pointer'}} button onClick={()=>{
+            }}>vpn_key</Icon></Tooltip>: 
+            <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '16px'}}>دیدن جواب</span>} >
+              <Icon  style={{color: '#1CA0A0',position: 'relative',right: '48.5%',cursor: 'pointer'}} button onClick={()=>{
                   handleCollapse();
-            }}>vpn_key</Icon>}</Typography>
+            }}>vpn_key</Icon></Tooltip>}</Typography>
         </div>
-        <Collapse in={openCollapse} timeout="auto" unmountOnExit>
-          <div style={{border: 'solid'}}>
-          <Typography style={{fontFamily: 'Vazir',textAlign: 'right',width: '95%',margin: '0% 3% 0% 0%',color:'black'}}>
+        <Collapse in={openCollapse} timeout="auto" unmountOnExit >
+          <Typography style={{fontFamily: 'Vazir',textAlign: 'right',color:'black'}}>
             <hr/>
             {props.q.answers.map((answers) => {
-            return (<div>{answers.answer}</div>)})}
+            return (<div style={{position: 'relative',padding: '2% 2% 4% 2%'}}>{answers.answer}</div>)})}
             <Card style={{position: 'relative',right: '35%',width:'27%'}}>
-              <CardMedia title="بزرگ نمایی تصویر">
+              <CardMedia>
                 {props.q.imageAnswer !== null ? ( 
                   data = props.q.imageAnswer.toString(),
                   Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} onClick={handleClickOpenAnswer} width="100%" height="100%" style={{cursor: 'pointer'}}/>,
-                  <Example data={data}/>
+                  <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '16px'}}>بزرگ نمایی تصویر</span>} >
+                  <Example data={data}/></Tooltip>
                   ): null}
                 <Dialog
                   open={openDialogAnswer}
@@ -127,11 +150,15 @@ function QuestionCard (props){
               </CardMedia>
             </Card>
           </Typography>
-        </div>
       </Collapse>
  </div>)
 }
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
+const useStyles = makeStyles((theme) => ({
+  
+}));
+
 export default QuestionCard;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
+import  LoadingButton from '@material-ui/lab/LoadingButton';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -34,18 +35,21 @@ class DialogEditClass extends Component {
   render(){
   const [open, setOpen] = this.props.open;
   const classes = this.props.classes;
-
-  
+  const [noteListLoad,setNoteListLoad] = this.props.noteListLoad;
+  const [pending,setPending] = this.props.pending;
   const handleClickOpen = () => {
     setOpen(true);
     this.setState({success: false})
+    setPending(false)
   };
 
   const handleClose = () => {
     setOpen(false);
   };
   const handleSubmit = () =>{
-    
+    // کنترل اندازه حروف
+    if( this.state.title.length >= 5 && this.state.body.length >= 5){
+    setPending(true)
     const a = {
       "title" : this.state.title ,
       "body" : this.state.body
@@ -55,22 +59,28 @@ class DialogEditClass extends Component {
     axios.post(serverURL() + "class/" + this.props.classId  + "/notes", ajson ,tokenConfig())
     .then(res => {
       console.log(res);
-      this.setState({success: true})
+      this.setState({success: true,title:'',body: ''})
+      setNoteListLoad(true)
+      setPending(false)
     })
     .catch(e =>{
       console.log(e);
-    });
+      setPending(false)
+    }); 
+  }else{
+      alert("عنوان باید بیشتر از ۵ حرف و متن اعلان باید بین ۵ تا ۱۲۰ حرف باشد")
+      setPending(false);
+    }
   }
   return (
     <div>
-        
       <Button type="submit"
               variant="contained"
               className = {classes.addButton}
               style={{fontFamily: 'Vazir'}}
               onClick={handleClickOpen}>
-        <CreateIcon />
-                                نوشتن
+        
+                                نوشتن<CreateIcon />
       </Button>
       <Dialog fullWidth style={{fontFamily: 'Vazir'}} open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
       <Material_RTL><M_RTL>
@@ -81,7 +91,7 @@ class DialogEditClass extends Component {
         <div className={classes.paper}> 
         <DialogContent>
         <ValidatorForm noValidate style={{fontFamily: 'Vazir'}}>
-          <TextField
+          <TextValidator
             autoFocus
             margin="dense"
             id="title"
@@ -91,8 +101,10 @@ class DialogEditClass extends Component {
             name="title"
             fullWidth
             autoFocus
-            value={this.state.name}
+            value={this.state.title}
             onChange={this.handleChange}
+            validators={['required', 'minStringLength:' + 5]}
+            errorMessages={['لطفا یک عنوان مناسب وارد کنید', 'عنوان باید بیشتر از ۵ حرف باشد']}
             InputLabelProps={{style:{fontFamily: 'Vazir'}}}
             InputProps={{
               style:{fontFamily: 'Vazir'}
@@ -111,13 +123,17 @@ class DialogEditClass extends Component {
           />
           
           </ValidatorForm >
+          {/* کنترل اندازه حروف */}
+          {this.state.body.length < 5 && this.state.body.length > 0 ? (
+            <span style={{color: 'red',textAlign: 'right',direction: 'rtl',position: 'relative',left: '64%'}}>متن اعلان باید بیشتر از ۵ حرف باشد</span>
+          ) : null}
         </DialogContent>
 
         <DialogActions>
         <Grid style={{textAlign: 'right',width: '100%'}} >  
-        <Button onClick={handleSubmit}  variant="contained" color="#EE6C4D" style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir',margin: '0% 21% 0% 5%',width: '25%'}}>
+        <LoadingButton onClick={handleSubmit} pendingPosition="center" pending={pending} variant="contained" color="#EE6C4D" style={{backgroundColor: '#EE6C4D',color: 'white',fontFamily: 'Vazir',margin: '0% 21% 0% 5%',width: '25%'}}>
                           افزودن
-                          </Button>         
+                          </LoadingButton>         
                         <Button onClick={handleClose} color="primary" style={{backgroundColor: '#98C1D9',color: 'white',fontFamily: 'Vazir',width: '25%'}}>
                           انصراف
                         </Button></Grid>          
@@ -132,6 +148,12 @@ class DialogEditClass extends Component {
 }
 }
 const useStyles = makeStyles((theme) => ({
+  //برای متن ارور
+  '@global':{
+    '.MuiFormHelperText-root.Mui-error' : {
+    fontFamily: 'Vazir',
+    },
+  },
   groupbutton :{
     backgroundColor : '#EE6C4D' , 
     color : "white" ,
@@ -161,9 +183,11 @@ export default (props) => {
   const classes = useStyles();
   const open = React.useState(false);
   const check = React.useState(false);
+  const pending = React.useState(false);
   const classId= props.classId;
   const name= props.name;
+  const noteListLoad = props.noteListLoad;
   return (        
-      <DialogEditClass classes={classes} open={open} check={check} classId={classId}/>    
+      <DialogEditClass noteListLoad={noteListLoad} classes={classes} open={open} check={check} classId={classId} pending={pending}/>    
   )
 }

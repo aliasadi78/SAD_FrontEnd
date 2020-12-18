@@ -11,6 +11,8 @@ import IsoIcon from '@material-ui/icons/Iso';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ExamListItem from './examsListItem';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
+import { Link } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     grid:{
@@ -49,18 +51,22 @@ export default function Examslist (props){
     const classes = useStyles();
     const [examList , setExamList] = React.useState([]);
     const [examsListLoad , setExamsListLoad ] = React.useState(true);
-    
-    //get class exams list ----------------------------------------------------------         
-    axios.get(serverURL() + "class/" + props.classId + "/exams" , tokenConfig())
-    .then(res =>{      
-      setExamList([...res.data.exams]); 
-      setExamsListLoad(false);
-      console.log(examList);
-      // console.ChevronLeftIcong(res);
-    })
-    .catch(err=> {
-      console.log(err);
-    });
+
+    //پشت سر هم ریکوئست میفرستاد
+    componentWillMount:
+    if(examsListLoad != false){
+        axios.get(serverURL() + "class/" + props.classId + "/exams" , tokenConfig())
+        .then(res =>{      
+          setExamList([...res.data.exams]); 
+          setExamsListLoad(false);
+          console.log(examList);
+          // console.ChevronLeftIcong(res);
+        })
+        .catch(err=> {
+          console.log(err);
+        });}
+    let history = useHistory();
+
 
     return (
         <Grid item  xs={4} sm={12}  lg={6} className = {classes.grid}>                                                                
@@ -70,7 +76,7 @@ export default function Examslist (props){
                           <Grid item xs={4} >
 
                             <Paper elevation = {elevation} className = {classes.ListTitle}>
-                              <h5 style={{fontFamily: 'Vazir'}}>
+                              <h5 style={{fontFamily: 'Vazir' , color : 'white'}}>
                                 امتحان ها 
                                 <IsoIcon />
                               </h5>
@@ -80,22 +86,31 @@ export default function Examslist (props){
                           <Grid item xs={4} ></Grid>
                         </Grid>
                   <Grid
-                    // item xs={12}                    
+                    // item xs={12}   
+                    container                 
                     direction="column"
                     justify="center"
                     alignItems="center"
                     spacing = {1}
                   >     
                                                                         
-                    <Paper elevation = {elevation}  className = {classes.ElanPaper}>                      
+                    <Paper elevation = {elevation}  className = {classes.ElanPaper} style={{width : '90%'}}>                      
                         { props.isAdmin == true &&
                           <Grid item>                            
-                              <Button className={classes.groupbutton} variant="contained" color="primary"  >
-                                <h5 style={{fontFamily: 'Vazir'}}>
+
+                            {/* <Link href="/CreateExam"> */}
+                              <Button className={classes.groupbutton}                               
+                              onClick={()=>{
+                                window.location.href = "/CreateExam/" + props.classId ;
+                                // history.push("/createExam/" + props.classId);
+                              }}
+                              variant="contained" color="primary"  >
+                                <h5 style={{fontFamily: 'Vazir', color: 'white'}}>
                                   <AddIcon />
                                   آزمون جدید 
                                 </h5>
                               </Button>                            
+                            {/* </Link> */}
                           </Grid>                           
                         }
                           <Grid item xs={12}>
@@ -109,6 +124,9 @@ export default function Examslist (props){
                                   elevation = {elevation}                              
                                   start = {m.startDate}
                                   end = {m.endDate}
+                                  id = {m._id}
+                                  classId = {props.classId}
+                                  isAdmin = {props.isAdmin}
                                 />
                               )
                             }                                                        
