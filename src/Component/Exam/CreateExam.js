@@ -208,7 +208,9 @@ function CreateExam(props){
     const [examFound , setExamFound] = React.useState(false);  
 
     const [error , setError] = React.useState(null);
+    const [success , setSuccess] = React.useState(null);
     const [openAlert , setOpenAlert] = React.useState(false)
+    const [openAlertSuccess , setOpenAlertSuccess] = React.useState(false)
 
     const [userQuestions , setUserQuestions] = React.useState([]);
     const [questionsFound,setQuestionsFound] = React.useState(false);
@@ -324,6 +326,8 @@ function CreateExam(props){
                       setSavePending(false);                
                       // history.push("/class/" + classId);
                       console.log("edit shod");
+                      setSuccess("آزمون با موفقیت ویرایش شد ");
+                      setOpenAlertSuccess(true);
                     })
                     .catch(err => {                                                          
                       if(err.response.data.error != null)
@@ -331,6 +335,7 @@ function CreateExam(props){
                       else if(err.response.data.message != null)
                         setError(err.response.data.message);                  
                       setOpenAlert(true);
+                      setSavePending(false);                
                     });                
                 }}
                 >
@@ -453,6 +458,28 @@ function CreateExam(props){
               </Collapse>
             </Grid>
 
+            <Grid item xs={12} sm={12} lg={12}>
+              <Collapse in={openAlertSuccess}>
+                <Alert
+                  severity = "success"
+                  action={
+                    <IconButton
+                      aria-label="close"
+                      color="inherit"
+                      size="small"
+                      onClick={() => {
+                        setOpenAlertSuccess(false);
+                      }}
+                    >
+                      <CloseIcon fontSize="inherit" />                      
+                    </IconButton>
+                  }
+                >
+                  <span style={{fontFamily: 'Vazir' , marginLeft : '8px' , marginRight : '8px'}}>{success} </span>                  
+                </Alert>
+              </Collapse>
+            </Grid>
+
             <Grid item xs={12} sm={12} lg={6} >
                 <AppBar position="static" color="default">
                     <Tabs
@@ -507,6 +534,11 @@ function CreateExam(props){
                 <Typography variant='h6' style={{fontFamily: 'Vazir' , color : 'white'}} >
                       پیش نمایش امتحان
                 </Typography>
+              </Paper>
+              <Paper square elevation={3} style={{backgroundColor : '#f2f2f2' ,paddingBottom : '10px' , paddingTop : '10px'
+                     , marginBottom : '25px'}}>
+                      مجموع نمرات : {props.sumGrade}
+
               </Paper>
               <Paper className={classes.paper} >
                 {/* <DragDropContext>
@@ -566,7 +598,9 @@ const mapStateToProps = (state) => {
     questions : state.exam.examQuestions ,  
     startDate : state.exam.startDate , 
     endDate : state.exam.endDate ,     
-    examLength : state.exam.examLength
+    examLength : state.exam.examLength ,
+
+    sumGrade : state.exam.sumGrade
   }
 }
 

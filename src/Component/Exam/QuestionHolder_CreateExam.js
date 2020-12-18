@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import { Form , Col , Row} from 'react-bootstrap';
 import { useDispatch } from 'react-redux' ; 
 import {
-    addQuestion , removeQuestion , addGrade , moveUp , moveDown
+    addQuestion , removeQuestion , addGrade , moveUp , moveDown , updateSumGrade
 } from './ExamSlice' ;
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
@@ -152,6 +152,7 @@ export default function QuestionHolder_Create(props) {
                                             <Form.Control type="text" defaultValue={props.grade} 
                                             onChange={(e) => {                                            
                                                 dispatch(addGrade({"index" : props.index , "grade" : e.target.value}));
+                                                dispatch(updateSumGrade());
                                             }} />
                                         </Col>
                                     </Form.Group>
