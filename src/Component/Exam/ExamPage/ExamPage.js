@@ -91,7 +91,7 @@ class ExamPage extends Component{
                               {questionsList.length > 0 ? (questionsList.map((question,idx)=>{
                                   if(idx === 0){
                                   return(
-                                  <QuestionCard q={question} idx={idx} />
+                                  <QuestionCard q={question} idx={idx} answer={questionsList[idx]}/>
                                 )}
                                 })):null}
                               </div>)
@@ -119,10 +119,38 @@ class ExamPage extends Component{
     )
 }}
 
+// class Answer extends Component(){
+//     constructor(props){
+//         super(props);
+//         this.state={
+//             answers : [{index: '',answer: ''}]
+//         }
+        
+//     }
+//     render(){
+//         return(
+//             <div></div>
+//         )
+//     }
+// }
 function QuestionCard(props){
-    
-    const [selectedValue, setSelectedValue] = React.useState();
+    // var Answers = []
+    // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
+    //     .then(res=>{
+    //         console.log(res)
+    //             // console.log(res.data.questions);
+    //             res.data.questions.map((q,i) =>{ 
+    //             Answers.push(q.answerText);
+    //             console.log(Answers)
+    //             });
+    //             // setQuestionsList([...ll]);
+    //     }).catch(err=>{
+    //         console.log(err)
+    //     })
+    // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
+    const [selectedValue, setSelectedValue] = React.useState(props.answer.question.answerText);
     const [checked,setChecked] = React.useState();
+    // console.log(Answers[1].answerText)
     const handleRadioChange = (event) => {
         console.log(event.target.value)
         setSelectedValue(event.target.value);
@@ -130,8 +158,8 @@ function QuestionCard(props){
     const handleChange = (event) => {
         setChecked(...event.target.value)
     }
-    console.log(props.q)
-    console.log(props.idx)
+    console.log(props.answer.question.answerText)
+    console.log(props.q.question)
     console.log(props.q.question.question)
     return(
         <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px',direction: 'rtl',textAlign: 'right'}}>
@@ -149,13 +177,20 @@ function QuestionCard(props){
                             >
                             {props.q.question.options.map((options,idx)=>{
                                 // setSelectedValue('');
+                                // console.log(idx)
+                                // console.log(props.idx)
+                                // console.log(Answers[props.idx])
+                                // console.log(props.idx+1)
+                                // console.log(Answers[props.idx+1])
+                                // console.log(props.idx - 1)
+                                // console.log(Answers[props.idx] - 1)
+
+                                // console.log(props.q.question.options)
+                                // console.log(options.option)
                                 console.log(selectedValue)
-                                console.log(props.q.question.options)
-                                console.log(options.option)
-                                console.log(props.q.question)
                                 return(
                                     <li key={idx + 1} >
-                                        <FormControlLabel style={{marginRight: '0px'}} value={options.option} control={<Radio style={{color: '#1CA0A0'}}/>} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
+                                        <FormControlLabel style={{marginRight: '0px'}} value={idx+1} control={<Radio style={{color: '#1CA0A0'}}/>} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
                                     </li>
                                 )
                             })}
