@@ -37,18 +37,15 @@ class Questions extends Component {
   constructor (props){
     super(props);
 
-    this.state = {
-      bool : false , 
-      editQuestionIndex : -1 ,
+    this.state = {      
       grades : [] ,       
       types : [] ,
       hardnesses : [] ,
       chapters : [] ,
       courses : []
-    };    
-
-    var userQuestions = [];
-
+    };          
+    var userQuestions = [];  
+    
     axios.get(serverURL() + "public/question/category" , tokenConfig())
     .then(res => {        
         console.log(res.data);      
@@ -65,76 +62,41 @@ class Questions extends Component {
         console.log(err);
     });
 
-    axios.get(serverURL() + "question?limit=10" , tokenConfig() )    
-      .then( res =>{                  
-        userQuestions.push(...res.data.questions);                
-        this.setState(prevstate => {        
-          return { 
-            questions : userQuestions , 
-            bool : true
-          }
-        })        
-      })
-      .catch(e =>{
-        console.log(e);        
-      }); 
 
   }
 
   render(props){
-    const classes = this.props.classes;        
-
-    console.log(this.props.questions);
-
-    let editQuestionIndex = -1 ;
-
-    const edit = (i) => {            
-      editQuestionIndex = i ;      
-      console.log(i);
-      this.setState(prevstate => {
-        return{
-          editQuestionIndex : i 
-        }})      
-    }
+    const classes = this.props.classes;                
 
     return (
       <div className={classes.root}>
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={12}  lg={6} className = {classes.grid} spacing= {2}>
-            {/* <h3 style={{fontFamily: 'Vazir', color : '#3D5A80'}} > */}
+            <Grid item xs={12} sm={12}  lg={6} className = {classes.grid} spacing= {2}>            
             
             <Grid item xs={12}>
               <Paper elevation={3} className={classes.editprofilePaper}style={{backgroundColor: '#1CA0A0',color: 'white',padding: '2%',borderRadius: '5px',height: '40px'}}>
               سوال هایی که تا کنون طرح کرده اید
               </Paper>
-            </Grid>
-            {/* <Grid item xs={12}> */}
-            <Grid item xs={12}>  
-                {
-                  this.state.bool == true ?
+            </Grid>            
+            <Grid item xs={12}>                  
                     <div>
-                    {                              
-                        // this.state.questions.map((m , index) =>
+                    {                                                      
                         this.props.questions.map((m , index) =>
                         <UserDesignedQuestion  
                           backColor = '#f2f2f2'   
-                          index = {index}
-                          questionId = {m._id}
+                          question = {m}
+                          index = {index}                          
                           type={m.type}
-                          answers = {m.answers}
-                          question = {m.question}
+                          answers = {m.answers}                          
                           options = {m.options}
                           soalImage = {m.imageQuestion}
+                          onRefresh = {this.props.onRefresh}
                           javabImage = {m.imageAnswer}
-                          onclick = {() => {edit(index)}}                          
+                          // onclick = {() => {edit(index)}}                          
                           />)
                     }
-                    </div>            
-                :                            
-                  <div> 
-                  </div>              
-                }
+                    </div>                            
               </Grid>
             </Grid>                 
             <Grid item xs={12} sm = {12}  lg={6} className = {classes.grid}>          
@@ -144,23 +106,16 @@ class Questions extends Component {
                 </Paper>
               </Grid>
 
-              <Grid item xs={12}>
-                {this.state.editQuestionIndex == -1 ?                                     
+              <Grid item xs={12}>                
                   <Question                                          
                       submitButton="طرح"
-                      backColor = '#f2f2f2'
-                      // questionIndex={editQuestionIndex}
-                      questions = {this.state.questions}
+                      onRefresh = {this.props.onRefresh}
+                      backColor = '#f2f2f2'                                          
                       grades = {this.state.grades}
                       courses = {this.state.courses}
                       chapters = {this.state.chapters}
                       types = {this.state.types}
-                  />                                 
-                  :
-                  <p>
-                    edit
-                  </p>
-                }                                                                                        
+                  />                                                                                                                                                      
               </Grid>                             
             </Grid>                     
           </Grid>          
@@ -175,20 +130,23 @@ export default () => {
   const [questionsFound , setQuestionsFound ]  = React.useState(false);
   const [questions , setQuestions] = React.useState([]);
 
-  axios.get(serverURL() + "question?limit=10" , tokenConfig() )    
-  .then(res =>{
-    console.log(res.data);
-    setQuestions([...res.data.questions]);
-    setQuestionsFound(true);
-  })
-  .catch(err=>{
-    console.log(err);
-  });
+  if(questionsFound == false)
+    axios.get(serverURL() + "question?limit=10" , tokenConfig() )    
+    .then(res =>{      
+      setQuestions([...res.data.questions]);
+      setQuestionsFound(true);
+    })
+    .catch(err=>{
+      console.log(err);
+    });
   
   return (        
     <div>
       {questionsFound == true &&
         <Questions 
+          onRefresh = {() => {
+            setQuestionsFound(false);
+          }}
           questions = {questions}
           classes={classes}
           />    

@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import { Form , Col , Row} from 'react-bootstrap';
 import { useDispatch } from 'react-redux' ; 
 import {
-    addQuestion , removeQuestion , addGrade , moveUp
+    addQuestion , removeQuestion , addGrade , moveUp , moveDown , updateSumGrade
 } from './ExamSlice' ;
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
@@ -150,8 +150,9 @@ export default function QuestionHolder_Create(props) {
                                         </Form.Label>
                                         <Col sm="4">
                                             <Form.Control type="text" defaultValue={props.grade} 
-                                            onChange={(e) => {
-                                                dispatch(addGrade([props.question._id ,e.target.value ]))
+                                            onChange={(e) => {                                            
+                                                dispatch(addGrade({"index" : props.index , "grade" : e.target.value}));
+                                                dispatch(updateSumGrade());
                                             }} />
                                         </Col>
                                     </Form.Group>
@@ -166,16 +167,19 @@ export default function QuestionHolder_Create(props) {
                                             <Button onClick={()=> {
                                                 dispatch(moveUp(props.index));
                                             }}><ArrowUpwardIcon /></Button>
-                                            <Button><ArrowDownwardIcon /></Button>
+                                            <Button onClick={()=> {
+                                                dispatch(moveDown(props.index));
+                                            }}><ArrowDownwardIcon /></Button>
                                             <Button onClick={() => {
                                             if(props.mode=="select question")
                                                 handleDeleteQuestion( props.question._id);
                                             if(props.mode=="preview")
                                             {
-                                                if(props.question._id !== null)
-                                                    dispatch(removeQuestion(props.question._id));
-                                                if(props.question.qId !== null)
-                                                    dispatch(removeQuestion(props.question.qId));
+                                                // if(props.question._id !== null)
+                                                //     dispatch(removeQuestion(props.question._id));
+                                                // if(props.question.qId !== null)
+                                                //     dispatch(removeQuestion(props.question.qId));                                                
+                                                dispatch(removeQuestion(props.index));
                                             }                                                
                                                 }}><HighlightOffIcon /></Button>
                                         </ButtonGroup>                          
@@ -289,30 +293,13 @@ export default function QuestionHolder_Create(props) {
                                         </FormControl>
                                     :props.question.type === 'MULTICHOISE' &&
                                         <FormGroup>
+                                            {props.question.options.map((m , index) => 
                                             <form class="form-inline">
                                                 <Checkbox checked={choice1}  name="gilad"  disabled
                                                     className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField variant="filled"  margin='dense'disabled  defaultValue={props.question.options[0].option}/>
-                                            </form>
-                                            
-                                            <form class="form-inline">
-                                                <Checkbox checked={choice2} name="gilad" disabled
-                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField variant="filled" margin='dense' disabled defaultValue={props.question.options[1].option}/>
-                                            </form>
-
-                                            <form class="form-inline">
-                                                <Checkbox checked={choice3} name="gilad" disabled
-                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField  variant="filled" margin='dense' disabled defaultValue={props.question.options[2].option}/>
-                                            </form>
-
-                                            <form class="form-inline">
-                                                <Checkbox checked={choice4} name="gilad" disabled
-                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                    <TextField disabled
-                                                    variant="filled" margin='dense'  defaultValue={props.question.options[3].option}/>
-                                            </form>                                                    
+                                                    <TextField variant="filled"  margin='dense'disabled  defaultValue={props.question.options[index].option}/>
+                                            </form>                                    
+                                            )}                                                         
                                         </FormGroup>
 
                                 } 

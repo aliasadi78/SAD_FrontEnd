@@ -30,7 +30,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 import { createMuiTheme } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
-import UploadImage from '../Question/uploadImage';
+import UploadImageQuestionPanel from './UploadImageExamPanel';
 import { connect } from 'react-redux' ;
 
 const theme = createMuiTheme({
@@ -244,7 +244,7 @@ function AddQuestionExam(props) {
                                     </Paper>
                                 </Grid>
 
-                                <UploadImage 
+                                <UploadImageQuestionPanel 
                                 getImage={(value)=>{
                                     setSoalImageBase64(value)
                                 }}
@@ -479,7 +479,7 @@ function AddQuestionExam(props) {
                                 </Grid>
                                 {/* //  upload image */}                                  
                                 
-                                <UploadImage
+                                <UploadImageQuestionPanel
                                 getImage={(value)=>{
                                     setJavabImageBase64(value)
                                 }}

@@ -12,13 +12,14 @@ import axios from 'axios';
 import Material_RTL from "../Material_RTL";
 import RTL from '../M_RTL';
 import AlertDialog from '../Dialog' ;
+import { makeStyles } from "@material-ui/core/styles";
 
 export default function JoinClass(props) {
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [code , setCode] = React.useState(null);
   const [notFound , setNotfound] = React.useState(false);
-
+  const classes = useStyles();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -45,7 +46,10 @@ export default function JoinClass(props) {
   }
 
   return (
-    <div>
+    <div>      
+      <Button onClick={()=>{setOpen(true)}} className = {classes.button}>
+        ورود به کلاس
+      </Button>
       <Material_RTL>
         <RTL>
           <Dialog open={open} dir='rtl' onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -68,7 +72,11 @@ export default function JoinClass(props) {
                   setCode(e.target.value);
                 }}
                 label="کد کلاس"
-                type="email"
+                type="text"
+                InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                InputProps={{
+                  style:{fontFamily: 'Vazir'},
+                }}
                 fullWidth
               />
             </DialogContent>
@@ -93,3 +101,15 @@ export default function JoinClass(props) {
     </div>
   );
 }
+const useStyles = makeStyles((theme) => ({
+  button : {
+  marginRight : theme.spacing(2) ,       
+  backgroundColor : '#98C1D9' ,
+  fontFamily: 'Vazir',
+  color: 'black',
+  "&:hover": {
+    backgroundColor: '#EE6C4D' ,
+    color : 'white' , 
+    },                
+  },
+}))

@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ClassListItem (props){
 
     const classes = useStyles();
-    console.log(props);
+    // console.log(props);
 
     return(
         <Card className={classes.card} variant="outlined">

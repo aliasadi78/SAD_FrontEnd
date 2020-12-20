@@ -171,15 +171,18 @@ export default function Dashboard() {
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>                          
             </Typography>
 
-            <Button variant="contained" color="white"
+            {/* <Button variant="contained" color="white"
               style={{fontFamily: 'Vazir'}}
               className = {classes.button}
               onClick={() => {  
-                setOpenCreateClassDialog(true);                            
+                // setOpenCreateClassDialog(true);
+                return (<NewClassDialog/>     )                      
               }} >
               ایجاد کلاس
-            </Button>            
-            <Button variant="contained" color="#98C1D9" 
+            </Button>     */}            
+            <NewClassDialog/>  
+            <JoinClass />      
+            {/* <Button variant="contained" color="#98C1D9" 
               style={{fontFamily: 'Vazir'}}
               className = {classes.button}
               onClick={()=>{  
@@ -187,7 +190,7 @@ export default function Dashboard() {
               }}
               >
               ورود به کلاس 
-            </Button>
+            </Button> */}
 
           </Toolbar>
         </AppBar> 
@@ -220,16 +223,16 @@ export default function Dashboard() {
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
             
-            {
+            {/* {
               openJoinClassDialog == true &&
-              <JoinClass />              
+              <JoinClass />           
             }
-
+              
             {
               openCreateClassDialog == true &&
               <NewClassDialog />
-            }
-
+            } */}
+            
             <Switch>
               <Route path="/profile/edit"  >
                 <PersonalForms />

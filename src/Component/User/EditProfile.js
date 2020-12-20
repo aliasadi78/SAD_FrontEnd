@@ -27,6 +27,12 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 const useStyles = makeStyles((theme) => ({
+  //فونت
+    '@global':{
+      '.MuiFormHelperText-root.Mui-error' : {
+        fontFamily: 'Vazir',
+      },
+    },
     progressBar : {
       display: 'flex',
       '& > * + *': {
@@ -141,8 +147,8 @@ function EditProfileValidationForms_Personal (props) {
     const uploadImage = async (e) => {
       const file = e.target.files[0];  
       const base64 = await convertBase64(file); 
-      setImageBase64(base64);
-      // console.log(base64);
+      setImageBase64(base64);      
+      console.log(btoa  (base64));
     }
 
     const convertBase64 = (file) => {
@@ -300,8 +306,8 @@ function EditProfileValidationForms_Personal (props) {
                                             value={paswordValues.password}
                                             onChange={handleChange('password')}
                                             InputLabelProps={{style:{fontFamily: 'Vazir'},}}
-                                            validators={[ 'minStringLength:' + 8]}
-                                            errorMessages={['رمز عبور باید بیشتر از 8 حرف باشد']}
+                                            validators={[ 'minStringLength:' + 6]}
+                                            errorMessages={['رمز عبور باید بیشتر از ۶ حرف باشد']}
                                             InputProps={{
                                                 style:{fontFamily: 'Vazir'},
                                                 endAdornment:(
@@ -337,16 +343,7 @@ function EditProfileValidationForms_Personal (props) {
                                             errorMessages={['رمز عبور مطابقت ندارد', 'لطفا رمز عبور خود را تکرار کنید']}
                                             InputProps={{
                                                 style:{fontFamily: 'Vazir'},
-                                                endAdornment:(
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        style={{padding: '0px',color:'black'}}
-                                                        onClick={handleClickShowPassword}
-                                                        // onMouseDown={this.handleMouseDownPassword}
-                                                    >
-                                                        {paswordValues.showConfirmedPassword ? <Visibility /> : <VisibilityOff />}
-                                                    </IconButton>
-                                                </InputAdornment>)
+                                                
                                             }}
                                         />
                                         </ValidatorForm>
@@ -363,14 +360,21 @@ function EditProfileValidationForms_Personal (props) {
                   style={{fontFamily: 'Vazir'}}
                   className={classes.SaveChangesButton} onClick={()=>{     
                   setPending(true);
-                  axios.put( serverURL() + 'user'                   
-                  , {           
+                  
+                  const a = {           
                     "uesrname" : username ,
                     "firstname" : firstname ,                           
                     "lastname" : lastname , 
                     "email" : email , 
-                    "password" : paswordValues.password ,                                                           
-                  }
+                    "password" : paswordValues.password                     
+                  };
+
+                  const ajson = JSON.stringify(a);
+
+                  console.log(ajson);
+                  
+                  axios.put( serverURL() + 'user'                   
+                  , ajson
                   ,tokenConfig())
                   .then(res => {                                              
                       console.log("done");            
@@ -379,15 +383,18 @@ function EditProfileValidationForms_Personal (props) {
                   })
                   .catch(e => {                    
                   });            
+                  
+                  const b = {
+                    "avatar" : imageBase64
+                  };
 
-                  axios.put(serverURL() + "user/avatar" , {
-                    "avatar" : btoa(imageBase64) 
-                  } , tokenConfig())                  
+                  const bjson = JSON.stringify(b);
+
+                  axios.put(serverURL() + "user/avatar" , bjson , tokenConfig())                  
                   .then(res=>{
                     console.log("photo shit done");
                   })
-                  .catch(err=> {
-                    console.log(imageBase64);
+                  .catch(err=> {                    
                     console.log(err);
                   });
                 } }>
@@ -431,7 +438,8 @@ export default class PersonalForms extends Component {
             lastname : res.data.user.lastname ,
             username : res.data.user.username ,
             email : res.data.user.email ,                      
-            userFound : true
+            userFound : true ,
+            // avatar : atob(res.data.avatar)
           }
         })
     })  
