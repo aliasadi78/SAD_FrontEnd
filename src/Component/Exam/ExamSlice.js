@@ -7,7 +7,8 @@ export const ExamSlice = createSlice({
         name : null ,
         startDate : null ,
         endDate : null ,        
-        examLength : null ,        
+        examLength : null ,    
+        sumGrade : 0 ,    
     } ,
     reducers : {
         setTitle(state , action){
@@ -41,7 +42,22 @@ export const ExamSlice = createSlice({
                 state.examQuestions[action.payload] = state.examQuestions[action.payload-1];
                 state.examQuestions[action.payload-1] = temp ;
             }   
-        }        
+        },
+        moveDown(state , action){            
+            if(action.payload < state.examQuestions.length -1){
+                let temp = state.examQuestions[action.payload];
+                state.examQuestions[action.payload] = state.examQuestions[action.payload+1];
+                state.examQuestions[action.payload+1] = temp ;
+            }   
+        },
+        updateSumGrade(state){
+            let s= 0 ;
+            state.examQuestions.forEach(element => {
+                s += parseInt(element.grade) ;
+            });
+            state.sumGrade = s ;
+            // state.sumGradev=v
+        }            
     }
 })
 
@@ -53,6 +69,8 @@ export const {setTitle ,
               removeQuestion , 
               addGrade,
               setQuestions , 
-              moveUp} = ExamSlice.actions
+              moveUp , 
+              updateSumGrade ,
+              moveDown} = ExamSlice.actions
 
 export default ExamSlice.reducer    

@@ -179,8 +179,7 @@ export default function Dashboard() {
                 return (<NewClassDialog/>     )                      
               }} >
               ایجاد کلاس
-            </Button>     */}
-            //تغییر باتن ها 
+            </Button>     */}            
             <NewClassDialog/>  
             <JoinClass />      
             {/* <Button variant="contained" color="#98C1D9" 

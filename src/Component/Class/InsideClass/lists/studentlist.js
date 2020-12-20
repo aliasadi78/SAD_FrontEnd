@@ -25,6 +25,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Material_RTL from '../../../Material_RTL';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -53,12 +54,11 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'name', numeric: false, disablePadding: false, label: 'عکس' },
-  { id: 'name', numeric: false, disablePadding: false, label: 'نام' },
-  { id: 'calories', numeric: false, disablePadding: false, label: 'ایمیل' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'نمره' },
-  // { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'حذف' },
+  { id: 'name', numeric: false, disablePadding: false, label: <span style = {{fontFamily: 'Vazir'}}> عکس </span> },
+  { id: 'name', numeric: false, disablePadding: false, label: <span style = {{fontFamily: 'Vazir'}}>نام </span> },
+  { id: 'calories', numeric: false, disablePadding: false, label:  <span style = {{fontFamily: 'Vazir'}}>ایمیل </span> },
+  { id: 'fat', numeric: true, disablePadding: false, label: <span style = {{fontFamily: 'Vazir'}}> نمره </span> },  
+  { id: 'protein', numeric: true, disablePadding: false, label: <span style = {{fontFamily: 'Vazir' , textAlign : 'center'}}> حذف </span> },
 ];
 
 function EnhancedTableHead(props) {
@@ -339,7 +339,7 @@ export default function Studentlist(props) {
                       <TableCell align="right">
                         { isAdmin == true &&
                           <Button onClick={() => {removeMember(row.username , props.classId)}}>
-                            <RemoveCircleRoundedIcon style={{color : '#E63946'}} />
+                            <HighlightOffIcon style={{color : '#E63946'}} />
                           </Button>  
                         }
                       </TableCell>                      
