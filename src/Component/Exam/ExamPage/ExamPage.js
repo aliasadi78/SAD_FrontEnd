@@ -229,7 +229,6 @@ class ExamPage extends Component{
                                 )}
                                 })):null}
                               </div>)
-                              
                             }
                             </Grid>
                     </Container>
@@ -287,7 +286,7 @@ class ExamPage extends Component{
 //     }
 // }
 var testanswer=[]
-var checklist;
+
 function QuestionCard(props){
     // var Answers = []
     // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
@@ -312,10 +311,10 @@ function QuestionCard(props){
     //     return(props.answer.answerText)
     //     }})
     
-    
-    const [checked,setChecked] = React.useState(false);
-    
-    
+    // checklist=[]
+    const [checked,setChecked] = React.useState();
+    // setChecked([])
+    var checklist = [];
     console.log(props.answer)
     const [selectedValue,setSelectedValue] = React.useState(props.answer)
     console.log(selectedValue)
@@ -326,7 +325,7 @@ function QuestionCard(props){
     //     setChecked(false)
     // }
     console.log(props.q.question.options)
-    checklist=[]
+    // 
     
     
     console.log(typeof(testanswer[props.idx]))
@@ -374,6 +373,7 @@ function QuestionCard(props){
         testanswer[props.idx]= cl.slice(0,cl.length - 1)
         console.log(checklist)
         console.log(testanswer[props.idx])
+        // setChecked(checklist)
     }
     const handleChangeShortAnswer = (event) => {
         
@@ -446,40 +446,31 @@ function QuestionCard(props){
                 </RadioGroup>
                 </FormControl>
                     </ul>): null}
-                    {props.q.question.type === "MULTICHOISE" ? (()=>{
-                        alert("hi")
-                        props.q.question.options.map((option,i)=>{
-                            console.log(i)
-                            props.answer.split(',').map((j)=>{
-                                console.log(j)
-                                if(j.toString() === i.toString()){
-                                    checklist[i] = true
-                                }
-                                else{
-                                    checklist[i] = false
-                                }
-                            })
-                            
-                        })
-                        console.log(checklist)}):null}
                         {props.q.question.type === "MULTICHOISE" ? (
                     <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
                         <FormControl component="fieldset">
                         <FormGroup>
                             {props.q.question.options.map((options,idx)=>{
                                 if(idx===0){
+                                console.log(checklist)
+
                                     checklist=[]
-                                    if(typeof(props.answer) != "undefined"){
+                                    // if(typeof(props.answer) != "undefined"){
                                         testanswer[props.idx].split(',').map((j)=>{
                                         checklist[j - 1] = true
-                                    })}
-                                    
-                                }
+                                    })
                                 console.log(checklist)
+
+                                }
+                                    // setChecked(checklist)
+                                // }
+                                console.log(checklist)
+                                console.log(checklist[idx])
+                                // console.log(checked)
                                 return(
                                     <li key={idx + 1} >
-                                        <FormControlLabel control={<Checkbox checked={checklist[idx]} style={{color: '#1CA0A0'}} onChange={handleChange} name={idx} />}
-                                        style={{marginRight: '0px'}} value={idx} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
+                                        <FormControlLabel control={<Checkbox defaultChecked={checklist[idx]} value={idx} style={{color: '#1CA0A0'}} onChange={handleChange} name={idx} />}
+                                        style={{marginRight: '0px'}}  label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
                                     </li>
                                 )
                             })}
@@ -492,7 +483,7 @@ function QuestionCard(props){
                         id="outlined-textarea"
                         placeholder="کادر جواب"
                         multiline
-                        value={testanswer[props.idx]}
+                        value={testanswer[props.idx] !== "undefined" ? testanswer[props.idx]:null}
                         onChange={handleChangeLongAnswer}
                         variant="outlined"
                         InputProps={{
@@ -505,7 +496,7 @@ function QuestionCard(props){
                         style={{width: '100%'}}
                         id="outlined-textarea"
                         placeholder="کادر جواب"
-                        value={testanswer[props.idx]}
+                        value={testanswer[props.idx] !== "undefined" ? testanswer[props.idx]:null}
                         onChange={handleChangeShortAnswer}
                         multiline
                         variant="outlined"
