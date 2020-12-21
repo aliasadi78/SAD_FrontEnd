@@ -7,30 +7,13 @@ import Material_RTL from "../../Material_RTL";
 import M_RTL from "../../M_RTL";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import Paper from '@material-ui/core/Paper';
 import Pagination from '@material-ui/core/Pagination';
 import { CircularProgress } from '@material-ui/core';
 import { renderToString,render,renderIntoDocument } from 'react-dom/server';
 import ReactDOM from 'react-dom'
+import QuestionCard from './QuestionCard' ;
 import Timer from './Timer/Timer';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormLabel from '@material-ui/core/FormLabel';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormGroup from '@material-ui/core/FormGroup';
-import TextField from '@material-ui/core/TextField';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import Slide from '@material-ui/core/Slide';
 class ExamPage extends Component{
     constructor(props){
@@ -81,6 +64,7 @@ class ExamPage extends Component{
     const [questionsList,setQuestionsList] = this.props.questionsList;
     const [pending,setPending] = this.props.pending;
     console.log(questionsList)
+    console.log(questionsList)  
     var index = 1;
     return(
         <div style={{backgroundColor: 'white' , paddingBottom : '80px'}}> 
@@ -90,11 +74,26 @@ class ExamPage extends Component{
                 <div style={{fontFamily: 'Vazir',paddingTop: '1%',backgroundColor : '#3D5A80',width:'100%',height:'52px',color: 'white',fontSize: '16px'}}>
                     آزمون آنلاین
                 </div>
-                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height:'150px',fontSize: '16px'}}>
+                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height:'90px',fontSize: '16px'}}>
                     <Timer/>
                 </Container>
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
-                    <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px'}}>
+                <Grid container xs={12} >                      
+                          <Grid item xs={4} ></Grid>
+                          <Grid item xs={4} >
+
+                            <Paper elevation = {2} className = {classes.ListTitle}>
+                              <h5 style={{fontFamily: 'Vazir' , color : 'white'}}>
+                                سوالات
+                                {/* <IsoIcon /> */}
+                              </h5>
+                            </Paper>                          
+                          </Grid>                              
+
+                          <Grid item xs={4} ></Grid>
+                        </Grid>
+
+                    <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px'}}>                                                
                         <Grid id="Grid1">{pending ?
                             (<div style={{}}><CircularProgress style={{color: '#1CA0A0'}}/></div>): 
                             (<div>
@@ -102,7 +101,9 @@ class ExamPage extends Component{
                                   if(idx === 0){
                                     // alert(questionsList[idx])
                                   return(
-                                  <QuestionCard q={question} idx={idx} answer={questionsList[idx].answerText}/>
+                                  <QuestionCard q={question} testanswer={testanswer} setTestAnswer = {() => {
+                                      
+                                  }} idx={idx} answer={questionsList[idx].answerText}/>
                                 )}
                                 })):null}
                               </div>)
@@ -365,8 +366,14 @@ function faNumber(n){
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
+var checklist;
 const useStyles = makeStyles((theme) => ({
-    
+    ListTitle :{
+        padding : theme.spacing(1) , 
+        marginBottom : theme.spacing(1) ,  
+        backgroundColor : '#3D5A80' ,
+        color : 'white'
+    },
   }));
 export default (props) => {
     const examId = props.match.params.examId ;    
