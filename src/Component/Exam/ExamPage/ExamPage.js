@@ -39,14 +39,14 @@ class ExamPage extends Component{
     componentWillMount(){
         var [check,setCheck] = this.props.check;
         var [totalQuestion,setTotalQuestion] = this.props.totalQuestion;
-        var [questionsList,setQuestionsList] = this.props.questionsList;
-        const [pending,setPending] = this.props.pending;
+        var [questionsList,setQuestionsList] = this.props.questionsList;        
+        const [pending,setPending] = this.props.pending;        
         setPending(true)
         var res = []
         var i = 0;
         console.log(i)
         if(!check){
-            axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig() )
+            axios.get(serverURL() + "exam/" + this.props.examId + "/questions" , tokenConfig() )
                 .then(result => {
                     // res.push(..."1");
                     console.log(result)
@@ -68,10 +68,10 @@ class ExamPage extends Component{
                     setPending(false)
                     console.log(pending)
                 }).catch(error=>{
-                    console.log(error)
+                    console.log(error.response.data)
                     setPending(false)
                     setCheck(true);
-                })
+                })            
         }
     }
     render(){
@@ -206,14 +206,14 @@ class ExamPage extends Component{
     // }
     var index = 1;
     return(
-        <div style={{height: '100%',backgroundColor: 'white'}}> 
+        <div style={{backgroundColor: 'white' , paddingBottom : '80px'}}> 
         <Material_RTL style={{backgroundColor: 'white'}}>
             <M_RTL style={{backgroundColor: 'white'}}>
                 {/* <CssBaseline /> */}
                 <div style={{fontFamily: 'Vazir',paddingTop: '1%',backgroundColor : '#3D5A80',width:'100%',height:'52px',color: 'white',fontSize: '16px'}}>
                     آزمون آنلاین
                 </div>
-                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#f2f2f2',height:'150px',fontSize: '16px'}}>
+                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height:'150px',fontSize: '16px'}}>
                     <Timer/>
                 </Container>
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
@@ -401,7 +401,7 @@ function QuestionCard(props){
               <CardMedia>
             {typeof(props.q.question.imageQuestion) !== "undefined" ? ( 
                 data = props.q.question.imageQuestion.toString(),
-                Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} onClick={handleClickOpenQuestion} width="100%" height="100%" style={{cursor: 'pointer'}}/>,
+                Example = ({ data }) => <img src={atob(data)} onClick={handleClickOpenQuestion} width="100%" height="100%" style={{cursor: 'pointer'}}/>,
                   <Example data={data} />
               ): null}
               <Dialog
@@ -532,13 +532,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const useStyles = makeStyles((theme) => ({
     
   }));
-export default () => {
+export default (props) => {
+    const examId = props.match.params.examId ;    
     const classes = useStyles();
     const check = React.useState(false);
     const totalQuestion = React.useState(0);
     const questionsList= React.useState([]);
-    const pending = React.useState(false);
+    const pending = React.useState(false);    
     return (        
-        <ExamPage classes={classes} check={check} totalQuestion={totalQuestion} questionsList={questionsList} pending={pending}/>    
+        <ExamPage 
+            classes={classes} 
+            check={check} 
+            totalQuestion={totalQuestion} 
+            questionsList={questionsList} 
+            examId = {examId}
+            pending={pending}/>    
     )
 }

@@ -14,6 +14,7 @@ import LoadingButton from '@material-ui/lab/LoadingButton';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import SaveIcon from '@material-ui/icons/Save';
+import moment from 'moment'
 import Tooltip from '@material-ui/core/Tooltip';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
@@ -224,11 +225,10 @@ function CreateExam(props){
       axios.get(serverURL() + "class/" + classId + "/exams/" + examId , tokenConfig())
       .then(res=>{        
         const start = String(res.data.exam.startDate) ;
-        const end  = String(res.data.exam.endDate);        
-        props.setTitle(res.data.exam.name);
-        // handle date here immediatly
-        props.setStartDate(start.replace('Z' , ''));
-        props.setEndDate(end.replace('Z' , ''));
+        const end  = String(res.data.exam.endDate);                
+        props.setTitle(res.data.exam.name);        
+        props.setStartDate(moment(start).format().replace("+03:30" , ''));
+        props.setEndDate(moment(end).format().replace("+03:30" , ''));
         props.setLength(res.data.exam.examLength);
         props.setQuestions(res.data.exam.questions);
         setInformationLoad(true);   
@@ -312,8 +312,8 @@ function CreateExam(props){
     
                     const a = {
                       "name" : props.title , 
-                      "startDate" : props.startDate + "Z" , 
-                      "endDate" :     props.endDate + "Z" ,
+                      "startDate" : moment(props.startDate).format() , 
+                      "endDate" :     moment(props.endDate).format() ,
                       "questions" :  arr ,
                       "examLength" :  props.examLength ,
                       "examId" : examId                  
@@ -366,8 +366,9 @@ function CreateExam(props){
 
                 const a = {
                   "name" : props.title , 
-                  "startDate" : props.startDate + "Z" , 
-                  "endDate" :     props.endDate + "Z" ,
+                  // "startDate" : props.startDate + "Z" , 
+                  "startDate" : moment(props.startDate).format() , 
+                  "endDate" :     moment(props.endDate).format() ,
                   "questions" :  arr ,
                   "examLength" :  props.examLength ,
                   "useInClass" : classId                  
@@ -377,7 +378,7 @@ function CreateExam(props){
                 console.log(ajson);
                 axios.post(serverURL() + "exam" , ajson , tokenConfig() )
                 .then(res => {                  
-                  history.push("/class/" + classId);
+                  // history.push("/class/" + classId);
                 })
                 .catch(err => {                
                   if(err.response.data.error != null)
