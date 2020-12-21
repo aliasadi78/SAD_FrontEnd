@@ -69,7 +69,7 @@ export default function ExamListItem(props) {
             <Grid item xs = {4} className={classes.grid}>
                 در
                 {moment(props.start).format("L")}
-               ساعت  {moment(props.end).format("LT")}
+               ساعت  {moment(moment(props.start).format().replace("+03:30" , '')).format("LT") }
             </Grid>
             <Grid item xs = {4} className={classes.grid}>
                 <h6 dir="rtl" component="h1" variant="h6" noWrap className={classes.title} style={{fontFamily: 'Vazir', textAlign : 'right', color : 'white' , marginBottom : 0 }}>                                          
