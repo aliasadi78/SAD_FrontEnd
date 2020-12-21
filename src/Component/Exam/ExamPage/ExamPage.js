@@ -100,11 +100,12 @@ class ExamPage extends Component{
                                   if(idx === 0){
                                     // alert(questionsList[idx])
                                   return(
-                                  <QuestionCard q={question} testanswer={testanswer} idx={idx} answer={questionsList[idx].answerText}/>
+                                  <QuestionCard q={question} testanswer={testanswer} setTestAnswer = {() => {
+                                      
+                                  }} idx={idx} answer={questionsList[idx].answerText}/>
                                 )}
                                 })):null}
                               </div>)
-                              
                             }
                             </Grid>
                     </Container>
@@ -163,18 +164,6 @@ class ExamPage extends Component{
 // }
 var testanswer=[]
 var checklist;
-
-function faNumber(n){
-    const farsidigit = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
-    return n
-    .toString()
-    .split("")
-    .map(x => farsidigit[x])
-    .join("")
-}
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
 const useStyles = makeStyles((theme) => ({
     ListTitle :{
         padding : theme.spacing(1) , 
