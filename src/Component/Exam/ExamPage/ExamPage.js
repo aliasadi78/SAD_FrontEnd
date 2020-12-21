@@ -7,30 +7,13 @@ import Material_RTL from "../../Material_RTL";
 import M_RTL from "../../M_RTL";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import Paper from '@material-ui/core/Paper';
 import Pagination from '@material-ui/core/Pagination';
 import { CircularProgress } from '@material-ui/core';
 import { renderToString,render,renderIntoDocument } from 'react-dom/server';
 import ReactDOM from 'react-dom'
+import QuestionCard from './QuestionCard' ;
 import Timer from './Timer/Timer';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormLabel from '@material-ui/core/FormLabel';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormGroup from '@material-ui/core/FormGroup';
-import TextField from '@material-ui/core/TextField';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import Slide from '@material-ui/core/Slide';
 class ExamPage extends Component{
     constructor(props){
@@ -80,130 +63,7 @@ class ExamPage extends Component{
     const [totalQuestion,setTtotalQuestion] = this.props.totalQuestion;
     const [questionsList,setQuestionsList] = this.props.questionsList;
     const [pending,setPending] = this.props.pending;
-    console.log(questionsList)
-    // function QuestionCard(props){
-    //     // var Answers = []
-    //     // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
-    //     //     .then(res=>{
-    //     //         console.log(res)
-    //     //             // console.log(res.data.questions);
-    //     //             res.data.questions.map((q,i) =>{ 
-    //     //             Answers.push(q.answerText);
-    //     //             console.log(Answers)
-    //     //             });
-    //     //             // setQuestionsList([...ll]);
-    //     //     }).catch(err=>{
-    //     //         console.log(err)
-    //     //     })
-    //     // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
-    //     const [selectedValue,setSelectedValue] = React.useState(()=>{
-    //         try{
-    //             console.log(props.answer.answerText)
-    //             return(props.answer.answerText)}
-    //         catch(err){
-    //         return("")
-    //         }})
-    //     // componentDidUpdate:
-    //     //     setSelectedValue("")
-        
-    //     const [checked,setChecked] = React.useState();
-    //     // console.log(Answers[1].answerText)
-    //     var handleRadioChange = (event) => {
-    //         console.log(event.target.value)
-    //         setSelectedValue(event.target.value);
-    //         console.log(selectedValue)
-    //     };
-    //     const handleChange = (event) => {
-    //         setChecked(...event.target.value)
-    //     }
-    //     console.log(selectedValue)
-    //     // console.log(props.answer.answerText)
-    //     // console.log(props.q.question)
-    //     // console.log(props.q.question.question)
-    //     return(
-    //         <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px',direction: 'rtl',textAlign: 'right'}}>
-    //             <span>{faNumber(props.idx + 1)}.</span><span>{props.q.question.question}</span>
-    //             <br/><br/>
-    //                 {props.q.question.type === "TEST" ? (
-    //                     <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
-    //                         <FormControl component="fieldset">
-    //                             <RadioGroup
-    //                                 aria-label="quiz"
-    //                                 name="quiz"
-    //                                 value={parseInt(selectedValue)}
-    //                                 onChange={handleRadioChange}
-                                    
-    //                             >
-    //                             {props.q.question.options.map((options,idx)=>{
-    //                                 // setSelectedValue('');
-    //                                 console.log(idx)
-    //                                 // console.log(props.idx)
-    //                                 // console.log(Answers[props.idx])
-    //                                 // console.log(props.idx+1)
-    //                                 // console.log(Answers[props.idx+1])
-    //                                 // console.log(props.idx - 1)
-    //                                 // console.log(Answers[props.idx] - 1)
-    
-    //                                 // console.log(props.q.question.options)
-    //                                 // console.log(options.option)
-    //                                 console.log(selectedValue)
-    //                                 return(
-    //                                     <li key={idx + 1} >
-    //                                         <FormControlLabel style={{marginRight: '0px'}} value={idx+1} control={<Radio style={{color: '#1CA0A0'}}/>} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
-    //                                     </li>
-    //                                 )
-    //                             })}
-    //                 </RadioGroup>
-    //                 </FormControl>
-    //                     </ul>): null}
-    //                     {props.q.question.type === "MULTICHOISE" ? (
-    //                     <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
-    //                         <FormControl component="fieldset">
-    //                         <FormGroup>
-    //                             {props.q.question.options.map((options,idx)=>{
-    //                                 // setSelectedValue('');
-    //                                 console.log(selectedValue)
-    //                                 console.log(props.q.question.options)
-    //                                 console.log(options.option)
-    //                                 console.log(props.q.question)
-    //                                 return(
-    //                                     <li key={idx + 1} >
-    //                                         <FormControlLabel control={<Checkbox style={{color: '#1CA0A0'}} onChange={handleChange} name={options.option} />}
-    //                                         style={{marginRight: '0px'}} value={options.option} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
-    //                                     </li>
-    //                                 )
-    //                             })}
-    //                 </FormGroup>
-    //                 </FormControl>
-    //                     </ul>): null}
-    //                     {props.q.question.type === "LONGANSWER" ? (
-    //                         <TextField
-    //                         style={{width: '100%'}}
-    //                         id="outlined-textarea"
-    //                         placeholder="کادر جواب"
-    //                         multiline
-    //                         variant="outlined"
-    //                         InputProps={{
-    //                             style:{fontFamily: 'Vazir'},
-    //                         }}
-    //                       />
-    //                     ):null}
-    //                     {props.q.question.type === "SHORTANSWER" ? (
-    //                         <TextField
-    //                         style={{width: '100%'}}
-    //                         id="outlined-textarea"
-    //                         placeholder="کادر جواب"
-    //                         multiline
-    //                         variant="outlined"
-    //                         InputProps={{
-    //                             style:{fontFamily: 'Vazir'},
-    //                         }}
-    //                       />
-    //                     ):null}
-    //                     <br/><br/>
-    //         </Container>
-    //     )
-    // }
+    console.log(questionsList)  
     var index = 1;
     return(
         <div style={{backgroundColor: 'white' , paddingBottom : '80px'}}> 
@@ -213,11 +73,26 @@ class ExamPage extends Component{
                 <div style={{fontFamily: 'Vazir',paddingTop: '1%',backgroundColor : '#3D5A80',width:'100%',height:'52px',color: 'white',fontSize: '16px'}}>
                     آزمون آنلاین
                 </div>
-                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height:'150px',fontSize: '16px'}}>
+                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height:'90px',fontSize: '16px'}}>
                     <Timer/>
                 </Container>
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
-                    <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px'}}>
+                <Grid container xs={12} >                      
+                          <Grid item xs={4} ></Grid>
+                          <Grid item xs={4} >
+
+                            <Paper elevation = {2} className = {classes.ListTitle}>
+                              <h5 style={{fontFamily: 'Vazir' , color : 'white'}}>
+                                سوالات
+                                {/* <IsoIcon /> */}
+                              </h5>
+                            </Paper>                          
+                          </Grid>                              
+
+                          <Grid item xs={4} ></Grid>
+                        </Grid>
+
+                    <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px'}}>                                                
                         <Grid id="Grid1">{pending ?
                             (<div style={{}}><CircularProgress style={{color: '#1CA0A0'}}/></div>): 
                             (<div>
@@ -225,7 +100,7 @@ class ExamPage extends Component{
                                   if(idx === 0){
                                     // alert(questionsList[idx])
                                   return(
-                                  <QuestionCard q={question} idx={idx} answer={questionsList[idx].answerText}/>
+                                  <QuestionCard q={question} testanswer={testanswer} idx={idx} answer={questionsList[idx].answerText}/>
                                 )}
                                 })):null}
                               </div>)
@@ -288,236 +163,7 @@ class ExamPage extends Component{
 // }
 var testanswer=[]
 var checklist;
-function QuestionCard(props){
-    // var Answers = []
-    // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
-    //     .then(res=>{
-    //         console.log(res)
-    //             // console.log(res.data.questions);
-    //             res.data.questions.map((q,i) =>{ 
-    //             Answers.push(q.answerText);
-    //             console.log(Answers)
-    //             });
-    //             // setQuestionsList([...ll]);
-    //     }).catch(err=>{
-    //         console.log(err)
-    //     })
-    // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
-    // const [selectedValue,setSelectedValue] = React.useState(()=>{
-    //     try{
-    //         console.log(props.answer.answerText)
-    //         return(props.answer.answerText)}
-    //     catch(err){
-    //         console.log(props.answer)
-    //     return(props.answer.answerText)
-    //     }})
-    
-    
-    const [checked,setChecked] = React.useState(false);
-    
-    
-    console.log(props.answer)
-    const [selectedValue,setSelectedValue] = React.useState(props.answer)
-    console.log(selectedValue)
-    // const componentDidUpdate = () =>{
-    //     setSelectedValue(parseInt(props.answer))}
-    // if(!checked && parseInt(props.answer) != selectedValue){
-    //     setSelectedValue(parseInt(props.answer))
-    //     setChecked(false)
-    // }
-    console.log(props.q.question.options)
-    checklist=[]
-    
-    
-    console.log(typeof(testanswer[props.idx]))
-    if(typeof(testanswer[props.idx]) === "undefined") 
-    {testanswer[props.idx] = props.answer}
-    console.log(testanswer)
-    // const [checkOptions,setCheckOptions] = React.useState(()=>{
-        
-        
-    // })
-    // console.log(checklist)
-    // console.log(checkOptions)
-    const [shortAnswer,setShortAnswer] = React.useState();
-    // if(props.q.question.type === "SHORTANSWER"){
-    //     setShortAnswer(props.answer)
-    // }
-    const [longAnswer,setLongAnswer] = React.useState();
-    // if(props.q.question.type === "LONGANSWER"){
-    //     setLongAnswer(props.answer)
-    // }
-    console.log(longAnswer)
-    console.log(shortAnswer)
-    const handleRadioChange = (event) => {
-        console.log(event.target.value)
-        setSelectedValue(event.target.value);
-        console.log(selectedValue)
-        testanswer[props.idx] = parseInt(event.target.value);
-        console.log(testanswer)
-    };
-    const handleChange = (event) => {
-        // setChecked(...event.target.value)
-        // console.log(checked)
-        console.log(testanswer[props.idx])
 
-        testanswer[props.idx]=""
-        console.log(event.target.value)
-        console.log(event.target.checked)
-        checklist[parseInt(event.target.value)] = event.target.checked;
-        var cl ="";
-        checklist.map((c,i)=>{
-            if(c){
-                cl = cl + (i+1) + ","
-            }
-        })
-        testanswer[props.idx]= cl.slice(0,cl.length - 1)
-        console.log(checklist)
-        console.log(testanswer[props.idx])
-    }
-    const handleChangeShortAnswer = (event) => {
-        
-        setShortAnswer(event.target.value)
-        testanswer[props.idx] = event.target.value
-    }
-    const handleChangeLongAnswer = (event) => {
-        setLongAnswer(event.target.value)
-        testanswer[props.idx]= event.target.value
-    }
-    const [openDialogQuestion, setOpenDialogQuestion] = React.useState(false);
-    const handleClickOpenQuestion = () => {
-        setOpenDialogQuestion(true);
-    };
-    const handleCloseQuestion = () => {
-        setOpenDialogQuestion(false);
-    };
-    var data;
-    var Example;
-    return(
-        <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px',direction: 'rtl',textAlign: 'right'}}>
-            <span>{faNumber(props.idx + 1)}.</span><span>{props.q.question.question}</span>
-            <div>
-            <Card style={{position: 'relative',right: '37%',width:'25%',}}>
-              <CardMedia>
-            {typeof(props.q.question.imageQuestion) !== "undefined" ? ( 
-                data = props.q.question.imageQuestion.toString(),
-                Example = ({ data }) => <img src={atob(data)} onClick={handleClickOpenQuestion} width="100%" height="100%" style={{cursor: 'pointer'}}/>,
-                  <Example data={data} />
-              ): null}
-              <Dialog
-                  open={openDialogQuestion}
-                  TransitionComponent={Transition}
-                  keepMounted
-                  onClose={handleCloseQuestion}
-                  aria-labelledby="alert-dialog-slide-title"
-                  aria-describedby="alert-dialog-slide-description"
-                >
-                  <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-                    {typeof(props.q.question.imageQuestion) !== "undefined" ? ( 
-                      <Example data={data}/>
-                      ): null}
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <div onClick={handleCloseQuestion} style={{fontFamily: 'Vazir',color: 'red',position: 'absolute',right:'1%',top: '2%',cursor:'pointer'}}><FontAwesomeIcon icon={faWindowClose} size="2x"/></div>
-                  </DialogActions>
-                </Dialog>
-              </CardMedia>
-            </Card>
-            </div>
-            <br/><br/>
-                {props.q.question.type === "TEST" ? (
-                    <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
-                        <FormControl component="fieldset">
-                            <RadioGroup
-                                aria-label="quiz"
-                                name="quiz"
-                                value={parseInt(testanswer[props.idx])}
-                                onChange={handleRadioChange}
-                            >
-                            {props.q.question.options.map((options,idx)=>{
-                                return(
-                                    <li key={idx + 1} >
-                                        <FormControlLabel style={{marginRight: '0px'}} value={idx+1} control={<Radio style={{color: '#1CA0A0'}}/>} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
-                                    </li>
-                                )
-                            })}
-                </RadioGroup>
-                </FormControl>
-                    </ul>): null}
-                    {props.q.question.type === "MULTICHOISE" ? (()=>{
-                        alert("hi")
-                        props.q.question.options.map((option,i)=>{
-                            console.log(i)
-                            props.answer.split(',').map((j)=>{
-                                console.log(j)
-                                if(j.toString() === i.toString()){
-                                    checklist[i] = true
-                                }
-                                else{
-                                    checklist[i] = false
-                                }
-                            })
-                            
-                        })
-                        console.log(checklist)}):null}
-                        {props.q.question.type === "MULTICHOISE" ? (
-                    <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
-                        <FormControl component="fieldset">
-                        <FormGroup>
-                            {props.q.question.options.map((options,idx)=>{
-                                if(idx===0){
-                                    checklist=[]
-                                    if(typeof(props.answer) != "undefined"){
-                                        testanswer[props.idx].split(',').map((j)=>{
-                                        checklist[j - 1] = true
-                                    })}
-                                    
-                                }
-                                console.log(checklist)
-                                return(
-                                    <li key={idx + 1} >
-                                        <FormControlLabel control={<Checkbox checked={checklist[idx]} style={{color: '#1CA0A0'}} onChange={handleChange} name={idx} />}
-                                        style={{marginRight: '0px'}} value={idx} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
-                                    </li>
-                                )
-                            })}
-                </FormGroup>
-                </FormControl>
-                    </ul>): null}
-                    {props.q.question.type === "LONGANSWER" ? (
-                        <TextField
-                        style={{width: '100%'}}
-                        id="outlined-textarea"
-                        placeholder="کادر جواب"
-                        multiline
-                        value={testanswer[props.idx]}
-                        onChange={handleChangeLongAnswer}
-                        variant="outlined"
-                        InputProps={{
-                            style:{fontFamily: 'Vazir'},
-                        }}
-                      />
-                    ):null}
-                    {props.q.question.type === "SHORTANSWER" ? (
-                        <TextField
-                        style={{width: '100%'}}
-                        id="outlined-textarea"
-                        placeholder="کادر جواب"
-                        value={testanswer[props.idx]}
-                        onChange={handleChangeShortAnswer}
-                        multiline
-                        variant="outlined"
-                        InputProps={{
-                            style:{fontFamily: 'Vazir'},
-                        }}
-                      />
-                    ):null}
-                    <br/><br/>
-        </Container>
-    )
-}
 function faNumber(n){
     const farsidigit = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
     return n
@@ -530,7 +176,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 const useStyles = makeStyles((theme) => ({
-    
+    ListTitle :{
+        padding : theme.spacing(1) , 
+        marginBottom : theme.spacing(1) ,  
+        backgroundColor : '#3D5A80' ,
+        color : 'white'
+    },
   }));
 export default (props) => {
     const examId = props.match.params.examId ;    

@@ -140,7 +140,7 @@ class Timer extends React.Component {
     return (
       <div>
           {1===1 ? this.handleSubmit(this.state.dateValue,this.state.timeValue,this.state.ampmValue):null}
-          {this.state.isCountdownSet ? <Countdown countdown={this.state.countdown} unixEndDate={this.renderCountdownDate().unixEndDate} /> : <p style={{color : 'white'}} ><span ></span> {this.state.infoMessage}</p>}
+          {this.state.isCountdownSet ? <Countdown countdown={this.state.countdown} unixEndDate={this.renderCountdownDate().unixEndDate} /> : <p style={{color : 'white'}} > {this.state.infoMessage}</p>}
       </div>
     );
   }
