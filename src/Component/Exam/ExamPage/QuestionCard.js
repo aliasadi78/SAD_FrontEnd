@@ -16,6 +16,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Slide from '@material-ui/core/Slide';
 import Container from "@material-ui/core/Container";
+import Grid from '@material-ui/core/Grid';
+import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
+import IconButton from '@material-ui/core/IconButton';
+import Axios from 'axios';
 
 export default function QuestionCard(props){     
 
@@ -118,7 +122,7 @@ export default function QuestionCard(props){
                 <span>{faNumber(props.idx + 1)}.</span><span>{props.q.question.question}                    
                 <p> ( {props.q.grade} نمره)  </p>
                     </span>
-                <div>
+                <div>                    
                 <Card style={{position: 'relative',right: '37%',width:'25%',}}>
                   <CardMedia>
                 {typeof(props.q.question.imageQuestion) !== "undefined" ? ( 
@@ -147,7 +151,36 @@ export default function QuestionCard(props){
                     </Dialog>
                   </CardMedia>
                 </Card>
-                </div>                
+                </div>      
+
+                <Grid item xs={12} >
+                    <input 
+                        type="file" name="file"
+                        style={{display : 'none'}} name='file' id='file' type="file" 
+                        // className = {classes.input}
+                        onChange={(e) => {
+                            console.log(e.target.files[0])
+                            const data = new FormData();
+                            data.append('file' , e.target.files[0] );
+                            Axios.post(serverURL() + "exam/" + props.examId + "/questions/" +  + "/answer"
+                                , ajson 
+                                , tokenConfig())
+                            .then(res => {
+
+                            })
+                            .catch(err => {
+
+                            });
+
+                        }}/>
+                    <label htmlFor='file'>
+                        <IconButton aria-label="upload picture" component="span">
+                            <PhotoLibraryIcon style={{color:'#EE6C4D'}} />
+                        </IconButton>
+                    </label>    
+                </Grid>
+
+                
                     {props.q.question.type === "TEST" ? (
                         <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
                             <FormControl component="fieldset">

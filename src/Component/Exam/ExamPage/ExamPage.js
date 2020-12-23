@@ -51,7 +51,7 @@ class ExamPage extends Component{
                     setPending(false)
                     console.log(pending)
                 }).catch(error=>{
-                    console.log(error.response.data)
+                    console.log(error.response)
                     setPending(false)
                     setCheck(true);
                 })            
@@ -101,7 +101,7 @@ class ExamPage extends Component{
                                   if(idx === 0){
                                     // alert(questionsList[idx])
                                   return(
-                                  <QuestionCard q={question} testanswer={testanswer} setTestAnswer = {() => {
+                                  <QuestionCard examId = {examId} q={question} testanswer={testanswer} setTestAnswer = {() => {
                                       
                                   }} idx={idx} answer={questionsList[idx].answerText}/>
                                 )}
