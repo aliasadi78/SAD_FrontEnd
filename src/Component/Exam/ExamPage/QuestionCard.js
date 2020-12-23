@@ -22,8 +22,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Axios from 'axios';
 
 export default function QuestionCard(props){     
-
-    
         function faNumber(n){
             const farsidigit = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
             return n
@@ -32,104 +30,82 @@ export default function QuestionCard(props){
             .map(x => farsidigit[x])
             .join("")
         }
+        
         const Transition = React.forwardRef(function Transition(props, ref) {
             return <Slide direction="up" ref={ref} {...props} />;
         });
 
-        const [checked,setChecked] = React.useState();
-        // setChecked([])
-        var checklist = [];
-        console.log(props.answer)
-        const [selectedValue,setSelectedValue] = React.useState(props.answer)
-        console.log(selectedValue)
-        // const componentDidUpdate = () =>{
-        //     setSelectedValue(parseInt(props.answer))}
-        // if(!checked && parseInt(props.answer) != selectedValue){
-        //     setSelectedValue(parseInt(props.answer))
-        //     setChecked(false)
-        // }
-        console.log(props.q.question.options)
-        // 
-        
-        
-        // console.log(typeof(props.testanswer[props.idx]))
-        if(typeof(props.testanswer[props.idx]) === "undefined") 
-        {props.testanswer[props.idx] = props.answer}
-        console.log(props.testanswer)
-        // const [checkOptions,setCheckOptions] = React.useState(()=>{
-            
-            
-        // })
-        // console.log(checklist)
-        // console.log(checkOptions)
+        var checklistodd = [];
+        var checklisteven = [];
+        const [selectedRadioValue,setSelectedRadioValue] = React.useState(props.answer)
         const [shortAnswer,setShortAnswer] = React.useState();
-        // if(props.q.question.type === "SHORTANSWER"){
-        //     setShortAnswer(props.answer)
-        // }
         const [longAnswer,setLongAnswer] = React.useState();
-        // if(props.q.question.type === "LONGANSWER"){
-        //     setLongAnswer(props.answer)
-        // }
-        console.log(longAnswer)
-        console.log(shortAnswer)
+        
+        var data;
+        var Example;
+        const [openDialogQuestion, setOpenDialogQuestion] = React.useState(false);
+
+        if(typeof(props.useranswer[props.idx]) === "undefined") {
+            props.useranswer[props.idx] = props.answer
+        }
+
         const handleRadioChange = (event) => {
-            console.log(event.target.value)
-            setSelectedValue(event.target.value);
-            console.log(selectedValue)
-            props.testanswer[props.idx] = parseInt(event.target.value);
-            console.log(props.testanswer)
+            setSelectedRadioValue(event.target.value);
+            props.useranswer[props.idx] = parseInt(event.target.value);
         };
-        const handleChange = (event) => {
-            // setChecked(...event.target.value)
-            // console.log(checked)
-            console.log(props.testanswer[props.idx])
-    
-            props.testanswer[props.idx]=""
-            console.log(event.target.value)
-            console.log(event.target.checked)
-            checklist[parseInt(event.target.value)] = event.target.checked;
-            var cl ="";
-            checklist.map((c,i)=>{
-                if(c){
-                    cl = cl + (i+1) + ","
-                }
-            })
-            props.testanswer[props.idx]= cl.slice(0,cl.length - 1)
-            console.log(checklist)
-            console.log(props.testanswer[props.idx])
-            // setChecked(checklist)
+
+        const handleChangeCheckBox = (event) => {
+            props.useranswer[props.idx]=""
+            if(props.idx % 2 == 1){
+                checklistodd[parseInt(event.target.value)] = event.target.checked;
+                var numberCheckedList ="";
+                checklistodd.map((booleanValueCheckList,idx)=>{
+                    if(booleanValueCheckList){
+                        numberCheckedList = numberCheckedList + (idx+1) + ","
+                    }
+                })
+                props.useranswer[props.idx]= numberCheckedList.slice(0,numberCheckedList.length - 1)
+            }
+            if(props.idx % 2 == 0){
+                checklisteven[parseInt(event.target.value)] = event.target.checked;
+                var numberCheckedList ="";
+                checklisteven.map((c,i)=>{
+                    if(c){
+                        numberCheckedList = numberCheckedList + (i+1) + ","
+                    }
+                })
+                props.useranswer[props.idx]= numberCheckedList.slice(0,numberCheckedList.length - 1)
+            }
         }
         const handleChangeShortAnswer = (event) => {
-            
             setShortAnswer(event.target.value)
-            props.testanswer[props.idx] = event.target.value
+            props.useranswer[props.idx] = event.target.value
         }
         const handleChangeLongAnswer = (event) => {
             setLongAnswer(event.target.value)
-            props.testanswer[props.idx]= event.target.value
+            props.useranswer[props.idx]= event.target.value
         }
-        const [openDialogQuestion, setOpenDialogQuestion] = React.useState(false);
+        
         const handleClickOpenQuestion = () => {
             setOpenDialogQuestion(true);
         };
         const handleCloseQuestion = () => {
             setOpenDialogQuestion(false);
         };
-        var data;
-        var Example;
+        
         return(
             <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px',direction: 'rtl',textAlign: 'right'}}>
                 <span>{faNumber(props.idx + 1)}.</span><span>{props.q.question.question}                    
-                <p> ( {props.q.grade} نمره)  </p>
+                <p> ( {faNumber(props.q.grade)} نمره)  </p>
                     </span>
                 <div>                    
                 <Card style={{position: 'relative',right: '37%',width:'25%',}}>
                   <CardMedia>
-                {typeof(props.q.question.imageQuestion) !== "undefined" ? ( 
-                    data = props.q.question.imageQuestion.toString(),
-                    Example = ({ data }) => <img src={atob(data)} onClick={handleClickOpenQuestion} width="100%" height="100%" style={{cursor: 'pointer'}}/>,
-                      <Example data={data} />
-                  ): null}
+                    {typeof(props.q.question.imageQuestion) !== "undefined" ? ( 
+                        data = props.q.question.imageQuestion.toString(),
+                        Example = ({ data }) => <img src={atob(data)} onClick={handleClickOpenQuestion} width="100%" height="100%" style={{cursor: 'pointer'}}/>,
+                          <Example data={data} />
+                    ): null}
                   <Dialog
                       open={openDialogQuestion}
                       TransitionComponent={Transition}
@@ -142,7 +118,7 @@ export default function QuestionCard(props){
                         <DialogContentText id="alert-dialog-slide-description">
                         {typeof(props.q.question.imageQuestion) !== "undefined" ? ( 
                           <Example data={data}/>
-                          ): null}
+                        ): null}
                         </DialogContentText>
                       </DialogContent>
                       <DialogActions>
@@ -187,7 +163,7 @@ export default function QuestionCard(props){
                                 <RadioGroup
                                     aria-label="quiz"
                                     name="quiz"
-                                    value={parseInt(props.testanswer[props.idx])}
+                                    value={parseInt(props.useranswer[props.idx])}
                                     onChange={handleRadioChange}
                                 >
                                 {props.q.question.options.map((options,idx)=>{
@@ -197,68 +173,81 @@ export default function QuestionCard(props){
                                         </li>
                                     )
                                 })}
-                    </RadioGroup>
-                    </FormControl>
+                                </RadioGroup>
+                            </FormControl>
                         </ul>): null}
-                            {props.q.question.type === "MULTICHOISE" ? (
+                    {props.q.question.type === "MULTICHOISE" && props.idx % 2 == 1 ? (
                         <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
                             <FormControl component="fieldset">
-                            <FormGroup>
-                                {props.q.question.options.map((options,idx)=>{
-                                    if(idx===0){
-                                    console.log(checklist)
-    
-                                        checklist=[]
-                                        // if(typeof(props.answer) != "undefined"){
-                                            props.testanswer[props.idx].split(',').map((j)=>{
-                                            checklist[j - 1] = true
-                                        })
-                                    console.log(checklist)
-    
-                                    }
-                                        // setChecked(checklist)
-                                    // }
-                                    console.log(checklist)
-                                    console.log(checklist[idx])
-                                    // console.log(checked)
-                                    return(
-                                        <li key={idx + 1} >
-                                            <FormControlLabel control={<Checkbox defaultChecked={checklist[idx]} value={idx} style={{color: '#1CA0A0'}} onChange={handleChange} name={idx} />}
-                                            style={{marginRight: '0px'}}  label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
-                                        </li>
-                                    )
-                                })}
-                    </FormGroup>
-                    </FormControl>
+                                <FormGroup>
+                                    {props.q.question.options.map((options,idx)=>{
+                                        if(idx===0){
+                                            checklistodd=[]
+                                            props.useranswer[props.idx].split(',').map((j)=>{
+                                            checklistodd[j - 1] = true
+                                            })
+                                            console.log(checklistodd)
+                                        }
+                                        return(
+                                            <li key={idx + 1} >
+                                                <FormControlLabel control={<Checkbox defaultChecked={checklistodd[idx]} value={idx} style={{color: '#1CA0A0'}} onChange={handleChangeCheckBox} name={idx} />}
+                                                style={{marginRight: '0px'}}  label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
+                                            </li>
+                                        )
+                                    })}
+                                </FormGroup>
+                            </FormControl>
                         </ul>): null}
-                        {props.q.question.type === "LONGANSWER" ? (
-                            <TextField
+                    {props.q.question.type === "MULTICHOISE" && props.idx % 2 == 0 ? (
+                        <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
+                            <FormControl component="fieldset">
+                                <FormGroup>
+                                    {props.q.question.options.map((options,idx)=>{
+                                        if(idx===0){
+                                            checklisteven=[]
+                                            props.useranswer[props.idx].split(',').map((j)=>{
+                                            checklisteven[j - 1] = true
+                                            })
+                                            console.log(checklisteven)
+                                        }
+                                        return(
+                                            <li key={idx + 1} >
+                                                <FormControlLabel control={<Checkbox defaultChecked={checklisteven[idx]} value={idx} style={{color: '#1CA0A0'}} onChange={handleChangeCheckBox} name={idx} />}
+                                                style={{marginRight: '0px'}}  label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
+                                            </li>
+                                        )
+                                    })}
+                                </FormGroup>
+                            </FormControl>
+                        </ul>): null}
+                    {props.q.question.type === "LONGANSWER" ? (
+                        <TextField
                             style={{width: '100%'}}
                             id="outlined-textarea"
                             placeholder="کادر جواب"
                             multiline
-                            value={props.testanswer[props.idx] !== "undefined" ? props.testanswer[props.idx]:null}
+                            value={props.useranswer[props.idx] !== "undefined" ? props.useranswer[props.idx]:null}
                             onChange={handleChangeLongAnswer}
                             variant="outlined"
                             InputProps={{
                                 style:{fontFamily: 'Vazir'},
                             }}
-                          />
-                        ):null}
-                        {props.q.question.type === "SHORTANSWER" ? (
-                            <TextField
+                        />
+                    ):null}
+                    {props.q.question.type === "SHORTANSWER" ? (
+                        <TextField
                             style={{width: '100%'}}
                             id="outlined-textarea"
                             placeholder="کادر جواب"
-                            value={props.testanswer[props.idx] !== "undefined" ? props.testanswer[props.idx]:null}
+                            value={props.useranswer[props.idx] !== "undefined" ? props.useranswer[props.idx]:null}
                             onChange={handleChangeShortAnswer}
                             multiline
                             variant="outlined"
                             InputProps={{
                                 style:{fontFamily: 'Vazir'},
                             }}
-                          />
-                        ):null}                        
+                        />
+                    ):null}                        
             </Container>
         )
 }

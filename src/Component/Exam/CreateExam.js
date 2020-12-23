@@ -297,24 +297,13 @@ function CreateExam(props){
                 style={{fontFamily: 'Vazir'}}
                 className = {classes.button}
                 onClick={()=>{     
-                    setSavePending(true);
-                    const arr = [] ;
-                    props.questions.forEach(q => {
-                      if(q.question._id != null)
-                        arr.push({"question" : q.question._id , "grade" : q.grade });
-
-                      if(q.question.qId != null)
-                        arr.push({"question" : q.question.qId , "grade" : q.grade });
-
-                      if(q._id != null)
-                        arr.push({"question" : q._id , "grade" : q.grade });
-                    });
+                    setSavePending(true);                    
     
                     const a = {
                       "name" : props.title , 
                       "startDate" : moment(props.startDate).format() , 
                       "endDate" :     moment(props.endDate).format() ,
-                      "questions" :  arr ,
+                      "questions" :  props.questions ,
                       "examLength" :  props.examLength ,
                       "examId" : examId                  
                     };
@@ -349,27 +338,14 @@ function CreateExam(props){
             <Button variant="contained" color="#98C1D9" 
               style={{fontFamily: 'Vazir'}}
               className = {classes.button}
-              onClick={()=>{    
-                
-                const arr = [] ;
-                props.questions.forEach(q => {    
-                    if(q.question._id != null)
-                      arr.push({"question" : q.question._id , "grade" : q.grade });
-
-                    if(q.question.qId != null)
-                      arr.push({"question" : q.question.qId , "grade" : q.grade });
-
-                    if(q._id != null)
-                      arr.push({"question" : q._id , "grade" : q.grade });
-
-                });
+              onClick={()=>{                    
 
                 const a = {
                   "name" : props.title , 
                   // "startDate" : props.startDate + "Z" , 
                   "startDate" : moment(props.startDate).format() , 
                   "endDate" :     moment(props.endDate).format() ,
-                  "questions" :  arr ,
+                  "questions" :  props.questions ,
                   "examLength" :  props.examLength ,
                   "useInClass" : classId                  
                 };
