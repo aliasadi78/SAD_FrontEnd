@@ -17,6 +17,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios' ;
+import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Slider from '@material-ui/core/Slider';
@@ -186,7 +187,7 @@ function Question(props) {
             for (let index = 0; index < props.options.length; index++) {
                 const element = props.options[index];
                 if(element.answer == true)
-                    answers.push({"answer" : index});
+                    answers.push({"answer" : index + 1 });
             }
         }
         else 
@@ -217,6 +218,7 @@ function Question(props) {
             props.cancelEdit();    
         })
         .catch(e => {
+            // setErrod
             console.log(e);
         });
     }
@@ -498,28 +500,28 @@ function Question(props) {
                                                         <Grid container >
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="1" control={<Radio />} /> <TextField onChange={(e) => {                                                                        
+                                                                    <FormControlLabel value={1} control={<Radio />} /> <TextField onChange={(e) => {                                                                        
                                                                         props.editOption({ "option" : e.target.value , "index" : 0}) ; 
                                                                     }} variant="filled" value={props.question.options[0].option} margin='dense' />
                                                                 </form>       
                                                             </Grid>
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="2" control={<Radio />} /> <TextField onChange={(e) => {                                                                        
+                                                                    <FormControlLabel value={2} control={<Radio />} /> <TextField onChange={(e) => {                                                                        
                                                                         props.editOption({ "option" : e.target.value , "index" : 1}) ; 
                                                                     }} variant="filled" value={props.question.options[1].option} margin='dense' />
                                                                 </form>       
                                                             </Grid>
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="3" control={<Radio />} /> <TextField onChange={(e) => {                                                                        
+                                                                    <FormControlLabel value={3} control={<Radio />} /> <TextField onChange={(e) => {                                                                        
                                                                         props.editOption({ "option" : e.target.value , "index" : 2}) ; 
                                                                     }} variant="filled" value={props.question.options[2].option} margin='dense' />
                                                                 </form>       
                                                             </Grid>
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="4" control={<Radio />} /> <TextField onChange={(e) => {                                                                        
+                                                                    <FormControlLabel value={4} control={<Radio />} /> <TextField onChange={(e) => {                                                                        
                                                                         props.editOption({ "option" : e.target.value , "index" : 3}) ; 
                                                                     }} variant="filled" value={props.question.options[3].option} margin='dense' />
                                                                 </form>          
