@@ -13,9 +13,14 @@ import { CircularProgress } from '@material-ui/core';
 import ReactDOM from 'react-dom'
 import QuestionCard from './QuestionCard' ;
 import Timer from './Timer/Timer';
+
 class ExamPage extends Component{
     constructor(props){
         super(props);
+
+        this.state = {
+            examName : null ,
+        }
     }
     componentWillMount(){
         var [check,setCheck] = this.props.check;
@@ -27,9 +32,15 @@ class ExamPage extends Component{
         if(!check){
             axios.get(serverURL() + "exam/" + this.props.examId + "/questions" , tokenConfig() )
                 .then(result => {
+                    console.log(result.data);
                     res.push(...result.data.questions);
                     var ll = res.map((q) => q);
                     setQuestionsList([...ll]);
+                    this.setState(prevstate => {
+                        return {
+                            examName : result.data.name
+                        }
+                    });
                     setCheck(true);
                     setTotalQuestion(result.data.questions.length)
                     setPending(false)
@@ -51,12 +62,13 @@ class ExamPage extends Component{
         <Material_RTL style={{backgroundColor: 'white'}}>
             <M_RTL style={{backgroundColor: 'white'}}>
                 <div style={{fontFamily: 'Vazir',paddingTop: '1%',backgroundColor : '#3D5A80',width:'100%',height:'52px',color: 'white',fontSize: '16px'}}>
-                    آزمون آنلاین
+                    {this.state.examName}
                 </div>
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height:'90px',fontSize: '16px'}}>
                     <Timer/>
-                </Container>
-                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
+                </Container>                
+
+                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%', paddingBottom : '40px',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
                 <Grid container xs={12} >                      
                           <Grid item xs={4} ></Grid>
                           <Grid item xs={4} >
@@ -70,7 +82,32 @@ class ExamPage extends Component{
                           </Grid>                              
 
                           <Grid item xs={4} ></Grid>
-                        </Grid>
+
+                          {/* <Grid > */}
+                        <Grid container item xs={12}
+  direction="row"
+  justify="center"
+  alignItems="center" style={{display: 'flex',justifyContent: 'center'}}>
+                            <Pagination onChange={(event,value) => {
+                                axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
+                                .then(res=>{
+                                    console.log(res)
+                                })
+                                .catch(err=>{
+                                    console.log(err)
+                                })
+                                if(questionsList.length > 0 ){ questionsList.map((question,idx)=>{
+                                    if(idx === value - 1){
+                                        indexQuestion = question.index
+                                        return(
+                                            ReactDOM.render(<QuestionCard q={question} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>,document.getElementById('Grid1'))
+                                        )
+                                    }
+                                    }
+                                )}
+                            }} variant="outlined" size="small"  count={totalQuestion} shape="rounded" />
+                            </Grid>
+                        </Grid>                        
 
                     <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px'}}>                                                
                         <Grid id="Grid1">
@@ -86,29 +123,7 @@ class ExamPage extends Component{
                                 </div>)
                             }
                         </Grid>
-                    </Container>
-                    <Grid >
-                        <Grid style={{display: 'flex',justifyContent: 'center'}}>
-                          <Pagination onChange={(event,value) => {
-                            axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
-                            .then(res=>{
-                                console.log(res)
-                            })
-                            .catch(err=>{
-                                console.log(err)
-                            })
-                            if(questionsList.length > 0 ){ questionsList.map((question,idx)=>{
-                                if(idx === value - 1){
-                                      indexQuestion = question.index
-                                      return(
-                                          ReactDOM.render(<QuestionCard q={question} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>,document.getElementById('Grid1'))
-                                      )
-                                  }
-                                }
-                            )}
-                          }} variant="outlined" size="small"  count={totalQuestion} shape="rounded" />
-                        </Grid>
-                    </Grid>
+                    </Container>            
                 </Container>
             </M_RTL>
         </Material_RTL>

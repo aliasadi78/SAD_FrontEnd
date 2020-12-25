@@ -270,22 +270,22 @@ export default function QuestionHolder_Create(props) {
                                                 <Grid container>
                                                     <Grid item xs={6}>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="1" disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[0].option}  variant="filled" margin='dense' />
+                                                            <FormControlLabel value={1} disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[0].option}  variant="filled" margin='dense' />
                                                         </form>       
                                                     </Grid>
                                                     <Grid item xs={6}>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="2" disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[1].option} variant="filled" margin='dense' />
+                                                            <FormControlLabel value={2} disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[1].option} variant="filled" margin='dense' />
                                                         </form>       
                                                     </Grid>
                                                     <Grid item xs={6}>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="3" disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[2].option} variant="filled" margin='dense' />
+                                                            <FormControlLabel value={3} disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[2].option} variant="filled" margin='dense' />
                                                         </form>       
                                                     </Grid>
                                                     <Grid item xs={6}>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="4" disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[3].option} variant="filled" margin='dense' />
+                                                            <FormControlLabel value={4} disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[3].option} variant="filled" margin='dense' />
                                                         </form>                                                        
                                                     </Grid>
                                                 </Grid>
