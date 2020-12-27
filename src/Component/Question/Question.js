@@ -18,6 +18,7 @@ import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios' ;
 import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Slider from '@material-ui/core/Slider';
@@ -177,6 +178,9 @@ function Question(props) {
     
     const [AddQuestionPending , setAddQuestionPending] = React.useState(false);    
 
+    const [error , setError] = React.useState(false);
+    const [errorMessage , setErrorMessage] = React.useState(null);
+
     const AddQuestion = () => {
 
         console.log(props.questionOptions);
@@ -218,8 +222,9 @@ function Question(props) {
             props.cancelEdit();    
         })
         .catch(e => {
-            // setErrod
-            console.log(e);
+            setError(true);
+            setErrorMessage(e.response.data);
+            console.log(e.response);
         });
     }
 
@@ -268,6 +273,32 @@ function Question(props) {
         <Container maxWidth="lg" className = {classes.root}>            
             <Material_RTL>
                 <RTL>
+                    <Grid item xs={12} >
+                        <Collapse                            
+                            in={error} 
+                            style={{marginBottom : '16px'}}
+                            >
+                            <Alert
+                            severity="error"
+                            action={
+                                <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => {
+                                    setError(false);
+                                    setAddQuestionPending(false)
+                                }}                            
+                                >
+                                <CloseIcon fontSize="inherit" />
+                                </IconButton>
+                            }
+                            >
+                                {errorMessage}
+                            </Alert>
+                        </Collapse>
+                    </Grid>
+
                         <Paper style={{backgroundColor : props.backColor}} className = {classes.FormsPaper} >
                             <Grid container spacing={0}>  
                                 {props.index >= 0 &&
@@ -495,7 +526,7 @@ function Question(props) {
                                             props.question.type === 'TEST' ?
                                                 <FormControl component="fieldset">                                                    
                                                     <RadioGroup aria-label="gender"  className = {classes.RadioChoice} name="gender1" onChange={(e) => {                                                                                                             
-                                                        props.setAnswer([{"answer" : e.target.value}]);                                                        
+                                                        props.setAnswer([{"answer" : parseInt(e.target.value)}]);                                                        
                                                         }} value={props.question.answers.length > 0 && props.question.answers[0].answer}>
                                                         <Grid container >
                                                             <Grid item xs={6}>
@@ -530,29 +561,30 @@ function Question(props) {
                                                     </RadioGroup>
                                                 </FormControl>
                                             :
-                                            <TextField                                                                    
-                                                id="outlined-multiline-static"
-                                                label="جواب"
-                                                multiline
-                                                rows={4}
-                                                fullWidth = 'true'
-                                                defaultValue={props.index < 0 ? null : props.question.answers[0].answer}
-                                                className = {classes.BigForm}
-                                                onChange = {(e)=>{props.setAnswer([ {"answer" : e.target.value}])}}
-                                                InputLabelProps={{style:{fontFamily: 'Vazir'}}}
-                                                InputProps={{
-                                                    style:{fontFamily: 'Vazir'},
-                                                }}
+                                            <div>
+                                                <TextField                                                                    
+                                                    id="outlined-multiline-static"
+                                                    label="جواب"
+                                                    multiline
+                                                    rows={4}
+                                                    fullWidth = 'true'
+                                                    defaultValue={props.index < 0 ? null : props.question.answers[0].answer}
+                                                    className = {classes.BigForm}
+                                                    onChange = {(e)=>{props.setAnswer([ {"answer" : e.target.value}])}}
+                                                    InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                                    InputProps={{
+                                                        style:{fontFamily: 'Vazir'},
+                                                    }}
 
-                                                // defaultValue="Default Value"
-                                                variant="outlined"
-                                                /> 
+                                                    // defaultValue="Default Value"
+                                                    variant="outlined"
+                                                    /> 
+                                                <UploadImage id = "javab" />
+                                            </div>
 
                                         }                                                                           
                                     </Paper>
-                                </Grid>
-
-                                <UploadImage id = "javab" />
+                                </Grid>                                
 
                                 <Grid item xs={4}>                                    
                                     <LoadingButton variant="contained"

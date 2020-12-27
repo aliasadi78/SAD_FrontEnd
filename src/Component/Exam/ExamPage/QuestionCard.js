@@ -11,6 +11,9 @@ import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import Dialog from '@material-ui/core/Dialog';
+import axios from 'axios';
+import tokenConfig from '../../../utils/tokenConfig';
+import serverURL from '../../../utils/serverURL';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -143,7 +146,14 @@ export default function QuestionCard(props){
                                 style={{display : 'none'}} name='file' id='file' type="file"                                 
                                 onChange={(e) => {
                                     console.log(e.target.files[0])                                    
-                                    file.append('file' , e.target.files[0] );                                    
+                                    file.append('file' , e.target.files[0] );    
+                                    axios.post(serverURL() + "exam/" + props.examId + "/questions/" + props.idx + "/answer" , file , tokenConfig() )                                
+                                    .then(res => {
+                                        console.log("done");
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                    })
                                 }}/>
                             <label htmlFor='file'>
                                 <IconButton aria-label="upload picture" component="span">

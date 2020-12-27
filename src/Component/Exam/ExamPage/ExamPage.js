@@ -13,6 +13,7 @@ import { CircularProgress } from '@material-ui/core';
 import ReactDOM from 'react-dom'
 import QuestionCard from './QuestionCard' ;
 import Timer from './Timer/Timer';
+import ClickNHold from 'react-click-n-hold';
 
 class ExamPage extends Component{
     constructor(props){
@@ -64,12 +65,26 @@ class ExamPage extends Component{
                 <div style={{fontFamily: 'Vazir',paddingTop: '1%',backgroundColor : '#3D5A80',width:'100%',height:'52px',color: 'white',fontSize: '16px'}}>
                     {this.state.examName}
                 </div>
-                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height:'90px',fontSize: '16px'}}>
+                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height:'110px',fontSize: '16px'}}>
                     <Timer/>
                 </Container>                
 
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%', paddingBottom : '40px',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
-                <Grid container xs={12} >                      
+                <Grid container xs={12} >
+                        
+                          {/* <Grid item xs={12}>
+                            <ClickNHold 
+			                	time={2} // Time to keep pressing. Default is 2
+			                	onStart={() => {console.log('START'); }} // Start callback
+			                	onClickNHold={() => {console.log('CLICK AND HOLD')}} //Timeout callback
+			                	onEnd={(e , enough) => {
+                                    console.log('END');
+                                    console.log(enough ? 'Click released after enough time': 'Click released too soon');
+                                }} > // Click release callback
+			                		<button>Click and hold</button>
+			                </ClickNHold>    
+                          </Grid> */}
+
                           <Grid item xs={4} ></Grid>
                           <Grid item xs={4} >
 
@@ -85,9 +100,10 @@ class ExamPage extends Component{
 
                           {/* <Grid > */}
                         <Grid container item xs={12}
-  direction="row"
-  justify="center"
-  alignItems="center" style={{display: 'flex',justifyContent: 'center'}}>
+                            direction="row"
+                            justify="center"
+                            alignItems="center" 
+                            style={{display: 'flex',justifyContent: 'center'}}>
                             <Pagination onChange={(event,value) => {
                                 axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
                                 .then(res=>{
@@ -100,7 +116,7 @@ class ExamPage extends Component{
                                     if(idx === value - 1){
                                         indexQuestion = question.index
                                         return(
-                                            ReactDOM.render(<QuestionCard q={question} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>,document.getElementById('Grid1'))
+                                            ReactDOM.render(<QuestionCard examId = {this.props.examId} q={question} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>,document.getElementById('Grid1'))
                                         )
                                     }
                                     }
