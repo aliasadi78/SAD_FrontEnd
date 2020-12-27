@@ -4,7 +4,7 @@ import SettingsModal from './settings-modal';
 import Countdown from './countdown';
 import axios from 'axios';
 import tokenConfig from '../../../../utils/tokenConfig';
-
+import serverURL from '../../../../utils/serverURL';
 class Timer extends React.Component {
 
   constructor(props) {
@@ -23,18 +23,8 @@ class Timer extends React.Component {
       isModalOpen: false,
       infoMessage: '',
       settingsFormError: false,
-      errorMessage: ''
+      errorMessage: '',
     };
-    axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig() )
-    .then(res=>{
-      console.log(res.data.user_examEndTime.split("T"))
-      console.log(res.data.user_examEndTime.split("T")[1].split("."))
-      this.setState({dateValue:res.data.user_examEndTime.split("T"),
-                     timeValue:res.data.user_examEndTime.split("T")[1].split(".")})
-      console.log(this.state)
-    }).catch(err=>{
-      console.log(err)
-    })
     this.timer = null;
     this.countDownDate = {
       dateValue: this.state.dateValue,
@@ -61,6 +51,7 @@ class Timer extends React.Component {
   }
 
   handleSubmit(dateValue, timeValue, ampmValue) {
+    console.log(this.props.time)
     const unixEndDate = Number(moment(`${dateValue} ${timeValue} ${ampmValue}`, 'YYYY-MM-DD hh:mm:ss A').format('X'));
       this.startCountdown(this.renderCountdownDate({
         dateValue,
@@ -86,8 +77,8 @@ class Timer extends React.Component {
   }
 
   playTimer(unixEndDate) {
-    const distance = unixEndDate - moment().format('X');
-
+    var offset = new Date().getTimezoneOffset() * (-60);
+    const distance = unixEndDate - moment().format('X') + offset;
     if (distance > 0) {
       this.setState({
         countdown: {
@@ -139,11 +130,16 @@ class Timer extends React.Component {
   render() {
     return (
       <div>
-          {1===1 ? this.handleSubmit(this.state.dateValue,this.state.timeValue,this.state.ampmValue):null}
+          {this.props.time !== "" ? this.handleSubmit(this.props.time.split("T")[0],this.props.time.split("T")[1].split(".")[0],this.state.ampmValue):null}
           {this.state.isCountdownSet ? <Countdown countdown={this.state.countdown} unixEndDate={this.renderCountdownDate().unixEndDate} /> : <p style={{color : 'white'}} > {this.state.infoMessage}</p>}
       </div>
     );
   }
 }
-
-export default Timer;
+export default (props) => {
+  const examId = props.examId ; 
+  const time = props.time; 
+  return (        
+      <Timer examId = {examId} time={time}/>    
+  )
+}

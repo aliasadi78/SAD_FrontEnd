@@ -20,19 +20,24 @@ class ExamPage extends Component{
     componentWillMount(){
         var [check,setCheck] = this.props.check;
         var [totalQuestion,setTotalQuestion] = this.props.totalQuestion;
-        var [questionsList,setQuestionsList] = this.props.questionsList;        
-        const [pending,setPending] = this.props.pending;        
+        var [questionsList,setQuestionsList] = this.props.questionsList; 
+        var [time,setTime] = this.props.time;       
+        var [pending,setPending] = this.props.pending;        
         setPending(true)
         var res = []
         if(!check){
             axios.get(serverURL() + "exam/" + this.props.examId + "/questions" , tokenConfig() )
                 .then(result => {
+                    console.log(result.data)
                     res.push(...result.data.questions);
+                    setTime(result.data.user_examEndTime);
                     var ll = res.map((q) => q);
+                    console.log(ll)
                     setQuestionsList([...ll]);
                     setCheck(true);
                     setTotalQuestion(result.data.questions.length)
                     setPending(false)
+                    console.log(questionsList)
                 }).catch(error=>{
                     // console.log(error.response.data)
                     setPending(false)
@@ -45,6 +50,7 @@ class ExamPage extends Component{
     const [totalQuestion,setTtotalQuestion] = this.props.totalQuestion;
     const [questionsList,setQuestionsList] = this.props.questionsList;
     const [pending,setPending] = this.props.pending; 
+    const [time,setTime] = this.props.time;
     var indexQuestion = 1;
     return(
         <div style={{backgroundColor: 'white' , paddingBottom : '80px'}}> 
@@ -54,7 +60,7 @@ class ExamPage extends Component{
                     آزمون آنلاین
                 </div>
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height:'90px',fontSize: '16px'}}>
-                    <Timer/>
+                    <Timer time={time} examId={this.props.examId}/>
                 </Container>
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
                 <Grid container xs={12} >                      
@@ -93,6 +99,8 @@ class ExamPage extends Component{
                             axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
                             .then(res=>{
                                 console.log(res)
+                                setTime(res.data.user_examEndTime)
+                                console.log(time)
                             })
                             .catch(err=>{
                                 console.log(err)
@@ -131,6 +139,7 @@ export default (props) => {
     const totalQuestion = React.useState(0);
     const questionsList= React.useState([]);
     const pending = React.useState(false);    
+    const time = React.useState("")
     return (        
         <ExamPage 
             classes={classes} 
@@ -138,6 +147,7 @@ export default (props) => {
             totalQuestion={totalQuestion} 
             questionsList={questionsList} 
             examId = {examId}
-            pending={pending}/>    
+            pending={pending}
+            time={time}/>    
     )
 }

@@ -1,10 +1,12 @@
 export default function(){
     const token = localStorage.getItem('token');
     return {
-        mode: "cors",
-        headers: {            
+        mode: 'cors',
+        headers: {      
+            'Access-Control-Allow-Origin': '*',      
             'Content-Type': 'application/json',
-            'Authorization': token
+            'Authorization': token,
+            mode: 'cors',
         }
     };
 }

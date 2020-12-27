@@ -17,7 +17,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import Slide from '@material-ui/core/Slide';
 import Container from "@material-ui/core/Container";
 
-export default function QuestionCard(props){     
+export default function QuestionCard(props){    
         function faNumber(n){
             const farsidigit = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
             return n
@@ -150,9 +150,11 @@ export default function QuestionCard(props){
                                     {props.q.question.options.map((options,idx)=>{
                                         if(idx===0){
                                             checklistodd=[]
+                                            console.log(props.useranswer)
+                                            if(typeof(props.useranswer[props.idx]) !== "undefined"){
                                             props.useranswer[props.idx].split(',').map((j)=>{
                                             checklistodd[j - 1] = true
-                                            })
+                                            })}
                                             console.log(checklistodd)
                                         }
                                         return(
@@ -172,9 +174,11 @@ export default function QuestionCard(props){
                                     {props.q.question.options.map((options,idx)=>{
                                         if(idx===0){
                                             checklisteven=[]
+                                            console.log(props.useranswer)
+                                            if(typeof(props.useranswer[props.idx]) !== "undefined"){
                                             props.useranswer[props.idx].split(',').map((j)=>{
                                             checklisteven[j - 1] = true
-                                            })
+                                            })}
                                             console.log(checklisteven)
                                         }
                                         return(
