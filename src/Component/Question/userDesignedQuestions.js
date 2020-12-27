@@ -190,22 +190,22 @@ function UserDesignedQuestion(props) {
                                                 <Grid container>
                                                     <Grid item xs={6}>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="1" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[0].option}  variant="filled" margin='dense' />
+                                                            <FormControlLabel value={1} disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[0].option}  variant="filled" margin='dense' />
                                                         </form>       
                                                     </Grid>
                                                         <Grid item xs={6}>
                                                             <form class ="form-inline">
-                                                                <FormControlLabel value="2" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[1].option} variant="filled" margin='dense' />
+                                                                <FormControlLabel value={2} disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[1].option} variant="filled" margin='dense' />
                                                             </form>       
                                                         </Grid>
                                                         <Grid item xs={6}>
                                                             <form class ="form-inline">
-                                                                <FormControlLabel value="3" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[2].option} variant="filled" margin='dense' />
+                                                                <FormControlLabel value={3} disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[2].option} variant="filled" margin='dense' />
                                                             </form>       
                                                         </Grid>
                                                         <Grid item xs={6}>
                                                             <form class ="form-inline">
-                                                                <FormControlLabel value="4" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[3].option} variant="filled" margin='dense' />
+                                                                <FormControlLabel value={4} disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[3].option} variant="filled" margin='dense' />
                                                             </form>                                                        
                                                         </Grid>
                                                 </Grid>
@@ -215,7 +215,7 @@ function UserDesignedQuestion(props) {
                                         <FormGroup>
                                             {props.question.options.map((m , index) => 
                                             <form class="form-inline">
-                                                <Checkbox checked={props.question.answers.includes({"answer" : "" + index})}  name="gilad"  disabled
+                                                <Checkbox checked={props.question.answers.includes({"answer" : index + 1}) ? true : false }  name="gilad"  disabled
                                                     className ={classes.multiCheckbox} color='#3D5A80' /> 
                                                     <TextField variant="filled"  margin='dense'disabled  defaultValue={m.option}/>
                                             </form>  

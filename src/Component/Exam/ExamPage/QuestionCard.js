@@ -16,6 +16,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Slide from '@material-ui/core/Slide';
 import Container from "@material-ui/core/Container";
+import Grid from '@material-ui/core/Grid';
+import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
+import IconButton from '@material-ui/core/IconButton';
+import Axios from 'axios';
 
 export default function QuestionCard(props){    
         function faNumber(n){
@@ -36,6 +40,8 @@ export default function QuestionCard(props){
         const [selectedRadioValue,setSelectedRadioValue] = React.useState(props.answer)
         const [shortAnswer,setShortAnswer] = React.useState();
         const [longAnswer,setLongAnswer] = React.useState();
+
+        const file = new FormData();
         
         var data;
         var Example;
@@ -90,11 +96,11 @@ export default function QuestionCard(props){
         };
         
         return(
-            <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px',direction: 'rtl',textAlign: 'right'}}>
+            <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%' , paddingBottom : '10px',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px',direction: 'rtl',textAlign: 'right'}}>
                 <span>{faNumber(props.idx + 1)}.</span><span>{props.q.question.question}                    
                 <p> ( {faNumber(props.q.grade)} نمره)  </p>
                     </span>
-                <div>
+                <Grid item xs={12}>                    
                 <Card style={{position: 'relative',right: '37%',width:'25%',}}>
                   <CardMedia>
                     {typeof(props.q.question.imageQuestion) !== "undefined" ? ( 
@@ -123,7 +129,31 @@ export default function QuestionCard(props){
                     </Dialog>
                   </CardMedia>
                 </Card>
-                </div>                
+                </Grid>      
+
+                <Grid container
+                    direction="row"
+                    justify="center"
+                    alignItems="center" 
+                    >
+
+                        <Grid item xs={12} >
+                            <input 
+                                type="file" name="file"
+                                style={{display : 'none'}} name='file' id='file' type="file"                                 
+                                onChange={(e) => {
+                                    console.log(e.target.files[0])                                    
+                                    file.append('file' , e.target.files[0] );                                    
+                                }}/>
+                            <label htmlFor='file'>
+                                <IconButton aria-label="upload picture" component="span">
+                                    <PhotoLibraryIcon style={{color:'#EE6C4D'}} />
+                                </IconButton>
+                            </label>    
+                        </Grid>
+                </Grid>
+
+                <Grid item xs={12} >
                     {props.q.question.type === "TEST" ? (
                         <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
                             <FormControl component="fieldset">
@@ -218,7 +248,9 @@ export default function QuestionCard(props){
                                 style:{fontFamily: 'Vazir'},
                             }}
                         />
-                    ):null}                        
+                    ):null}       
+
+                </Grid>                 
             </Container>
         )
 }

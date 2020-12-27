@@ -223,10 +223,11 @@ function CreateExam(props){
     
     if(editMode && !informationLoad && !examFound){
       axios.get(serverURL() + "class/" + classId + "/exams/" + examId , tokenConfig())
-      .then(res=>{        
+      .then(res=>{       
+        console.log(moment(String(res.data.exam.startDate)).format()); 
         const start = String(res.data.exam.startDate) ;
-        const end  = String(res.data.exam.endDate);                
-        props.setTitle(res.data.exam.name);        
+        const end  = String(res.data.exam.endDate);    
+        props.setTitle(res.data.exam.name);
         props.setStartDate(moment(start).format().replace("+03:30" , ''));
         props.setEndDate(moment(end).format().replace("+03:30" , ''));
         props.setLength(res.data.exam.examLength);
@@ -297,24 +298,13 @@ function CreateExam(props){
                 style={{fontFamily: 'Vazir'}}
                 className = {classes.button}
                 onClick={()=>{     
-                    setSavePending(true);
-                    const arr = [] ;
-                    props.questions.forEach(q => {
-                      if(q.question._id != null)
-                        arr.push({"question" : q.question._id , "grade" : q.grade });
-
-                      if(q.question.qId != null)
-                        arr.push({"question" : q.question.qId , "grade" : q.grade });
-
-                      if(q._id != null)
-                        arr.push({"question" : q._id , "grade" : q.grade });
-                    });
+                    setSavePending(true);                    
     
                     const a = {
                       "name" : props.title , 
                       "startDate" : moment(props.startDate).format() , 
                       "endDate" :     moment(props.endDate).format() ,
-                      "questions" :  arr ,
+                      "questions" :  props.questions ,
                       "examLength" :  props.examLength ,
                       "examId" : examId                  
                     };
@@ -349,27 +339,14 @@ function CreateExam(props){
             <Button variant="contained" color="#98C1D9" 
               style={{fontFamily: 'Vazir'}}
               className = {classes.button}
-              onClick={()=>{    
-                
-                const arr = [] ;
-                props.questions.forEach(q => {    
-                    if(q.question._id != null)
-                      arr.push({"question" : q.question._id , "grade" : q.grade });
-
-                    if(q.question.qId != null)
-                      arr.push({"question" : q.question.qId , "grade" : q.grade });
-
-                    if(q._id != null)
-                      arr.push({"question" : q._id , "grade" : q.grade });
-
-                });
+              onClick={()=>{                    
 
                 const a = {
                   "name" : props.title , 
                   // "startDate" : props.startDate + "Z" , 
                   "startDate" : moment(props.startDate).format() , 
                   "endDate" :     moment(props.endDate).format() ,
-                  "questions" :  arr ,
+                  "questions" :  props.questions ,
                   "examLength" :  props.examLength ,
                   "useInClass" : classId                  
                 };
@@ -378,13 +355,14 @@ function CreateExam(props){
                 console.log(ajson);
                 axios.post(serverURL() + "exam" , ajson , tokenConfig() )
                 .then(res => {                  
-                  // history.push("/class/" + classId);
+                  history.push("/class/" + classId);
                 })
                 .catch(err => {                
                   if(err.response.data.error != null)
                     setError(err.response.data.error);                                      
                   else if(err.response.data.message != null)
                     setError(err.response.data.message);                  
+                    console.log(err.response.data);
                   setOpenAlert(true);
                 });
               }}
