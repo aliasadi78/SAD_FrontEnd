@@ -179,7 +179,7 @@ function Question(props) {
     const [AddQuestionPending , setAddQuestionPending] = React.useState(false);    
 
     const [error , setError] = React.useState(false);
-    const [errorMessage , setErrorMessage] = React.useState(null);
+    const [errorMessage , setErrorMessage] = React.useState([]);
 
     const AddQuestion = () => {
 
@@ -223,7 +223,12 @@ function Question(props) {
         })
         .catch(e => {
             setError(true);
-            setErrorMessage(e.response.data);
+            setAddQuestionPending(false);
+            try{
+               setErrorMessage(e.response.data.error) 
+            } catch (err){
+
+            }            
             console.log(e.response);
         });
     }
@@ -294,7 +299,7 @@ function Question(props) {
                                 </IconButton>
                             }
                             >
-                                {errorMessage}
+                               <span style={{fontFamily: 'Vazir' , marginLeft : '8px' , marginRight : '8px'}}> {errorMessage} </span>
                             </Alert>
                         </Collapse>
                     </Grid>
