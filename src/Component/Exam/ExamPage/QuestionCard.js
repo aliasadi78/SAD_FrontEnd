@@ -45,6 +45,8 @@ export default function QuestionCard(props){
         const [longAnswer,setLongAnswer] = React.useState();
         const [isFileLoaded , setIsFileLoaded] = React.useState(false);
         const [fileName , setFilename] = React.useState(null)
+        const [isfileImage , setisFileImage] = React.useState(false)
+        const [ image , setImage] = React.useState(null);
 
         const file = new FormData();
         
@@ -217,28 +219,47 @@ export default function QuestionCard(props){
                         </ul>): null}
                     {props.q.question.type === "LONGANSWER" ? (
                         <div>
-                            <input 
-                                type="file" name="file"
-                                style={{display : 'none'}}
-                                 id='file' type="file"                                 
-                                onChange={(e) => {
-                                    console.log(e.target.files[0])                                                                        
-                                    file.append('answer' , e.target.files[0] );    
-                                    setIsFileLoaded(true);                                                                        
-                                    const index = props.idx + 1 ;
-                                    axios.post(serverURL() + "exam/" + props.examId + "/questions/" + index + "/answer" , file , tokenConfig() )                                
-                                    .then(res => {
-                                        console.log("done");
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
-                                    })
-                                }}/>
 
+                            <Grid item xs={12}>
+                                <input 
+                                    type="file" name="file"
+                                    style={{display : 'none'}}
+                                    id='file' type="file"                                 
+                                    onChange={(e) => {
+                                        console.log(e.target.files[0])                                                                        
+                                        file.append('answer' , e.target.files[0] );    
+                                        setIsFileLoaded(true);         
+                                        
+                                        let reader = new FileReader();
+                                        
+                                        reader.readAsDataURL(e.target.files[0]);
+                                        
+                                        reader.onload = (e) => {
+                                            // console.log(e.target.result);
+                                            setImage(e.target.result);
+                                        }
+
+                                        const index = props.idx + 1 ;
+                                        axios.post(serverURL() + "exam/" + props.examId + "/questions/" + index + "/answer" , file , tokenConfig() )                                
+                                        .then(res => {
+                                            console.log("done");
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                        })
+                                    }}/>
+                            </Grid>
                             {isFileLoaded &&                            
                                 <div>
                                     {fileName}
                                 </div>
+                            }
+
+                            {isfileImage == false &&
+                                <Grid item xs ={12} >
+                                    <img src= {image} 
+                                    width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>                                  
+                                </Grid>
                             }
 
                             <label htmlFor='file'>

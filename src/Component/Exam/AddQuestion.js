@@ -16,10 +16,18 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import {useDispatch} from 'react-redux';
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton';
 import axios from 'axios' ;
 import {
     addQuestion
 } from './ExamSlice' ;
+import {
+    removeOption ,
+    editOption ,
+    addOption ,     
+    MultiChoiseCheck ,
+} from './../Question/QuestionsSlice' ;
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Slider from '@material-ui/core/Slider';
@@ -175,12 +183,24 @@ function AddQuestionExam(props) {
     answer , options , base , hardness , course , chapter , soalImage , javabImage ) => {
 
         console.log(options);
+        var toSent = [] ;
+        if( questionType == 'MULTICHOISE'){
+            for (let index = 0; index < props.options.length; index++) {
+                const element = props.options[index];
+                if(element.answer == true)
+                    toSent.push({"answer" : index + 1 });
+            }
+
+            options = props.question.options ;
+        }
+        else 
+            toSent.push(...answer) ; 
 
         const a = {
             "type": type ,
             "public": publicCheck,            
             "question": question,
-            "answers": answers ,
+            "answers": toSent ,
             "options": options,
             "base": "" +  base + "",
             "hardness":  hardness,
@@ -191,6 +211,8 @@ function AddQuestionExam(props) {
         }
         const ajson = JSON.stringify(a);                
         
+        console.log(ajson);
+
         axios.post(serverURL() + "question" , ajson , tokenConfig() )
         .then(res => {
             console.log(res);    
@@ -401,18 +423,27 @@ function AddQuestionExam(props) {
                                             <Grid container spacing={2} >                                                
                                                 <Grid item xs={6}>                                                                                                            
                                                     <FormGroup>                                                        
-                                                        <form class="form-inline">
-                                                            <Checkbox checked={choice1} onChange={()=>(setChoice1(!choice1))} name="gilad" 
-                                                                className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                                <TextField variant="filled" onChange={(e) => {
-                                                                    setGozine1(e.target.value);                                                                
-                                                                }} margin='dense' />
-                                                        </form>                                                        
+                                                        {props.question.options.map((m , index) =>                                               
+                                                            <form class="form-inline">
+                                                                <IconButton onClick={()=>{
+                                                                    props.removeOption(index)
+                                                                }}>
+                                                                    <CloseIcon />
+                                                                </IconButton>
+                                                                <Checkbox checked={props.options[index].answer} onChange={()=>(props.MultiChoiseCheck({"index": index , "answer": !props.options[index].answer}))} name="gilad" 
+                                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
+                                                                <TextField variant="filled"  value={m.option} onChange={(e) => {
+                                                                    props.editOption({"option" : e.target.value , "index" : index});                                                                
+                                                                }} margin='dense' />                                                            
+                                                            </form>                                                        
+                                                        )}                                                       
                                                     </FormGroup>                                                                                         
                                                 </Grid> 
                                                 <Grid item xs={6}></Grid>
                                                 <Grid item xs={6} >
-                                                    <Button variant="contained" style = {{fontFamily: 'Vazir'}} >
+                                                    <Button variant="contained" onClick={() => {
+                                                        props.addOption();
+                                                    }} style = {{fontFamily: 'Vazir'}} >
                                                         گزینه جدید
                                                     </Button>  
                                                 </Grid>                                              
@@ -457,33 +488,35 @@ function AddQuestionExam(props) {
                                                     </RadioGroup>
                                                 </FormControl>
                                             :
-                                            <TextField                                                                    
-                                                id="outlined-multiline-static"
-                                                label="جواب"
-                                                multiline
-                                                rows={4}
-                                                fullWidth = 'true'
-                                                className = {classes.BigForm}
-                                                onChange = {(e)=>{setAnswers([ {"answer" : e.target.value}])}}
-                                                InputLabelProps={{style:{fontFamily: 'Vazir'}}}
-                                                InputProps={{
-                                                    style:{fontFamily: 'Vazir'},
-                                                }}
+                                            <div>
+                                                <TextField                                                                    
+                                                    id="outlined-multiline-static"
+                                                    label="جواب"
+                                                    multiline
+                                                    rows={4}
+                                                    fullWidth = 'true'
+                                                    className = {classes.BigForm}
+                                                    onChange = {(e)=>{setAnswers([ {"answer" : e.target.value}])}}
+                                                    InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                                    InputProps={{
+                                                        style:{fontFamily: 'Vazir'},
+                                                    }}
 
-                                                // defaultValue="Default Value"
-                                                variant="outlined"
-                                                /> 
-
+                                                    // defaultValue="Default Value"
+                                                    variant="outlined"
+                                                    /> 
+                                                    
+                                                <UploadImageQuestionPanel
+                                                    getImage={(value)=>{
+                                                        setJavabImageBase64(value)
+                                                    }}
+                                                    id = "javab" />
+                                            </div>
                                         }                                                                           
                                     </Paper>
                                 </Grid>
                                 {/* //  upload image */}                                  
                                 
-                                <UploadImageQuestionPanel
-                                getImage={(value)=>{
-                                    setJavabImageBase64(value)
-                                }}
-                                 id = "javab" />
                                                                 
                                 <Grid item xs={4}>                                    
                                     <Button variant="contained"
@@ -534,8 +567,19 @@ function AddQuestionExam(props) {
 
 const mapStateToProps = state => {
     return{
-      index : state.edittingQuestion.edittingQuestionIndex  
+      index : state.edittingQuestion.edittingQuestionIndex  ,
+      question : state.edittingQuestion.edittedQuestion ,
+      options : state.edittingQuestion.options       
     }
 }
 
-export default connect(mapStateToProps)(AddQuestionExam)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        editOption: (e) => dispatch(editOption(e))
+        ,removeOption: (e) => dispatch(removeOption(e))
+        ,addOption: () => dispatch(addOption())
+        ,MultiChoiseCheck : (e) => dispatch(MultiChoiseCheck(e))
+    }
+}
+
+export default connect(mapStateToProps , mapDispatchToProps)(AddQuestionExam)
