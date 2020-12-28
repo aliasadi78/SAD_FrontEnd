@@ -2,7 +2,7 @@
   "name": "tahlil",
   "proxy": "https://parham-backend.herokuapp.com/test",
   "version": "0.1.0",
-  "homepage": "https://parham-front.herokuapp.com",
+  "homepage": "./",
   "private": true,
   "dependencies": {
     "@babel/core": "7.9.0",

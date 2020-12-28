@@ -26,16 +26,20 @@ class ExamPage extends Component{
     componentWillMount(){
         var [check,setCheck] = this.props.check;
         var [totalQuestion,setTotalQuestion] = this.props.totalQuestion;
-        var [questionsList,setQuestionsList] = this.props.questionsList;        
-        const [pending,setPending] = this.props.pending;        
+        var [questionsList,setQuestionsList] = this.props.questionsList; 
+        var [time,setTime] = this.props.time;       
+        var [pending,setPending] = this.props.pending;        
         setPending(true)
         var res = []
         if(!check){
             axios.get(serverURL() + "exam/" + this.props.examId + "/questions" , tokenConfig() )
                 .then(result => {
+                    console.log(result.data)
                     console.log(result.data);
                     res.push(...result.data.questions);
+                    setTime(result.data.user_examEndTime);
                     var ll = res.map((q) => q);
+                    console.log(ll)
                     setQuestionsList([...ll]);
                     this.setState(prevstate => {
                         return {
@@ -45,6 +49,7 @@ class ExamPage extends Component{
                     setCheck(true);
                     setTotalQuestion(result.data.questions.length)
                     setPending(false)
+                    console.log(questionsList)
                 }).catch(error=>{
                     console.log(error.response)
                     setPending(false)
@@ -57,6 +62,7 @@ class ExamPage extends Component{
     const [totalQuestion,setTtotalQuestion] = this.props.totalQuestion;
     const [questionsList,setQuestionsList] = this.props.questionsList;
     const [pending,setPending] = this.props.pending; 
+    const [time,setTime] = this.props.time;
     var indexQuestion = 1;
     return(
         <div style={{backgroundColor: 'white' , paddingBottom : '80px'}}> 
@@ -66,9 +72,8 @@ class ExamPage extends Component{
                     {this.state.examName}
                 </div>
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height:'110px',fontSize: '16px'}}>
-                    <Timer/>
-                </Container>                
-
+                    <Timer time={time} examId={this.props.examId}/>
+                </Container>
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%', paddingBottom : '40px',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
                 <Grid container xs={12} >
                         
@@ -113,10 +118,10 @@ class ExamPage extends Component{
                                     console.log(err)
                                 })
                                 if(questionsList.length > 0 ){ questionsList.map((question,idx)=>{
-                                    if(idx === value - 1){
+                                    if(idx === value - 1){                                        
                                         indexQuestion = question.index
                                         return(
-                                            ReactDOM.render(<QuestionCard examId = {this.props.examId} q={question} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>,document.getElementById('Grid1'))
+                                            ReactDOM.render(<QuestionCard examId={this.props.examId} q={question} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>,document.getElementById('Grid1'))
                                         )
                                     }
                                     }
@@ -133,13 +138,13 @@ class ExamPage extends Component{
                                   {questionsList.length > 0 ? (questionsList.map((question,idx)=>{
                                         if(idx === 0){
                                         return(
-                                            <QuestionCard q={question} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>
+                                            <QuestionCard q={question} examId={this.props.examId} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>
                                         )}
                                     })):null}
                                 </div>)
                             }
                         </Grid>
-                    </Container>            
+                    </Container>
                 </Container>
             </M_RTL>
         </Material_RTL>
@@ -158,10 +163,11 @@ const useStyles = makeStyles((theme) => ({
 export default (props) => {
     const examId = props.match.params.examId ;    
     const classes = useStyles();
-    const check = React.useState(false);
+    const check = React.useState(false);    
     const totalQuestion = React.useState(0);
     const questionsList= React.useState([]);
     const pending = React.useState(false);    
+    const time = React.useState("")
     return (        
         <ExamPage 
             classes={classes} 
@@ -169,6 +175,7 @@ export default (props) => {
             totalQuestion={totalQuestion} 
             questionsList={questionsList} 
             examId = {examId}
-            pending={pending}/>    
+            pending={pending}
+            time={time}/>    
     )
 }

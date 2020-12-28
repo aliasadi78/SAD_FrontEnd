@@ -24,7 +24,7 @@ import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
 import IconButton from '@material-ui/core/IconButton';
 import Axios from 'axios';
 
-export default function QuestionCard(props){     
+export default function QuestionCard(props){    
         function faNumber(n){
             const farsidigit = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
             return n
@@ -43,6 +43,8 @@ export default function QuestionCard(props){
         const [selectedRadioValue,setSelectedRadioValue] = React.useState(props.answer)
         const [shortAnswer,setShortAnswer] = React.useState();
         const [longAnswer,setLongAnswer] = React.useState();
+        const [isFileLoaded , setIsFileLoaded] = React.useState(false);
+        const [fileName , setFilename] = React.useState(null)
 
         const file = new FormData();
         
@@ -141,25 +143,7 @@ export default function QuestionCard(props){
                     >
 
                         <Grid item xs={12} >
-                            <input 
-                                type="file" name="file"
-                                style={{display : 'none'}} name='file' id='file' type="file"                                 
-                                onChange={(e) => {
-                                    console.log(e.target.files[0])                                    
-                                    file.append('file' , e.target.files[0] );    
-                                    axios.post(serverURL() + "exam/" + props.examId + "/questions/" + props.idx + "/answer" , file , tokenConfig() )                                
-                                    .then(res => {
-                                        console.log("done");
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
-                                    })
-                                }}/>
-                            <label htmlFor='file'>
-                                <IconButton aria-label="upload picture" component="span">
-                                    <PhotoLibraryIcon style={{color:'#EE6C4D'}} />
-                                </IconButton>
-                            </label>    
+                                
                         </Grid>
                 </Grid>
 
@@ -190,9 +174,11 @@ export default function QuestionCard(props){
                                     {props.q.question.options.map((options,idx)=>{
                                         if(idx===0){
                                             checklistodd=[]
+                                            console.log(props.useranswer)
+                                            if(typeof(props.useranswer[props.idx]) !== "undefined"){
                                             props.useranswer[props.idx].split(',').map((j)=>{
                                             checklistodd[j - 1] = true
-                                            })
+                                            })}
                                             console.log(checklistodd)
                                         }
                                         return(
@@ -212,9 +198,11 @@ export default function QuestionCard(props){
                                     {props.q.question.options.map((options,idx)=>{
                                         if(idx===0){
                                             checklisteven=[]
+                                            console.log(props.useranswer)
+                                            if(typeof(props.useranswer[props.idx]) !== "undefined"){
                                             props.useranswer[props.idx].split(',').map((j)=>{
                                             checklisteven[j - 1] = true
-                                            })
+                                            })}
                                             console.log(checklisteven)
                                         }
                                         return(
@@ -228,18 +216,51 @@ export default function QuestionCard(props){
                             </FormControl>
                         </ul>): null}
                     {props.q.question.type === "LONGANSWER" ? (
-                        <TextField
-                            style={{width: '100%'}}
-                            id="outlined-textarea"
-                            placeholder="کادر جواب"
-                            multiline
-                            value={props.useranswer[props.idx] !== "undefined" ? props.useranswer[props.idx]:null}
-                            onChange={handleChangeLongAnswer}
-                            variant="outlined"
-                            InputProps={{
-                                style:{fontFamily: 'Vazir'},
-                            }}
-                        />
+                        <div>
+                            <input 
+                                type="file" name="file"
+                                style={{display : 'none'}}
+                                 id='file' type="file"                                 
+                                onChange={(e) => {
+                                    console.log(e.target.files[0])                                                                        
+                                    file.append('answer' , e.target.files[0] );    
+                                    setIsFileLoaded(true);                                                                        
+                                    const index = props.idx + 1 ;
+                                    axios.post(serverURL() + "exam/" + props.examId + "/questions/" + index + "/answer" , file , tokenConfig() )                                
+                                    .then(res => {
+                                        console.log("done");
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                    })
+                                }}/>
+
+                            {isFileLoaded &&                            
+                                <div>
+                                    {fileName}
+                                </div>
+                            }
+
+                            <label htmlFor='file'>
+                                <IconButton aria-label="upload picture" component="span">
+                                    <PhotoLibraryIcon style={{color:'#EE6C4D'}} />
+                                </IconButton>
+                            </label>
+
+                            <TextField
+                                style={{width: '100%'}}
+                                id="outlined-textarea"
+                                placeholder="کادر جواب"
+                                multiline
+                                value={props.useranswer[props.idx] !== "undefined" ? props.useranswer[props.idx]:null}
+                                onChange={handleChangeLongAnswer}
+                                variant="outlined"
+                                InputProps={{
+                                    style:{fontFamily: 'Vazir'},
+                                }}
+                            />
+
+                        </div>
                     ):null}
                     {props.q.question.type === "SHORTANSWER" ? (
                         <TextField
