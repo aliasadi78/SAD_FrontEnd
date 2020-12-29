@@ -233,12 +233,25 @@ function Question(props) {
         });
     }
 
-    const EditQuestion = () => {            
+    const EditQuestion = () => {      
+        
+            const answers = [] ;
+
+            if(props.question.type == 'MULTICHOISE'){
+                for (let index = 0; index < props.options.length; index++) {
+                    const element = props.options[index];
+                    if(element.answer == true)
+                        answers.push({"answer" : index + 1 });
+                }
+            }
+            else 
+                answers.push(...props.question.answers) ;  
+        
             const a = {
                 "type":          props.question.type ,
                 "public":        props.question.public,            
                 "question":      props.question.question,
-                "answers":       props.question.answers ,
+                "answers":       answers ,
                 "options":       props.question.options ,             
                 "base": ""+      props.question.base + "",
                 "hardness":      props.question.hardness,
@@ -500,21 +513,25 @@ function Question(props) {
                                         {
                                             props.question.type === 'MULTICHOISE' ?
                                             <Grid container spacing={2} >                                                
-                                                <Grid item xs={6}>                                                                                                            
+                                                <Grid item xs={7}>                                                                                                            
                                                     <FormGroup>          
-                                                        {props.question.options.map((m , index) =>                                               
-                                                        <form class="form-inline">
+                                                        {props.question.options.map((m , index) =>                                            
+                                                        <div>
                                                             <IconButton onClick={()=>{
                                                                 props.removeOption(index)
                                                             }}>
                                                                 <CloseIcon />
-                                                            </IconButton>
-                                                            <Checkbox checked={props.options[index].answer} onChange={()=>(props.MultiChoiseCheck({"index": index , "answer": !props.options[index].answer}))} name="gilad" 
-                                                                className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                            <TextField variant="filled"  value={m.option} onChange={(e) => {
-                                                                props.editOption({"option" : e.target.value , "index" : index});                                                                
-                                                            }} margin='dense' />                                                            
-                                                        </form>                                                        
+                                                            </IconButton>                                                               
+                                                            {/* <form class="form-inline">                                                                                                                         */}
+                                                                <Checkbox checked={props.options[index].answer} onChange={()=>(props.MultiChoiseCheck({"index": index , "answer": !props.options[index].answer}))} name="gilad" 
+                                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
+                                                                <TextField variant="filled"  value={m.option} onChange={(e) => {
+                                                                    props.editOption({"option" : e.target.value , "index" : index});                                                                
+                                                                }} margin='dense' />                                                            
+
+                                                            {/* </form>                             */}
+                                                            
+                                                        </div>                            
                                                         )}
                                                     </FormGroup>                                                                                         
                                                 </Grid> 
