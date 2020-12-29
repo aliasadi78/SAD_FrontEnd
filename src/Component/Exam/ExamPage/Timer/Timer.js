@@ -51,7 +51,6 @@ class Timer extends React.Component {
   }
 
   handleSubmit(dateValue, timeValue, ampmValue) {
-    console.log(this.props.time)
     const unixEndDate = Number(moment(`${dateValue} ${timeValue} ${ampmValue}`, 'YYYY-MM-DD hh:mm:ss A').format('X'));
       this.startCountdown(this.renderCountdownDate({
         dateValue,
@@ -71,7 +70,7 @@ class Timer extends React.Component {
     else {
       this.setState({
         isCountdownSet: false,
-        infoMessage: 'Click the Settings button to start a new countdown.'
+        infoMessage: 'زمان شما در آزمون به پایان رسیده است'
       });
     }
   }
@@ -79,7 +78,7 @@ class Timer extends React.Component {
   playTimer(unixEndDate) {
     var offset = new Date().getTimezoneOffset() * (-60);
     const distance = unixEndDate - moment().format('X') + offset;
-    if (distance > 0) {
+    if (distance > 0 && this.props.time !== "") {
       this.setState({
         countdown: {
           days: parseInt(distance / (60 * 60 * 24), 10),

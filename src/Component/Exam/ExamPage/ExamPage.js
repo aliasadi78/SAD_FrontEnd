@@ -51,6 +51,7 @@ class ExamPage extends Component{
                     console.log(questionsList)
                 }).catch(error=>{
                     console.log(error.response)
+                    setTime("")
                     setPending(false)
                     setCheck(true);
                 })            
