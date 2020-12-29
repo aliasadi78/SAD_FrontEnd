@@ -295,7 +295,9 @@ export default function QuestionHolder_Create(props) {
                                         <FormGroup>
                                             {props.question.options.map((m , index) => 
                                             <form class="form-inline">
-                                                <Checkbox checked={choice1}  name="gilad"  disabled
+                                                <Checkbox checked={props.question.answers.some(elem =>{
+                                                    return JSON.stringify({"answer" : index + 1}) === JSON.stringify(elem);})
+                                                    ? true : false }  name="gilad"  disabled
                                                     className ={classes.multiCheckbox} color='#3D5A80' /> 
                                                     <TextField variant="filled"  margin='dense'disabled  defaultValue={props.question.options[index].option}/>
                                             </form>                                    

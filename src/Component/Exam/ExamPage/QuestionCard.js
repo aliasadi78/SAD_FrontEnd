@@ -11,6 +11,9 @@ import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import Dialog from '@material-ui/core/Dialog';
+import axios from 'axios';
+import tokenConfig from '../../../utils/tokenConfig';
+import serverURL from '../../../utils/serverURL';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -40,6 +43,10 @@ export default function QuestionCard(props){
         const [selectedRadioValue,setSelectedRadioValue] = React.useState(props.answer)
         const [shortAnswer,setShortAnswer] = React.useState();
         const [longAnswer,setLongAnswer] = React.useState();
+        const [isFileLoaded , setIsFileLoaded] = React.useState(false);
+        const [fileName , setFilename] = React.useState(null)
+        const [isfileImage , setisFileImage] = React.useState(false)
+        const [ image , setImage] = React.useState(null);
 
         const file = new FormData();
         
@@ -138,18 +145,7 @@ export default function QuestionCard(props){
                     >
 
                         <Grid item xs={12} >
-                            <input 
-                                type="file" name="file"
-                                style={{display : 'none'}} name='file' id='file' type="file"                                 
-                                onChange={(e) => {
-                                    console.log(e.target.files[0])                                    
-                                    file.append('file' , e.target.files[0] );                                    
-                                }}/>
-                            <label htmlFor='file'>
-                                <IconButton aria-label="upload picture" component="span">
-                                    <PhotoLibraryIcon style={{color:'#EE6C4D'}} />
-                                </IconButton>
-                            </label>    
+                                
                         </Grid>
                 </Grid>
 
@@ -222,18 +218,70 @@ export default function QuestionCard(props){
                             </FormControl>
                         </ul>): null}
                     {props.q.question.type === "LONGANSWER" ? (
-                        <TextField
-                            style={{width: '100%'}}
-                            id="outlined-textarea"
-                            placeholder="کادر جواب"
-                            multiline
-                            value={props.useranswer[props.idx] !== "undefined" ? props.useranswer[props.idx]:null}
-                            onChange={handleChangeLongAnswer}
-                            variant="outlined"
-                            InputProps={{
-                                style:{fontFamily: 'Vazir'},
-                            }}
-                        />
+                        <div>
+
+                            <Grid item xs={12}>
+                                <input 
+                                    type="file" name="file"
+                                    style={{display : 'none'}}
+                                    id='file' type="file"                                 
+                                    onChange={(e) => {
+                                        console.log(e.target.files[0])                                                                        
+                                        file.append('answer' , e.target.files[0] );    
+                                        setIsFileLoaded(true);         
+                                        
+                                        let reader = new FileReader();
+                                        
+                                        reader.readAsDataURL(e.target.files[0]);
+                                        
+                                        reader.onload = (e) => {
+                                            // console.log(e.target.result);
+                                            setImage(e.target.result);
+                                        }
+
+                                        const index = props.idx + 1 ;
+                                        axios.post(serverURL() + "exam/" + props.examId + "/questions/" + index + "/answer" , file , tokenConfig() )                                
+                                        .then(res => {
+                                            console.log("done");
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                        })
+                                    }}/>
+                            </Grid>
+                            {isFileLoaded &&                            
+                                <div>
+                                    {fileName}
+                                </div>
+                            }
+
+                            {isfileImage == false &&
+                                <Grid item xs ={12} >
+                                    <img src= {image} 
+                                    width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>                                  
+                                </Grid>
+                            }
+
+                            <label htmlFor='file'>
+                                <IconButton aria-label="upload picture" component="span">
+                                    <PhotoLibraryIcon style={{color:'#EE6C4D'}} />
+                                </IconButton>
+                            </label>
+
+                            <TextField
+                                style={{width: '100%'}}
+                                id="outlined-textarea"
+                                placeholder="کادر جواب"
+                                multiline
+                                value={props.useranswer[props.idx] !== "undefined" ? props.useranswer[props.idx]:null}
+                                onChange={handleChangeLongAnswer}
+                                variant="outlined"
+                                InputProps={{
+                                    style:{fontFamily: 'Vazir'},
+                                }}
+                            />
+
+                        </div>
                     ):null}
                     {props.q.question.type === "SHORTANSWER" ? (
                         <TextField
