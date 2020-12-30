@@ -147,18 +147,13 @@ function AddQuestionExam(props) {
     const [difficulty , setDifficulty] = React.useState("LOW");
     const [questionType , setQuestionType] = React.useState(null);
     const [questionAdded , setQuestionAdded] = React.useState(false);
-    
-    const [choice1 , setChoice1] = React.useState(false);
-    const [choice2 , setChoice2] = React.useState(false);
-    const [choice3 , setChoice3] = React.useState(false);
-    const [choice4 , setChoice4] = React.useState(false);    
 
     const [gozine1 , setGozine1] = React.useState("");
     const [gozine2 , setGozine2] = React.useState("");
     const [gozine3 , setGozine3] = React.useState("");
     const [gozine4 , setGozine4] = React.useState("");  
-    
-    const [options , setOptions] = React.useState([]);
+
+    const [answerTest , setAnswerTest] = React.useState(0);
 
     const dispatch = useDispatch();
     const [addToMyQuestions , setAddToMyQuestions] = React.useState(false);
@@ -451,35 +446,36 @@ function AddQuestionExam(props) {
                                             :                                          
                                             questionType === 'TEST' ?
                                                 <FormControl component="fieldset">                                                    
-                                                    <RadioGroup aria-label="gender"  className = {classes.RadioChoice} name="gender1" onChange={(e) => {
+                                                    <RadioGroup aria-label="gender" value={answerTest}  className = {classes.RadioChoice} name="gender1" onChange={(e) => {
                                                         console.log(e.target.value)                                                        
-                                                        setAnswers([{"answer" : e.target.value}])}
-                                                        }>
+                                                        setAnswers([{"answer" : parseInt(e.target.value)}]) 
+                                                        setAnswerTest(parseInt(e.target.value));
+                                                        }}>
                                                         <Grid container >
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="1" control={<Radio />} /> <TextField onChange={(e) => {
+                                                                    <FormControlLabel value={1} control={<Radio />} /> <TextField onChange={(e) => {
                                                                         setGozine1(e.target.value);
                                                                     }} variant="filled" margin='dense' />
                                                                 </form>       
                                                             </Grid>
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="2" control={<Radio />} /> <TextField onChange={(e) => {
+                                                                    <FormControlLabel value={2} control={<Radio />} /> <TextField onChange={(e) => {
                                                                         setGozine2(e.target.value);
                                                                     }} variant="filled" margin='dense' />
                                                                 </form>       
                                                             </Grid>
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="3" control={<Radio />} /> <TextField onChange={(e) => {
+                                                                    <FormControlLabel value={3} control={<Radio />} /> <TextField onChange={(e) => {
                                                                         setGozine3(e.target.value);
                                                                     }} variant="filled" margin='dense' />
                                                                 </form>       
                                                             </Grid>
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="4" control={<Radio />} /> <TextField onChange={(e) => {
+                                                                    <FormControlLabel value={4} control={<Radio />} /> <TextField onChange={(e) => {
                                                                         setGozine4(e.target.value);
                                                                     }} variant="filled" margin='dense' />
                                                                 </form>          

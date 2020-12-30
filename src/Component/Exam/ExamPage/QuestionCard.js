@@ -48,6 +48,8 @@ export default function QuestionCard(props){
         const [isfileImage , setisFileImage] = React.useState(false)
         const [ image , setImage] = React.useState(null);
 
+        const [ mood , setMood ] = React.useState("Exam");
+
         const file = new FormData();
         
         var data;
@@ -149,6 +151,8 @@ export default function QuestionCard(props){
                         </Grid>
                 </Grid>
 
+                
+                {mood == 'Exam' &&
                 <Grid item xs={12} >
                     {props.q.question.type === "TEST" ? (
                         <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
@@ -298,7 +302,9 @@ export default function QuestionCard(props){
                         />
                     ):null}       
 
-                </Grid>                 
+                </Grid>                      
+                }
+                                            
             </Container>
         )
 }

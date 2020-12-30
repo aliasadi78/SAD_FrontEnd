@@ -14,6 +14,7 @@ import ReactDOM from 'react-dom'
 import QuestionCard from './QuestionCard' ;
 import Timer from './Timer/Timer';
 import ClickNHold from 'react-click-n-hold';
+import Button from '@material-ui/core/Button';
 
 class ExamPage extends Component{
     constructor(props){
@@ -21,6 +22,7 @@ class ExamPage extends Component{
 
         this.state = {
             examName : null ,
+            c : 0 
         }
     }
     componentWillMount(){
@@ -62,7 +64,7 @@ class ExamPage extends Component{
     const [totalQuestion,setTtotalQuestion] = this.props.totalQuestion;
     const [questionsList,setQuestionsList] = this.props.questionsList;
     const [pending,setPending] = this.props.pending; 
-    const [time,setTime] = this.props.time;
+    const [time,setTime] = this.props.time;    
     var indexQuestion = 1;
     return(
         <div style={{backgroundColor: 'white' , paddingBottom : '80px'}}> 
@@ -77,18 +79,20 @@ class ExamPage extends Component{
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%', paddingBottom : '40px',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
                 <Grid container xs={12} >
                         
-                          {/* <Grid item xs={12}>
-                            <ClickNHold 
-			                	time={2} // Time to keep pressing. Default is 2
-			                	onStart={() => {console.log('START'); }} // Start callback
-			                	onClickNHold={() => {console.log('CLICK AND HOLD')}} //Timeout callback
-			                	onEnd={(e , enough) => {
-                                    console.log('END');
-                                    console.log(enough ? 'Click released after enough time': 'Click released too soon');
-                                }} > // Click release callback
-			                		<button>Click and hold</button>
-			                </ClickNHold>    
-                          </Grid> */}
+                            {this.state.c}
+                            
+                          <Button onMouseDown = {() => {                                                          
+                                setTimeout(() => {
+                                    this.setState(prestate => {
+                                        return{
+                                            c : this.state.c + 1 ,
+                                        }
+                                    });
+                                }, 1000);                                                            
+                                }} >
+                              add
+                          </Button>
+                          
 
                           <Grid item xs={4} ></Grid>
                           <Grid item xs={4} >

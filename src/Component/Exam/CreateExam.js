@@ -303,7 +303,7 @@ function CreateExam(props){
                     const a = {
                       "name" : props.title , 
                       "startDate" : moment(props.startDate).format() , 
-                      "endDate" :     moment(props.endDate).format() ,
+                      "endDate" :   moment(props.endDate).format() ,                      
                       "questions" :  props.questions ,
                       "examLength" :  props.examLength ,
                       "examId" : examId                  
