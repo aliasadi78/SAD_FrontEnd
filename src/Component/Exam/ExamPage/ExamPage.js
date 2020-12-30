@@ -14,7 +14,7 @@ import ReactDOM from 'react-dom'
 import QuestionCard from './QuestionCard' ;
 import Timer from './Timer/Timer';
 import ClickNHold from 'react-click-n-hold';
-
+import Button from '@material-ui/core/Button';
 class ExamPage extends Component{
     constructor(props){
         super(props);
@@ -64,7 +64,16 @@ class ExamPage extends Component{
     const [questionsList,setQuestionsList] = this.props.questionsList;
     const [pending,setPending] = this.props.pending; 
     const [time,setTime] = this.props.time;
-    var indexQuestion = 1;
+    const [indexQuestion,setIndexQuestion] = this.props.indexQuestion;
+    const [color,setColor] = this.props.color
+    var T = [];
+    const handle = (index) => {
+      console.log(index)
+      const arr = [...color]
+      arr[index] = !(color[index])
+      setColor(arr)
+      console.log(T)
+  }
     return(
         <div style={{backgroundColor: 'white' , paddingBottom : '80px'}}> 
         <Material_RTL style={{backgroundColor: 'white'}}>
@@ -110,24 +119,64 @@ class ExamPage extends Component{
                             justify="center"
                             alignItems="center" 
                             style={{display: 'flex',justifyContent: 'center'}}>
-                            <Pagination onChange={(event,value) => {
+                                <div class="div1" style={{width:'100%',overflow:'hidden'}}>
+                                    <div class="div2" style={{display: 'flex',padding: '1%',overflowX:'scroll',backgroundColor: '#1ca0a0'}}>
+                                        {questionsList.map((q,index) => {
+                                          return(
+                                            <Button onClick={()=>{
+                                                axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
+                                                .then(res=>{
+                                                    console.log(res)
+                                                })
+
+                                                .catch(err=>{
+                                                    console.log(err)
+                                                })
+                                                if(questionsList.length > 0 ){ questionsList.map((question,idx)=>{
+                                                    if(idx === index){                                        
+                                                        setIndexQuestion(question.index)
+                                                        console.log(indexQuestion)
+                                                        return(
+                                                            ReactDOM.render(<QuestionCard examId={this.props.examId} q={question} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>,document.getElementById('Grid1'))
+                                                        )
+                                                    }
+                                                    }
+                                                )}
+                                                // const arr = [...color]
+                                                // if(typeof(useranswer[indexQuestion]) !== "undefined"){
+                                                //     arr[indexQuestion-1] = !(color[indexQuestion-1])
+                                                // }
+                                                // else{
+                                                //     arr[indexQuestion-1] = color[indexQuestion-1]
+                                                // }
+                                                // setColor(arr)
+                                                console.log(useranswer)
+                                                console.log(questionsList[indexQuestion-1])
+                                                console.log(questionsList[index])
+                                            }} variant="outlined" style={{fontFamily: 'Vazir',backgroundColor : typeof(questionsList[index].answerText) !== "undefined" || typeof(useranswer[index]) !== "undefined" ? "green": "gray",color: "white",margin:'1%'}}>{faNumber(index+1)}</Button>
+                                          )
+                                        })}
+                                    </div>
+                                </div>
+                            {/* <Pagination onChange={(event,value) => {
                                 axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
                                 .then(res=>{
                                     console.log(res)
                                 })
+
                                 .catch(err=>{
                                     console.log(err)
                                 })
                                 if(questionsList.length > 0 ){ questionsList.map((question,idx)=>{
                                     if(idx === value - 1){                                        
-                                        indexQuestion = question.index
+                                        setIndexQuestion(question.index)
                                         return(
                                             ReactDOM.render(<QuestionCard examId={this.props.examId} q={question} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>,document.getElementById('Grid1'))
                                         )
                                     }
                                     }
                                 )}
-                            }} variant="outlined" size="small"  count={totalQuestion} shape="rounded" />
+                            }} variant="outlined" size="small"  count={totalQuestion} shape="rounded" /> */}
                             </Grid>
                         </Grid>                        
 
@@ -153,7 +202,24 @@ class ExamPage extends Component{
     )
 }}
 var useranswer=[]
+function faNumber(n){
+    const farsidigit = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
+    return n
+    .toString()
+    .split("")
+    .map(x => farsidigit[x])
+    .join("")
+}
 const useStyles = makeStyles((theme) => ({
+    '@global':{
+        '.div2::-webkit-scrollbar':{
+            width: '5px',
+        },
+        'div2::-webkit-scrollbar-thumb': {
+            background: '#1CA0A0',
+            borderRadius: '10px',
+        }
+    },
     ListTitle :{
         padding : theme.spacing(1) , 
         marginBottom : theme.spacing(1) ,  
@@ -169,6 +235,8 @@ export default (props) => {
     const questionsList= React.useState([]);
     const pending = React.useState(false);    
     const time = React.useState("")
+    const color =  React.useState([])
+    const indexQuestion =  React.useState(1)
     return (        
         <ExamPage 
             classes={classes} 
@@ -177,6 +245,8 @@ export default (props) => {
             questionsList={questionsList} 
             examId = {examId}
             pending={pending}
-            time={time}/>    
+            time={time}
+            color={color}
+            indexQuestion={indexQuestion}/>    
     )
 }

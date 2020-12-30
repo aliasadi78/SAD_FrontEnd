@@ -5,6 +5,8 @@ import Countdown from './countdown';
 import axios from 'axios';
 import tokenConfig from '../../../../utils/tokenConfig';
 import serverURL from '../../../../utils/serverURL';
+import { useHistory } from "react-router-dom";
+
 class Timer extends React.Component {
 
   constructor(props) {
@@ -72,10 +74,12 @@ class Timer extends React.Component {
         isCountdownSet: false,
         infoMessage: 'زمان شما در آزمون به پایان رسیده است'
       });
+      // window.location.href = "/user/classes/"
     }
   }
 
   playTimer(unixEndDate) {
+    const history = this.props.history;
     var offset = new Date().getTimezoneOffset() * (-60);
     const distance = unixEndDate - moment().format('X') + offset;
     if (distance > 0 && this.props.time !== "") {
@@ -98,6 +102,7 @@ class Timer extends React.Component {
         isCountdownSet: false,
         infoMessage: 'آزمون در دسترس نمی باشد!'
       });
+      window.location.href = "/user/classes/"
     }
   }
 
@@ -138,7 +143,8 @@ class Timer extends React.Component {
 export default (props) => {
   const examId = props.examId ; 
   const time = props.time; 
+  const history = useHistory();
   return (        
-      <Timer examId = {examId} time={time}/>    
+      <Timer examId = {examId} time={time} history={history}/>    
   )
 }
