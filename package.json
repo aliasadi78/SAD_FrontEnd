@@ -89,6 +89,7 @@
     "react-dev-utils": "^10.2.1",
     "react-dom": "^17.0.1",
     "react-draggable": "^4.4.3",
+    "react-file-reader": "^1.1.4",
     "react-jss": "^10.4.0",
     "react-material-ui-form-validator": "^2.1.1",
     "react-number-format": "^4.4.1",
