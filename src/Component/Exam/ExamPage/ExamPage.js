@@ -120,7 +120,7 @@ class ExamPage extends Component{
                             alignItems="center" 
                             style={{display: 'flex',justifyContent: 'center'}}>
                                 <div class="div1" style={{width:'100%',overflow:'hidden'}}>
-                                    <div class="div2" style={{display: 'flex',padding: '1%',overflowX:'scroll',backgroundColor: '#1ca0a0'}}>
+                                    <div class="div2" style={{display: 'flex',padding: '1%',overflowX:'scroll',backgroundColor: 'white'}}>
                                         {questionsList.map((q,index) => {
                                           return(
                                             <Button onClick={()=>{
@@ -142,18 +142,7 @@ class ExamPage extends Component{
                                                     }
                                                     }
                                                 )}
-                                                // const arr = [...color]
-                                                // if(typeof(useranswer[indexQuestion]) !== "undefined"){
-                                                //     arr[indexQuestion-1] = !(color[indexQuestion-1])
-                                                // }
-                                                // else{
-                                                //     arr[indexQuestion-1] = color[indexQuestion-1]
-                                                // }
-                                                // setColor(arr)
-                                                console.log(useranswer)
-                                                console.log(questionsList[indexQuestion-1])
-                                                console.log(questionsList[index])
-                                            }} variant="outlined" style={{fontFamily: 'Vazir',backgroundColor : typeof(questionsList[index].answerText) !== "undefined" || typeof(useranswer[index]) !== "undefined" ? "green": "gray",color: "white",margin:'1%'}}>{faNumber(index+1)}</Button>
+                                            }} size="small" variant="outlined" style={{fontFamily: 'Vazir',backgroundColor : typeof(questionsList[index].answerText) !== "undefined" || typeof(useranswer[index]) !== "undefined" ? "mediumseagreen": "gray",color: "white",margin:'1%'}}>{faNumber(index+1)}</Button>
                                           )
                                         })}
                                     </div>
