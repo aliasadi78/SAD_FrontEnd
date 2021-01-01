@@ -154,16 +154,17 @@ export default function ReviewQuestionCard(props){
                 </Grid>
 
                                 
-                {/* <Grid item xs={12} > */}
+                <Grid item xs={12} >
                     {props.q.question.type === "TEST" ? (
-                        <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
-                            <FormControl component="fieldset">                                
-                                <RadioGroup
-                                    aria-label="quiz"
-                                    name="quiz"
-                                    value={parseInt(props.useranswer[props.idx])}
-                                    onChange={handleRadioChange}
-                                >
+                        
+                        <FormControl>                                
+                            <RadioGroup
+                                aria-label="quiz"
+                                name="quiz"
+                                value={parseInt(props.useranswer[props.idx])}
+                                onChange={handleRadioChange}
+                            >
+                                <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
                                     <Grid container >
                                         {props.q.question.options.map((options,idx)=>{
                                             return(
@@ -175,10 +176,11 @@ export default function ReviewQuestionCard(props){
                                             )
                                         })}
                                     </Grid>
-                                </RadioGroup>
-                            </FormControl>
-                        </ul>): null}
-
+                                </ul>
+                            </RadioGroup>
+                        </FormControl>
+                        ): null}
+                    </Grid>
                     <Grid item xs={12} >
                     {props.q.question.type === "MULTICHOISE" && props.idx % 2 == 1 ? (
                         <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>

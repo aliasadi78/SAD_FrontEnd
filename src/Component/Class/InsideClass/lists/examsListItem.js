@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from "react-router-dom";
 import moment from "moment" ;
+import Axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +38,24 @@ export default function ExamListItem(props) {
   const classes = useStyles();
   const history = useHistory();
 
+  const [buttonText , setButtonText] = React.useState("شرکت")
+  const [check , setCheck] = React.useState(false);
+  const [url , setUrl] = React.useState("");
+
+  componentWillMount :
+  if(check == false)
+    if(moment(props.end).isAfter(moment(props.now)))
+      {
+      setButtonText("شرکت");
+      setCheck(true);
+      }        
+    else
+    {      
+      setButtonText("مرور") ;
+      setCheck(true);
+      setUrl("review/");
+    }
+
   return (
     <div className={classes.root}>
       <Paper elevation={props.elevation} className={classes.paper}>
@@ -49,11 +68,11 @@ export default function ExamListItem(props) {
               {props.isAdmin == false ?
 
                 <Button variant="contained" className = {classes.button} onClick={()=>{
-                  window.location.href = "/exam/" + props.id + "/questions" ;
-                }}>                        
-                    <h5 style={{fontFamily: 'Vazir' , color : '#1CA0A0'}}>                        
-                    شرکت 
-                    </h5>                    
+                  window.location.href = "/exam/" + url + props.id + "/questions" ;
+                }}> 
+                  <h5 style={{fontFamily: 'Vazir' , color : '#1CA0A0'}}>                                               
+                    {buttonText}                             
+                  </h5>
                 </Button>
                 :
                 <Button variant="contained" className = {classes.button} onClick={()=> {

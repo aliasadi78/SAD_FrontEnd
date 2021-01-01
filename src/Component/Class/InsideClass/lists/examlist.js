@@ -50,7 +50,8 @@ export default function Examslist (props){
     const elevation = 2 ;     
     const classes = useStyles();
     const [examList , setExamList] = React.useState([]);
-    const [examsListLoad , setExamsListLoad ] = React.useState(true);
+    const [now , setNow] = React.useState(null);
+    const [examsListLoad , setExamsListLoad ] = React.useState(true);    
 
     //پشت سر هم ریکوئست میفرستاد
     componentWillMount:
@@ -58,15 +59,21 @@ export default function Examslist (props){
         axios.get(serverURL() + "class/" + props.classId + "/exams" , tokenConfig())
         .then(res =>{      
           setExamList([...res.data.exams]); 
-          setExamsListLoad(false);
-          console.log(examList);
-          // console.ChevronLeftIcong(res);
+          setExamsListLoad(false);                    
         })
         .catch(err=> {
           console.log(err);
         });}
-    let history = useHistory();
 
+    let history = useHistory();
+    
+    axios.get(serverURL() + "public/time")
+    .then(res => {
+      setNow(res.time)
+    })
+    .catch(err => {
+
+    });
 
     return (
         <Grid item  xs={4} sm={12}  lg={6} className = {classes.grid}>                                                                
@@ -125,6 +132,7 @@ export default function Examslist (props){
                                   start = {m.startDate}
                                   end = {m.endDate}
                                   id = {m._id}
+                                  now = {now}
                                   classId = {props.classId}
                                   isAdmin = {props.isAdmin}
                                 />
