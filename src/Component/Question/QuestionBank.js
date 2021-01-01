@@ -48,7 +48,7 @@ class QuestionBank extends Component{
         const [check,setCheck] = this.props.check;
         var res;
         if(check != true ){
-        axios.get(serverURL() + "public/question/category", tokenConfig() )
+        axios.get(serverURL() + "public/question/category" )
         .then(res => {
             setCategory(res.data);
             setCheck(true);

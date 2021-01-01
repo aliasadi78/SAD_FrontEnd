@@ -46,7 +46,7 @@ class Questions extends Component {
     };          
     var userQuestions = [];  
     
-    axios.get(serverURL() + "public/question/category" , tokenConfig())
+    axios.get(serverURL() + "public/question/category")
     .then(res => {        
         console.log(res.data);      
         this.setState(prevstate =>{
