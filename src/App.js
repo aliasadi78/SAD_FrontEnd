@@ -27,7 +27,7 @@ class App extends Component {
         super(props);      
         
         // in this section we consider classes page as home page - taking public api s
-        axios.get(serverURL() + "public/question/category" , tokenConfig())
+        axios.get(serverURL() + "public/question/category")
         .then(res=>{            
         props.savePublicApis(res.data);
         console.log('publics found');         
