@@ -55,7 +55,7 @@ class App extends Component {
                 <Route path="/questionBank" children={<Dashboard />} component = {questionBank  } />
                 <Route path="/Dashboard" component = {Dashboard} />
                 <Route path="/exam/:examId/questions"  component={ExamPage} />
-                <Route path="/exam/:examId/questions/review"  component={ExamPage} />
+                <Route path="/exam/review/:examId/questions/"  component={ExamPage} />
             </div>
 
         );
