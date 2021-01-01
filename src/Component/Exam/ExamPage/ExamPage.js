@@ -7,14 +7,13 @@ import Material_RTL from "../../Material_RTL";
 import M_RTL from "../../M_RTL";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import Paper from '@material-ui/core/Paper';
-import Pagination from '@material-ui/core/Pagination';
 import { CircularProgress } from '@material-ui/core';
 import ReactDOM from 'react-dom'
 import QuestionCard from './QuestionCard' ;
 import Timer from './Timer/Timer';
-import ClickNHold from 'react-click-n-hold';
 import Button from '@material-ui/core/Button';
+import Typography from 'material-ui/styles/typography';
+import ReviewQuestionCard from './reviewQuestionCard';
 
 class ExamPage extends Component{
     constructor(props){
@@ -22,26 +21,26 @@ class ExamPage extends Component{
 
         this.state = {
             examName : null ,
-            c : 0 
+            c : 100 ,
+            holding : false 
         }
     }
+    
+
     componentWillMount(){
         var [check,setCheck] = this.props.check;
         var [totalQuestion,setTotalQuestion] = this.props.totalQuestion;
         var [questionsList,setQuestionsList] = this.props.questionsList; 
-        var [time,setTime] = this.props.time;       
-        var [pending,setPending] = this.props.pending;        
-        setPending(true)
+        var [time,setTime] = this.props.time;  
+        var [pending,setPending] = this.props.pending;  
+        setPending(true);             
         var res = []
-        if(!check){
+        if(!check && !this.props.reviewMode){
             axios.get(serverURL() + "exam/" + this.props.examId + "/questions" , tokenConfig() )
-                .then(result => {
-                    console.log(result.data)
-                    console.log(result.data);
+                .then(result => {                    
                     res.push(...result.data.questions);
                     setTime(result.data.user_examEndTime);
-                    var ll = res.map((q) => q);
-                    console.log(ll)
+                    var ll = res.map((q) => q);                    
                     setQuestionsList([...ll]);
                     this.setState(prevstate => {
                         return {
@@ -49,14 +48,25 @@ class ExamPage extends Component{
                         }
                     });
                     setCheck(true);
-                    setTotalQuestion(result.data.questions.length)
-                    setPending(false)
-                    console.log(questionsList)
+                    setPending(false);
+                    setTotalQuestion(result.data.questions.length)                    
                 }).catch(error=>{
                     console.log(error.response)
-                    setPending(false)
+                    setTime("")                    
                     setCheck(true);
+                    setPending(false);
                 })            
+        }
+        if(!check && this.props.reviewMode ){
+            axios.get(serverURL() + "exam/" + this.props.examId + "/questions/review" , tokenConfig() )
+            .then( result => {
+                setQuestionsList([...result.data.questions]);                
+                setCheck(true);     
+                setPending(false);           
+            })
+            .catch((err) => {
+                console.log(err);
+            });
         }
     }
     render(){
@@ -64,8 +74,39 @@ class ExamPage extends Component{
     const [totalQuestion,setTtotalQuestion] = this.props.totalQuestion;
     const [questionsList,setQuestionsList] = this.props.questionsList;
     const [pending,setPending] = this.props.pending; 
-    const [time,setTime] = this.props.time;    
-    var indexQuestion = 1;
+    // var indexQuestion = 1;
+    const [time,setTime] = this.props.time;
+    const [indexQuestion,setIndexQuestion] = this.props.indexQuestion;
+    const [color,setColor] = this.props.color
+    var T = [];
+    const handle = (index) => {
+      console.log(index)
+      const arr = [...color]
+      arr[index] = !(color[index])
+      setColor(arr)
+      console.log(T)
+     }
+
+    // const  handleFinishExamEvent = (event) => {
+    //     if (event.type === "mousedown") {
+    //         console.log("shit down");                            
+    //                 setTimeout(() => {
+    //                 this.setState(prestate => {                                        
+    //                     return{
+    //                         c : this.state.c + 1 ,
+    //                     }
+    //                 })                                     
+    //                 },50 ) ;                                                
+    //     } else {
+    //         this.setState(prestate => {                                        
+    //             return{
+    //                 holding : false ,
+    //                 c : 100
+    //             }
+    //         })
+    //     }
+    // }
+
     return(
         <div style={{backgroundColor: 'white' , paddingBottom : '80px'}}> 
         <Material_RTL style={{backgroundColor: 'white'}}>
@@ -74,66 +115,90 @@ class ExamPage extends Component{
                     {this.state.examName}
                 </div>
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height:'110px',fontSize: '16px'}}>
-                    <Timer time={time} examId={this.props.examId}/>
+                    {this.props.reviewMode == false ?
+                        <Timer time={time} examId={this.props.examId}/>
+                    :
+                        <Grid item xs={12}>
+                            {/* <Typography variant="h1" style={{fontFamily: 'Vazir'}} >
+                                مرور آزمون
+                            </Typography>                             */}
+                        </Grid>
+                    }
                 </Container>
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%', paddingBottom : '40px',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
                 <Grid container xs={12} >
-                        
-                            {this.state.c}
-                            
-                          <Button onMouseDown = {() => {                                                          
-                                setTimeout(() => {
-                                    this.setState(prestate => {
-                                        return{
-                                            c : this.state.c + 1 ,
-                                        }
-                                    });
-                                }, 1000);                                                            
-                                }} >
-                              add
-                          </Button>
-                          
-
+                                                    
                           <Grid item xs={4} ></Grid>
                           <Grid item xs={4} >
 
-                            <Paper elevation = {2} className = {classes.ListTitle}>
-                              <h5 style={{fontFamily: 'Vazir' , color : 'white'}}>
-                                سوالات
-                                {/* <IsoIcon /> */}
-                              </h5>
-                            </Paper>                          
+                          <Button variant = "contained" 
+                          style={{ marginBottom : "8px"  , width : this.state.c + "px" , fontFamily: 'Vazir' , backgroundColor : "#E63946"}} 
+                        //   onMouseUp = {(e) =>  {handleFinishExamEvent(e)} }
+                        //   onMouseDown = { (e) => { handleFinishExamEvent(e) }} 
+
+                        onClick = {() => {
+                            for (let index = 0; index < questionsList.length; index++) {
+                                const element = questionsList[index];
+                                axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
+                                .then(res=>{
+                                    console.log(res)
+                                })
+
+                                .catch(err=>{
+                                    console.log(err)
+                                })
+                            }
+                        }}
+                          >
+                              اتمام آزمون 
+                          </Button>
+                                                      
                           </Grid>                              
 
                           <Grid item xs={4} ></Grid>
 
-                          {/* <Grid > */}
+                    {this.props.reviewMode == false &&                           
                         <Grid container item xs={12}
                             direction="row"
                             justify="center"
                             alignItems="center" 
                             style={{display: 'flex',justifyContent: 'center'}}>
-                            <Pagination onChange={(event,value) => {
-                                axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
-                                .then(res=>{
-                                    console.log(res)
-                                })
-                                .catch(err=>{
-                                    console.log(err)
-                                })
-                                if(questionsList.length > 0 ){ questionsList.map((question,idx)=>{
-                                    if(idx === value - 1){                                        
-                                        indexQuestion = question.index
-                                        return(
-                                            ReactDOM.render(<QuestionCard examId={this.props.examId} q={question} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>,document.getElementById('Grid1'))
-                                        )
-                                    }
-                                    }
-                                )}
-                            }} variant="outlined" size="small"  count={totalQuestion} shape="rounded" />
-                            </Grid>
-                        </Grid>                        
+                                <div class="div1" style={{width:'100%',overflow:'hidden'}}>
+                                    <div class="div2" style={{display: 'flex',padding: '1%',overflowX:'scroll',backgroundColor: '#1ca0a0'}}>
+                                        {questionsList.map((q,index) => {
+                                          return(
+                                            <Button onClick={()=>{
+                                                axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
+                                                .then(res=>{
+                                                    console.log(res)
+                                                })
 
+                                                .catch(err=>{
+                                                    console.log(err)
+                                                })
+                                                                                                
+                                                if(questionsList.length > 0 ){ questionsList.map((question,idx)=>{
+                                                    if(idx === index){                                        
+                                                        setIndexQuestion(question.index)
+                                                        console.log(indexQuestion)
+                                                        return(
+                                                            ReactDOM.render(<QuestionCard examId={this.props.examId} q={question} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>,document.getElementById('Grid1'))
+                                                        )
+                                                    }
+                                                    }
+                                                )}                                                
+                                                console.log(useranswer)
+                                                console.log(questionsList[indexQuestion-1])
+                                                console.log(questionsList[index])
+                                            }} variant="outlined" style={{fontFamily: 'Vazir',backgroundColor : typeof(questionsList[index].answerText) !== "undefined" || typeof(useranswer[index]) !== "undefined" ? "green": "gray",color: "white",margin:'1%'}}>{faNumber(index+1)}</Button>
+                                          )
+                                        })}
+                                    </div>
+                                </div>
+                            </Grid>                        
+                    }
+
+                    {this.props.reviewMode == false &&
                     <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px'}}>                                                
                         <Grid id="Grid1">
                             {pending ?
@@ -149,6 +214,24 @@ class ExamPage extends Component{
                             }
                         </Grid>
                     </Container>
+                    }
+
+                    {this.props.reviewMode == true &&
+                        <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px'}}>                                                
+                            <Grid id="Grid1">
+                                {pending ?
+                                    <div style={{}}><CircularProgress style={{color: '#1CA0A0'}}/></div>
+                                :                                    
+                                <div>
+                                    {questionsList.map((question,idx)=>                                        
+                                        <ReviewQuestionCard q={question} examId={this.props.examId} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>                                         
+                                    )}
+                                </div>
+                                }
+                            </Grid>
+                        </Container>
+                    }
+                </Grid>   
                 </Container>
             </M_RTL>
         </Material_RTL>
@@ -156,7 +239,24 @@ class ExamPage extends Component{
     )
 }}
 var useranswer=[]
+function faNumber(n){
+    const farsidigit = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
+    return n
+    .toString()
+    .split("")
+    .map(x => farsidigit[x])
+    .join("")
+}
 const useStyles = makeStyles((theme) => ({
+    '@global':{
+        '.div2::-webkit-scrollbar':{
+            width: '5px',
+        },
+        'div2::-webkit-scrollbar-thumb': {
+            background: '#1CA0A0',
+            borderRadius: '10px',
+        }
+    },
     ListTitle :{
         padding : theme.spacing(1) , 
         marginBottom : theme.spacing(1) ,  
@@ -172,6 +272,10 @@ export default (props) => {
     const questionsList= React.useState([]);
     const pending = React.useState(false);    
     const time = React.useState("")
+    const color =  React.useState([])
+    const indexQuestion =  React.useState(1)
+    const [reviewMode , s] = React.useState(props.location.pathname.includes("review"));    
+    console.log(reviewMode);
     return (        
         <ExamPage 
             classes={classes} 
@@ -180,6 +284,10 @@ export default (props) => {
             questionsList={questionsList} 
             examId = {examId}
             pending={pending}
-            time={time}/>    
+            time={time}
+            color={color}
+            indexQuestion={indexQuestion}
+            reviewMode = {reviewMode}
+            />    
     )
 }

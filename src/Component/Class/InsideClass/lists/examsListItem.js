@@ -52,7 +52,7 @@ export default function ExamListItem(props) {
                   window.location.href = "/exam/" + props.id + "/questions" ;
                 }}>                        
                     <h5 style={{fontFamily: 'Vazir' , color : '#1CA0A0'}}>                        
-                    مشاهده 
+                    شرکت 
                     </h5>                    
                 </Button>
                 :
