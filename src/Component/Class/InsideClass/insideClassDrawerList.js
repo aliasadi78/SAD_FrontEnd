@@ -12,6 +12,7 @@ import Link from '@material-ui/core/Link';
 
 export const mainListItems = (
   <div>        
+          <Link color="inherit" href="/user/page/">
           <ListItem button >
             <ListItemIcon>        
               <AccountBoxIcon style={{ color: "#3D5A80" ,  textAlign : 'right' }} />
@@ -22,6 +23,7 @@ export const mainListItems = (
               </Typography>
             </ListItemText>
           </ListItem>
+          </Link>
           <Link color="inherit" href="/questionBank" >
             <ListItem button >
               <ListItemIcon>

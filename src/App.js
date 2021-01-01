@@ -20,6 +20,7 @@ import tokenConfig from  './utils/tokenConfig' ;
 import { savePublicApis} from './Component/Question/QuestionsSlice' ;
 import DP from './Component/Exam/datepicker' ;
 import axios from 'axios' ;
+import UserPage from './Component/User/UserPage' ;
 
 class App extends Component {    
 
@@ -56,6 +57,7 @@ class App extends Component {
                 <Route path="/Dashboard" component = {Dashboard} />
                 <Route path="/exam/:examId/questions"  component={ExamPage} />
                 <Route path="/exam/review/:examId/questions/"  component={ExamPage} />
+                <Route path="/user/page/" children={<Dashboard />}  component={UserPage} />
             </div>
 
         );
