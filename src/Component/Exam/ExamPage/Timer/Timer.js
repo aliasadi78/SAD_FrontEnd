@@ -4,6 +4,8 @@ import SettingsModal from './settings-modal';
 import Countdown from './countdown';
 import axios from 'axios';
 import tokenConfig from '../../../../utils/tokenConfig';
+import serverURL from '../../../../utils/serverURL';
+import { useHistory } from "react-router-dom";
 
 class Timer extends React.Component {
 
@@ -23,18 +25,8 @@ class Timer extends React.Component {
       isModalOpen: false,
       infoMessage: '',
       settingsFormError: false,
-      errorMessage: ''
+      errorMessage: '',
     };
-    axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig() )
-    .then(res=>{
-      console.log(res.data.user_examEndTime.split("T"))
-      console.log(res.data.user_examEndTime.split("T")[1].split("."))
-      this.setState({dateValue:res.data.user_examEndTime.split("T"),
-                     timeValue:res.data.user_examEndTime.split("T")[1].split(".")})
-      console.log(this.state)
-    }).catch(err=>{
-      console.log(err)
-    })
     this.timer = null;
     this.countDownDate = {
       dateValue: this.state.dateValue,
@@ -80,15 +72,17 @@ class Timer extends React.Component {
     else {
       this.setState({
         isCountdownSet: false,
-        infoMessage: 'Click the Settings button to start a new countdown.'
+        infoMessage: 'زمان شما در آزمون به پایان رسیده است'
       });
+      // window.location.href = "/user/classes/"
     }
   }
 
   playTimer(unixEndDate) {
-    const distance = unixEndDate - moment().format('X');
-
-    if (distance > 0) {
+    const history = this.props.history;
+    var offset = new Date().getTimezoneOffset() * (-60);
+    const distance = unixEndDate - moment().format('X') + offset;
+    if (distance > 0 && this.props.time !== "") {
       this.setState({
         countdown: {
           days: parseInt(distance / (60 * 60 * 24), 10),
@@ -108,6 +102,7 @@ class Timer extends React.Component {
         isCountdownSet: false,
         infoMessage: 'آزمون در دسترس نمی باشد!'
       });
+      window.location.href = "/exam/review/" + this.props.examId + "/questions/" ;
     }
   }
 
@@ -139,11 +134,17 @@ class Timer extends React.Component {
   render() {
     return (
       <div>
-          {1===1 ? this.handleSubmit(this.state.dateValue,this.state.timeValue,this.state.ampmValue):null}
-          {this.state.isCountdownSet ? <Countdown countdown={this.state.countdown} unixEndDate={this.renderCountdownDate().unixEndDate} /> : <p ><span ></span> {this.state.infoMessage}</p>}
+          {this.props.time !== "" ? this.handleSubmit(this.props.time.split("T")[0],this.props.time.split("T")[1].split(".")[0],this.state.ampmValue):null}
+          {this.state.isCountdownSet ? <Countdown countdown={this.state.countdown} unixEndDate={this.renderCountdownDate().unixEndDate} /> : <p style={{color : 'white'}} > {this.state.infoMessage}</p>}
       </div>
     );
   }
 }
-
-export default Timer;
+export default (props) => {
+  const examId = props.examId ; 
+  const time = props.time; 
+  const history = useHistory();
+  return (        
+      <Timer examId = {examId} time={time} history={history}/>    
+  )
+}

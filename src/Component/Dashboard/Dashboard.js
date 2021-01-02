@@ -11,6 +11,7 @@ import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Button from '@material-ui/core/Button';
+import UserPage from '../User/UserPage' ;
 import {
   BrowserRouter as Router,
   Switch,
@@ -248,6 +249,9 @@ export default function Dashboard() {
               </Route>
               <Route path="/user/questions">
                 <Questions />
+              </Route>
+              <Route path="/user/page/" >
+                <UserPage />
               </Route>
             </Switch>        
 

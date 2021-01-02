@@ -86,8 +86,8 @@ export const QuestionsSlice = createSlice({
       state.options.push({"answer" : action.payload });      
     },
     removeOption(state , action){
-      delete state.edittedQuestion.options[action.payload] ;
-      delete state.options[action.payload] ;
+      state.edittedQuestion.options.splice(action.payload , 1 )  ;
+      state.options.splice(action.payload , 1) ;
     },
     editOption(state , action){
       state.edittedQuestion.options[action.payload.index].option = action.payload.option ;

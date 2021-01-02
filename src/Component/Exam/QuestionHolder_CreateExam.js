@@ -270,22 +270,22 @@ export default function QuestionHolder_Create(props) {
                                                 <Grid container>
                                                     <Grid item xs={6}>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="1" disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[0].option}  variant="filled" margin='dense' />
+                                                            <FormControlLabel value={1} disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[0].option}  variant="filled" margin='dense' />
                                                         </form>       
                                                     </Grid>
                                                     <Grid item xs={6}>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="2" disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[1].option} variant="filled" margin='dense' />
+                                                            <FormControlLabel value={2} disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[1].option} variant="filled" margin='dense' />
                                                         </form>       
                                                     </Grid>
                                                     <Grid item xs={6}>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="3" disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[2].option} variant="filled" margin='dense' />
+                                                            <FormControlLabel value={3} disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[2].option} variant="filled" margin='dense' />
                                                         </form>       
                                                     </Grid>
                                                     <Grid item xs={6}>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="4" disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[3].option} variant="filled" margin='dense' />
+                                                            <FormControlLabel value={4} disabled control={<Radio />} /> <TextField disabled defaultValue={props.question.options[3].option} variant="filled" margin='dense' />
                                                         </form>                                                        
                                                     </Grid>
                                                 </Grid>
@@ -295,7 +295,9 @@ export default function QuestionHolder_Create(props) {
                                         <FormGroup>
                                             {props.question.options.map((m , index) => 
                                             <form class="form-inline">
-                                                <Checkbox checked={choice1}  name="gilad"  disabled
+                                                <Checkbox checked={props.question.answers.some(elem =>{
+                                                    return JSON.stringify({"answer" : index + 1}) === JSON.stringify(elem);})
+                                                    ? true : false }  name="gilad"  disabled
                                                     className ={classes.multiCheckbox} color='#3D5A80' /> 
                                                     <TextField variant="filled"  margin='dense'disabled  defaultValue={props.question.options[index].option}/>
                                             </form>                                    

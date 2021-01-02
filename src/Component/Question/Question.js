@@ -17,6 +17,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios' ;
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Slider from '@material-ui/core/Slider';
@@ -176,6 +178,9 @@ function Question(props) {
     
     const [AddQuestionPending , setAddQuestionPending] = React.useState(false);    
 
+    const [error , setError] = React.useState(false);
+    const [errorMessage , setErrorMessage] = React.useState([]);
+
     const AddQuestion = () => {
 
         console.log(props.questionOptions);
@@ -186,7 +191,7 @@ function Question(props) {
             for (let index = 0; index < props.options.length; index++) {
                 const element = props.options[index];
                 if(element.answer == true)
-                    answers.push({"answer" : index});
+                    answers.push({"answer" : index + 1 });
             }
         }
         else 
@@ -217,16 +222,36 @@ function Question(props) {
             props.cancelEdit();    
         })
         .catch(e => {
-            console.log(e);
+            setError(true);
+            setAddQuestionPending(false);
+            try{
+               setErrorMessage(e.response.data.error) 
+            } catch (err){
+
+            }            
+            console.log(e.response);
         });
     }
 
-    const EditQuestion = () => {            
+    const EditQuestion = () => {      
+        
+            const answers = [] ;
+
+            if(props.question.type == 'MULTICHOISE'){
+                for (let index = 0; index < props.options.length; index++) {
+                    const element = props.options[index];
+                    if(element.answer == true)
+                        answers.push({"answer" : index + 1 });
+                }
+            }
+            else 
+                answers.push(...props.question.answers) ;  
+        
             const a = {
                 "type":          props.question.type ,
                 "public":        props.question.public,            
                 "question":      props.question.question,
-                "answers":       props.question.answers ,
+                "answers":       answers ,
                 "options":       props.question.options ,             
                 "base": ""+      props.question.base + "",
                 "hardness":      props.question.hardness,
@@ -266,6 +291,32 @@ function Question(props) {
         <Container maxWidth="lg" className = {classes.root}>            
             <Material_RTL>
                 <RTL>
+                    <Grid item xs={12} >
+                        <Collapse                            
+                            in={error} 
+                            style={{marginBottom : '16px'}}
+                            >
+                            <Alert
+                            severity="error"
+                            action={
+                                <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => {
+                                    setError(false);
+                                    setAddQuestionPending(false)
+                                }}                            
+                                >
+                                <CloseIcon fontSize="inherit" />
+                                </IconButton>
+                            }
+                            >
+                               <span style={{fontFamily: 'Vazir' , marginLeft : '8px' , marginRight : '8px'}}> {errorMessage} </span>
+                            </Alert>
+                        </Collapse>
+                    </Grid>
+
                         <Paper style={{backgroundColor : props.backColor}} className = {classes.FormsPaper} >
                             <Grid container spacing={0}>  
                                 {props.index >= 0 &&
@@ -462,21 +513,25 @@ function Question(props) {
                                         {
                                             props.question.type === 'MULTICHOISE' ?
                                             <Grid container spacing={2} >                                                
-                                                <Grid item xs={6}>                                                                                                            
+                                                <Grid item xs={7}>                                                                                                            
                                                     <FormGroup>          
-                                                        {props.question.options.map((m , index) =>                                               
-                                                        <form class="form-inline">
+                                                        {props.question.options.map((m , index) =>                                            
+                                                        <div>
                                                             <IconButton onClick={()=>{
                                                                 props.removeOption(index)
                                                             }}>
                                                                 <CloseIcon />
-                                                            </IconButton>
-                                                            <Checkbox checked={props.options[index].answer} onChange={()=>(props.MultiChoiseCheck({"index": index , "answer": !props.options[index].answer}))} name="gilad" 
-                                                                className ={classes.multiCheckbox} color='#3D5A80' /> 
-                                                            <TextField variant="filled"  value={m.option} onChange={(e) => {
-                                                                props.editOption({"option" : e.target.value , "index" : index});                                                                
-                                                            }} margin='dense' />                                                            
-                                                        </form>                                                        
+                                                            </IconButton>                                                               
+                                                            {/* <form class="form-inline">                                                                                                                         */}
+                                                                <Checkbox checked={props.options[index].answer} onChange={()=>(props.MultiChoiseCheck({"index": index , "answer": !props.options[index].answer}))} name="gilad" 
+                                                                    className ={classes.multiCheckbox} color='#3D5A80' /> 
+                                                                <TextField variant="filled"  value={m.option} onChange={(e) => {
+                                                                    props.editOption({"option" : e.target.value , "index" : index});                                                                
+                                                                }} margin='dense' />                                                            
+
+                                                            {/* </form>                             */}
+                                                            
+                                                        </div>                            
                                                         )}
                                                     </FormGroup>                                                                                         
                                                 </Grid> 
@@ -493,33 +548,33 @@ function Question(props) {
                                             props.question.type === 'TEST' ?
                                                 <FormControl component="fieldset">                                                    
                                                     <RadioGroup aria-label="gender"  className = {classes.RadioChoice} name="gender1" onChange={(e) => {                                                                                                             
-                                                        props.setAnswer([{"answer" : e.target.value}]);                                                        
+                                                        props.setAnswer([{"answer" : parseInt(e.target.value)}]);                                                        
                                                         }} value={props.question.answers.length > 0 && props.question.answers[0].answer}>
                                                         <Grid container >
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="1" control={<Radio />} /> <TextField onChange={(e) => {                                                                        
+                                                                    <FormControlLabel value={1} control={<Radio />} /> <TextField onChange={(e) => {                                                                        
                                                                         props.editOption({ "option" : e.target.value , "index" : 0}) ; 
                                                                     }} variant="filled" value={props.question.options[0].option} margin='dense' />
                                                                 </form>       
                                                             </Grid>
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="2" control={<Radio />} /> <TextField onChange={(e) => {                                                                        
+                                                                    <FormControlLabel value={2} control={<Radio />} /> <TextField onChange={(e) => {                                                                        
                                                                         props.editOption({ "option" : e.target.value , "index" : 1}) ; 
                                                                     }} variant="filled" value={props.question.options[1].option} margin='dense' />
                                                                 </form>       
                                                             </Grid>
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="3" control={<Radio />} /> <TextField onChange={(e) => {                                                                        
+                                                                    <FormControlLabel value={3} control={<Radio />} /> <TextField onChange={(e) => {                                                                        
                                                                         props.editOption({ "option" : e.target.value , "index" : 2}) ; 
                                                                     }} variant="filled" value={props.question.options[2].option} margin='dense' />
                                                                 </form>       
                                                             </Grid>
                                                             <Grid item xs={6}>
                                                                 <form class ="form-inline">
-                                                                    <FormControlLabel value="4" control={<Radio />} /> <TextField onChange={(e) => {                                                                        
+                                                                    <FormControlLabel value={4} control={<Radio />} /> <TextField onChange={(e) => {                                                                        
                                                                         props.editOption({ "option" : e.target.value , "index" : 3}) ; 
                                                                     }} variant="filled" value={props.question.options[3].option} margin='dense' />
                                                                 </form>          
@@ -528,29 +583,30 @@ function Question(props) {
                                                     </RadioGroup>
                                                 </FormControl>
                                             :
-                                            <TextField                                                                    
-                                                id="outlined-multiline-static"
-                                                label="جواب"
-                                                multiline
-                                                rows={4}
-                                                fullWidth = 'true'
-                                                defaultValue={props.index < 0 ? null : props.question.answers[0].answer}
-                                                className = {classes.BigForm}
-                                                onChange = {(e)=>{props.setAnswer([ {"answer" : e.target.value}])}}
-                                                InputLabelProps={{style:{fontFamily: 'Vazir'}}}
-                                                InputProps={{
-                                                    style:{fontFamily: 'Vazir'},
-                                                }}
+                                            <div>
+                                                <TextField                                                                    
+                                                    id="outlined-multiline-static"
+                                                    label="جواب"
+                                                    multiline
+                                                    rows={4}
+                                                    fullWidth = 'true'
+                                                    defaultValue={props.index < 0 ? null : props.question.answers[0].answer}
+                                                    className = {classes.BigForm}
+                                                    onChange = {(e)=>{props.setAnswer([ {"answer" : e.target.value}])}}
+                                                    InputLabelProps={{style:{fontFamily: 'Vazir'}}}
+                                                    InputProps={{
+                                                        style:{fontFamily: 'Vazir'},
+                                                    }}
 
-                                                // defaultValue="Default Value"
-                                                variant="outlined"
-                                                /> 
+                                                    // defaultValue="Default Value"
+                                                    variant="outlined"
+                                                    /> 
+                                                <UploadImage id = "javab" />
+                                            </div>
 
                                         }                                                                           
                                     </Paper>
-                                </Grid>
-
-                                <UploadImage id = "javab" />
+                                </Grid>                                
 
                                 <Grid item xs={4}>                                    
                                     <LoadingButton variant="contained"

@@ -7,7 +7,7 @@ import RTL from '../M_RTL';
 import Grid from '@material-ui/core/Grid';
 import { useDispatch } from 'react-redux' ; 
 import {
-    loadEdittingQuestion , selectQuestion
+    loadEdittingQuestion , selectQuestion , addAnswerField
 } from './QuestionsSlice' ;
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
@@ -190,22 +190,22 @@ function UserDesignedQuestion(props) {
                                                 <Grid container>
                                                     <Grid item xs={6}>
                                                         <form class ="form-inline">
-                                                            <FormControlLabel value="1" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[0].option}  variant="filled" margin='dense' />
+                                                            <FormControlLabel value={1} disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[0].option}  variant="filled" margin='dense' />
                                                         </form>       
                                                     </Grid>
                                                         <Grid item xs={6}>
                                                             <form class ="form-inline">
-                                                                <FormControlLabel value="2" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[1].option} variant="filled" margin='dense' />
+                                                                <FormControlLabel value={2} disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[1].option} variant="filled" margin='dense' />
                                                             </form>       
                                                         </Grid>
                                                         <Grid item xs={6}>
                                                             <form class ="form-inline">
-                                                                <FormControlLabel value="3" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[2].option} variant="filled" margin='dense' />
+                                                                <FormControlLabel value={3} disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[2].option} variant="filled" margin='dense' />
                                                             </form>       
                                                         </Grid>
                                                         <Grid item xs={6}>
                                                             <form class ="form-inline">
-                                                                <FormControlLabel value="4" disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[3].option} variant="filled" margin='dense' />
+                                                                <FormControlLabel value={4} disabled control={<Radio />} /> <TextField disabled defaultValue={props.options[3].option} variant="filled" margin='dense' />
                                                             </form>                                                        
                                                         </Grid>
                                                 </Grid>
@@ -215,7 +215,9 @@ function UserDesignedQuestion(props) {
                                         <FormGroup>
                                             {props.question.options.map((m , index) => 
                                             <form class="form-inline">
-                                                <Checkbox checked={props.question.answers.includes({"answer" : "" + index})}  name="gilad"  disabled
+                                                <Checkbox checked={props.question.answers.some(elem =>{
+                                                    return JSON.stringify({"answer" : index + 1}) === JSON.stringify(elem);})
+                                                    ? true : false }  name="gilad"  disabled
                                                     className ={classes.multiCheckbox} color='#3D5A80' /> 
                                                     <TextField variant="filled"  margin='dense'disabled  defaultValue={m.option}/>
                                             </form>  
@@ -238,7 +240,15 @@ function UserDesignedQuestion(props) {
                                         <Button variant="contained"                                        
                                             onClick={() => {                                                
                                                 dispatch(loadEdittingQuestion(props.index));                                                
-                                                props.loadQuestion(props.question);
+                                                props.loadQuestion(props.question);                                                
+                                                for (let index = 0; index < props.question.options.length; index++) {
+                                                    const element = props.question.options[index];
+                                                    if(props.question.answers.some(elem =>{
+                                                        return JSON.stringify({"answer" : index + 1}) === JSON.stringify(elem);}))
+                                                        props.addAnswerField(true);
+                                                    else
+                                                        props.addAnswerField(false);
+                                                }
                                                 console.log(props.question);
                                             }} 
                                             className={classes.EditButton}>
@@ -269,7 +279,8 @@ function UserDesignedQuestion(props) {
 
 const mapDispatchToProps = dispatch => {
     return {
-        loadQuestion : (e) => dispatch(selectQuestion(e))
+        loadQuestion : (e) => dispatch(selectQuestion(e)) , 
+        addAnswerField : (e) => dispatch(addAnswerField(e))
     }
 }
 

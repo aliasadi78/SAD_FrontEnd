@@ -28,7 +28,7 @@ export const ExamSlice = createSlice({
                 state.examQuestions.push({"question" : action.payload , "grade" : 0 });   
         },
         removeQuestion(state , action){            
-            delete state.examQuestions[action.payload] ;
+            state.examQuestions.splice(action.payload , 1) ;
         },
         setQuestions(state , action){
             state.examQuestions = action.payload ;

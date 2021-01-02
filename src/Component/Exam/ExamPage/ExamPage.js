@@ -7,517 +7,245 @@ import Material_RTL from "../../Material_RTL";
 import M_RTL from "../../M_RTL";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Pagination from '@material-ui/core/Pagination';
 import { CircularProgress } from '@material-ui/core';
-import { renderToString,render,renderIntoDocument } from 'react-dom/server';
 import ReactDOM from 'react-dom'
+import QuestionCard from './QuestionCard' ;
 import Timer from './Timer/Timer';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormGroup from '@material-ui/core/FormGroup';
-import TextField from '@material-ui/core/TextField';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Slide from '@material-ui/core/Slide';
+import Typography from 'material-ui/styles/typography';
+import ReviewQuestionCard from './reviewQuestionCard';
+
 class ExamPage extends Component{
     constructor(props){
         super(props);
+
+        this.state = {
+            examName : null ,
+            c : 100 ,
+            holding : false 
+        }
     }
+    
+
     componentWillMount(){
         var [check,setCheck] = this.props.check;
         var [totalQuestion,setTotalQuestion] = this.props.totalQuestion;
-        var [questionsList,setQuestionsList] = this.props.questionsList;
-        const [pending,setPending] = this.props.pending;
-        setPending(true)
+        var [questionsList,setQuestionsList] = this.props.questionsList; 
+        var [time,setTime] = this.props.time;  
+        var [pending,setPending] = this.props.pending;  
+        setPending(true);             
         var res = []
-        var i = 0;
-        console.log(i)
-        if(!check){
-            axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig() )
-                .then(result => {
-                    // res.push(..."1");
-                    console.log(result)
-                    console.log(result.data)
-                    console.log(result.data.questions)
-                    i = i + 1;
-                    console.log(i)
+        if(!check && !this.props.reviewMode){
+            axios.get(serverURL() + "exam/" + this.props.examId + "/questions" , tokenConfig() )
+                .then(result => {                    
                     res.push(...result.data.questions);
-                    var ll = res.map((q) => q);
+                    setTime(result.data.user_examEndTime);
+                    var ll = res.map((q) => q);                    
                     setQuestionsList([...ll]);
-                    console.log(ll)
+                    this.setState(prevstate => {
+                        return {
+                            examName : result.data.name
+                        }
+                    });
                     setCheck(true);
-                    console.log(questionsList)
-                    console.log(res)
-                    setTotalQuestion(result.data.questions.length)
-                    console.log(questionsList.length)
-                    console.log(totalQuestion)
-                    console.log(pending)
-                    setPending(false)
-                    console.log(pending)
+                    setPending(false);
+                    setTotalQuestion(result.data.questions.length)                    
                 }).catch(error=>{
-                    console.log(error)
-                    setPending(false)
+                    console.log(error.response)
+                    setTime("")                    
                     setCheck(true);
-                })
+                    setPending(false);
+                })            
+        }
+        if(!check && this.props.reviewMode ){
+            axios.get(serverURL() + "exam/" + this.props.examId + "/questions/review" , tokenConfig() )
+            .then( result => {
+                setQuestionsList([...result.data.questions]);                
+                setCheck(true);     
+                setPending(false);
+                console.log("shit");
+                console.log(result);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
         }
     }
     render(){
     const classes = this.props.classes;
-    const [check,setCheck] = this.props.check;
     const [totalQuestion,setTtotalQuestion] = this.props.totalQuestion;
     const [questionsList,setQuestionsList] = this.props.questionsList;
-    const [pending,setPending] = this.props.pending;
-    console.log(questionsList)
-    // function QuestionCard(props){
-    //     // var Answers = []
-    //     // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
-    //     //     .then(res=>{
-    //     //         console.log(res)
-    //     //             // console.log(res.data.questions);
-    //     //             res.data.questions.map((q,i) =>{ 
-    //     //             Answers.push(q.answerText);
-    //     //             console.log(Answers)
-    //     //             });
-    //     //             // setQuestionsList([...ll]);
-    //     //     }).catch(err=>{
-    //     //         console.log(err)
-    //     //     })
-    //     // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
-    //     const [selectedValue,setSelectedValue] = React.useState(()=>{
-    //         try{
-    //             console.log(props.answer.answerText)
-    //             return(props.answer.answerText)}
-    //         catch(err){
-    //         return("")
-    //         }})
-    //     // componentDidUpdate:
-    //     //     setSelectedValue("")
-        
-    //     const [checked,setChecked] = React.useState();
-    //     // console.log(Answers[1].answerText)
-    //     var handleRadioChange = (event) => {
-    //         console.log(event.target.value)
-    //         setSelectedValue(event.target.value);
-    //         console.log(selectedValue)
-    //     };
-    //     const handleChange = (event) => {
-    //         setChecked(...event.target.value)
+    const [pending,setPending] = this.props.pending; 
+    // var indexQuestion = 1;
+    const [time,setTime] = this.props.time;
+    const [indexQuestion,setIndexQuestion] = this.props.indexQuestion;
+    const [color,setColor] = this.props.color
+    var T = [];
+    const handle = (index) => {
+      console.log(index)
+      const arr = [...color]
+      arr[index] = !(color[index])
+      setColor(arr)
+      console.log(T)
+     }
+
+    // const  handleFinishExamEvent = (event) => {
+    //     if (event.type === "mousedown") {
+    //         console.log("shit down");                            
+    //                 setTimeout(() => {
+    //                 this.setState(prestate => {                                        
+    //                     return{
+    //                         c : this.state.c + 1 ,
+    //                     }
+    //                 })                                     
+    //                 },50 ) ;                                                
+    //     } else {
+    //         this.setState(prestate => {                                        
+    //             return{
+    //                 holding : false ,
+    //                 c : 100
+    //             }
+    //         })
     //     }
-    //     console.log(selectedValue)
-    //     // console.log(props.answer.answerText)
-    //     // console.log(props.q.question)
-    //     // console.log(props.q.question.question)
-    //     return(
-    //         <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px',direction: 'rtl',textAlign: 'right'}}>
-    //             <span>{faNumber(props.idx + 1)}.</span><span>{props.q.question.question}</span>
-    //             <br/><br/>
-    //                 {props.q.question.type === "TEST" ? (
-    //                     <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
-    //                         <FormControl component="fieldset">
-    //                             <RadioGroup
-    //                                 aria-label="quiz"
-    //                                 name="quiz"
-    //                                 value={parseInt(selectedValue)}
-    //                                 onChange={handleRadioChange}
-                                    
-    //                             >
-    //                             {props.q.question.options.map((options,idx)=>{
-    //                                 // setSelectedValue('');
-    //                                 console.log(idx)
-    //                                 // console.log(props.idx)
-    //                                 // console.log(Answers[props.idx])
-    //                                 // console.log(props.idx+1)
-    //                                 // console.log(Answers[props.idx+1])
-    //                                 // console.log(props.idx - 1)
-    //                                 // console.log(Answers[props.idx] - 1)
-    
-    //                                 // console.log(props.q.question.options)
-    //                                 // console.log(options.option)
-    //                                 console.log(selectedValue)
-    //                                 return(
-    //                                     <li key={idx + 1} >
-    //                                         <FormControlLabel style={{marginRight: '0px'}} value={idx+1} control={<Radio style={{color: '#1CA0A0'}}/>} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
-    //                                     </li>
-    //                                 )
-    //                             })}
-    //                 </RadioGroup>
-    //                 </FormControl>
-    //                     </ul>): null}
-    //                     {props.q.question.type === "MULTICHOISE" ? (
-    //                     <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
-    //                         <FormControl component="fieldset">
-    //                         <FormGroup>
-    //                             {props.q.question.options.map((options,idx)=>{
-    //                                 // setSelectedValue('');
-    //                                 console.log(selectedValue)
-    //                                 console.log(props.q.question.options)
-    //                                 console.log(options.option)
-    //                                 console.log(props.q.question)
-    //                                 return(
-    //                                     <li key={idx + 1} >
-    //                                         <FormControlLabel control={<Checkbox style={{color: '#1CA0A0'}} onChange={handleChange} name={options.option} />}
-    //                                         style={{marginRight: '0px'}} value={options.option} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
-    //                                     </li>
-    //                                 )
-    //                             })}
-    //                 </FormGroup>
-    //                 </FormControl>
-    //                     </ul>): null}
-    //                     {props.q.question.type === "LONGANSWER" ? (
-    //                         <TextField
-    //                         style={{width: '100%'}}
-    //                         id="outlined-textarea"
-    //                         placeholder="کادر جواب"
-    //                         multiline
-    //                         variant="outlined"
-    //                         InputProps={{
-    //                             style:{fontFamily: 'Vazir'},
-    //                         }}
-    //                       />
-    //                     ):null}
-    //                     {props.q.question.type === "SHORTANSWER" ? (
-    //                         <TextField
-    //                         style={{width: '100%'}}
-    //                         id="outlined-textarea"
-    //                         placeholder="کادر جواب"
-    //                         multiline
-    //                         variant="outlined"
-    //                         InputProps={{
-    //                             style:{fontFamily: 'Vazir'},
-    //                         }}
-    //                       />
-    //                     ):null}
-    //                     <br/><br/>
-    //         </Container>
-    //     )
     // }
-    var index = 1;
+
     return(
-        <div style={{height: '100%',backgroundColor: 'white'}}> 
+        <div style={{backgroundColor: 'white' , paddingBottom : '80px'}}> 
         <Material_RTL style={{backgroundColor: 'white'}}>
             <M_RTL style={{backgroundColor: 'white'}}>
-                {/* <CssBaseline /> */}
                 <div style={{fontFamily: 'Vazir',paddingTop: '1%',backgroundColor : '#3D5A80',width:'100%',height:'52px',color: 'white',fontSize: '16px'}}>
-                    آزمون آنلاین
+                    {this.state.examName}
                 </div>
-                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#f2f2f2',height:'150px',fontSize: '16px'}}>
-                    <Timer/>
-                </Container>
-                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
-                    <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px'}}>
-                        <Grid id="Grid1">{pending ?
-                            (<div style={{}}><CircularProgress style={{color: '#1CA0A0'}}/></div>): 
-                            (<div>
-                              {questionsList.length > 0 ? (questionsList.map((question,idx)=>{
-                                  if(idx === 0){
-                                    // alert(questionsList[idx])
-                                  return(
-                                  <QuestionCard q={question} idx={idx} answer={questionsList[idx].answerText}/>
-                                )}
-                                })):null}
-                              </div>)
-                              
-                            }
-                            </Grid>
-                    </Container>
-                    <Grid >
-                        <Grid style={{display: 'flex',justifyContent: 'center'}}>
-                          <Pagination onChange={(event,value) => {
-                              console.log(testanswer)
-                              console.log(questionsList[value])
-                        axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (index).toString() + "/answer?answer=" + testanswer[index-1] ,"", tokenConfig())
-                        .then(res=>{
-                            console.log(res)
-                        })
-                        .catch(err=>{
-                            console.log(err)
-                        })
-                        // alert(value)
-                              if(questionsList.length > 0 ){ questionsList.map((question,idx)=>{
-                                if(idx === value - 1){
-                                    console.log("value:" + value)
-                                    console.log("value - 1:" + (value - 1))
-                                    console.log("idx:" + idx)
-                                    console.log(questionsList[idx].answerText)
-                                    console.log(question)
-                                    index = question.index
-                                    console.log(questionsList[idx])
-                                    console.log(questionsList)
-                                    // {handleRadioChange}
-                                return(
-                                    ReactDOM.render(<QuestionCard q={question} idx={idx} answer={questionsList[idx].answerText}/>,document.getElementById('Grid1'))
-                                )}
-                              }
-                              )}
-                          }} variant="outlined" size="small"  count={totalQuestion} shape="rounded" />
+                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height: this.props.reviewMode == false ? 110 + 'px' : 52 + 'px' ,fontSize: '16px'}}>
+                    {this.props.reviewMode == false ?
+                        <Timer time={time} examId={this.props.examId}/>
+                    :
+                        <Grid item xs={12}>                            
+                            <h3 style={{color : 'white' ,fontFamily: 'Vazir' }} >
+                                مرور آزمون               
+                            </h3>                                         
                         </Grid>
-                    </Grid>
+                    }
+                </Container>
+                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%', paddingBottom : '10px',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
+                <Grid container xs={12} >
+                                                                              
+                    
+                    {this.props.reviewMode == false &&                           
+                        <Grid container item xs={12}
+                            direction="row"
+                            justify="center"
+                            alignItems="center" 
+                            style={{display: 'flex',justifyContent: 'center'}}>
+                                <div class="div1" style={{width:'100%',overflow:'hidden'}}>
+                                    <div class="div2" style={{display: 'flex',padding: '1%',overflowX:'scroll',backgroundColor: 'white'}}>
+                                        {questionsList.map((q,index) => {
+                                          return(
+                                            <Button onClick={()=>{
+                                                axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
+                                                .then(res=>{
+                                                    console.log(res)
+                                                })
+
+                                                .catch(err=>{
+                                                    console.log(err)
+                                                })
+                                                                                                
+                                                if(questionsList.length > 0 ){ questionsList.map((question,idx)=>{
+                                                    if(idx === index){                                        
+                                                        setIndexQuestion(question.index)
+                                                        console.log(indexQuestion)
+                                                        return(
+                                                            ReactDOM.render(<QuestionCard examId={this.props.examId} q={question} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>,document.getElementById('Grid1'))
+                                                        )
+                                                    }
+                                                    }
+                                                )}
+                                            }} size="small" variant="outlined" style={{fontFamily: 'Vazir',backgroundColor : typeof(questionsList[index].answerText) !== "undefined" || typeof(useranswer[index]) !== "undefined" ? "mediumseagreen": "gray",color: "white",margin:'1%'}}>{faNumber(index+1)}</Button>
+                                          )
+                                        })}
+                                    </div>
+                                </div>
+                            </Grid>                        
+                    }
+
+                    {this.props.reviewMode == false &&
+                    <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px'}}>                                                
+                        <Grid id="Grid1">
+                            {pending ?
+                                (<div style={{}}><CircularProgress style={{color: '#1CA0A0'}}/></div>): 
+                                (<div>
+                                  {questionsList.length > 0 ? (questionsList.map((question,idx)=>{
+                                        if(idx === 0){
+                                        return(
+                                            <QuestionCard q={question} examId={this.props.examId} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>
+                                        )}
+                                    })):null}
+                                </div>)
+                            }
+                        </Grid>
+                    </Container>
+                    }
+
+                    {this.props.reviewMode == true &&
+                        <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px'}}>                                                
+                            <Grid id="Grid1">
+                                {pending ?
+                                    <div style={{}}><CircularProgress style={{color: '#1CA0A0'}}/></div>
+                                :                                    
+                                <div>
+                                    {questionsList.map((question,idx)=>                                        
+                                        <ReviewQuestionCard q={question} examId={this.props.examId} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>                                         
+                                    )}
+                                </div>
+                                }
+                            </Grid>
+                        </Container>
+                    }
+
+                            <Grid item xs={4} ></Grid>
+                          <Grid item xs={4} >
+
+                          <Button variant = "contained" 
+                          style={{ marginTop : "8px"  , width : this.state.c + "px" , fontFamily: 'Vazir' , backgroundColor : "#E63946"}} 
+                        //   onMouseUp = {(e) =>  {handleFinishExamEvent(e)} }
+                        //   onMouseDown = { (e) => { handleFinishExamEvent(e) }} 
+
+                        onClick = {() => {
+                            for (let index = 0; index < questionsList.length; index++) {                                
+                                axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
+                                .then(res=>{
+                                    console.log(res)
+                                    
+                                })
+
+                                .catch(err=>{
+                                    console.log(err)
+                                })
+                            }
+                        }}
+                          >                             
+                              {this.props.reviewMode == false?                                                          
+                               <p>  اتمام آزمون  </p>
+                              :
+                              <p>
+                                 اتمام مرور
+                                </p>
+                              }
+                          </Button>
+                                                      
+                          </Grid>                              
+
+                          <Grid item xs={4} ></Grid>
+
+                </Grid>   
                 </Container>
             </M_RTL>
         </Material_RTL>
         </div>
     )
 }}
-
-// class Answer extends Component(){
-//     constructor(props){
-//         super(props);
-//         this.state={
-//             answers : [{index: '',answer: ''}]
-//         }
-        
-//     }
-//     render(){
-//         return(
-//             <div></div>
-//         )
-//     }
-// }
-var testanswer=[]
-var checklist;
-function QuestionCard(props){
-    // var Answers = []
-    // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
-    //     .then(res=>{
-    //         console.log(res)
-    //             // console.log(res.data.questions);
-    //             res.data.questions.map((q,i) =>{ 
-    //             Answers.push(q.answerText);
-    //             console.log(Answers)
-    //             });
-    //             // setQuestionsList([...ll]);
-    //     }).catch(err=>{
-    //         console.log(err)
-    //     })
-    // axios.get("https://parham-backend.herokuapp.com" + window.location.pathname, tokenConfig())
-    // const [selectedValue,setSelectedValue] = React.useState(()=>{
-    //     try{
-    //         console.log(props.answer.answerText)
-    //         return(props.answer.answerText)}
-    //     catch(err){
-    //         console.log(props.answer)
-    //     return(props.answer.answerText)
-    //     }})
-    
-    
-    const [checked,setChecked] = React.useState(false);
-    
-    
-    console.log(props.answer)
-    const [selectedValue,setSelectedValue] = React.useState(props.answer)
-    console.log(selectedValue)
-    // const componentDidUpdate = () =>{
-    //     setSelectedValue(parseInt(props.answer))}
-    // if(!checked && parseInt(props.answer) != selectedValue){
-    //     setSelectedValue(parseInt(props.answer))
-    //     setChecked(false)
-    // }
-    console.log(props.q.question.options)
-    checklist=[]
-    
-    
-    console.log(typeof(testanswer[props.idx]))
-    if(typeof(testanswer[props.idx]) === "undefined") 
-    {testanswer[props.idx] = props.answer}
-    console.log(testanswer)
-    // const [checkOptions,setCheckOptions] = React.useState(()=>{
-        
-        
-    // })
-    // console.log(checklist)
-    // console.log(checkOptions)
-    const [shortAnswer,setShortAnswer] = React.useState();
-    // if(props.q.question.type === "SHORTANSWER"){
-    //     setShortAnswer(props.answer)
-    // }
-    const [longAnswer,setLongAnswer] = React.useState();
-    // if(props.q.question.type === "LONGANSWER"){
-    //     setLongAnswer(props.answer)
-    // }
-    console.log(longAnswer)
-    console.log(shortAnswer)
-    const handleRadioChange = (event) => {
-        console.log(event.target.value)
-        setSelectedValue(event.target.value);
-        console.log(selectedValue)
-        testanswer[props.idx] = parseInt(event.target.value);
-        console.log(testanswer)
-    };
-    const handleChange = (event) => {
-        // setChecked(...event.target.value)
-        // console.log(checked)
-        console.log(testanswer[props.idx])
-
-        testanswer[props.idx]=""
-        console.log(event.target.value)
-        console.log(event.target.checked)
-        checklist[parseInt(event.target.value)] = event.target.checked;
-        var cl ="";
-        checklist.map((c,i)=>{
-            if(c){
-                cl = cl + (i+1) + ","
-            }
-        })
-        testanswer[props.idx]= cl.slice(0,cl.length - 1)
-        console.log(checklist)
-        console.log(testanswer[props.idx])
-    }
-    const handleChangeShortAnswer = (event) => {
-        
-        setShortAnswer(event.target.value)
-        testanswer[props.idx] = event.target.value
-    }
-    const handleChangeLongAnswer = (event) => {
-        setLongAnswer(event.target.value)
-        testanswer[props.idx]= event.target.value
-    }
-    const [openDialogQuestion, setOpenDialogQuestion] = React.useState(false);
-    const handleClickOpenQuestion = () => {
-        setOpenDialogQuestion(true);
-    };
-    const handleCloseQuestion = () => {
-        setOpenDialogQuestion(false);
-    };
-    var data;
-    var Example;
-    return(
-        <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px',direction: 'rtl',textAlign: 'right'}}>
-            <span>{faNumber(props.idx + 1)}.</span><span>{props.q.question.question}</span>
-            <div>
-            <Card style={{position: 'relative',right: '37%',width:'25%',}}>
-              <CardMedia>
-            {typeof(props.q.question.imageQuestion) !== "undefined" ? ( 
-                data = props.q.question.imageQuestion.toString(),
-                Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} onClick={handleClickOpenQuestion} width="100%" height="100%" style={{cursor: 'pointer'}}/>,
-                  <Example data={data} />
-              ): null}
-              <Dialog
-                  open={openDialogQuestion}
-                  TransitionComponent={Transition}
-                  keepMounted
-                  onClose={handleCloseQuestion}
-                  aria-labelledby="alert-dialog-slide-title"
-                  aria-describedby="alert-dialog-slide-description"
-                >
-                  <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-                    {typeof(props.q.question.imageQuestion) !== "undefined" ? ( 
-                      <Example data={data}/>
-                      ): null}
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <div onClick={handleCloseQuestion} style={{fontFamily: 'Vazir',color: 'red',position: 'absolute',right:'1%',top: '2%',cursor:'pointer'}}><FontAwesomeIcon icon={faWindowClose} size="2x"/></div>
-                  </DialogActions>
-                </Dialog>
-              </CardMedia>
-            </Card>
-            </div>
-            <br/><br/>
-                {props.q.question.type === "TEST" ? (
-                    <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
-                        <FormControl component="fieldset">
-                            <RadioGroup
-                                aria-label="quiz"
-                                name="quiz"
-                                value={parseInt(testanswer[props.idx])}
-                                onChange={handleRadioChange}
-                            >
-                            {props.q.question.options.map((options,idx)=>{
-                                return(
-                                    <li key={idx + 1} >
-                                        <FormControlLabel style={{marginRight: '0px'}} value={idx+1} control={<Radio style={{color: '#1CA0A0'}}/>} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
-                                    </li>
-                                )
-                            })}
-                </RadioGroup>
-                </FormControl>
-                    </ul>): null}
-                    {props.q.question.type === "MULTICHOISE" ? (()=>{
-                        alert("hi")
-                        props.q.question.options.map((option,i)=>{
-                            console.log(i)
-                            props.answer.split(',').map((j)=>{
-                                console.log(j)
-                                if(j.toString() === i.toString()){
-                                    checklist[i] = true
-                                }
-                                else{
-                                    checklist[i] = false
-                                }
-                            })
-                            
-                        })
-                        console.log(checklist)}):null}
-                        {props.q.question.type === "MULTICHOISE" ? (
-                    <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
-                        <FormControl component="fieldset">
-                        <FormGroup>
-                            {props.q.question.options.map((options,idx)=>{
-                                if(idx===0){
-                                    checklist=[]
-                                    if(typeof(props.answer) != "undefined"){
-                                        testanswer[props.idx].split(',').map((j)=>{
-                                        checklist[j - 1] = true
-                                    })}
-                                    
-                                }
-                                console.log(checklist)
-                                return(
-                                    <li key={idx + 1} >
-                                        <FormControlLabel control={<Checkbox checked={checklist[idx]} style={{color: '#1CA0A0'}} onChange={handleChange} name={idx} />}
-                                        style={{marginRight: '0px'}} value={idx} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
-                                    </li>
-                                )
-                            })}
-                </FormGroup>
-                </FormControl>
-                    </ul>): null}
-                    {props.q.question.type === "LONGANSWER" ? (
-                        <TextField
-                        style={{width: '100%'}}
-                        id="outlined-textarea"
-                        placeholder="کادر جواب"
-                        multiline
-                        value={testanswer[props.idx]}
-                        onChange={handleChangeLongAnswer}
-                        variant="outlined"
-                        InputProps={{
-                            style:{fontFamily: 'Vazir'},
-                        }}
-                      />
-                    ):null}
-                    {props.q.question.type === "SHORTANSWER" ? (
-                        <TextField
-                        style={{width: '100%'}}
-                        id="outlined-textarea"
-                        placeholder="کادر جواب"
-                        value={testanswer[props.idx]}
-                        onChange={handleChangeShortAnswer}
-                        multiline
-                        variant="outlined"
-                        InputProps={{
-                            style:{fontFamily: 'Vazir'},
-                        }}
-                      />
-                    ):null}
-                    <br/><br/>
-        </Container>
-    )
-}
+var useranswer=[]
 function faNumber(n){
     const farsidigit = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
     return n
@@ -526,19 +254,47 @@ function faNumber(n){
     .map(x => farsidigit[x])
     .join("")
 }
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
 const useStyles = makeStyles((theme) => ({
-    
+    '@global':{
+        '.div2::-webkit-scrollbar':{
+            width: '5px',
+        },
+        'div2::-webkit-scrollbar-thumb': {
+            background: '#1CA0A0',
+            borderRadius: '10px',
+        }
+    },
+    ListTitle :{
+        padding : theme.spacing(1) , 
+        marginBottom : theme.spacing(1) ,  
+        backgroundColor : '#3D5A80' ,
+        color : 'white'
+    },
   }));
-export default () => {
+export default (props) => {
+    const examId = props.match.params.examId ;    
     const classes = useStyles();
-    const check = React.useState(false);
+    const check = React.useState(false);    
     const totalQuestion = React.useState(0);
     const questionsList= React.useState([]);
-    const pending = React.useState(false);
+    const pending = React.useState(false);    
+    const time = React.useState("")
+    const color =  React.useState([])
+    const indexQuestion =  React.useState(1)
+    const [reviewMode , s] = React.useState(props.location.pathname.includes("review"));    
+    console.log(reviewMode);
     return (        
-        <ExamPage classes={classes} check={check} totalQuestion={totalQuestion} questionsList={questionsList} pending={pending}/>    
+        <ExamPage 
+            classes={classes} 
+            check={check} 
+            totalQuestion={totalQuestion} 
+            questionsList={questionsList} 
+            examId = {examId}
+            pending={pending}
+            time={time}
+            color={color}
+            indexQuestion={indexQuestion}
+            reviewMode = {reviewMode}
+            />    
     )
 }
