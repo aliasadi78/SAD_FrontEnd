@@ -11,18 +11,14 @@ import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import Dialog from '@material-ui/core/Dialog';
-import axios from 'axios';
-import tokenConfig from '../../../utils/tokenConfig';
-import serverURL from '../../../utils/serverURL';
+import DescriptionIcon from '@material-ui/icons/Description';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Slide from '@material-ui/core/Slide';
 import Container from "@material-ui/core/Container";
 import Grid from '@material-ui/core/Grid';
-import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
-import IconButton from '@material-ui/core/IconButton';
-import Axios from 'axios';
 
 export default function ReviewQuestionCard(props){    
         function faNumber(n){
@@ -65,7 +61,27 @@ export default function ReviewQuestionCard(props){
         const handleRadioChange = (event) => {
             setSelectedRadioValue(event.target.value);
             props.useranswer[props.idx] = parseInt(event.target.value);
-        };
+        };    
+           
+        var type = null ;
+        const [check , setCheck] = React.useState(true);
+
+        // if(props.q.answerFile != null){
+        //     type = props.q.answerFile.split('.')[props.q.answerFile.split.length - 1 ]            
+
+        //     if(check){
+        //         if( type == "jpg" || 
+        //             type == "png" ||
+        //             type == "PNG" )  {
+        //                 setisFileImage(true); 
+        //                 setCheck(true);
+        //             }                    
+        //         else {            
+        //             setisFileImage(false);                     
+        //             setCheck(true);
+        //         }
+        //     }
+        // }
 
         const handleChangeCheckBox = (event) => {
             props.useranswer[props.idx]=""
@@ -149,11 +165,17 @@ export default function ReviewQuestionCard(props){
                     >
 
                         <Grid item xs={12} >
-                                
+                            {/* <Typography style={{fontFamily: 'Vazir'}} >
+                                جواب شما 
+                            </Typography>                          */}
                         </Grid>
-                </Grid>
+                </Grid>  
 
-                                
+                                <br />
+                            <p style={{color : '#3D5A80'}} > <DescriptionIcon  /> جواب شما :  </p>
+                            {/* <br /> */}
+
+                <div>
                 <Grid item xs={12} >
                     {props.q.question.type === "TEST" ? (
                         
@@ -162,7 +184,7 @@ export default function ReviewQuestionCard(props){
                                 aria-label="quiz"
                                 name="quiz"
                                 value={parseInt(props.useranswer[props.idx])}
-                                onChange={handleRadioChange}
+                                onChange={handleRadioChange}                                
                             >
                                 <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
                                     <Grid container >
@@ -170,7 +192,7 @@ export default function ReviewQuestionCard(props){
                                             return(
                                                 <Grid item xs={6} >
                                                     <li key={idx + 1} >
-                                                        <FormControlLabel style={{marginRight: '0px'}} value={idx+1} control={<Radio style={{color: '#1CA0A0'}}/>} label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
+                                                        <FormControlLabel style={{marginRight: '0px'}} value={idx+1} control={<Radio style={{color: '#3D5A80'}}/>} disabled label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
                                                     </li>
                                                 </Grid>
                                             )
@@ -198,7 +220,7 @@ export default function ReviewQuestionCard(props){
                                         }
                                         return(
                                             <li key={idx + 1} >
-                                                <FormControlLabel control={<Checkbox defaultChecked={checklistodd[idx]} value={idx} style={{color: '#1CA0A0'}} onChange={handleChangeCheckBox} name={idx} />}
+                                                <FormControlLabel control={<Checkbox disabled defaultChecked={checklistodd[idx]} value={idx} style={{color: '#3D5A80'}} onChange={handleChangeCheckBox} name={idx} />}
                                                 style={{marginRight: '0px'}}  label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
                                             </li>
                                         )
@@ -222,7 +244,7 @@ export default function ReviewQuestionCard(props){
                                         }
                                         return(
                                             <li key={idx + 1} >
-                                                <FormControlLabel control={<Checkbox defaultChecked={checklisteven[idx]} value={idx} style={{color: '#1CA0A0'}} onChange={handleChangeCheckBox} name={idx} />}
+                                                <FormControlLabel control={<Checkbox disabled defaultChecked={checklisteven[idx]} value={idx} style={{color: '#3D5A80'}} onChange={handleChangeCheckBox} name={idx} />}
                                                 style={{marginRight: '0px'}}  label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
                                             </li>
                                         )
@@ -231,61 +253,27 @@ export default function ReviewQuestionCard(props){
                             </FormControl>
                         </ul>): null}
                     {props.q.question.type === "LONGANSWER" ? (
-                        <div>
+                        <div> 
 
-                            <Grid item xs={12}>
-                                <input 
-                                    type="file" name="file"
-                                    style={{display : 'none'}}
-                                    id='file' type="file"                                 
-                                    onChange={(e) => {
-                                        console.log(e.target.files[0])                                                                        
-                                        file.append('answer' , e.target.files[0] );    
-                                        setIsFileLoaded(true);         
-                                        
-                                        let reader = new FileReader();
-                                        
-                                        reader.readAsDataURL(e.target.files[0]);
-                                        
-                                        reader.onload = (e) => {
-                                            // console.log(e.target.result);
-                                            setImage(e.target.result);
-                                        }
-
-                                        const index = props.idx + 1 ;
-                                        axios.post(serverURL() + "exam/" + props.examId + "/questions/" + index + "/answer" , file , tokenConfig() )                                
-                                        .then(res => {
-                                            console.log("done");
-                                        })
-                                        .catch(err => {
-                                            console.log(err);
-                                        })
-                                    }}/>
-                            </Grid>
-                            {isFileLoaded &&                            
+                            {(props.q.answerFile != null) &&                            
                                 <div>
-                                    {fileName}
+                                    {isfileImage == true?
+                                        <img src= {props.q.answerFile} 
+                                        width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>                                                                  
+                                    :
+                                        <a href = {props.q.answerFile} >
+                                            دانلود فایل
+                                        </a>
+                                    }
                                 </div>
                             }
-
-                            {isfileImage == false &&
-                                <Grid item xs ={12} >
-                                    <img src= {image} 
-                                    width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>                                  
-                                </Grid>
-                            }
-
-                            <label htmlFor='file'>
-                                <IconButton aria-label="upload picture" component="span">
-                                    <PhotoLibraryIcon style={{color:'#EE6C4D'}} />
-                                </IconButton>
-                            </label>
 
                             <TextField
                                 style={{width: '100%'}}
                                 id="outlined-textarea"
                                 placeholder="کادر جواب"
                                 multiline
+                                disabled
                                 value={props.useranswer[props.idx] !== "undefined" ? props.useranswer[props.idx]:null}
                                 onChange={handleChangeLongAnswer}
                                 variant="outlined"
@@ -293,6 +281,7 @@ export default function ReviewQuestionCard(props){
                                     style:{fontFamily: 'Vazir'},
                                 }}
                             />
+
 
                         </div>
                     ):null}
@@ -312,7 +301,141 @@ export default function ReviewQuestionCard(props){
                     ):null}       
 
                 </Grid>                                      
-                                            
-            </Container>
+              </div>  
+              <br />              
+              <p style={{color : '#1ca0a0'}}>
+                               <CheckCircleIcon />    جواب درست : </p>                                
+                                <div>
+                <Grid item xs={12} >
+                    {props.q.question.type === "TEST" ? (
+                        
+                        <FormControl>                                
+                            <RadioGroup
+                                aria-label="quiz"
+                                name="quiz"
+                                value={parseInt(props.q.question.answers[0].answer)}
+                                onChange={handleRadioChange}
+                            >
+                                <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
+                                    <Grid container >
+                                        {props.q.question.options.map((options,idx)=>{
+                                            return(
+                                                <Grid item xs={6} >
+                                                    <li key={idx + 1} >
+                                                        <FormControlLabel style={{marginRight: '0px'}} value={idx+1} control={<Radio style={{color: '#1CA0A0'}}/>} disabled label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
+                                                    </li>
+                                                </Grid>
+                                            )
+                                        })}
+                                    </Grid>
+                                </ul>
+                            </RadioGroup>
+                        </FormControl>
+                        ): null}
+                    </Grid>
+                    <Grid item xs={12} >
+                    {props.q.question.type === "MULTICHOISE" && props.idx % 2 == 1 ? (
+                        <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
+                            <FormControl component="fieldset">
+                                <FormGroup>
+                                    {props.q.question.options.map((options,idx)=>{
+                                        if(idx===0){
+                                            checklistodd=[]
+                                            console.log(props.useranswer)
+                                            if(typeof(props.useranswer[props.idx]) !== "undefined"){
+                                            props.useranswer[props.idx].split(',').map((j)=>{
+                                            checklistodd[j - 1] = true
+                                            })}
+                                            console.log(checklistodd)
+                                        }
+                                        return(
+                                            <li key={idx + 1} >
+                                                <FormControlLabel control={<Checkbox disabled defaultChecked={
+                                                    props.q.question.answers.some(elem => {
+                                                        return elem.answer === idx + 1;
+                                                    })
+                                                } value={idx} style={{color: '#1CA0A0'}} name={idx} />}
+                                                style={{marginRight: '0px'}}  label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
+                                            </li>
+                                        )
+                                    })}
+                                </FormGroup>
+                            </FormControl>
+                        </ul>): null}
+                    {props.q.question.type === "MULTICHOISE" && props.idx % 2 == 0 ? (
+                        <ul style={{listStyle:'persian',fontFamily: 'Vazir'}}>
+                            <FormControl component="fieldset">
+                                <FormGroup>
+                                    {props.q.question.options.map((options,idx)=>{
+                                        if(idx===0){
+                                            checklisteven=[]
+                                            console.log(props.useranswer)
+                                            if(typeof(props.useranswer[props.idx]) !== "undefined"){
+                                            props.useranswer[props.idx].split(',').map((j)=>{
+                                            checklisteven[j - 1] = true
+                                            })}
+                                            console.log(checklisteven)
+                                        }
+                                        return(
+                                            <li key={idx + 1} >
+                                                <FormControlLabel control={<Checkbox disabled defaultChecked={
+                                                    props.q.question.answers.some(elem => {
+                                                        return elem.answer === idx + 1;
+                                                    })
+                                                } value={idx} style={{color: '#1CA0A0'}} onChange={handleChangeCheckBox} name={idx} />}
+                                                style={{marginRight: '0px'}}  label={<span style={{fontFamily: 'Vazir'}}>{options.option}</span>} />
+                                            </li>
+                                        )
+                                    })}
+                                </FormGroup>
+                            </FormControl>
+                        </ul>): null}
+                    {props.q.question.type === "LONGANSWER" ? (
+                        <div>                        
+                            <TextField
+                                style={{width: '100%'}}
+                                id="outlined-textarea"
+                                placeholder="کادر جواب"
+                                multiline
+                                disabled
+                                value={props.q.question.answers[0].answer}
+                                onChange={handleChangeLongAnswer}
+                                variant="outlined"
+                                InputProps={{
+                                    style:{fontFamily: 'Vazir'},
+                                }}
+                            />
+
+                            {props.q.question.imageAnswer != null &&
+                                <Grid container justify = 'center' alignItems='center' direction='row'>                                    
+                                    <Grid item xs={12} style={{textAlign : 'center'}} >
+                                        <img
+                                        src={atob(props.q.question.imageAnswer)}                                        
+                                        width="50%" height="80%" style={{cursor: 'pointer' , margin : '14px'}}/>
+                                    </Grid>                                    
+                                </Grid>
+                            }
+
+                        </div>
+                    ):null}
+                    {props.q.question.type === "SHORTANSWER" ? (
+                        <TextField
+                            style={{width: '100%'}}
+                            id="outlined-textarea"
+                            placeholder="کادر جواب"
+                            value={props.q.question.answers[0].answer}
+                            onChange={handleChangeShortAnswer}
+                            multiline
+                            variant="outlined"
+                            InputProps={{
+                                style:{fontFamily: 'Vazir'},
+                            }}
+                        />
+                    ):null}       
+
+                </Grid>                                      
+              </div> 
+                <hr />                                            
+            </Container>            
         )
 }

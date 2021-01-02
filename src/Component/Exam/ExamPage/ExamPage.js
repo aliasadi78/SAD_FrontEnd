@@ -62,7 +62,9 @@ class ExamPage extends Component{
             .then( result => {
                 setQuestionsList([...result.data.questions]);                
                 setCheck(true);     
-                setPending(false);           
+                setPending(false);
+                console.log("shit");
+                console.log(result);
             })
             .catch((err) => {
                 console.log(err);
@@ -114,49 +116,21 @@ class ExamPage extends Component{
                 <div style={{fontFamily: 'Vazir',paddingTop: '1%',backgroundColor : '#3D5A80',width:'100%',height:'52px',color: 'white',fontSize: '16px'}}>
                     {this.state.examName}
                 </div>
-                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height:'110px',fontSize: '16px'}}>
+                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height: this.props.reviewMode == false ? 110 + 'px' : 52 + 'px' ,fontSize: '16px'}}>
                     {this.props.reviewMode == false ?
                         <Timer time={time} examId={this.props.examId}/>
                     :
-                        <Grid item xs={12}>
-                            {/* <Typography variant="h1" style={{fontFamily: 'Vazir'}} >
-                                مرور آزمون
-                            </Typography>                             */}
+                        <Grid item xs={12}>                            
+                            <h3 style={{color : 'white' ,fontFamily: 'Vazir' }} >
+                                مرور آزمون               
+                            </h3>                                         
                         </Grid>
                     }
                 </Container>
-                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%', paddingBottom : '40px',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
+                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%', paddingBottom : '10px',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
                 <Grid container xs={12} >
-                                                    
-                          <Grid item xs={4} ></Grid>
-                          <Grid item xs={4} >
-
-                          <Button variant = "contained" 
-                          style={{ marginBottom : "8px"  , width : this.state.c + "px" , fontFamily: 'Vazir' , backgroundColor : "#E63946"}} 
-                        //   onMouseUp = {(e) =>  {handleFinishExamEvent(e)} }
-                        //   onMouseDown = { (e) => { handleFinishExamEvent(e) }} 
-
-                        onClick = {() => {
-                            for (let index = 0; index < questionsList.length; index++) {
-                                const element = questionsList[index];
-                                axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
-                                .then(res=>{
-                                    console.log(res)
-                                })
-
-                                .catch(err=>{
-                                    console.log(err)
-                                })
-                            }
-                        }}
-                          >
-                              اتمام آزمون 
-                          </Button>
-                                                      
-                          </Grid>                              
-
-                          <Grid item xs={4} ></Grid>
-
+                                                                              
+                    
                     {this.props.reviewMode == false &&                           
                         <Grid container item xs={12}
                             direction="row"
@@ -228,6 +202,42 @@ class ExamPage extends Component{
                             </Grid>
                         </Container>
                     }
+
+                            <Grid item xs={4} ></Grid>
+                          <Grid item xs={4} >
+
+                          <Button variant = "contained" 
+                          style={{ marginTop : "8px"  , width : this.state.c + "px" , fontFamily: 'Vazir' , backgroundColor : "#E63946"}} 
+                        //   onMouseUp = {(e) =>  {handleFinishExamEvent(e)} }
+                        //   onMouseDown = { (e) => { handleFinishExamEvent(e) }} 
+
+                        onClick = {() => {
+                            for (let index = 0; index < questionsList.length; index++) {                                
+                                axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
+                                .then(res=>{
+                                    console.log(res)
+                                    
+                                })
+
+                                .catch(err=>{
+                                    console.log(err)
+                                })
+                            }
+                        }}
+                          >                             
+                              {this.props.reviewMode == false?                                                          
+                               <p>  اتمام آزمون  </p>
+                              :
+                              <p>
+                                 اتمام مرور
+                                </p>
+                              }
+                          </Button>
+                                                      
+                          </Grid>                              
+
+                          <Grid item xs={4} ></Grid>
+
                 </Grid>   
                 </Container>
             </M_RTL>

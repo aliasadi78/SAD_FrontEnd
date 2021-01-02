@@ -18,7 +18,6 @@ import {connect} from 'react-redux' ;
 import serverURL from './utils/serverURL' ;
 import tokenConfig from  './utils/tokenConfig' ;
 import { savePublicApis} from './Component/Question/QuestionsSlice' ;
-import DP from './Component/Exam/datepicker' ;
 import axios from 'axios' ;
 import UserPage from './Component/User/UserPage' ;
 

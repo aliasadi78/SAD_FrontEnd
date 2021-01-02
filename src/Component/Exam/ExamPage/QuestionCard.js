@@ -5,13 +5,20 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
+import CloseIcon from '@material-ui/icons/Close';
+import Collapse from '@material-ui/core/Collapse';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import TextField from '@material-ui/core/TextField';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import Dialog from '@material-ui/core/Dialog';
+import Alert from '@material-ui/lab/Alert';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 import axios from 'axios';
+import Zoom from '@material-ui/core/Zoom';
+import Tooltip from '@material-ui/core/Tooltip';
 import tokenConfig from '../../../utils/tokenConfig';
 import serverURL from '../../../utils/serverURL';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -47,11 +54,15 @@ export default function QuestionCard(props){
         const [fileName , setFilename] = React.useState(null)
         const [isfileImage , setisFileImage] = React.useState(false)
         const [ image , setImage] = React.useState(null);
-
+        const [uploading , setUploading] = React.useState(false);
         const [ mood , setMood ] = React.useState("Exam");
-
+        const [ isFileDeleted , setIsFileDeleted] = React.useState(false);
+        const [deleting , setDeleting] = React.useState(false);
         const file = new FormData();
-        
+
+        // error handling
+        const [ error , setError] = React.useState(false);
+        const [ errorMessage , setErrorMessage] = React.useState(null);
         var data;
         var Example;
         const [openDialogQuestion, setOpenDialogQuestion] = React.useState(false);
@@ -106,6 +117,39 @@ export default function QuestionCard(props){
         
         return(
             <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%' , paddingBottom : '10px',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px',direction: 'rtl',textAlign: 'right'}}>
+                
+                {(uploading == true || deleting == true) &&
+                <Grid item xs={12} style={{ color : '#EE6C4D'}}>
+                    <LinearProgress style={{marginBottom : '8px'}} />
+                </Grid>
+                }
+
+                <Grid item xs={12}>
+                    <Collapse                            
+                        in={error} 
+                        style={{marginBottom : '16px'}}
+                        >
+                        <Alert
+                        severity="error"
+                        action={
+                            <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                                setError(false);
+                                // setAddQuestionPending(false)
+                            }}                            
+                            >
+                            <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                        }
+                        >
+                            <span style={{fontFamily: 'Vazir' , marginLeft : '8px' , marginRight : '8px'}}> {errorMessage} </span>
+                        </Alert>
+                    </Collapse>
+                </Grid>
+                
                 <span>{faNumber(props.idx + 1)}.</span><span>{props.q.question.question}                    
                 <p> ( {faNumber(props.q.grade)} نمره)  </p>
                     </span>
@@ -223,17 +267,25 @@ export default function QuestionCard(props){
                         </ul>): null}
                     {props.q.question.type === "LONGANSWER" ? (
                         <div>
-
+                            
                             <Grid item xs={12}>
                                 <input 
-                                    type="file" name="file"
+                                    type="file" name="file" accept=".pdf,.png,.jpg,.zip,.jpeg"
                                     style={{display : 'none'}}
                                     id='file' type="file"                                 
                                     onChange={(e) => {
                                         console.log(e.target.files[0])                                                                        
                                         file.append('answer' , e.target.files[0] );    
-                                        setIsFileLoaded(true);         
-                                        
+                                        setIsFileLoaded(true); 
+                                        const a = e.target.files[0].name.split('.') ;
+                                        console.log(a[a.length-1]);
+                                        if(a[a.length - 1] == "jpg" || 
+                                            a[a.length - 1] == "png" ||
+                                            a[a.length - 1] == "PNG" )  
+                                            setisFileImage(true); 
+                                        else
+                                            setisFileImage(false);     
+                                        setFilename(e.target.files[0].name);
                                         let reader = new FileReader();
                                         
                                         reader.readAsDataURL(e.target.files[0]);
@@ -241,50 +293,123 @@ export default function QuestionCard(props){
                                         reader.onload = (e) => {
                                             // console.log(e.target.result);
                                             setImage(e.target.result);
+                                            setIsFileLoaded(true);                                            
                                         }
-
+                                        setUploading(true);
+                                        setIsFileDeleted(false);
                                         const index = props.idx + 1 ;
                                         axios.post(serverURL() + "exam/" + props.examId + "/questions/" + index + "/answer" , file , tokenConfig() )                                
                                         .then(res => {
-                                            console.log("done");
+                                            console.log("done");                                            
+                                            setUploading(false);
+                                            console.log(file);                                            
                                         })
                                         .catch(err => {
-                                            console.log(err);
+                                            console.log(err.response);
+                                            setError(true);
+                                            setErrorMessage(err.response.data.error)
+                                            setUploading(false);
                                         })
                                     }}/>
                             </Grid>
-                            {isFileLoaded &&                            
-                                <div>
-                                    {fileName}
-                                </div>
+
+                            <div >
+                                <label htmlFor='file'>
+                                    <Tooltip title={<span style={{fontFamily: 'Vazir',fontSize: '12px'}}>افزودن فایل </span>}
+                                    placement="left"
+                                    TransitionComponent={Zoom} style={{fontFamily: 'Vazir'}} >
+                                        <IconButton aria-label="upload picture" component="span">                        
+                                            <FileCopyIcon style={{color:'#EE6C4D'}} />                                    
+                                        </IconButton>  
+                                    </Tooltip>                                  
+                                </label>
+                            </div>                              
+
+                            {(props.q.answerFile != null && isFileLoaded == false && isFileDeleted == false) &&                            
+                            <div>
+                                {isfileImage ?
+                                    <img src= {props.q.answerFile} 
+                                    width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>                                                                  
+                                :
+                                    <a href = {props.q.answerFile} >
+                                        دانلود فایل
+                                    </a>
+                                }
+                            </div>
                             }
 
-                            {isfileImage == false &&
+
+                            {(isfileImage == true && isFileDeleted == false)  &&
                                 <Grid item xs ={12} >
+                                    
+                                            <IconButton onClick={()=>{                                        
+                                                setDeleting(true);
+                                                setImage(null);                                                
+                                                setisFileImage(false);  
+                                                setIsFileLoaded(false);                                      
+                                                const index = props.idx + 1 ;
+                                                axios.delete(serverURL() + "exam/" + props.examId + "/questions/" + index + "/answer?deleteFile=true" , tokenConfig() )                                
+                                                .then(res => {
+                                                    console.log("done");
+                                                    setDeleting(false);
+                                                    setIsFileDeleted(true);
+                                                })
+                                                .catch(err => {
+                                                    console.log(err);                                                    
+                                                })
+                                            }}                                            
+                                            >
+                                                <CloseIcon style={{color:'#EE6C4D'}} />
+                                            </IconButton>                                                                                    
+
                                     <img src= {image} 
-                                    width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>                                  
+                                    width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>                                     
                                 </Grid>
+                            }                                                                              
+
+                            {isFileLoaded &&                            
+                                <div >
+                                    {fileName}  
+                                    {isfileImage == false &&                          
+                                        <label htmlFor='file'>                                                                                    
+                                            <IconButton onClick={()=>{                                                                                    
+                                                setDeleting(true);
+                                                setImage(null);                                                
+                                                setisFileImage(false);  
+                                                setIsFileLoaded(false);                                                                        
+                                                const index = props.idx + 1 ;
+                                                axios.delete(serverURL() + "exam/" + props.examId + "/questions/" + index + "/answer?deleteFile=true" , tokenConfig() )                                
+                                                .then(res => {
+                                                    console.log("done");
+                                                    setDeleting(false);
+                                                    setIsFileDeleted(true);
+                                                })
+                                                .catch(err => {
+                                                    console.log(err);                                                    
+                                                })
+                                            }}                                            
+                                            >
+                                                <CloseIcon style={{color:'#EE6C4D'}} />
+                                            </IconButton>                                            
+                                        </label>
+                                    }
+                                </div>                                    
                             }
 
-                            <label htmlFor='file'>
-                                <IconButton aria-label="upload picture" component="span">
-                                    <PhotoLibraryIcon style={{color:'#EE6C4D'}} />
-                                </IconButton>
-                            </label>
-
-                            <TextField
-                                style={{width: '100%'}}
-                                id="outlined-textarea"
-                                placeholder="کادر جواب"
-                                multiline
-                                value={props.useranswer[props.idx] !== "undefined" ? props.useranswer[props.idx]:null}
-                                onChange={handleChangeLongAnswer}
-                                variant="outlined"
-                                InputProps={{
-                                    style:{fontFamily: 'Vazir'},
-                                }}
-                            />
-
+                            <div style= {{position : 'relative' , marginTop : '8px' }} >
+                                <TextField
+                                    style={{width: '100%'}}
+                                    id="outlined-textarea"
+                                    placeholder="کادر جواب"
+                                    multiline
+                                    value={props.useranswer[props.idx] !== "undefined" ? props.useranswer[props.idx]:null}
+                                    onChange={handleChangeLongAnswer}
+                                    variant="outlined"
+                                    InputProps={{
+                                        style:{fontFamily: 'Vazir'},
+                                    }}
+                                />
+                            </div>
                         </div>
                     ):null}
                     {props.q.question.type === "SHORTANSWER" ? (
