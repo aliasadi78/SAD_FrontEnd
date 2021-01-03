@@ -411,7 +411,7 @@ export default function ReviewQuestionCard(props){
                                     <Grid item xs={12} style={{textAlign : 'center'}} >
                                         <img
                                         src={atob(props.q.question.imageAnswer)}                                        
-                                        width="50%" height="80%" style={{cursor: 'pointer' , margin : '14px'}}/>
+                                        width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>
                                     </Grid>                                    
                                 </Grid>
                             }
