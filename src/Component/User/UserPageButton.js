@@ -6,7 +6,12 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import {useHistory} from 'react-router-dom' ;
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' ; 
+import { 
+    faChalkboard ,
+    faUserEdit ,
+    faPencilAlt
+} from "@fortawesome/free-solid-svg-icons";
 const useStyles = makeStyles((theme) => ({
     title: {
         // fontSize: 22,
@@ -41,10 +46,9 @@ const useStyles = makeStyles((theme) => ({
 export default function UserPageButton (props){
 
     const classes = useStyles();
-    
-    // console.log(props);
+        
     let history = useHistory() ;
-    const [length , setLength] = React.useState(200);
+    const [length , setLength] = React.useState(200);        
 
     return(
         <Card onClick = {() => {            
@@ -61,7 +65,11 @@ export default function UserPageButton (props){
                 >
                     {props.name}
                 </Typography>
-                
+                <div style={{marginTop : '30px' }}>
+                    <FontAwesomeIcon icon={props.name == "ویرایش اطلاعات" ? faUserEdit :
+                                            props.name == "کلاس ها" ? faChalkboard : faPencilAlt } color = "#3D5A80" size="6x" />                    
+                </div>
+
             </CardContent>
 
             <CardActions>                

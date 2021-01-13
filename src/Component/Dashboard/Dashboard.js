@@ -194,7 +194,9 @@ export default function Dashboard() {
             </IconButton>
 
 
-            <Avatar alt="Remy Sharp" src={avatar} style={{width : '40px' , height : '40px' , margin : '17px' }} />
+            <a href="/user/page/" >
+              <Avatar alt="Remy Sharp" src={avatar} style={{width : '40px' , height : '40px' , margin : '17px' }} />
+            </a>
 
           <p style={{margin : '5px'}} >        
           {username}
