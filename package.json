@@ -62,6 +62,7 @@
     "jest-environment-jsdom-fourteen": "1.0.1",
     "jest-resolve": "24.9.0",
     "jest-watch-typeahead": "0.4.2",
+    "js-file-download": "^0.4.12",
     "jss": "^10.4.0",
     "jss-rtl": "^0.3.0",
     "lighten-darken-color": "^1.0.0",
