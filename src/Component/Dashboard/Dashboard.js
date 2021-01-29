@@ -139,12 +139,14 @@ export default function Dashboard() {
     const [openJoinClassDialog, setOpenJionClassDialog] = React.useState(false);
     const [openCreateClassDialog, setOpenCreateClassDialog] = React.useState(false);
 
+    const [userFullName , setUserFullname] = React.useState(null);
     const [username , setUsername] = React.useState(null);
     const [avatar , setAvatar] = React.useState(null);
 
     axios.get(serverURL() + "user" , tokenConfig())
     .then((res) => {
-        setUsername(res.data.user.firstname + " " + res.data.user.lastname)
+        setUserFullname(res.data.user.firstname + " " + res.data.user.lastname);
+        setUsername(res.data.username);
     })
     .catch(() => {
 
@@ -195,11 +197,11 @@ export default function Dashboard() {
 
 
             <a href="/user/page/" >
-              <Avatar alt="Remy Sharp" src={avatar} style={{width : '40px' , height : '40px' , margin : '17px' }} />
+              <Avatar alt={username} src={avatar} style={{width : '40px' , height : '40px' , margin : '17px' }} />
             </a>
 
           <p style={{margin : '5px'}} >        
-          {username}
+          {userFullName}
           </p>
 
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>                          

@@ -12,6 +12,8 @@ import {
     faUserEdit ,
     faPencilAlt
 } from "@fortawesome/free-solid-svg-icons";
+import styles from '../../App.css';
+
 const useStyles = makeStyles((theme) => ({
     title: {
         // fontSize: 22,
@@ -54,7 +56,7 @@ export default function UserPageButton (props){
         <Card onClick = {() => {            
             history.push(props.url);
         }} className={classes.card} style = {{width : length + 'px' , height : length + "px"}} variant="outlined">
-            <CardContent>                               
+            <CardContent style={{textAlign : 'center'}}>                               
 
                 <Typography
                 variant="h5" 
@@ -67,7 +69,7 @@ export default function UserPageButton (props){
                 </Typography>
                 <div style={{marginTop : '30px' }}>
                     <FontAwesomeIcon icon={props.name == "ویرایش اطلاعات" ? faUserEdit :
-                                            props.name == "کلاس ها" ? faChalkboard : faPencilAlt } color = "#3D5A80" size="6x" />                    
+                                            props.name == "کلاس ها" ? faChalkboard : faPencilAlt } color ="#3D5A80" size="6x" />                    
                 </div>
 
             </CardContent>

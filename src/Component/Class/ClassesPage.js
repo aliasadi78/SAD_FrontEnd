@@ -76,7 +76,7 @@ class ClassesPage extends Component{
                             justify="flex-end"
                             alignItems="center"
                           > */}
-                            <div style={{fontFamily: 'Vazir'}} className = {classes.classCards}>                            
+                            <div style={{fontFamily: 'Vazir' , textAlign :'right'}} className = {classes.classCards}>                            
                               {
                                 this.state.userClasses.map((item) => 
                                 <ClassListItem 

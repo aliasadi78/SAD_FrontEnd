@@ -27,6 +27,11 @@
   }
 }
 
+.thing {
+  color: "#EE6C4D" ;
+  padding : '400px' ;
+}
+
 .App-header {
   /*background-color: #282c34;*/
   background: rgb(100,201,129);
