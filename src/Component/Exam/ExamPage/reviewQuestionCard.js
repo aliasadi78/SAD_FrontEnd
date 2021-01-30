@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -411,7 +412,7 @@ export default function ReviewQuestionCard(props){
                                     <Grid item xs={12} style={{textAlign : 'center'}} >
                                         <img
                                         src={atob(props.q.question.imageAnswer)}                                        
-                                        width="50%" height="80%" style={{cursor: 'pointer' , margin : '14px'}}/>
+                                        width="50%" height="80%" style={{cursor: 'pointer' , margin : '2px'}}/>
                                     </Grid>                                    
                                 </Grid>
                             }
@@ -438,4 +439,5 @@ export default function ReviewQuestionCard(props){
                 <hr />                                            
             </Container>            
         )
+
 }

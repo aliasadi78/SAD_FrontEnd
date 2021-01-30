@@ -1,3 +1,4 @@
+
 .App {
   text-align: center;
   position: absolute;
@@ -25,6 +26,11 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+.thing {
+  color: "#EE6C4D" ;
+  padding : '400px' ;
 }
 
 .App-header {
@@ -59,4 +65,5 @@
 @font-face{
   font-family: 'Vazir';
   src: local('Vazir'), url(./fonts/Vazir.ttf) format('truetype');
+
 }

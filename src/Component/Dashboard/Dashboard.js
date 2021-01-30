@@ -9,7 +9,11 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
+import axios from 'axios' ;
+import serverURL from '../../utils/serverURL';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import Avatar from '@material-ui/core/Avatar';
+import tokenConfig from '../../utils/tokenConfig';
 import Button from '@material-ui/core/Button';
 import UserPage from '../User/UserPage' ;
 import {
@@ -135,6 +139,27 @@ export default function Dashboard() {
     const [openJoinClassDialog, setOpenJionClassDialog] = React.useState(false);
     const [openCreateClassDialog, setOpenCreateClassDialog] = React.useState(false);
 
+    const [userFullName , setUserFullname] = React.useState(null);
+    const [username , setUsername] = React.useState(null);
+    const [avatar , setAvatar] = React.useState(null);
+
+    axios.get(serverURL() + "user" , tokenConfig())
+    .then((res) => {
+        setUserFullname(res.data.user.firstname + " " + res.data.user.lastname);
+        setUsername(res.data.username);
+    })
+    .catch(() => {
+
+    });
+
+    axios.get(serverURL() + "user/avatar" , tokenConfig())
+    .then((res) => {
+      setAvatar(res.data.avatar)
+    })
+    .catch(() => {
+
+    });
+
     const [openUserDrawerMethod , setopenUserDrawerMethod ] = React.useState(false);
 
     const dispatch = useDispatch();
@@ -169,6 +194,16 @@ export default function Dashboard() {
             >
               <MenuIcon />
             </IconButton>
+
+
+            <a href="/user/page/" >
+              <Avatar alt={username} src={avatar} style={{width : '40px' , height : '40px' , margin : '17px' }} />
+            </a>
+
+          <p style={{margin : '5px'}} >        
+          {userFullName}
+          </p>
+
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>                          
             </Typography>
 

@@ -1,3 +1,4 @@
+
 import React, {Component} from 'react';
 import serverURL from '../../utils/serverURL';
 import tokenConfig from '../../utils/tokenConfig' ;
@@ -76,7 +77,7 @@ class ClassesPage extends Component{
                             justify="flex-end"
                             alignItems="center"
                           > */}
-                            <div style={{fontFamily: 'Vazir'}} className = {classes.classCards}>                            
+                            <div style={{fontFamily: 'Vazir' , textAlign :'right'}} className = {classes.classCards}>                            
                               {
                                 this.state.userClasses.map((item) => 
                                 <ClassListItem 
@@ -170,4 +171,5 @@ export default () => {
     return (        
         <ClassesPage classes={classes} o={o}/>    
     )
+
 }

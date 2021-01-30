@@ -1,3 +1,4 @@
+
 import React , {Component, useState} from 'react';
 import 'semantic-ui-css/semantic.min.css'
 import TextField from '@material-ui/core/TextField';
@@ -186,7 +187,7 @@ function EditProfileValidationForms_Personal (props) {
                 <Grid item xs={4}>
                   <Image  className="avatarimage-Editpage"
                     height = "80" width = "80"                
-                    src = {imageBase64}              
+                    src = {props.avatar}              
                     circular /> 
                 </Grid>
                 <Grid item xs={4}></Grid>
@@ -199,7 +200,16 @@ function EditProfileValidationForms_Personal (props) {
                 id="icon-button-file" 
                 type="file"
                 onChange={(e) => {
-                  uploadImage(e);
+                  // uploadImage(e);
+                  const file = new FormData();
+                  file.append( 'avatar' , e.target.files[0]) ;
+                  axios.put(serverURL()+ "user/avatar" , file , tokenConfig() )
+                  .then(()=>{
+                    console.log('done');
+                  })
+                  .catch(() => {
+                    console.log("not done ");
+                  });
                 }}
                 />
               <label htmlFor="icon-button-file">
@@ -423,7 +433,8 @@ export default class PersonalForms extends Component {
   constructor(props){
     super(props);
     this.state = {
-      userFound : false
+      userFound : false , 
+      avatar : null
     };
     
     const token = localStorage.getItem('token');    
@@ -446,6 +457,18 @@ export default class PersonalForms extends Component {
     .catch(err => {
         console.log(err)
     });     
+
+    axios.get(serverURL() + "user/avatar" , tokenConfig())
+    .then((res) => {
+      this.setState(prevstate => {
+        return {
+          avatar : res.data.avatar
+        }
+      })
+    })
+    .catch(()=>{
+
+    });
   }
 
   render(){  
@@ -479,4 +502,5 @@ export default class PersonalForms extends Component {
     } 
 
   }
+
 } 
