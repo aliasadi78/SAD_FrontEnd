@@ -20,7 +20,8 @@ import tokenConfig from  './utils/tokenConfig' ;
 import { savePublicApis} from './Component/Question/QuestionsSlice' ;
 import axios from 'axios' ;
 import UserPage from './Component/User/UserPage' ;
-import Landing from './Component/landingpage/landingpage';
+// import Landing from './Component/landingpage/landingpage';
+import AboutUs from './Component/landingpage/AboutUs';
 class App extends Component {    
 
     constructor(props){
@@ -40,7 +41,7 @@ class App extends Component {
         return (                
             <div className={classes.App}>                                                
                 {/* <DP /> */}
-                <Route path="/" exact component={Landing}/>
+                <Route path="/" exact component={AboutUs}/>
                 <Route path="/signIn" component={SignIn}/>
                 <Route path="/signUp" component={SignUp}/>
                 <Route path="/profile/edit" children={<Dashboard />} component = {PersonalForms} />
