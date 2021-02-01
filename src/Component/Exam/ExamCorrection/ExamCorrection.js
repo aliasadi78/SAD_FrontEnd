@@ -9,7 +9,8 @@ import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import { CircularProgress } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import ReviewQuestionCard from '../ExamPage/reviewQuestionCard';
+import ExamCorrectionQuestionCard from './ExamCorrectionQuestionCard' ;
+import Backdrop from '@material-ui/core/Backdrop';
 
 class ExamPage extends Component{
     constructor(props){
@@ -21,61 +22,63 @@ class ExamPage extends Component{
             holding : false 
         }
     }
+
+    componentDidMount(){
+        
+    }
     
 
     componentWillMount(){
         var [check,setCheck] = this.props.check;
         var [totalQuestion,setTotalQuestion] = this.props.totalQuestion;
         var [questionsList,setQuestionsList] = this.props.questionsList; 
+        var [grades , setGrades] = this.props.grades ;
         var [time,setTime] = this.props.time;  
-        var [pending,setPending] = this.props.pending;  
+        var [pending,setPending] = this.props.pending;                          
+
         setPending(true);             
         var res = []
-        if(!check && !this.props.reviewMode){
-            axios.get(serverURL() + "exam/" + this.props.examId + "/questions" , tokenConfig() )
-                .then(result => {                    
-                    res.push(...result.data.questions);
-                    setTime(result.data.user_examEndTime);
-                    var ll = res.map((q) => q);                    
-                    setQuestionsList([...ll]);
-                    this.setState(prevstate => {
-                        return {
-                            examName : result.data.name
-                        }
-                    });
-                    setCheck(true);
-                    setPending(false);
-                    setTotalQuestion(result.data.questions.length)                    
-                }).catch(error=>{
-                    console.log(error.response)
-                    setTime("")                    
-                    setCheck(true);
-                    setPending(false);
-                })            
-        }
-        if(!check && this.props.reviewMode ){
-            axios.get(serverURL() + "exam/" + this.props.examId + "/questions/review" , tokenConfig() )
-            .then( result => {
-                setQuestionsList([...result.data.questions]);                
-                setCheck(true);     
+        var g = []
+        if(!check){            
+            axios.get(serverURL() + "exam/" + this.props.examId + "/attendees/" + this.props.username , tokenConfig() )
+            .then(result => {                    
+                res.push(...result.data.questions);                    
+                var ll = res.map((q) => q);                    
+                setQuestionsList([...ll]);
+                result.data.questions.map((q) => {                    
+                    g.push(q.answerGrade)
+                })
+                setGrades([...g]);
+                this.setState(prevstate => {
+                    return {
+                        examName : result.data.name
+                    }
+                });
+                setCheck(true);
                 setPending(false);
-                console.log("shit");
-                console.log(result);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+                setTotalQuestion(result.data.questions.length)                    
+            }).catch(error=>{
+                console.log(error.response)                                 
+                setCheck(true);
+                setPending(false);
+            })                    
         }
     }
+
     render(){
+
+        console.log(this.props.grades);
     const classes = this.props.classes;
     const [totalQuestion,setTtotalQuestion] = this.props.totalQuestion;
     const [questionsList,setQuestionsList] = this.props.questionsList;
     const [pending,setPending] = this.props.pending; 
-    // var indexQuestion = 1;
-    const [time,setTime] = this.props.time;
+    const [grades , setGrades] = this.props.grades ;
+    // var indexQuestion = 1;    
     const [indexQuestion,setIndexQuestion] = this.props.indexQuestion;
     const [color,setColor] = this.props.color
+
+    const [backdropPending , setBackdropPending] = this.props.backdropPending;
+
     var T = [];
     const handle = (index) => {
       console.log(index)
@@ -119,55 +122,71 @@ class ExamPage extends Component{
                             </h3>                                         
                         </Grid>                    
                 </Container>
-                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%', paddingBottom : '10px',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>
-                <Grid container xs={12} >
-                                                                                                                     
+                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%', paddingBottom : '10px',paddingTop: '1%',backgroundColor : '#f2f2f2',fontSize: '16px'}}>                    
                     
-                <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px'}}>                                                
-                    <Grid id="Grid1">
-                        {pending ?
-                            <div style={{}}><CircularProgress style={{color: '#1CA0A0'}}/></div>
-                        :                                    
-                        <div>
-                            {questionsList.map((question,idx)=>                                        
-                                <ReviewQuestionCard q={question} examId={this.props.examId} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>                                         
-                            )}
-                        </div>
-                        }
-                    </Grid>
-                </Container>                    
+                    <Grid container xs={12} >
+                                                                                                                        
+                        
+                    <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px'}}>                                                
+                        <Grid id="Grid1">
+                            {pending ?
+                                <div style={{}}><CircularProgress style={{color: '#1CA0A0'}}/></div>
+                            :                                    
+                            <div>
+                                {questionsList.map((question,idx)=>                                        
+                                    <ExamCorrectionQuestionCard OnChange = {(value) => { grades[idx] = value ; }}
+                                    q={question} examId={this.props.examId} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>                                                                             
+                                )}                                
+                            </div>
+                            }
+                        </Grid>
+                    </Container>                    
 
-                            <Grid item xs={4} ></Grid>
-                          <Grid item xs={4} >
+                    <Grid item xs={4} ></Grid>
 
-                          <Button variant = "contained" 
-                          style={{ marginTop : "8px"  , width : this.state.c + "px" , fontFamily: 'Vazir' , backgroundColor : "#E63946"}} 
-                        //   onMouseUp = {(e) =>  {handleFinishExamEvent(e)} }
-                        //   onMouseDown = { (e) => { handleFinishExamEvent(e) }} 
+                    <Backdrop className={classes.backdrop} open={backdropPending}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop>
 
-                        onClick = {() => {
-                            for (let index = 0; index < questionsList.length; index++) {                                
-                                axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
+                    <Grid item xs={4} >
+
+                            <Button variant = "contained" 
+                            style={{ marginTop : "8px"  , width : this.state.c + "px" , fontFamily: 'Vazir' , backgroundColor : "#E63946"}} 
+                            //   onMouseUp = {(e) =>  {handleFinishExamEvent(e)} }
+                            //   onMouseDown = { (e) => { handleFinishExamEvent(e) }}                             
+
+                            onClick = {() => {                                
+                                
+                                setBackdropPending(true);
+                                const a = {
+                                    "answerGrades" : grades
+                                }
+
+                                const ajson = JSON.stringify(a);
+
+                                console.log(ajson);
+
+                                axios.put(serverURL()+ "exam/" +this.props.examId + "/attendees/" + this.props.username , ajson , tokenConfig())
                                 .then(res=>{
-                                    console.log(res)
-                                    
+                                    console.log(res)    ;
+                                    console.log('done');
+                                    setBackdropPending(false)
                                 })
-
                                 .catch(err=>{
                                     console.log(err)
-                                })
-                            }
-                        }}
-                          >                             
-                              
-                               <p>  یه چرتی  </p>                              
-                          </Button>
-                                                      
-                          </Grid>                              
+                                    setBackdropPending(false)
+                                })                                
+                            }}
+                            >                             
+                                
+                                <p> تصحیح </p>                              
+                            </Button>
+                                                        
+                            </Grid>                              
 
-                          <Grid item xs={4} ></Grid>
+                            <Grid item xs={4} ></Grid>
 
-                </Grid>   
+                    </Grid>   
                 </Container>
             </M_RTL>
         </Material_RTL>
@@ -175,6 +194,7 @@ class ExamPage extends Component{
     )
 }}
 var useranswer=[]
+
 function faNumber(n){
     const farsidigit = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
     return n
@@ -199,17 +219,25 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor : '#3D5A80' ,
         color : 'white'
     },
+    backdrop : {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+      },
   }));
 export default (props) => {
     const examId = props.match.params.examId ;    
+    const username = props.match.params.username ;                
+
     const classes = useStyles();
     const check = React.useState(false);    
     const totalQuestion = React.useState(0);
     const questionsList= React.useState([]);
     const pending = React.useState(false);    
     const time = React.useState("")
+    const backdropPending = React.useState(false) ;
     const color =  React.useState([])
     const indexQuestion =  React.useState(1)    
+    var grades= React.useState([]) ;
     return (        
         <ExamPage 
             classes={classes} 
@@ -218,9 +246,12 @@ export default (props) => {
             questionsList={questionsList} 
             examId = {examId}
             pending={pending}
+            backdropPending = {backdropPending}
             time={time}
             color={color}
-            indexQuestion={indexQuestion}            
+            indexQuestion={indexQuestion}     
+            username = {username}       
+            grades = {grades}
             />    
     )
 }
