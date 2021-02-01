@@ -69,7 +69,7 @@ export default function Examslist (props){
     
     axios.get(serverURL() + "public/time")
     .then(res => {
-      setNow(res.time)
+      setNow(res.data.date)      
     })
     .catch(err => {
 
