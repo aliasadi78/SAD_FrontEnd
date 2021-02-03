@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import classes from './App.css';
+import './App.css';
 import SignIn from "./Component/User/Signin";
 import SignUp from "./Component/User/Signup";
 import ClassesPage from  './Component/Class/ClassesPage';
@@ -20,8 +21,7 @@ import tokenConfig from  './utils/tokenConfig' ;
 import { savePublicApis} from './Component/Question/QuestionsSlice' ;
 import axios from 'axios' ;
 import UserPage from './Component/User/UserPage' ;
-// import Landing from './Component/landingpage/landingpage';
-import AboutUs from './Component/landingpage/AboutUs';
+import Landing from './Component/landingpage/landingpage';
 class App extends Component {    
 
     constructor(props){
@@ -41,7 +41,7 @@ class App extends Component {
         return (                
             <div className={classes.App}>                                                
                 {/* <DP /> */}
-                <Route path="/" exact component={AboutUs}/>
+                <Route path="/" exact component={Landing}/>
                 <Route path="/signIn" component={SignIn}/>
                 <Route path="/signUp" component={SignUp}/>
                 <Route path="/profile/edit" children={<Dashboard />} component = {PersonalForms} />
