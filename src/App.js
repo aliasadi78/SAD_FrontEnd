@@ -41,7 +41,7 @@ class App extends Component {
         return (                
             <div className={classes.App}>                                                
                 {/* <DP /> */}
-                <Route path="/" exact component={Landing}/>
+                <Route exact path="/"  component={Landing}/>
                 <Route path="/signIn" component={SignIn}/>
                 <Route path="/signUp" component={SignUp}/>
                 <Route path="/profile/edit" children={<Dashboard />} component = {PersonalForms} />
