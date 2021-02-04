@@ -22,6 +22,8 @@ import axios from 'axios' ;
 import UserPage from './Component/User/UserPage' ;
 import Landing from './Component/landingpage/landingpage';
 import ExamCorrection from './Component/Exam/ExamCorrection/ExamCorrection' ;
+// import Report from './Component/Class/report' ;
+import Report from './Component/Class/report/report' ;
 
 class App extends Component {    
 
@@ -60,6 +62,7 @@ class App extends Component {
                 <Route path="/exam/review/:examId/questions/"  component={ExamPage} />                
                 <Route path="/exam/correction/:examId/:username" component={ExamCorrection} />
                 <Route path="/user/page/" children={<Dashboard />}  component={UserPage} />
+                <Route path="/report/:classId/"  component={Report} />
             </div>
 
         );
