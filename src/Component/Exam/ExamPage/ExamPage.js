@@ -14,6 +14,8 @@ import Timer from './Timer/Timer';
 import Button from '@material-ui/core/Button';
 import Typography from 'material-ui/styles/typography';
 import ReviewQuestionCard from './reviewQuestionCard';
+import { useHistory } from "react-router-dom";
+import Backdrop from '@material-ui/core/Backdrop';
 
 class ExamPage extends Component{
     constructor(props){
@@ -36,15 +38,31 @@ class ExamPage extends Component{
         setPending(true);             
         var res = []
         if(!check && !this.props.reviewMode){
+
+            axios.get(serverURL() + "public/time")
+            .then(res => {
+                this.setState(prevstate => {
+                    return {
+                        now : res.data.date                        
+                    }
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
             axios.get(serverURL() + "exam/" + this.props.examId + "/questions" , tokenConfig() )
                 .then(result => {                    
                     res.push(...result.data.questions);
                     setTime(result.data.user_examEndTime);
                     var ll = res.map((q) => q);                    
                     setQuestionsList([...ll]);
+                    console.log(result.data.user_examEndTime );
                     this.setState(prevstate => {
                         return {
-                            examName : result.data.name
+                            examName : result.data.name  , 
+                            className : result.data.classId , 
+                            examEnd : result.data.user_examEndTime 
                         }
                     });
                     setCheck(true);
@@ -72,10 +90,13 @@ class ExamPage extends Component{
         }
     }
     render(){
+
+    const history = this.props.history ;
     const classes = this.props.classes;
     const [totalQuestion,setTtotalQuestion] = this.props.totalQuestion;
     const [questionsList,setQuestionsList] = this.props.questionsList;
     const [pending,setPending] = this.props.pending; 
+    const [ bd_sendAnswers , setBd_sendAnswers] = this.props.bd_sendAnswers ;
     // var indexQuestion = 1;
     const [time,setTime] = this.props.time;
     const [indexQuestion,setIndexQuestion] = this.props.indexQuestion;
@@ -89,27 +110,7 @@ class ExamPage extends Component{
       console.log(T)
      }
 
-    // const  handleFinishExamEvent = (event) => {
-    //     if (event.type === "mousedown") {
-    //         console.log("shit down");                            
-    //                 setTimeout(() => {
-    //                 this.setState(prestate => {                                        
-    //                     return{
-    //                         c : this.state.c + 1 ,
-    //                     }
-    //                 })                                     
-    //                 },50 ) ;                                                
-    //     } else {
-    //         this.setState(prestate => {                                        
-    //             return{
-    //                 holding : false ,
-    //                 c : 100
-    //             }
-    //         })
-    //     }
-    // }
-
-    return(
+     return(
         <div style={{backgroundColor: 'white' , paddingBottom : '80px'}}> 
         <Material_RTL style={{backgroundColor: 'white'}}>
             <M_RTL style={{backgroundColor: 'white'}}>
@@ -118,7 +119,9 @@ class ExamPage extends Component{
                 </div>
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height: this.props.reviewMode == false ? 110 + 'px' : 52 + 'px' ,fontSize: '16px'}}>
                     {this.props.reviewMode == false ?
-                        <Timer time={time} examId={this.props.examId}/>
+                        <Timer time={time} examId={this.props.examId}
+                            examEnd = {time} now = {this.state.now}
+                        />
                     :
                         <Grid item xs={12}>                            
                             <h3 style={{color : 'white' ,fontFamily: 'Vazir' }} >
@@ -206,23 +209,35 @@ class ExamPage extends Component{
                             <Grid item xs={4} ></Grid>
                           <Grid item xs={4} >
 
+                        <Backdrop className={classes.backdrop} open={bd_sendAnswers}>
+                            <CircularProgress color="inherit" />
+                        </Backdrop>
+
                           <Button variant = "contained" 
                           style={{ marginTop : "8px"  , width : this.state.c + "px" , fontFamily: 'Vazir' , backgroundColor : "#E63946"}} 
                         //   onMouseUp = {(e) =>  {handleFinishExamEvent(e)} }
                         //   onMouseDown = { (e) => { handleFinishExamEvent(e) }} 
 
                         onClick = {() => {
+                            setBd_sendAnswers(true);
                             for (let index = 0; index < questionsList.length; index++) {                                
                                 axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
                                 .then(res=>{
                                     console.log(res)
-                                    
+                                    if(index == questionsList.length -1 )
+                                        setBd_sendAnswers(false);
                                 })
 
                                 .catch(err=>{
                                     console.log(err)
+                                    setBd_sendAnswers(false);
                                 })
                             }
+                            
+                            if(this.props.reviewMode)
+                                history.push("/class/" + this.state.className  );
+                            // else
+
                         }}
                           >                             
                               {this.props.reviewMode == false?                                                          
@@ -281,7 +296,9 @@ export default (props) => {
     const time = React.useState("")
     const color =  React.useState([])
     const indexQuestion =  React.useState(1)
+    const bd_sendAnswers = React.useState(false);
     const [reviewMode , s] = React.useState(props.location.pathname.includes("review"));    
+    var history = useHistory() ;
     console.log(reviewMode);
     return (        
         <ExamPage 
@@ -295,6 +312,8 @@ export default (props) => {
             color={color}
             indexQuestion={indexQuestion}
             reviewMode = {reviewMode}
+            bd_sendAnswers = {bd_sendAnswers}
+            history = {history}
             />    
     )
 }
