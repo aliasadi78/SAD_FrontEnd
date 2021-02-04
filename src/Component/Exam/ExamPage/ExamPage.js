@@ -15,6 +15,8 @@ import Button from '@material-ui/core/Button';
 import Typography from 'material-ui/styles/typography';
 import ReviewQuestionCard from './reviewQuestionCard';
 
+import Backdrop from '@material-ui/core/Backdrop';
+
 class ExamPage extends Component{
     constructor(props){
         super(props);
@@ -76,6 +78,7 @@ class ExamPage extends Component{
     const [totalQuestion,setTtotalQuestion] = this.props.totalQuestion;
     const [questionsList,setQuestionsList] = this.props.questionsList;
     const [pending,setPending] = this.props.pending; 
+    const [ bd_sendAnswers , setBd_sendAnswers] = this.props.bd_sendAnswers ;
     // var indexQuestion = 1;
     const [time,setTime] = this.props.time;
     const [indexQuestion,setIndexQuestion] = this.props.indexQuestion;
@@ -206,21 +209,28 @@ class ExamPage extends Component{
                             <Grid item xs={4} ></Grid>
                           <Grid item xs={4} >
 
+                        <Backdrop className={classes.backdrop} open={bd_sendAnswers}>
+                            <CircularProgress color="inherit" />
+                        </Backdrop>
+
                           <Button variant = "contained" 
                           style={{ marginTop : "8px"  , width : this.state.c + "px" , fontFamily: 'Vazir' , backgroundColor : "#E63946"}} 
                         //   onMouseUp = {(e) =>  {handleFinishExamEvent(e)} }
                         //   onMouseDown = { (e) => { handleFinishExamEvent(e) }} 
 
                         onClick = {() => {
+                            setBd_sendAnswers(true);
                             for (let index = 0; index < questionsList.length; index++) {                                
                                 axios.post("https://parham-backend.herokuapp.com" + window.location.pathname + "/" + (indexQuestion).toString() + "/answer?answer=" + useranswer[indexQuestion-1] ,"", tokenConfig())
                                 .then(res=>{
                                     console.log(res)
-                                    
+                                    if(index == questionsList.length -1 )
+                                        setBd_sendAnswers(false);
                                 })
 
                                 .catch(err=>{
                                     console.log(err)
+                                    setBd_sendAnswers(false);
                                 })
                             }
                         }}
@@ -281,6 +291,7 @@ export default (props) => {
     const time = React.useState("")
     const color =  React.useState([])
     const indexQuestion =  React.useState(1)
+    const bd_sendAnswers = React.useState(false);
     const [reviewMode , s] = React.useState(props.location.pathname.includes("review"));    
     console.log(reviewMode);
     return (        
@@ -295,6 +306,7 @@ export default (props) => {
             color={color}
             indexQuestion={indexQuestion}
             reviewMode = {reviewMode}
+            bd_sendAnswers = {bd_sendAnswers}
             />    
     )
 }
