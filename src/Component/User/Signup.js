@@ -212,6 +212,7 @@ class SignUp extends Component {
                                             <LoadingButton onClick={handleClick} pendingPosition="center" className = {classes.topButton} fullWidth pending={pending} variant="contained" style={{ fontFamily: 'Vazir'}}>
                                                     {'ثبت نام'}
                                             </LoadingButton>
+                                            {pending ? <Redirect to= "/user/page/"/>:null}
                                         </Grid>
                                     </Grid>
                                 </Grid>

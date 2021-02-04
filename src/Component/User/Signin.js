@@ -1,5 +1,5 @@
 import Typography from "@material-ui/core/Typography";
-import { Link } from "react-router-dom";
+import { Link ,Redirect} from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -58,8 +58,8 @@ class SignIn extends Component {
                     localStorage.setItem('token', token);                    
                     console.log("first");
 
-                    //redirect to edit profile page                                        
-                    window.location.href = "/user/page/" ;
+                    //redirect to edit profile page                                       
+                    // window.location.href = "/user/page/" ;
                 }).catch(error => {
                     console.log(error);
                     alert(" خطا! نام کاربری یا رمز عبور شما اشتباه می باشد.لطفا تمام موارد * دار را پر کنید.");
@@ -156,6 +156,7 @@ class SignIn extends Component {
                                             <LoadingButton onClick={handleClick } pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir'}} fullWidth>
                                             ورود
                                             </LoadingButton>
+                                            {pending ? <Redirect to= "/user/page/"/>:null}
                                             </Grid>
                                         </Grid>
                                     </Grid>
@@ -164,7 +165,7 @@ class SignIn extends Component {
                                     <Grid container>
                                         <Grid item xs={12}>
                                             <Grid>
-                                            <Link to="/signUp" style={{color: 'white',textDecoration : 'none',fontFamily: 'Vazir'}}>
+                                            {/* <Link to="/signUp" style={{color: 'white',textDecoration : 'none',fontFamily: 'Vazir'}}> */}
                                             <Button
                                                 type="submit"
                                                 variant="contained"
@@ -174,7 +175,8 @@ class SignIn extends Component {
                                             >
                                                 
                                                     {"ثبت نام"}
-                                                 </Button></Link>
+                                                 </Button>
+                                                 {/* </Link> */}
                                         </Grid></Grid>
                                     </Grid>
                                 </ValidatorForm>

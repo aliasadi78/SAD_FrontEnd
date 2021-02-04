@@ -11,9 +11,8 @@ import IsoIcon from '@material-ui/icons/Iso';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ExamListItem from './examsListItem';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
-import { Link } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
-
+import { Link ,Redirect} from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
     grid:{
         padding : theme.spacing(3),
@@ -110,6 +109,7 @@ export default function Examslist (props){
                               onClick={()=>{
                                 window.location.href = "/CreateExam/" + props.classId ;
                                 // history.push("/createExam/" + props.classId);
+                                return(<Redirect to={ "/CreateExam/" + props.classId}/>)
                               }}
                               variant="contained" color="primary"  >
                                 <h5 style={{fontFamily: 'Vazir', color: 'white'}}>

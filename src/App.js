@@ -5,7 +5,7 @@ import SignIn from "./Component/User/Signin";
 import SignUp from "./Component/User/Signup";
 import ClassesPage from  './Component/Class/ClassesPage';
 import NewClassPage from './Component/Class/NewClassPage';
-import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+import {HashRouter as Router, Route, Link} from "react-router-dom";
 import Dashboard from './Component/Dashboard/Dashboard';
 import InsideClass from './Component/Class/InsideClass/insideClass' ;
 import MembersList from './Component/Class/InsideClass/lists/membersList';
@@ -38,7 +38,8 @@ class App extends Component {
 
     render() {
         
-        return (                
+        return (  
+                         
             <div className={classes.App}>                                                
                 {/* <DP /> */}
                 <Route exact path="/"  component={Landing}/>
@@ -59,7 +60,6 @@ class App extends Component {
                 <Route path="/exam/review/:examId/questions/"  component={ExamPage} />
                 <Route path="/user/page/" children={<Dashboard />}  component={UserPage} />
             </div>
-
         );
     }
 }
