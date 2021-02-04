@@ -39,18 +39,6 @@ class ExamPage extends Component{
         var res = []
         if(!check && !this.props.reviewMode){
 
-            axios.get(serverURL() + "public/time")
-            .then(res => {
-                this.setState(prevstate => {
-                    return {
-                        now : res.data.date                        
-                    }
-                })
-            })
-            .catch(err => {
-                console.log(err);
-            });
-
             axios.get(serverURL() + "exam/" + this.props.examId + "/questions" , tokenConfig() )
                 .then(result => {                    
                     res.push(...result.data.questions);
@@ -80,9 +68,12 @@ class ExamPage extends Component{
             .then( result => {
                 setQuestionsList([...result.data.questions]);                
                 setCheck(true);     
-                setPending(false);
-                console.log("shit");
-                console.log(result);
+                setPending(false);                
+                this.setState(prevstate => {
+                    return {
+                        className : result.data.classId
+                    }
+                })
             })
             .catch((err) => {
                 console.log(err);
@@ -234,8 +225,8 @@ class ExamPage extends Component{
                                 })
                             }
                             
-                            if(this.props.reviewMode)
-                                history.push("/class/" + this.state.className  );
+                            // if(this.props.reviewMode)
+                                history.push("/class/" + this.state.className );
                             // else
 
                         }}
