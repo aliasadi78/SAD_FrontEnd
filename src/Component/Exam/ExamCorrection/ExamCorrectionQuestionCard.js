@@ -226,7 +226,7 @@ export default function ExamCorrectionQuestionCard(props){
                 </Grid>  
 
                                 <br />
-                            <p style={{color : '#3D5A80'}} > <DescriptionIcon  /> جواب شما :  </p>
+                            <p style={{color : '#3D5A80'}} > <DescriptionIcon  /> جواب {props.username} :  </p>
                             {/* <br /> */}
 
                 <div>

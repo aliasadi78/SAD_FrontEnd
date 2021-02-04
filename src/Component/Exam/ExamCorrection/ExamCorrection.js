@@ -51,7 +51,8 @@ class ExamPage extends Component{
                 setGrades([...g]);
                 this.setState(prevstate => {
                     return {
-                        examName : result.data.name
+                        examName : result.data.examName ,
+                        username : result.data.userFirstname + " " + result.data.userLastname
                     }
                 });
                 setCheck(true);
@@ -113,12 +114,12 @@ class ExamPage extends Component{
         <Material_RTL style={{backgroundColor: 'white'}}>
             <M_RTL style={{backgroundColor: 'white'}}>
                 <div style={{fontFamily: 'Vazir',paddingTop: '1%',backgroundColor : '#3D5A80',width:'100%',height:'52px',color: 'white',fontSize: '16px'}}>
-                    {this.state.examName}
+                    {this.state.username}
                 </div>
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height: this.props.reviewMode == false ? 110 + 'px' : 52 + 'px' ,fontSize: '16px'}}>                    
                         <Grid item xs={12}>                            
                             <h3 style={{color : 'white' ,fontFamily: 'Vazir' }} > 
-                                تصحیح آزمون                        
+                                تصحیح آزمون                        {this.state.examName} 
                             </h3>                                         
                         </Grid>                    
                 </Container>
@@ -135,7 +136,7 @@ class ExamPage extends Component{
                             <div>
                                 {questionsList.map((question,idx)=>                                        
                                     <ExamCorrectionQuestionCard OnChange = {(value) => { grades[idx] = value ; }}
-                                    q={question} examId={this.props.examId} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>                                                                             
+                                    q={question} examId={this.props.examId} username={this.state.username} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>                                                                             
                                 )}                                
                             </div>
                             }

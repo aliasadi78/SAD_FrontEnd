@@ -58,7 +58,7 @@ export default function ExamAttendeesList(props) {
       attlist.push(...res.data.attendees);        
       setListLoad(true);
       attlist.map( (att) => {
-        ll.push(createData(att.firstname + " " + att.lastname , 0 , att.username));
+        ll.push(createData(att.firstname + " " + att.lastname , att.totalGrade , att.username));
       });
 
       setRows([...ll]);      
