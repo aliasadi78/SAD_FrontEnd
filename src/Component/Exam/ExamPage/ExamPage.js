@@ -14,7 +14,7 @@ import Timer from './Timer/Timer';
 import Button from '@material-ui/core/Button';
 import Typography from 'material-ui/styles/typography';
 import ReviewQuestionCard from './reviewQuestionCard';
-
+import { useHistory } from "react-router-dom";
 import Backdrop from '@material-ui/core/Backdrop';
 
 class ExamPage extends Component{
@@ -38,15 +38,31 @@ class ExamPage extends Component{
         setPending(true);             
         var res = []
         if(!check && !this.props.reviewMode){
+
+            axios.get(serverURL() + "public/time")
+            .then(res => {
+                this.setState(prevstate => {
+                    return {
+                        now : res.data.date                        
+                    }
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
             axios.get(serverURL() + "exam/" + this.props.examId + "/questions" , tokenConfig() )
                 .then(result => {                    
                     res.push(...result.data.questions);
                     setTime(result.data.user_examEndTime);
                     var ll = res.map((q) => q);                    
                     setQuestionsList([...ll]);
+                    console.log(result.data.user_examEndTime );
                     this.setState(prevstate => {
                         return {
-                            examName : result.data.name
+                            examName : result.data.name  , 
+                            className : result.data.classId , 
+                            examEnd : result.data.user_examEndTime 
                         }
                     });
                     setCheck(true);
@@ -74,6 +90,8 @@ class ExamPage extends Component{
         }
     }
     render(){
+
+    const history = this.props.history ;
     const classes = this.props.classes;
     const [totalQuestion,setTtotalQuestion] = this.props.totalQuestion;
     const [questionsList,setQuestionsList] = this.props.questionsList;
@@ -92,27 +110,7 @@ class ExamPage extends Component{
       console.log(T)
      }
 
-    // const  handleFinishExamEvent = (event) => {
-    //     if (event.type === "mousedown") {
-    //         console.log("shit down");                            
-    //                 setTimeout(() => {
-    //                 this.setState(prestate => {                                        
-    //                     return{
-    //                         c : this.state.c + 1 ,
-    //                     }
-    //                 })                                     
-    //                 },50 ) ;                                                
-    //     } else {
-    //         this.setState(prestate => {                                        
-    //             return{
-    //                 holding : false ,
-    //                 c : 100
-    //             }
-    //         })
-    //     }
-    // }
-
-    return(
+     return(
         <div style={{backgroundColor: 'white' , paddingBottom : '80px'}}> 
         <Material_RTL style={{backgroundColor: 'white'}}>
             <M_RTL style={{backgroundColor: 'white'}}>
@@ -121,7 +119,9 @@ class ExamPage extends Component{
                 </div>
                 <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : '#1ca0a0',height: this.props.reviewMode == false ? 110 + 'px' : 52 + 'px' ,fontSize: '16px'}}>
                     {this.props.reviewMode == false ?
-                        <Timer time={time} examId={this.props.examId}/>
+                        <Timer time={time} examId={this.props.examId}
+                            examEnd = {time} now = {this.state.now}
+                        />
                     :
                         <Grid item xs={12}>                            
                             <h3 style={{color : 'white' ,fontFamily: 'Vazir' }} >
@@ -233,6 +233,11 @@ class ExamPage extends Component{
                                     setBd_sendAnswers(false);
                                 })
                             }
+                            
+                            if(this.props.reviewMode)
+                                history.push("/class/" + this.state.className  );
+                            // else
+
                         }}
                           >                             
                               {this.props.reviewMode == false?                                                          
@@ -293,6 +298,7 @@ export default (props) => {
     const indexQuestion =  React.useState(1)
     const bd_sendAnswers = React.useState(false);
     const [reviewMode , s] = React.useState(props.location.pathname.includes("review"));    
+    var history = useHistory() ;
     console.log(reviewMode);
     return (        
         <ExamPage 
@@ -307,6 +313,7 @@ export default (props) => {
             indexQuestion={indexQuestion}
             reviewMode = {reviewMode}
             bd_sendAnswers = {bd_sendAnswers}
+            history = {history}
             />    
     )
 }
