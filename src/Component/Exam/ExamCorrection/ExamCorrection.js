@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles , withStyles } from "@material-ui/core/styles";
 import axios from 'axios';
 import tokenConfig from '../../../utils/tokenConfig';
 import serverURL from '../../../utils/serverURL';
@@ -11,11 +11,38 @@ import { CircularProgress } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import ExamCorrectionQuestionCard from './ExamCorrectionQuestionCard' ;
 import Backdrop from '@material-ui/core/Backdrop';
-
+import TextField from '@material-ui/core/TextField';
 import Alert from '@material-ui/lab/Alert';
 import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
 import CloseIcon from '@material-ui/icons/Close';
+
+
+const CssTextField = withStyles({
+    root: {
+      color : 'white' ,
+      '& label.Mui-focused': {        
+      },      
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: 'white',          
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: 'white',          
+        },
+      },
+    },
+})(TextField);
+
+
+const sum = (array) => {
+    var s = 0 ;
+    array.map(a => {
+        s = s + a
+    })
+    console.log(array);
+    return s ;
+}
 
 class ExamPage extends Component{
     constructor(props){
@@ -53,9 +80,11 @@ class ExamPage extends Component{
                 result.data.questions.map((q) => {                    
                     g.push(q.answerGrade)
                 })
+
                 setGrades([...g]);
                 this.setState(prevstate => {
                     return {
+                        sumGrade : result.data.totalGrade ,
                         examName : result.data.examName ,
                         username : result.data.userFirstname + " " + result.data.userLastname
                     }
@@ -170,7 +199,14 @@ class ExamPage extends Component{
                                 </div>
 
                                 {questionsList.map((question,idx)=>                                        
-                                    <ExamCorrectionQuestionCard OnChange = {(value) => { grades[idx] = value ; }}
+                                    <ExamCorrectionQuestionCard OnChange = {(value) => { 
+                                        grades[idx] = value ;
+                                        this.setState(prevstate => {
+                                            return {
+                                                sumGrade : sum(grades)
+                                            }
+                                        })
+                                    }}
                                     q={question} examId={this.props.examId} username={this.state.username} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>                                                                             
                                 )}                                
                             </div>
@@ -179,6 +215,37 @@ class ExamPage extends Component{
                     </Container>                    
 
                     <Grid item xs={4} ></Grid>
+                    
+                    <Grid container xs={12} >                                                                                                                                                
+                        <Container maxWidth="md" alignItems="center" component="main" style={{fontFamily: 'Vazir',marginTop: '1%',paddingTop: '1%',backgroundColor : 'white',fontSize: '16px'}}>                                                
+                            
+                            <div class='col-sm'></div>
+                            <div class='col-sm'>
+                                <div class='row' >
+                                    <p style={{fontFamily: 'Vazir' , marginBottom : '0px' , marginTop : '15px'}}>
+                                        جمع نمرات :                             
+                                        {/* {this.state.sumGrade} */}
+                                    </p>
+                                    <CssTextField margin= 'dense'                                 
+                                        // onChange = {sendGrades}
+                                        onChange = { (e) =>  this.setState(prevstate => {
+                                            return {
+                                                sumGrade : e.target.value
+                                            }
+                                        }) }
+                                        value = {this.state.sumGrade}                            
+                                        defaultValue = {this.state.sumGrade}                            
+                                        // id="outlined-basic" label={<span style = {{fontFamily: 'Vazir' , color : 'white'}}>
+                                        //     نمره
+                                        // </span>}
+                                        variant="outlined" />                                                         
+                                </div>
+                            </div>
+                            <div class='col-sm'></div>
+
+                            {/* </p> */}
+                        </Container>
+                    </Grid>
 
                     <Backdrop className={classes.backdrop} open={backdropPending}>
                         <CircularProgress color="inherit" />
@@ -195,7 +262,8 @@ class ExamPage extends Component{
                                 
                                 setBackdropPending(true);
                                 const a = {
-                                    "answerGrades" : grades
+                                    "answerGrades" : grades , 
+                                    "totalGrade" : this.state.sumGrade
                                 }
 
                                 const ajson = JSON.stringify(a);
@@ -277,6 +345,9 @@ export default (props) => {
     var grades= React.useState([]) ;
     var firstalert = React.useState(true) ;
     var correctionError = React.useState(false);
+
+    console.log(grades);
+
     return (        
         <ExamPage 
             classes={classes} 
