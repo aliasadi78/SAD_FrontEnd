@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { useHistory } from "react-router-dom";
 import moment from "moment" ;
 import Axios from 'axios';
+import ExamAttendees from '../../../Exam/ExamCorrection/ExamAttendees';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,24 +39,44 @@ export default function ExamListItem(props) {
   const classes = useStyles();
   const history = useHistory();
 
-  const [buttonText , setButtonText] = React.useState("شرکت")
+  const [buttonText , setButtonText] = React.useState(null)
   const [check , setCheck] = React.useState(false);
   const [url , setUrl] = React.useState("");
 
   componentWillMount :
   if(check == false)
-    if(moment(props.end).isAfter(moment(props.now)))
-      {
+  {
+    console.log(props.isAdmin);
+    if( moment(props.end).isAfter(moment(props.now)) && props.isAdmin == false )
+    {
       setButtonText("شرکت");
-      setCheck(true);
-      }        
-    else
+      setUrl("/exam/" + props.id + "/questions");
+      setCheck(true);      
+      console.log("1");
+    }        
+    else if( !moment(props.end).isAfter(moment(props.now)) && props.isAdmin == false )
     {      
       setButtonText("مرور") ;
-      setCheck(true);
-      setUrl("review/");
+      setUrl("/exam/review/" + props.id + "/questions")
+      setCheck(true);            
+      console.log("2");
     }
 
+    if(moment(props.end).isAfter(moment(props.now)) && props.isAdmin == true )
+    {
+      setButtonText("ویرایش");
+      setCheck(true);
+      setUrl("/EditExam/" + props.classId + "/" + props.id);
+      console.log("3");
+    }        
+    else if( !moment(props.end).isAfter(moment(props.now)) && props.isAdmin == true )
+    {      
+      setButtonText("تصحیح") ;
+      setCheck(true);      
+      console.log("4");
+    }
+
+  }  
   return (
     <div className={classes.root}>
       <Paper elevation={props.elevation} className={classes.paper}>
@@ -64,26 +85,21 @@ export default function ExamListItem(props) {
           justify="center"
           alignItems="center"
         >
-            <Grid item xs = {4} className={classes.grid}>
-              {props.isAdmin == false ?
-
-                <Button variant="contained" className = {classes.button} onClick={()=>{
-                  window.location.href = "/exam/" + url + props.id + "/questions" ;
-                }}> 
-                  <h5 style={{fontFamily: 'Vazir' , color : '#1CA0A0'}}>                                               
-                    {buttonText}                             
-                  </h5>
-                </Button>
+            <Grid item xs = {4} className={classes.grid}>              
+              { (!moment(props.end).isAfter(moment(props.now)) && props.isAdmin == true) ? 
+                  <ExamAttendees
+                  examId = {props.id}
+                  />
                 :
-                <Button variant="contained" className = {classes.button} onClick={()=> {
-                  // history.push("/EditExam/"+ props.classId + "/" + props.id);
-                  window.location.href = "/EditExam/"+ props.classId + "/" + props.id ;
-                }}>          
-                    <h5 style={{fontFamily: 'Vazir' , color : '#1CA0A0'}}>                        
-                    ویرایش
-                    </h5>                    
-                </Button>
-              }
+                  <Button variant="contained" className = {classes.button} onClick={()=>{                  
+                    history.push(url);
+                    // window.location.href  = url ;
+                  }}> 
+                    <h5 style={{fontFamily: 'Vazir' , color : '#1CA0A0'}}>                                               
+                      {buttonText}                             
+                    </h5>
+                  </Button>                                
+              } 
             </Grid>
             <Grid item xs = {4} className={classes.grid}>
                 در
