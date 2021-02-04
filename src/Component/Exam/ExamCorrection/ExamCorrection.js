@@ -12,6 +12,11 @@ import Button from '@material-ui/core/Button';
 import ExamCorrectionQuestionCard from './ExamCorrectionQuestionCard' ;
 import Backdrop from '@material-ui/core/Backdrop';
 
+import Alert from '@material-ui/lab/Alert';
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
+import CloseIcon from '@material-ui/icons/Close';
+
 class ExamPage extends Component{
     constructor(props){
         super(props);
@@ -34,7 +39,7 @@ class ExamPage extends Component{
         var [questionsList,setQuestionsList] = this.props.questionsList; 
         var [grades , setGrades] = this.props.grades ;
         var [time,setTime] = this.props.time;  
-        var [pending,setPending] = this.props.pending;                          
+        var [pending,setPending] = this.props.pending;           
 
         setPending(true);             
         var res = []
@@ -74,11 +79,13 @@ class ExamPage extends Component{
     const [questionsList,setQuestionsList] = this.props.questionsList;
     const [pending,setPending] = this.props.pending; 
     const [grades , setGrades] = this.props.grades ;
+    const [firstalert , setFirstalert] = this.props.firstalert ;
     // var indexQuestion = 1;    
     const [indexQuestion,setIndexQuestion] = this.props.indexQuestion;
     const [color,setColor] = this.props.color
 
     const [backdropPending , setBackdropPending] = this.props.backdropPending;
+    var [correctionError , setCorrectionError] = this.props.correctionError ;
 
     var T = [];
     const handle = (index) => {
@@ -89,25 +96,6 @@ class ExamPage extends Component{
       console.log(T)
      }
 
-    // const  handleFinishExamEvent = (event) => {
-    //     if (event.type === "mousedown") {
-    //         console.log("shit down");                            
-    //                 setTimeout(() => {
-    //                 this.setState(prestate => {                                        
-    //                     return{
-    //                         c : this.state.c + 1 ,
-    //                     }
-    //                 })                                     
-    //                 },50 ) ;                                                
-    //     } else {
-    //         this.setState(prestate => {                                        
-    //             return{
-    //                 holding : false ,
-    //                 c : 100
-    //             }
-    //         })
-    //     }
-    // }
 
     return(
         <div style={{backgroundColor: 'white' , paddingBottom : '80px'}}> 
@@ -134,6 +122,53 @@ class ExamPage extends Component{
                                 <div style={{}}><CircularProgress style={{color: '#1CA0A0'}}/></div>
                             :                                    
                             <div>
+                                <div className={classes.root}>
+                                    <Collapse in={firstalert} >
+                                        <Alert
+                                        action={
+                                            <IconButton
+                                            aria-label="close"
+                                            color="inherit"
+                                            size="small"
+                                            onClick={() => {                                                
+                                                setFirstalert (false);
+                                            }}
+                                            >
+                                            <CloseIcon fontSize="inherit" />
+                                            </IconButton>
+                                        }
+                                        >
+                                        <p style={{fontFamily: 'Vazir'}}>
+                                            برای ذخیره نمرات حتما باید روی تصحیح آزمون بزنید .
+                                        </p>
+                                        </Alert>
+                                    </Collapse>
+                                </div>
+
+                                <div className={classes.root} style={{marginTop : '2px'}} >
+                                    <Collapse in={correctionError} >
+                                        <Alert
+                                        severity="error"
+                                        action={
+                                            <IconButton
+                                            aria-label="close"
+                                            color="inherit"
+                                            size="small"
+                                            onClick={() => {                                                
+                                                setCorrectionError(false);
+                                            }}
+                                            >
+                                            <CloseIcon fontSize="inherit" />
+                                            </IconButton>
+                                        }
+                                        >
+                                        <p style={{fontFamily: 'Vazir'}}>
+                                            {/* خطا در ثبت آزمون */}
+                                        </p>
+                                        </Alert>
+                                    </Collapse>
+                                </div>
+
                                 {questionsList.map((question,idx)=>                                        
                                     <ExamCorrectionQuestionCard OnChange = {(value) => { grades[idx] = value ; }}
                                     q={question} examId={this.props.examId} username={this.state.username} useranswer={useranswer} idx={idx} answer={questionsList[idx].answerText}/>                                                                             
@@ -176,6 +211,7 @@ class ExamPage extends Component{
                                 .catch(err=>{
                                     console.log(err)
                                     setBackdropPending(false)
+                                    setCorrectionError(true)
                                 })                                
                             }}
                             >                             
@@ -239,6 +275,8 @@ export default (props) => {
     const color =  React.useState([])
     const indexQuestion =  React.useState(1)    
     var grades= React.useState([]) ;
+    var firstalert = React.useState(true) ;
+    var correctionError = React.useState(false);
     return (        
         <ExamPage 
             classes={classes} 
@@ -253,6 +291,8 @@ export default (props) => {
             indexQuestion={indexQuestion}     
             username = {username}       
             grades = {grades}
+            firstalert = {firstalert}
+            correctionError = {correctionError} 
             />    
     )
 }

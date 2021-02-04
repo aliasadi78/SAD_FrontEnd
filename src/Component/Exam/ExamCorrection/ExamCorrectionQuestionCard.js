@@ -290,7 +290,8 @@ export default function ExamCorrectionQuestionCard(props){
                                         if(idx===0){
                                             checklisteven=[]
                                             console.log(props.useranswer)
-                                            if(typeof(props.useranswer[props.idx]) !== "undefined"){
+                                            if(typeof(props.useranswer[props.idx]) !== "undefined"
+                                                && props.useranswer[props.idx] != null){
                                             props.useranswer[props.idx].split(',').map((j)=>{
                                             checklisteven[j - 1] = true
                                             })}
@@ -424,7 +425,8 @@ export default function ExamCorrectionQuestionCard(props){
                                         if(idx===0){
                                             checklisteven=[]
                                             console.log(props.useranswer)
-                                            if(typeof(props.useranswer[props.idx]) !== "undefined"){
+                                            if(typeof(props.useranswer[props.idx]) !== "undefined"
+                                            && props.useranswer[props.idx] != null){
                                             props.useranswer[props.idx].split(',').map((j)=>{
                                             checklisteven[j - 1] = true
                                             })}
