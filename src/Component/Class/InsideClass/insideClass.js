@@ -26,7 +26,7 @@ import serverURL from '../../../utils/serverURL' ;
 import tokenConfig from '../../../utils/tokenConfig' ;
 import Notelist from './lists/notelist';
 import DialogEditClass from './DialogEditClass';
-
+import AssessmentIcon from '@material-ui/icons/Assessment';
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -228,6 +228,24 @@ export default function InsideClass(props) {
                 </ListItem> 
               </Link>  
             </div>
+
+            {isAdmin == false &&
+            <div>
+            <Link target='_blank' color="inherit" href={"/report/" + classId} >
+                <ListItem button  >
+                  <ListItemIcon>
+                  <AssessmentIcon style={{ color: "#3D5A80" }} />            
+                    </ListItemIcon>
+                    <ListItemText  style={{ textAlign : 'right'}} >
+                      <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}> 
+                        کارنامه
+                      </Typography>
+                    </ListItemText>              
+                    
+                </ListItem> 
+              </Link>  
+            </div>
+          }
           
         </Drawer>
         <main className={clsx(classes.content, {
