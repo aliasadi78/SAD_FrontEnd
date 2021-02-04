@@ -19,7 +19,7 @@ import { CircularProgress } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import Material_RTL from '../Material_RTL';
 import RTL from '../M_RTL';
-
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel' ;
 import InputAdornment from '@material-ui/core/InputAdornment' ;
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     },    
     
     editprofilePaper:{
-      padding : theme.spacing(3) , 
+      // padding : theme.spacing(3) , 
     },    
     paper: {
       alignItems : 'center' ,
@@ -103,6 +103,7 @@ function EditProfileValidationForms_Personal (props) {
 
     const [pending , setPending] = React.useState(false);
     const [userUpdated , setUserUpdated] = React.useState(false);
+    const [linearProgress , setLinearProgress] = React.useState(false);
     const [paswordValues , setPasswordValues] =  React.useState({
       password : '' ,
       showPassword : false ,
@@ -172,9 +173,12 @@ function EditProfileValidationForms_Personal (props) {
         
           <Grid item xs={3}></Grid>
           <Grid item xs={6}>
-            <Paper elevation={3} className={classes.editprofilePaper}style={{backgroundColor: '#1CA0A0',color: 'white',margin: '-1.5% 0% -2% 0%',padding: '2%',borderRadius: '5px',height: '40px'}}>
+            <Paper elevation={3} className={classes.editprofilePaper}style={{backgroundColor: '#1CA0A0',color: 'white',margin: '0',padding: '2%',borderRadius: '5px',height: '40px'}}>
               ویرایش اطلاعات کاربری
             </Paper>
+            {linearProgress &&
+            <LinearProgress />
+            }
             <Paper elevation={3}  style={{marginTop: '7%',backgroundColor: '#f2f2f2'}} className={classes.mainPaper}>
             
       <div>        
@@ -200,15 +204,18 @@ function EditProfileValidationForms_Personal (props) {
                 id="icon-button-file" 
                 type="file"
                 onChange={(e) => {
+                  setLinearProgress(true)
                   // uploadImage(e);
                   const file = new FormData();
                   file.append( 'avatar' , e.target.files[0]) ;
                   axios.put(serverURL()+ "user/avatar" , file , tokenConfig() )
                   .then(()=>{
                     console.log('done');
+                    setLinearProgress(false);
                   })
                   .catch(() => {
                     console.log("not done ");
+                    setLinearProgress(false);
                   });
                 }}
                 />
