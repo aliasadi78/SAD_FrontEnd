@@ -17,7 +17,7 @@ import  LoadingButton from '@material-ui/lab/LoadingButton';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import Icon from '@material-ui/core/Icon';
 import RTL from '../M_RTL';
-
+import serverURL from '../../utils/serverURL';
 class SignUp extends Component {
     constructor() {
         super();
@@ -65,7 +65,7 @@ class SignUp extends Component {
         const handleClick = e => {
             setPending(true);
             e.preventDefault();        
-        axios.post("https://parham-backend.herokuapp.com/user/signup", this.state)
+        axios.post(serverURL()+"user/signup", this.state)
             .then(result => {
                 console.log(result);
                 console.log("good");
