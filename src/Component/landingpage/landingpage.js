@@ -11,9 +11,11 @@ import Container from "@material-ui/core/Container";
 import Icon from "@material-ui/core/Icon";
 import axios from 'axios';
 import serverURL from '../../utils/serverURL';
-
+import WithScrollReveal from './WithScrollReveal'
+import List from './List'
 class Landing extends Component {
     render(){
+        const RevealedList = WithScrollReveal(List)
             const classes =  this.props.classes;
             const FileDownload = require('js-file-download');
         const handleClick = e => {
@@ -27,7 +29,8 @@ class Landing extends Component {
             })}
         return(
             
-            <div>
+            <div style={{marginTop:'-2%'}}>
+                {/* <RevealedList interval={3000}></RevealedList> */}
                 <div className={classes.box1}>
                     <div style={{position: 'absolute',top:'3%',left:'3%',width: '20%'}}>
                         <span>
@@ -53,9 +56,9 @@ class Landing extends Component {
                         </Link>
                         </span>
                     </div>
-                <span style={{position: 'relative',top:'10%',textAlign:'center'}}><h2 style={{fontFamily:'Vazir',color: 'white',top: '30%',position: 'relative'}}>آزمون ساز آنلاین و مدیریت کلاس</h2></span>
+                <span style={{position: 'relative',top:'50%',textAlign:'center'}}><RevealedList  interval={3000}><span></span><h2 style={{fontFamily:'Vazir',color: 'white',top: '30%',position: 'relative'}}>آزمون ساز آنلاین و مدیریت کلاس</h2></RevealedList></span>
                 <span style={{fontFamily: 'vazir',color: 'black',background: 'white',position: 'absolute',zIndex:'100',width: '60%',height: '380px',top: '75%',right:'20%',borderRadius: '5px',boxShadow: '0 16px 48px #E3E7EB'}}>
-                <span style={{fontFamily: 'vazir',color: 'black',width: '75%',top: '25%',right: '12%',position: 'absolute',direction: 'rtl',textAlign: 'justify'}}>      
+                <RevealedList  interval={3000}><span></span><span style={{fontFamily: 'vazir',color: 'black',width: '75%',top: '25%',right: '12%',position: 'absolute',direction: 'rtl',textAlign: 'justify'}}>      
                 توی این دوران کرونا که آموزش مجازی شکل گرفته و مدارس و دانشگاه ها مجازی آموزش هاشون رو
                     ارائه میدن، مدارس هم مانند دانشگاه ها به بستری برای برگزاری آنلاین امتحانات و حل سوالات و
                     تمریناتشون دارن
@@ -63,7 +66,7 @@ class Landing extends Component {
                     بانک سواال پشتیبانی میشه و این امکان رو به معلمین و دانش آموزان میده تا بتونن تمرین و آزمون
                     دلخواهشون رو با استفاده از سوالات خودشون به صورت رایگان و یا با استفاده از سوالات بانک با صرف هزینه کم ایجاد کنند
                     </span>
-
+                    </RevealedList>
                 </span>
                 
                 </div>
@@ -72,6 +75,7 @@ class Landing extends Component {
                         <div>امکانات</div>
                         <Grid container spacing={3} style={{marginTop:'5%'}}>
                             <Grid item xs={6} sm={3}>
+                            <RevealedList  interval={3000}><span></span>
                                 <Paper className={classes.paper} style={{boxShadow: '0 16px 48px #E3E7EB',height: '200px',padding: '20%'}}>
                                 <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg" style={{position:'relative',left:'40%'}}>
                                             <g fill="none" fill-rule="evenodd">
@@ -79,9 +83,10 @@ class Landing extends Component {
                                                 <path fill="#0EB3CE" d="M0 0h32v32H0z"/>
                                             </g>
                                         </svg><h4 style={{fontFamily:'vazir'}}>ایجاد کلاس</h4>
-                                </Paper>
+                                </Paper></RevealedList>
                                 </Grid>
                                 <Grid item xs={6} sm={3}>
+                                <RevealedList  interval={3000}><span></span>
                                 <Paper className={classes.paper} style={{boxShadow: '0 16px 48px #E3E7EB',height: '200px',padding: '20%'}}>
                                 <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg" style={{position:'relative',left:'40%'}}>
                                             <g fill="none" fill-rule="evenodd">
@@ -89,18 +94,20 @@ class Landing extends Component {
                                                 <path fill="#0EB3CE" d="M0 0v32h32z"/>
                                                 <circle fill="#02C6A4" cx="29" cy="9" r="4"/>
                                             </g>
-                                        </svg><h4 style={{fontFamily:'vazir'}}>بانک سوال</h4></Paper>
+                                        </svg><h4 style={{fontFamily:'vazir'}}>بانک سوال</h4></Paper></RevealedList>
                                 </Grid>
                                 <Grid item xs={6} sm={3}>
+                                <RevealedList  interval={3000}><span></span>
                                 <Paper className={classes.paper} style={{boxShadow: '0 16px 48px #E3E7EB',height: '200px',padding: '20%'}}>
                                 <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg" style={{position:'relative',left:'40%'}}>
                                             <g fill="none" fill-rule="evenodd">
                                             <path fill="#0EB3CE" d="M0 0h32v32H0z"/>
                                                 <path fill="#84E482" d="M16 16h32L16 48z"/>
                                             </g>
-                                        </svg><h4 style={{fontFamily:'vazir'}}>طرح سوال</h4></Paper>
+                                        </svg><h4 style={{fontFamily:'vazir'}}>طرح سوال</h4></Paper></RevealedList>
                                 </Grid>
                                 <Grid item xs={6} sm={3}>
+                                <RevealedList  interval={3000}><span></span>
                                 <Paper className={classes.paper} style={{boxShadow: '0 16px 48px #E3E7EB',height: '200px',padding: '20%'}}>
                                 <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg" style={{position:'relative',left:'40%'}}>
                                             <g fill="none" fill-rule="evenodd">
@@ -108,14 +115,15 @@ class Landing extends Component {
                                                 <path fill="#03C5A4" d="M12 8h8v8h-8z"/>
                                                 <path fill="#0EB3CE" d="M32 0h16v48H32z"/>
                                             </g>
-                                        </svg><h4 style={{fontFamily:'vazir'}}>ایجاد آزمون</h4></Paper>
+                                        </svg><h4 style={{fontFamily:'vazir'}}>ایجاد آزمون</h4></Paper></RevealedList>
                                 </Grid>
                         </Grid><br/>
                         <Grid>
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sm={6}>
                                     <div>
-                                    <img src={require("./image/info01.png")} width="480" height="360"/>
+                                    <RevealedList  interval={3000}><span></span>
+                                    <img src={require("./image/info01.png")} width="480" height="360"/></RevealedList>
                                     </div>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -143,14 +151,16 @@ class Landing extends Component {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <div>
-                                    <img src={require("./image/info02.png")} width="480" height="360"/>
+                                    <RevealedList  interval={3000}><span></span>
+                                    <img src={require("./image/info02.png")} width="480" height="360"/></RevealedList>
                                     </div>
                                 </Grid>
                             </Grid>
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sm={6}>
                                     <div>
-                                    <img src={require("./image/info03.png")} width="480" height="360"/>
+                                    <RevealedList  interval={3000}><span></span>
+                                    <img src={require("./image/info03.png")} width="480" height="360"/></RevealedList>
                                     </div>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -172,48 +182,54 @@ class Landing extends Component {
                         <Grid>
                             <Grid container spacing={3}>
                                 <Grid item xs>
+                                <RevealedList  interval={3000}><span></span>
                                     <Paper className={classes.paper} style={{boxShadow: '0 16px 48px #E3E7EB',padding: '2%'}}>
                                     <img src={require("./image/rezaa.jpeg")} style={{borderRadius: "50%",width:"150px", height:"150px",position: "relative"}}/>
                                             <div style={{color: '#00C6A7'}}>رضا موسویان</div>
                                             <span>Back End</span>
-                                    </Paper>
+                                    </Paper></RevealedList>
                                     </Grid>
                                     <Grid item xs>
+                                    <RevealedList  interval={3000}><span></span>
                                     <Paper className={classes.paper} style={{boxShadow: '0 16px 48px #E3E7EB',padding: '2%'}}>
                                     <img src={require("./image/amirali.jpeg")} style={{borderRadius: "50%",width:"150px", height:"150px",position: "relative"}}/>
                                             <div style={{color: '#00C6A7'}}>امیرعلی پاکدامن</div>
                                             <span>Back End</span>
-                                    </Paper>
+                                    </Paper></RevealedList>
                                     </Grid>
                                     <Grid item xs>
+                                    <RevealedList  interval={3000}><span></span>
                                     <Paper className={classes.paper} style={{boxShadow: '0 16px 48px #E3E7EB',padding: '2%'}}>
                                     <img src={require("./image/hamidrezaazarbad.jpeg")}  style={{borderRadius: "50%",width:"150px", height:"150px",position: "relative",}}/>
                                             <div style={{color: '#00C6A7'}}>حمیدرضا آذرباد</div>
                                             <span>Front End Flutter</span>
-                                    </Paper>
+                                    </Paper></RevealedList>
                                 </Grid>
                             </Grid>
                             <Grid container spacing={3}>
                                 <Grid item xs>
+                                <RevealedList  interval={3000}><span></span>
                                     <Paper className={classes.paper} style={{boxShadow: '0 16px 48px #E3E7EB',padding: '2%'}}>
                                     <img src={require("./image/mahdi.jpeg")} style={{borderRadius: "50%",width:"150px", height:"150px",position: "relative",}}/>
                                             <div style={{color: '#00C6A7'}}>محمد مهدی سوری</div>
                                             <span>Front End Flutter</span>
-                                    </Paper>
+                                    </Paper></RevealedList>
                                     </Grid>
                                     <Grid item xs>
+                                    <RevealedList  interval={3000}><span></span>
                                     <Paper className={classes.paper} style={{boxShadow: '0 16px 48px #E3E7EB',padding: '2%'}}>
                                     <img src={require("./image/parsa.jpeg")}  style={{borderRadius: "50%",width:"150px", height:"150px",position: "relative",}}/>
                                             <div style={{color: '#00C6A7'}}>پارسا عیسی زاده</div>
                                             <span>Front End ReactJS</span>
-                                    </Paper>
+                                    </Paper></RevealedList>
                                     </Grid>
                                     <Grid item xs>
+                                    <RevealedList  interval={3000}><span></span>
                                     <Paper className={classes.paper} style={{boxShadow: '0 16px 48px #E3E7EB',padding: '2%'}}>
                                     <img src={require("./image/aliasadi.jpeg")} style={{borderRadius: "50%",width:"150px", height:"150px",position: "relative",}}/>
                                             <div style={{color: '#00C6A7'}}>علی اسدی</div>
                                             <span>Front End Reactjs</span>
-                                    </Paper>
+                                    </Paper></RevealedList>
                                 </Grid>
                             </Grid>
                         </Grid><br/>
@@ -246,53 +262,7 @@ class Landing extends Component {
         )
     }
 }
-(function () {
-    const doc = document.documentElement
-  
-    doc.classList.remove('no-js')
-    doc.classList.add('js')
-  
-    // Reveal animations
-    if (document.body.classList.contains('has-animations')) {
-      /* global ScrollReveal */
-      const sr = window.sr = ScrollReveal()
-  
-      sr.reveal('.hero-title, .hero-paragraph, .hero-cta', {
-        duration: 1000,
-        distance: '40px',
-        easing: 'cubic-bezier(0.5, -0.01, 0, 1.005)',
-        origin: 'bottom',
-        interval: 150
-      })
-  
-      sr.reveal('.feature, .pricing-table', {
-        duration: 600,
-        distance: '40px',
-        easing: 'cubic-bezier(0.5, -0.01, 0, 1.005)',
-        interval: 100,
-        origin: 'bottom',
-        viewFactor: 0.5
-      })
-  
-      sr.reveal('.feature-extended-image', {
-        duration: 600,
-        scale: 0.9,
-        easing: 'cubic-bezier(0.5, -0.01, 0, 1.005)',
-        viewFactor: 0.5
-      })
-    }
-  }());
-  (function(){
-      const e=document.documentElement;
-      e.classList.remove("no-js");
-      e.classList.add("js");
-      if(document.body.classList.contains("has-animations")){
-            const e=window.sr=ScrollReveal();
-            e.reveal(".hero-title, .hero-paragraph, .hero-cta",{duration:1e3,distance:"40px",easing:"cubic-bezier(0.5, -0.01, 0, 1.005)",origin:"bottom",interval:150})
-            e.reveal(".feature, .pricing-table",{duration:600,distance:"40px",easing:"cubic-bezier(0.5, -0.01, 0, 1.005)",interval:100,origin:"bottom",viewFactor:.5})
-            e.reveal(".feature-extended-image",{duration:600,scale:.9,easing:"cubic-bezier(0.5, -0.01, 0, 1.005)",viewFactor:.5})
-        }}()
-)
+
 const useStyles = makeStyles((theme) => ({
     image: {
         filter: 'grayscale(50%)',
@@ -309,7 +279,7 @@ const useStyles = makeStyles((theme) => ({
         // width:'0',
         // height:'0',
         // borderTop : '0px solid transparent',
-        // borderLeft : '1500px solid green',
+        // borderLeft : '12000px solid green',
         // borderBottom : '250px solid transparent'
         width: '1500px',
         height: '250px',
