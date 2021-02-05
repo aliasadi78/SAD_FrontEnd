@@ -19,7 +19,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AlertDialog from "../../../Dialog";
 import { ValidatorForm,TextValidator } from 'react-material-ui-form-validator';
 import CreateIcon from '@material-ui/icons/Create';
-import DialogDeleteNote from './DialogDeleteNote';
+import DialogDeleteNote from '../Dialogs/DialogDeleteNote';
 const useStyles = makeStyles((theme) => ({    
     Toast:{
         margin : theme.spacing(3) ,
@@ -171,8 +171,7 @@ export default function PostListItem (props){
                         InputLabelProps={{style:{fontFamily: 'Vazir'}}}
                     />
                     
-                    </ValidatorForm >
-                    //کنترل اندازه حروف
+                    </ValidatorForm >                    
                     {body.length < 5 && body.length > 0 ? (
                       <span style={{color: 'red',textAlign: 'right',direction: 'rtl',position: 'relative',left: '64%'}}>متن اعلان باید بیشتر از ۵ حرف باشد</span>
                     ) : null}

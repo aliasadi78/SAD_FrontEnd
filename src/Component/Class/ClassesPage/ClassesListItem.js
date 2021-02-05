@@ -5,7 +5,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { Link ,Redirect} from "react-router-dom";
+
 const useStyles = makeStyles((theme) => ({
     title: {
         // fontSize: 22,
@@ -41,9 +41,7 @@ export default function ClassListItem (props){
 
     const classes = useStyles();
     // console.log(props);
-    const urll = "/class/" + props.classId ;
-    const [pending, setPending] = React.useState(false);
-    const [ur, setUr] = React.useState('');
+
     return(
         <Card className={classes.card} variant="outlined">
             <CardContent>
@@ -63,14 +61,11 @@ export default function ClassListItem (props){
                 </Typography>
             </CardContent>
             <CardActions>
-            <Link to={`/class/${props.classId}`} style={{color: 'white',textDecoration : 'none',fontFamily: 'Vazir'}}><Button square variant="contained" s onClick={()=>{
+                <Button square variant="contained" s onClick={()=>{
                     const url = "/class/" + props.classId ;
                     window.location.href = url ;
-                    setPending(true);
-                    setUr(url.toString());
                 }} className={classes.btn}
-                style={{width : '100%'}}>ورود به کلاس</Button></Link>
-                {pending ? (<Redirect to={`/class/${props.classId}`} />):null}
+                style={{width : '100%'}}>ورود به کلاس</Button>
             </CardActions>
         </Card>
     );

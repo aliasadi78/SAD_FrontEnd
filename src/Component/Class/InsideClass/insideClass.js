@@ -12,7 +12,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InfoIcon from '@material-ui/icons/Info';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
-import { mainListItems , secondaryListItems} from './insideClassDrawerList';
+import { mainListItems , secondaryListItems} from './lists/insideClassDrawerList';
 import List from '@material-ui/core/List';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -25,7 +25,7 @@ import axios from 'axios' ;
 import serverURL from '../../../utils/serverURL' ;
 import tokenConfig from '../../../utils/tokenConfig' ;
 import Notelist from './lists/notelist';
-import DialogEditClass from './DialogEditClass';
+import DialogEditClass from './Dialogs/DialogEditClass';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
