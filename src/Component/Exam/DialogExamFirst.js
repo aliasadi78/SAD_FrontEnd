@@ -38,22 +38,6 @@ function onOk(value) {
 
 class DialogExamFirst extends Component {
 
-  componentDidMount(){
-    axios.get(serverURL() + "public/time")
-    .then(res=>{
-      const f = String(res.data.date);    
-      console.log(f.replace('Z' , ''));
-      this.setState(prevstate => {
-        return {
-          date : f.replace('Z' , '')
-        }
-      })
-    })
-    .catch(err=>{
-
-    });
-  }
-
   constructor() {
     super();
     this.state = {
@@ -148,7 +132,7 @@ class DialogExamFirst extends Component {
                 variant = "outlined"
                 label={<div style={{fontFamily: 'Vazir'}} > شروع آزمون </div>}
                 type="datetime-local"
-                defaultValue="2020-12-14T10:30"
+                defaultValue="2021-02-04T15:00"
                 // value={this.state.date}
                 className={classes.textField}
                 InputLabelProps={{
@@ -172,7 +156,7 @@ class DialogExamFirst extends Component {
                 label={<div style={{fontFamily: 'Vazir'}} > پایان آزمون </div>}
                 type="datetime-local"
                 // defaultValue={this.state.startDate}
-                defaultValue="2020-12-14T10:30"
+                defaultValue="2021-02-04T15:00"
                 className={classes.textField}
                 InputLabelProps={{
                   shrink: true,

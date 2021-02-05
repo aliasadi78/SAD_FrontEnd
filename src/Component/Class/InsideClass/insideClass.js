@@ -26,7 +26,7 @@ import serverURL from '../../../utils/serverURL' ;
 import tokenConfig from '../../../utils/tokenConfig' ;
 import Notelist from './lists/notelist';
 import DialogEditClass from './DialogEditClass';
-
+import AssessmentIcon from '@material-ui/icons/Assessment';
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -148,7 +148,7 @@ export default function InsideClass(props) {
     const [className , setClassName] = React.useState("نام کلاس");
     const [description , setDescription] = React.useState("توضیحات");
     const [adminName , setAdminName] = React.useState("نام معلم");   
-    const [isAdmin , setIsAdmin] = React.useState(false);         
+    const [isAdmin , setIsAdmin] = React.useState(null);         
         
     const classId = props.match.params.classId ;    
 
@@ -174,6 +174,8 @@ export default function InsideClass(props) {
     .then(res =>{
         if(res.data.user.firstname + " " + res.data.user.lastname == adminName)
           setIsAdmin(true);
+        else
+          setIsAdmin(false);
     })
 
     return (
@@ -226,6 +228,24 @@ export default function InsideClass(props) {
                 </ListItem> 
               </Link>  
             </div>
+
+            {isAdmin == false &&
+            <div>
+            <Link target='_blank' color="inherit" href={"/report/" + classId} >
+                <ListItem button  >
+                  <ListItemIcon>
+                  <AssessmentIcon style={{ color: "#3D5A80" }} />            
+                    </ListItemIcon>
+                    <ListItemText  style={{ textAlign : 'right'}} >
+                      <Typography variant="button" style={{ color: "#3D5A80"  ,fontFamily: 'Vazir' }}> 
+                        کارنامه
+                      </Typography>
+                    </ListItemText>              
+                    
+                </ListItem> 
+              </Link>  
+            </div>
+          }
           
         </Drawer>
         <main className={clsx(classes.content, {

@@ -18,6 +18,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import RTL from '../M_RTL';
+import serverURL from '../../utils/serverURL';
+import tokenConfig from '../../utils/tokenConfig' ;
 class SignIn extends Component {
     constructor() {
         super();
@@ -46,15 +48,16 @@ class SignIn extends Component {
     render() {
         const classes = this.props.classes;
         const [pending, setPending] = this.props.p;
+        const [pending2, setPending2] = this.props.p2;
         const handleClick = e => {
             setPending(true);
             e.preventDefault();
-            axios.post("https://parham-backend.herokuapp.com/user/login", this.state)
+            axios.post(serverURL()+"user/login", this.state)
                 .then(result => {
                     console.log(result);
                     console.log("good");                                                            
                     const token = "Bearer " + result.data.token;
-                    
+                    setPending2(true);
                     localStorage.setItem('token', token);                    
                     console.log("first");
 
@@ -64,6 +67,7 @@ class SignIn extends Component {
                     console.log(error);
                     alert(" خطا! نام کاربری یا رمز عبور شما اشتباه می باشد.لطفا تمام موارد * دار را پر کنید.");
                     setPending(false); 
+                    setPending2(false);
                     console.log("bad");
 
                 })
@@ -156,7 +160,7 @@ class SignIn extends Component {
                                             <LoadingButton onClick={handleClick } pendingPosition="center" className={classes.topButton} pending={pending} variant="contained"  style={{fontFamily: 'Vazir'}} fullWidth>
                                             ورود
                                             </LoadingButton>
-                                            {pending ? <Redirect to= "/user/page/"/>:null}
+                                            {pending2 && pending ? <Redirect to= "/user/page/"/>:null}
                                             </Grid>
                                         </Grid>
                                     </Grid>
@@ -165,7 +169,7 @@ class SignIn extends Component {
                                     <Grid container>
                                         <Grid item xs={12}>
                                             <Grid>
-                                            {/* <Link to="/signUp" style={{color: 'white',textDecoration : 'none',fontFamily: 'Vazir'}}> */}
+                                            <Link to="/signUp" style={{color: 'white',textDecoration : 'none',fontFamily: 'Vazir'}}>
                                             <Button
                                                 type="submit"
                                                 variant="contained"
@@ -176,7 +180,7 @@ class SignIn extends Component {
                                                 
                                                     {"ثبت نام"}
                                                  </Button>
-                                                 {/* </Link> */}
+                                                 </Link>
                                         </Grid></Grid>
                                     </Grid>
                                 </ValidatorForm>
@@ -238,7 +242,8 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
     const classes = useStyles();
     const p = React.useState(false);
+    const p2 = React.useState(false);
     return (        
-        <SignIn classes={classes} p={p} />    
+        <SignIn classes={classes} p={p} p2={p2}/>    
     )
 }

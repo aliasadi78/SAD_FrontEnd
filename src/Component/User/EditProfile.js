@@ -1,3 +1,4 @@
+
 import React , {Component, useState} from 'react';
 import 'semantic-ui-css/semantic.min.css'
 import TextField from '@material-ui/core/TextField';
@@ -18,7 +19,7 @@ import { CircularProgress } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import Material_RTL from '../Material_RTL';
 import RTL from '../M_RTL';
-
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel' ;
 import InputAdornment from '@material-ui/core/InputAdornment' ;
@@ -64,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     },    
     
     editprofilePaper:{
-      padding : theme.spacing(3) , 
+      // padding : theme.spacing(3) , 
     },    
     paper: {
       alignItems : 'center' ,
@@ -102,6 +103,7 @@ function EditProfileValidationForms_Personal (props) {
 
     const [pending , setPending] = React.useState(false);
     const [userUpdated , setUserUpdated] = React.useState(false);
+    const [linearProgress , setLinearProgress] = React.useState(false);
     const [paswordValues , setPasswordValues] =  React.useState({
       password : '' ,
       showPassword : false ,
@@ -171,9 +173,12 @@ function EditProfileValidationForms_Personal (props) {
         
           <Grid item xs={3}></Grid>
           <Grid item xs={6}>
-            <Paper elevation={3} className={classes.editprofilePaper}style={{backgroundColor: '#1CA0A0',color: 'white',margin: '-1.5% 0% -2% 0%',padding: '2%',borderRadius: '5px',height: '40px'}}>
+            <Paper elevation={3} className={classes.editprofilePaper}style={{backgroundColor: '#1CA0A0',color: 'white',margin: '0',padding: '2%',borderRadius: '5px',height: '40px'}}>
               ویرایش اطلاعات کاربری
             </Paper>
+            {linearProgress &&
+            <LinearProgress />
+            }
             <Paper elevation={3}  style={{marginTop: '7%',backgroundColor: '#f2f2f2'}} className={classes.mainPaper}>
             
       <div>        
@@ -186,7 +191,7 @@ function EditProfileValidationForms_Personal (props) {
                 <Grid item xs={4}>
                   <Image  className="avatarimage-Editpage"
                     height = "80" width = "80"                
-                    src = {imageBase64}              
+                    src = {props.avatar}              
                     circular /> 
                 </Grid>
                 <Grid item xs={4}></Grid>
@@ -199,7 +204,19 @@ function EditProfileValidationForms_Personal (props) {
                 id="icon-button-file" 
                 type="file"
                 onChange={(e) => {
-                  uploadImage(e);
+                  setLinearProgress(true)
+                  // uploadImage(e);
+                  const file = new FormData();
+                  file.append( 'avatar' , e.target.files[0]) ;
+                  axios.put(serverURL()+ "user/avatar" , file , tokenConfig() )
+                  .then(()=>{
+                    console.log('done');
+                    setLinearProgress(false);
+                  })
+                  .catch(() => {
+                    console.log("not done ");
+                    setLinearProgress(false);
+                  });
                 }}
                 />
               <label htmlFor="icon-button-file">
@@ -423,7 +440,8 @@ export default class PersonalForms extends Component {
   constructor(props){
     super(props);
     this.state = {
-      userFound : false
+      userFound : false , 
+      avatar : null
     };
     
     const token = localStorage.getItem('token');    
@@ -446,6 +464,18 @@ export default class PersonalForms extends Component {
     .catch(err => {
         console.log(err)
     });     
+
+    axios.get(serverURL() + "user/avatar" , tokenConfig())
+    .then((res) => {
+      this.setState(prevstate => {
+        return {
+          avatar : res.data.avatar
+        }
+      })
+    })
+    .catch(()=>{
+
+    });
   }
 
   render(){  
@@ -479,4 +509,5 @@ export default class PersonalForms extends Component {
     } 
 
   }
+
 } 

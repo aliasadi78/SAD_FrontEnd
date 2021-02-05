@@ -22,6 +22,10 @@ import { savePublicApis} from './Component/Question/QuestionsSlice' ;
 import axios from 'axios' ;
 import UserPage from './Component/User/UserPage' ;
 import Landing from './Component/landingpage/landingpage';
+import ExamCorrection from './Component/Exam/ExamCorrection/ExamCorrection' ;
+// import Report from './Component/Class/report' ;
+import Report from './Component/Class/report/report' ;
+
 class App extends Component {    
 
     constructor(props){
@@ -57,8 +61,10 @@ class App extends Component {
                 <Route path="/questionBank" children={<Dashboard />} component = {questionBank  } />
                 <Route path="/Dashboard" component = {Dashboard} />
                 <Route path="/exam/:examId/questions"  component={ExamPage} />
-                <Route path="/exam/review/:examId/questions/"  component={ExamPage} />
+                <Route path="/exam/review/:examId/questions/"  component={ExamPage} />                
+                <Route path="/exam/correction/:examId/:username" component={ExamCorrection} />
                 <Route path="/user/page/" children={<Dashboard />}  component={UserPage} />
+                <Route path="/report/:classId/"  component={Report} />
             </div>
         );
     }

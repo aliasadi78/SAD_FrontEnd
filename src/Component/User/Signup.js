@@ -17,7 +17,8 @@ import  LoadingButton from '@material-ui/lab/LoadingButton';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import Icon from '@material-ui/core/Icon';
 import RTL from '../M_RTL';
-
+import serverURL from '../../utils/serverURL';
+import tokenConfig from '../../utils/tokenConfig' ;
 class SignUp extends Component {
     constructor() {
         super();
@@ -61,17 +62,18 @@ class SignUp extends Component {
     render() {
         const classes = this.props.classes;
         const [pending, setPending] = this.props.p;        
+        const [pending2, setPending2] = this.props.p2;        
 
         const handleClick = e => {
             setPending(true);
             e.preventDefault();        
-        axios.post("https://parham-backend.herokuapp.com/user/signup", this.state)
+        axios.post(serverURL() + "user/signup", this.state)
             .then(result => {
                 console.log(result);
                 console.log("good");
                 const token = "Bearer " + result.data.token;
                 localStorage.setItem('token', token);  
-                
+                setPending2(true);
                 //redirect to editprofile page   
                 // history.push("/profile/edit");
                 window.location.href = "/user/page/" ;
@@ -81,6 +83,7 @@ class SignUp extends Component {
                 alert('خطا! نام کاربری یا ایمیل شما قبلا استفاده شده لطفا تمام موارد * دار را پر کنید');
                 console.log("bad");
                 setPending(false);
+                setPending2(false);
             })}
 
         return (
@@ -212,7 +215,7 @@ class SignUp extends Component {
                                             <LoadingButton onClick={handleClick} pendingPosition="center" className = {classes.topButton} fullWidth pending={pending} variant="contained" style={{ fontFamily: 'Vazir'}}>
                                                     {'ثبت نام'}
                                             </LoadingButton>
-                                            {pending ? <Redirect to= "/user/page/"/>:null}
+                                            {pending2 && pending ? <Redirect to= "/user/page/"/>:null}
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -294,8 +297,9 @@ const useStyles = makeStyles((theme) => ({
 function SignUpoutput() {
     const classes = useStyles();
     const p = React.useState(false);
+    const p2 = React.useState(false);
     return (          
-        <SignUp classes={classes} p={p}/>             
+        <SignUp classes={classes} p={p} p2={p2}/>             
     )
 }
 

@@ -57,14 +57,14 @@ class Landing extends Component {
                     </div>
                 <span style={{position: 'relative',top:'10%',textAlign:'center'}}><h2 style={{fontFamily:'Vazir',color: 'white',top: '30%',position: 'relative'}}>آزمون ساز آنلاین و مدیریت کلاس</h2></span>
                 <span style={{fontFamily: 'vazir',color: 'black',background: 'white',position: 'absolute',zIndex:'100',width: '60%',height: '380px',top: '75%',right:'20%',borderRadius: '5px',boxShadow: '0 16px 48px #E3E7EB'}}>
-                            
+                <span style={{fontFamily: 'vazir',color: 'black',width: '75%',top: '25%',right: '12%',position: 'absolute',direction: 'rtl',textAlign: 'justify'}}>      
                 توی این دوران کرونا که آموزش مجازی شکل گرفته و مدارس و دانشگاه ها مجازی آموزش هاشون رو
                     ارائه میدن، مدارس هم مانند دانشگاه ها به بستری برای برگزاری آنلاین امتحانات و حل سوالات و
                     تمریناتشون دارن
                     به این ترتیب ایده اولیه ما برای ارائه خدمات آزمون آنلاین شکل گرفت به این صورت که توسط یک
                     بانک سواال پشتیبانی میشه و این امکان رو به معلمین و دانش آموزان میده تا بتونن تمرین و آزمون
                     دلخواهشون رو با استفاده از سوالات خودشون به صورت رایگان و یا با استفاده از سوالات بانک با صرف هزینه کم ایجاد کنند
-                    
+                    </span>
 
                 </span>
                 
@@ -161,7 +161,6 @@ class Landing extends Component {
                                     <ul style={{fontFamily: 'Vazir',listStyle:'none'}}>
                                         <li> ایجاد کلاس</li>
                                         <li> ایجاد آزمون</li>
-                                        <li> ایجاد تمرین</li>
                                         <li> ایجاد اطلاعیه مربوط به کلاس</li>
                                         <li> قابلیت تصحیح خودکار سوالات تستی</li>
                                         <li> ایجاد کارنامه برای اعضای کلاس</li>
