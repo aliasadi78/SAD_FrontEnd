@@ -1,13 +1,12 @@
-
 import React, {Component} from 'react';
-import serverURL from '../../utils/serverURL';
-import tokenConfig from '../../utils/tokenConfig' ;
+import serverURL from '../../../utils/serverURL';
+import tokenConfig from '../../../utils/tokenConfig' ;
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Material_RTL from "../Material_RTL";
+import Material_RTL from "../../Material_RTL";
 import axios from 'axios' ;
-import M_RTL from "../M_RTL";
+import M_RTL from "../../M_RTL";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from 'clsx';
 import ClassListItem from './ClassesListItem';

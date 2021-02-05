@@ -9,7 +9,7 @@ import { LightenDarkenColor } from 'lighten-darken-color';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { mainListItems } from '../insideClassDrawerList';
+import { mainListItems } from './insideClassDrawerList';
 import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
 import Studentlist from './studentlist' ;

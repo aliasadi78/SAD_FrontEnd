@@ -10,7 +10,7 @@ import { LightenDarkenColor } from 'lighten-darken-color';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PostListItem from './noteListItem';
-import DialogNote from './../DialogNote';
+import DialogNote from './../Dialogs/DialogNote';
 
 const useStyles = makeStyles((theme) => ({
     grid:{
