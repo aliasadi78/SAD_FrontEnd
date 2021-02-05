@@ -22,7 +22,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import ClassesPage from '../Class/ClassesPage' ;
+import ClassesPage from '../Class/ClassesPage/ClassesPage' ;
 import LogOutDialog from '../User/LogoutDialog';
 import QuestionBank from '../Question/QuestionBank';
 import Questions from '../Question/Questions';
