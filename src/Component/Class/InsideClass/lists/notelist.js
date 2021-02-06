@@ -11,6 +11,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PostListItem from './noteListItem';
 import DialogNote from './../Dialogs/DialogNote';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' ; 
+import {
+  faBellSlash
+} from "@fortawesome/free-solid-svg-icons" ;
 
 const useStyles = makeStyles((theme) => ({
     grid:{
@@ -96,7 +100,14 @@ export default function Notelist (props){
                     {
                         noteListLoad == true ?
                         <CircularProgress className = {classes.progressCircle} variant="static" value={100} />
-                        :                                
+                        :noteList.length == 0 ?
+                            <div>
+                              <FontAwesomeIcon color = '#BDBDBD' style={{margin : '8px'}} size = '3x' icon = {faBellSlash} />
+                              <p style={{fontFamily: 'Vazir' , color : '#BDBDBD' }}>
+                                  هیچ اعلانی تا الان نداشتیم .
+                              </p>
+                            </div>
+                        :                             
                         noteList.map((m) => 
                         <PostListItem 
                             isAdmin = {props.isAdmin}

@@ -13,7 +13,10 @@ import ExamListItem from './examsListItem';
 import { LightenDarkenColor } from 'lighten-darken-color'; 
 import { Link } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' ; 
+import {
+  faCommentSlash
+} from "@fortawesome/free-solid-svg-icons" ;
 const useStyles = makeStyles((theme) => ({
     grid:{
         padding : theme.spacing(3),
@@ -121,9 +124,19 @@ export default function Examslist (props){
                           </Grid>                           
                         }
                           <Grid item xs={12}>
+
+
+
                             {
                               examsListLoad == true ?
                               <CircularProgress className = {classes.progressCircle} variant="static" value={100} />
+                              :examList.length == 0 ?
+                                <div>
+                                  <FontAwesomeIcon color = '#BDBDBD' style={{margin : '8px'}} size = '3x' icon = {faCommentSlash} />
+                                  <p style={{fontFamily: 'Vazir' , color : '#BDBDBD' }}>
+                                      هیچ امتحانی تا الان نداشتیم .
+                                  </p>
+                                </div>
                               :
                               examList.map( m => 
                                 <ExamListItem 
